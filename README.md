@@ -3,7 +3,8 @@ A tool to manage your dropzones manifest.
 
 ## Getting started
 
-## Testing
+### Administration bundle
+Please see the [REAMDE.md](administration/README.md) of the administration bundle for details.
 
 ## Roadmap
 The first version is going to support a RESTful api as well as an administration interface to fill 
