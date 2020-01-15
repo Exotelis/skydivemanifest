@@ -1,0 +1,38 @@
+#logo-license-status {
+  margin-bottom: $logo-license-status-margin-bottom;
+  padding:       $logo-license-status-padding-y $logo-license-status-padding-x;
+  transition:    $transition-padding;
+
+  .status-cirle {
+    width: $license-circle-size;
+    height: $license-circle-size;
+    border-radius: 50%;
+    background-color: $gray-600;
+
+    &.active {
+      background-color: $green;
+    }
+
+    &.inactive {
+      background-color: $red;
+    }
+  }
+
+  .title {
+    font-size: .9rem;
+    line-height: 1;
+  }
+
+  .subtitle {
+    font-size: .7rem;
+    line-height: 1;
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  #logo-license-status {
+    display: flex;
+    justify-content: center;
+    padding: $logo-license-status-padding-y $logo-license-status-padding-x/2;
+  }
+}

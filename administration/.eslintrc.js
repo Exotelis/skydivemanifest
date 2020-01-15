@@ -9,7 +9,8 @@ module.exports = {
   ],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'semi': ['error', 'always']
   },
   parserOptions: {
     parser: 'babel-eslint'
@@ -23,6 +24,15 @@ module.exports = {
       env: {
         jest: true
       }
+    },
+    {
+      files: [
+        'src/i18n.js'
+      ],
+      rules: {
+        'template-curly-spacing': 'off',
+        indent: 'off'
+      }
     }
   ]
-}
+};
