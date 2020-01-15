@@ -1,0 +1,11 @@
+// Forms
+label {
+  display: $label-display;
+  font-size: $label-font-size;
+  margin-bottom: $label-margin-bottom;
+
+  span {
+    display: block;
+    margin-bottom: $label-span-margin-bottom;
+  }
+}

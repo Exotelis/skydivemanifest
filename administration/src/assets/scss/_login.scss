@@ -1,0 +1,119 @@
+$sm-login-shadow: 0 0 40px -10px rgba($black, .5);
+$sm-font-transition: font-size .3s ease-in-out;
+$sm-padding-transition: padding .3s ease-in-out;
+
+.sm-login {
+  min-height: 100vh;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $secondary;
+
+  .sm-login-container {
+    width: 1140px;
+    min-height: 580px;
+    display: grid;
+    grid-template-columns: auto 440px;
+    -webkit-box-shadow: $sm-login-shadow;
+    -moz-box-shadow: $sm-login-shadow;
+    box-shadow: $sm-login-shadow;
+
+    .sm-login-image {
+      display: flex;
+      background-color: #1c202b; // Fallback background color
+      background-image: url('./assets/images/login.jpg');
+      background-position: left;
+      background-size: cover;
+
+      .sm-textbox {
+        align-self: flex-end;
+        padding: 0 0 3rem 3.75rem;
+        color: $white;
+        white-space: nowrap;
+
+        .sm-title {
+          font-size: 3.25rem;
+          line-height: 100%;
+          font-weight: $font-weight-bold;
+          transition: $sm-font-transition;
+        }
+
+        .sm-subtitle {
+          margin-bottom: 1.75rem;
+          font-size: 2.75em;
+          transition: $sm-font-transition;
+        }
+
+        .sm-author {
+          font-size: .75rem;
+          font-style: italic;
+        }
+      }
+    }
+
+    .sm-login-form {
+      background-color: $white;
+      padding: 9.25rem 2.5rem;
+      transition: $sm-padding-transition;
+    }
+  }
+}
+
+@include media-breakpoint-up(xxl) {
+  .sm-login .sm-login-container {
+    width: 1350px;
+    grid-template-columns: auto 580px;
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .sm-login .sm-login-container .sm-login-image .sm-textbox {
+    .sm-title {
+      font-size: 2.125rem;
+    }
+
+    .sm-subtitle {
+      font-size: 1.625rem;
+    }
+  }
+}
+
+@media (max-width: 890px) {
+  .sm-login .sm-login-container .sm-login-image .sm-textbox {
+    .sm-title {
+      font-size: 1.75rem;
+    }
+
+    .sm-subtitle {
+      font-size: 1.375rem;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .sm-login .sm-login-container {
+    display: block;
+    min-height: auto;
+
+    .sm-login-image {
+      display: none;
+    }
+
+    .sm-login-form {
+      padding: 2rem;
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .sm-login {
+    background-color: $white;
+    padding: 0;
+    align-items: flex-start;
+
+    .sm-login-container {
+      box-shadow: none;
+    }
+  }
+}
