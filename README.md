@@ -2,6 +2,10 @@
 A tool to manage your dropzones manifest.
 
 ## Getting started
+This project consists of different bundles. The `restapi` uses Laravel, which is a PHP framework.
+The `administration` bundle is the frontend for the REST api, where the admin can manage the
+manifest. It's based on the JavaScript framework Vue.js. Each bundle provides its own
+documentation, because of the different technologies.
 
 ### Administration bundle
 Please see the [REAMDE.md](administration/README.md) of the administration bundle for details.
