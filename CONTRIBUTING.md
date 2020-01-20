@@ -43,6 +43,12 @@ restapi: last commit
 ```
 If you added or removed more than one file, you can put them in a single commit.
 
+When you have to move a file use `git mv <sourcepath> <targetpath>`. The commit message should then look like:
+```
+admin: move file
+```
+If you move more then one file use `move files` instead.
+
 ### Commit message
 In the body of your commit message, be as specific as possible. If the commit message title was too
 short to fully state what the commit is doing, use the body to explain not just the "what", but
