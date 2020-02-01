@@ -1,0 +1,22 @@
+name: "Administration bundle"
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  unit:
+    name: "Unit tests"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: Install dependencies and build
+        working-directory: ./administration
+        run: npm ci
+      - name: Run unit tests
+        working-directory: ./administration
+        run: npm run test:unit
+
