@@ -1,0 +1,15 @@
+# Add 'core' label to any root file changes
+core:
+  - '*'
+  - '.github/**/*'
+
+# Add 'documentation' label to any changes on .md or .rst file
+documentation:
+  - '**/*.md'
+  - '**/*.rst'
+
+# Add 'admin' label to any change within the admin-bundle
+admin: 'administration/**/*'
+
+# Add 'api' label to any change within the api-bundle
+api: 'api/**/*'
