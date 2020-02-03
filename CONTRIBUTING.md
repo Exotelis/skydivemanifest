@@ -1,7 +1,7 @@
 # Contribution guidelines
 Contributions are very much **appreciated**
 
-We accept contributions via Pull Requests on [GitHub](https://github.com/Exotelis/skydivemanifest)
+We accept contributions via Pull Requests on [GitHub](https://github.com/Exotelis/skydivemanifest/pulls)
 
 ## Commits
 Each commit has an associated commit message that is stored in git. The first line of the commit
