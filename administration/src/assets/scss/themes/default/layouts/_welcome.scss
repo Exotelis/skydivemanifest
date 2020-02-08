@@ -1,0 +1,124 @@
+$sm-login-shadow:       0 0 40px -10px rgba($black, .5);
+
+#welcome {
+  min-height:       100vh;
+  padding:          1.25rem;
+  display:          flex;
+  align-items:      center;
+  justify-content:  center;
+  background-color: $secondary;
+  overflow:         hidden;
+
+  .welcome-container {
+    width:                 1140px;
+    min-height:            580px;
+    display:               -ms-grid;
+    display:               grid;
+    -ms-grid-columns:      1fr 440px;
+    grid-template-columns: auto 440px;
+    -webkit-box-shadow:    $sm-login-shadow;
+    -moz-box-shadow:       $sm-login-shadow;
+    box-shadow:            $sm-login-shadow;
+
+    .welcome-left {
+      display:         flex;
+      min-height:      580px;
+      background:      #1c202b url('./assets/images/login.jpg') no-repeat left;
+      background-size: cover;
+
+      .welcome-textbox {
+        align-self:  flex-end;
+        padding:     0 0 3rem 3.75rem;
+        color:       $white;
+        white-space: nowrap;
+
+        .welcome-title {
+          font-size:   3.25rem;
+          line-height: 100%;
+          font-weight: $font-weight-bold;
+          transition:  $transition-font-size;
+        }
+
+        .welcome-subtitle {
+          margin-bottom: 1.75rem;
+          font-size:     2.75rem;
+          transition:    $transition-font-size;
+        }
+
+        .welcome-author {
+          font-size:  .75rem;
+          font-style: italic;
+        }
+      }
+    }
+
+    .welcome-right {
+      -ms-grid-column:  2;
+      background-color: $white;
+      display:          flex;
+      flex-direction:   column;
+      justify-content:  center;
+      padding:          0 2.5rem;
+      transition:       $transition-padding;
+    }
+  }
+}
+
+@include media-breakpoint-up(xxxl) {
+  #welcome .welcome-container {
+    width:                 1350px;
+    -ms-grid-columns:      1fr 580px;
+    grid-template-columns: auto 580px;
+  }
+}
+
+@include media-breakpoint-down(md) {
+  #welcome .welcome-container .welcome-left .welcome-textbox {
+    .welcome-title {
+      font-size: 2.125rem;
+    }
+
+    .welcome-subtitle {
+      font-size: 1.625rem;
+    }
+  }
+}
+
+@media (max-width: 890px) {
+  #welcome .welcome-container .welcome-left .welcome-textbox {
+    .welcome-title {
+      font-size: 1.75rem;
+    }
+
+    .welcome-subtitle {
+      font-size: 1.375rem;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  #welcome .welcome-container {
+    display:    block;
+    min-height: auto;
+
+    .welcome-left {
+      display: none;
+    }
+
+    .welcome-right {
+      padding: 2rem;
+    }
+  }
+}
+
+@include media-breakpoint-down(xxs) {
+  #welcome {
+    background-color: $white;
+    padding:          0;
+    align-items:      flex-start;
+
+    .welcome-container {
+      box-shadow: none;
+    }
+  }
+}

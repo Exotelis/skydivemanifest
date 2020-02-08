@@ -1,8 +1,35 @@
 #main-navigation {
   .nav-link {
-    color: $white;
-    padding: .75rem 1.75rem;
-    font-weight: 700;
-    font-size: .875rem
+    color:       $white;
+    padding:     $mainnav-navlink-padding-y $mainnav-navlink-padding-x;
+    font-size:   .875rem;
+    display:     flex;
+    align-items: center;
+
+    &.mdi:before {
+      font-size:    $mainnav-navicon-size;
+      margin-right: 1rem;
+      top:          0;
+      transition:   $transition-font-size;
+    }
+
+    &:hover, &.router-link-exact-active {
+      background-color: lighten($secondary, 5%);
+    }
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  #main-navigation {
+    .nav-link {
+      flex-direction: column;
+      padding:        $mainnav-navlink-padding-y $mainnav-navlink-padding-x/2;
+      font-size:      .7rem;
+
+      &.mdi:before {
+        font-size:    $mainnav-navicon-size*1.5;
+        margin-right: 0;
+      }
+    }
   }
 }
