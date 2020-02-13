@@ -1,7 +1,7 @@
 # Contribution guidelines
 Contributions are very much **appreciated**
 
-We accept contributions via Pull Requests on [GitHub](https://github.com/Exotelis/skydivemanifest)
+We accept contributions via Pull Requests on [GitHub](https://github.com/Exotelis/skydivemanifest/pulls)
 
 ## Commits
 Each commit has an associated commit message that is stored in git. The first line of the commit
@@ -42,6 +42,12 @@ core: initial commit
 restapi: last commit
 ```
 If you added or removed more than one file, you can put them in a single commit.
+
+When you have to move a file use `git mv <sourcepath> <targetpath>`. The commit message should then look like:
+```
+admin: move file
+```
+If you move more then one file use `move files` instead.
 
 ### Commit message
 In the body of your commit message, be as specific as possible. If the commit message title was too

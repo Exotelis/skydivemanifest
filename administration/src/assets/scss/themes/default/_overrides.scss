@@ -1,0 +1,22 @@
+// Forms
+label {
+  font-size: $label-font-size;
+  margin-bottom: $label-margin-bottom;
+}
+
+.form-group.required label:after {
+  content: '*';
+  margin-left: $label-asterisk-margin-left;
+  font-size: $label-asterisk-font-size;
+  color: $primary;
+  display: inline-block;
+  font-weight: 500;
+  line-height: 1;
+  z-index: 1;
+}
+
+::-webkit-input-placeholder,
+:-ms-input-placeholder,
+::placeholder {
+  color: rgba($body-color, .7) !important;
+}

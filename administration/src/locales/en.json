@@ -1,0 +1,58 @@
+{
+  "dateTimeFormats": {
+    "year": {
+      "year": "numeric"
+    }
+  },
+  "messages": {
+    "app": {
+      "title": "Skydivemanifest",
+      "version": "Version {version}",
+      "license": {
+        "text": "Your license is {status}",
+        "active": "active",
+        "inactive": "inactive",
+        "undefined": "not configured"
+      }
+    },
+    "general": {
+      "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
+      "allRightsReserved": "All rights reserved",
+      "reportBug": "Report a bug",
+      "translations": "Translations"
+    },
+    "dateTimeFormats": {
+      "short": {
+        "year": "numeric", "month": "short", "day": "numeric"
+      }
+    },
+    "pages": {
+      "title": {
+        "dashboard": "Dashboard",
+        "login": "Login",
+        "settings": "Settings"
+      }
+    },
+    "login": {
+      "title": {
+        "morning": "Good morning,",
+        "noon": "Good afternoon,",
+        "afternoon": "Good afternoon,",
+        "evening": "Good evening,",
+        "other": "Hello,"
+      },
+      "subtitle": "welcome back!",
+      "imageAuthor": "Photo by {author} on {platform}",
+      "formHeader": "Please sign in.",
+      "username": {
+        "label": "Username",
+        "placeholder": "Enter your username..."
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter your password..."
+      },
+      "signIn": "Sign In"
+    }
+  }
+}

@@ -1,0 +1,53 @@
+#default {
+  display:               -ms-grid;
+  display:               grid;
+  -ms-grid-columns:      300px 1fr;
+  grid-template-columns: 300px 1fr;
+  width:                 100%;
+  min-height:            100vh;
+  background-color:      $gray-200;
+
+  & > div.content {
+    -ms-grid-column:  2;
+  }
+
+  aside {
+    min-height:       100vh;
+    color:            $white;
+    background-color: $secondary;
+    padding:          $sidebar-padding-y $sidebar-padding-x;
+  }
+
+  header {
+    height:           $header-height;
+    border-bottom:    $header-border-bottom;
+    background-color: $white;
+
+    .container-fluid {
+      padding:        $header-padding-y $header-padding-x;
+    }
+  }
+
+  main {
+    background-color: $white;
+
+    .container-fluid {
+      padding:        $main-padding-y $main-padding-x;
+    }
+  }
+
+  footer {
+    border-top:       1px solid $gray-400;
+
+    .container-fluid {
+      padding:        $footer-padding-y $footer-padding-x;
+    }
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  #default {
+    -ms-grid-columns:      85px 1fr;
+    grid-template-columns: 85px 1fr;
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "dateTimeFormats": {
+    "year": {
+      "year": "numeric"
+    }
+  },
+  "messages": {
+    "app": {
+      "title": "Skydivemanifest",
+      "version": "Version {version}",
+      "license": {
+        "text": "Ihre Lizenz ist {status}",
+        "active": "aktiv",
+        "inactive": "inaktiv",
+        "undefined": "nicht eingerichtet"
+      }
+    },
+    "general": {
+      "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
+      "allRightsReserved": "Alle Rechte vorbehalten",
+      "reportBug": "Ein Problem melden",
+      "translations": "Übersetzungen"
+    },
+    "dateTimeFormats": {
+      "short": {
+        "year": "numeric", "month": "short", "day": "numeric"
+      }
+    },
+    "pages": {
+      "title": {
+        "dashboard": "Dashboard",
+        "login": "Login",
+        "settings": "Einstellungen"
+      }
+    },
+    "login": {
+      "title": {
+        "morning": "Guten Morgen,",
+        "noon": "Guten Mittag,",
+        "afternoon": "Guten Nachmittag,",
+        "evening": "Guten Abend,",
+        "other": "Hallo,"
+      },
+      "subtitle": "willkommen zurück!",
+      "imageAuthor": "Foto von {author} auf {platform}",
+      "formHeader": "Bitte melden Sie sich an.",
+      "username": {
+        "label": "Benutzername",
+        "placeholder": "Geben Sie Ihren Benutzernamen ein..."
+      },
+      "password": {
+        "label": "Passwort",
+        "placeholder": "Geben Sie Ihr Passwort ein..."
+      },
+      "signIn": "Anmelden"
+    }
+  }
+}

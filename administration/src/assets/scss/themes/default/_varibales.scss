@@ -1,0 +1,135 @@
+// Colors
+
+$orange:       #ed7c3b;
+$yellow:       #ffdd57;
+$green:        #00c281;
+$turquoise:    #20cb98;
+$cyan:         #17a4ba;
+$blue:         #2d81e1;
+$indigo:       #6f26e7;
+$purple:       #6f42c2;
+$pink:         #e83e8c;
+$red:          #f14668;
+$rusty:        #dc3545;
+$spacegray:    #4c6876;
+$darkgunmetal: #1d2530;
+
+$body-bg:      #fafafa;
+$body-color:   $spacegray;
+
+$primary:      $green;
+$secondary:    $darkgunmetal;
+$success:      $green;
+$info:         $cyan;
+$warning:      $yellow;
+$danger:       $red;
+
+// Breakpoints
+
+$grid-breakpoints: (
+  xxs:  0,
+  xs:   432px,
+  sm:   576px,
+  md:   768px,
+  lg:   960px,
+  xl:   1200px,
+  xxl:  1440px,
+  xxxl: 1920px
+);
+
+// Fonts
+
+$font-family-sans-serif: "Roboto", "Helvetica Neue", Arial, BlinkMacSystemFont, -apple-system, "Segoe UI", "Noto Sans", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+// Typography
+
+$font-size-base: 1rem;
+
+$h1-font-size:   $font-size-base * 2;
+$h2-font-size:   $font-size-base * 1.75;
+$h3-font-size:   $font-size-base * 1.5;
+$h4-font-size:   $font-size-base * 1.25;
+$h5-font-size:   $font-size-base * 1.125;
+$h6-font-size:   $font-size-base;
+
+$headings-margin-bottom: 1.25rem;
+$headings-font-weight:   600;
+
+// Links
+
+$link-color:            $primary;
+$link-hover-decoration: none;
+
+// Forms
+
+$label-font-size:            .75rem;
+$label-margin-bottom:        .5rem;
+$label-asterisk-font-size:   .9rem;
+$label-asterisk-margin-left: .25rem;
+
+$input-padding-y:            .75rem;
+$input-padding-x:            1rem;
+$input-font-size:            .75rem;
+
+$input-color:                $body-color;
+$input-border-color:         rgba($body-color, .3);
+
+$input-focus-box-shadow:     none;
+
+$form-group-margin-bottom:   1.25rem;
+
+// Buttons
+
+$btn-padding-y:        .5rem;
+$btn-padding-x:        1.5rem;
+$btn-font-size:        .875rem;
+
+$btn-font-weight:      600;
+$btn-focus-box-shadow: none !important;
+
+// Sidebar
+
+$sidebar-padding-y: 0;
+$sidebar-padding-x: 0;
+
+// Main Navigation
+
+$mainnav-navlink-padding-y: .75rem;
+$mainnav-navlink-padding-x: 1.75rem;
+$mainnav-navicon-size:      1.5rem;
+
+// Logo and License Status
+
+$logo-license-status-margin-bottom: 1.625rem;
+$logo-license-status-padding-y:     1.625rem;
+$logo-license-status-padding-x:     1.75rem;
+$license-circle-size:               .5rem;
+
+// Header
+
+$header-padding-y:     0;
+$header-padding-x:     1.75rem;
+$header-height:        81px;
+$header-border-bottom: 2px solid $primary;
+
+// Main
+
+$main-padding-y: 0;
+$main-padding-x: $header-padding-x;
+
+// Footer
+
+$footer-padding-y: 1.625rem;
+$footer-padding-x: $header-padding-x;
+
+// Mdi
+
+$mdi-font-path:      '../node_modules/@mdi/font/fonts'; // Relative to src
+
+// Transitions
+
+$transition-all:       all .3s ease-in-out;
+$transition-width:     width .3s ease-in-out;;
+$transition-margin:    margin .3s ease-in-out;
+$transition-padding:   padding .3s ease-in-out;
+$transition-font-size: font-size .3s ease-in-out;
