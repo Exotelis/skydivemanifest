@@ -10,17 +10,27 @@
     <div class="welcome-right">
       <h3>{{ $t('login.formHeader') }}</h3>
 
-      <form>
-        <div class="form-group required">
-          <label>{{ $t('login.username.label') }}</label>
-          <input type="text" class="form-control" :placeholder="$t('login.username.placeholder')">
-        </div>
-        <div class="form-group required">
-          <label>{{ $t('login.password.label') }}</label>
-          <input type="password" class="form-control" :placeholder="$t('login.password.placeholder')">
-        </div>
+      <form @submit.prevent="login" novalidate>
+        <text-input autofocus
+                    id="username"
+                    v-model="username"
+                    :error-text="$t('error.required')"
+                    :label="$t('login.username.label')"
+                    :placeholder="$t('login.username.placeholder')"
+                    :required="true"></text-input>
+        <password-input id="password"
+                        v-model="password"
+                        :error-text="$t('error.required')"
+                        :is-toggleable="true"
+                        :label="$t('login.password.label')"
+                        :placeholder="$t('login.password.placeholder')"
+                        :required="true"></password-input>
         <div class="clearfix">
-          <button type="submit" class="btn btn-primary float-right">{{ $t('login.signIn') }}</button>
+          <submit-button icon="mdi-login"
+                         id="signin"
+                         right-aligned
+                         :disabled="disabledSubmit"
+                         :loading="loading">{{ $t('login.signIn') }}</submit-button>
         </div>
       </form>
     </div>
@@ -28,12 +38,25 @@
 </template>
 
 <script>
+import PasswordInput from '@/components/form/PasswordInput';
+import SubmitButton from '@/components/form/SubmitButton';
+import TextInput from '@/components/form/TextInput';
+
 export default {
   name: 'Login',
   data: function () {
     return {
-      time: new Date().getHours()
+      time: new Date().getHours(),
+      username: '',
+      password: '',
+      loading: false,
+      disabledSubmit: true
     };
+  },
+  components: {
+    PasswordInput,
+    SubmitButton,
+    TextInput
   },
   computed: {
     getTimeBasedTitle: function () {
@@ -54,6 +77,27 @@ export default {
       }
 
       return this.$t('login.title.other');
+    },
+    usernamePassword: function () {
+      return this.username + this.password;
+    }
+  },
+  methods: {
+    login: function (element) {
+      const form = element.target;
+      form.classList.add('was-validated');
+
+      this.loading = true;
+      setTimeout(() => {
+        this.loading = false;
+      }, 3000);
+      // Todo Login logic
+    }
+  },
+  watch: {
+    usernamePassword: function () {
+      this.username.trim() !== '' && this.password.trim() !== '' ? this.disabledSubmit = false
+        : this.disabledSubmit = true;
     }
   }
 };
