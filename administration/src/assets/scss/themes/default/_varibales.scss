@@ -45,15 +45,19 @@ $font-family-sans-serif: "Roboto", "Helvetica Neue", Arial, BlinkMacSystemFont, 
 
 $font-size-base: 1rem;
 
-$h1-font-size:   $font-size-base * 2;
-$h2-font-size:   $font-size-base * 1.75;
-$h3-font-size:   $font-size-base * 1.5;
-$h4-font-size:   $font-size-base * 1.25;
-$h5-font-size:   $font-size-base * 1.125;
-$h6-font-size:   $font-size-base;
+$h1-font-size: $font-size-base * 2;
+$h2-font-size: $font-size-base * 1.75;
+$h3-font-size: $font-size-base * 1.5;
+$h4-font-size: $font-size-base * 1.25;
+$h5-font-size: $font-size-base * 1.125;
+$h6-font-size: $font-size-base;
 
 $headings-margin-bottom: 1.25rem;
 $headings-font-weight:   600;
+
+$small-font-size: .8rem;
+
+$text-muted: lighten($body-color, 20%);
 
 // Links
 
@@ -128,8 +132,17 @@ $mdi-font-path:      '../node_modules/@mdi/font/fonts'; // Relative to src
 
 // Transitions
 
-$transition-all:       all .3s ease-in-out;
-$transition-width:     width .3s ease-in-out;;
-$transition-margin:    margin .3s ease-in-out;
-$transition-padding:   padding .3s ease-in-out;
-$transition-font-size: font-size .3s ease-in-out;
+$transition-all:               all .3s ease-in-out;
+$transition-border-color:      border-color 0.3s ease-in-out;
+$transition-color:             color .3s ease-in-out;
+$transition-font-size:         font-size .3s ease-in-out;
+$transition-margin:            margin .3s ease-in-out;
+$transition-padding:           padding .3s ease-in-out;
+$transition-width:             width .3s ease-in-out;
+$transition-all-fast:          all 150ms ease-in-out;
+$transition-border-color-fast: border-color 150ms ease-in-out;
+$transition-color-fast:        color 150ms ease-in-out;
+$transition-font-size-fast:    font-size 150ms ease-in-out;
+$transition-margin-fast:       margin 150ms ease-in-out;
+$transition-padding-fast:      padding 150ms ease-in-out;
+$transition-width-fast:        width 150ms ease-in-out;
