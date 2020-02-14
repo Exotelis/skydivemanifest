@@ -2,7 +2,27 @@
 Welcome to the skydivemanifest administration bundle. You can follow the documentation for
 development or to build the bundle, to use it in production.
 
+## Table of contents
+- [Project setup](#project-setup)
+  + [Install the dependencies](#install-the-dependencies)
+  + [Compiles and hot-reloads for development](#compiles-and-hot-reloads-for-development)
+  + [Compiles and bundles for production](#compiles-and-bundles-for-production)
+  + [Test your app](#test-your-app)
+  + [Lints and fixes files](#lints-and-fixes-files)
+- [Developer guide](#developer-guide)
+  + [Form components](#form-components)
+  + [Layouts](#layouts)
+- [Internationalization](#internationalization)
+  + [Change the default language](#change-the-default-language)
+  + [Disable prefetch](#disable-prefetch)
+- [Testing](#testing)
+- [Configuration](#configuration)
+- [Troubleshooting](#troubleshooting)
+  + [404 error when accessing a route directly](#404-error-when-accessing-a-route-directly)
+  + [Module linking in Jetbrains products](#module-linking-in-jetbrains-products)
+
 ## Project setup
+### Install the dependencies
 Install the dependencies for the administration bundle by running:
 ```
 npm install
@@ -40,6 +60,27 @@ npm run lint
 
 ## Developer guide
 This section should help any developer to implement new features or fix bugs.
+
+### Form components
+From components are more or less a wrapper for from elements such as input fields, select boxes and submit buttons. They
+should guarantee that the html structure is unified.
+
+All existing form components are placed in the [form](src/components/form/) directory. As you might have noticed, there
+are also a lot of mixins. Since some attributes are not available on the different form elements or input types, it was
+easier to create different mixins to share the props. So if some specification will change in the future, it'll be
+easier to adapt the probs. To learn more about the available attributes please see
+[the input documentation](https://developer.mozilla.org/de/docs/Web/HTML/Element/Input).
+
+Example Code:
+```
+<form @submit.prevent="login" novalidate>
+  <text-input id="username" :label="$t('login.username.label')" :required="true" v-model="username"></text-input>
+  <password-input id="password" :is-toggleable="true" :label="$t('login.password.label')" :required="true" v-model="password"></password-input>
+  <div class="clearfix">
+    <submit-button right-aligned>{{ $t('login.signIn') }}</submit-button>
+  </div>
+</form>
+```
 
 ### Layouts
 Different routes can have different layouts. To set a layout for a specific route just add the meta field `layout` with
