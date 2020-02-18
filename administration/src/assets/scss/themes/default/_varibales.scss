@@ -1,5 +1,17 @@
 // Colors
 
+$white:        #fff;
+$gray-100:     #f8f9fa;
+$gray-200:     #e9ecef;
+$gray-300:     #dee2e6;
+$gray-400:     #ced4da;
+$gray-500:     #adb5bd;
+$gray-600:     #6c757d;
+$gray-700:     #495057;
+$gray-800:     #343a40;
+$gray-900:     #212529;
+$black:        #000;
+
 $orange:       #ed7c3b;
 $yellow:       #ffdd57;
 $green:        #00c281;
@@ -36,6 +48,10 @@ $grid-breakpoints: (
   xxl:  1440px,
   xxxl: 1920px
 );
+
+// Components
+
+$border-color: $gray-400;
 
 // Fonts
 
@@ -90,6 +106,24 @@ $btn-font-size:        .875rem;
 
 $btn-font-weight:      600;
 $btn-focus-box-shadow: none !important;
+
+// Dropdowns
+
+$dropdown-font-size:               .875rem;
+$dropdown-border-color:            $border-color;
+$dropdown-divider-bg:              $border-color;
+
+$dropdown-link-color:              $body-color;
+$dropdown-link-hover-color:        $white;
+$dropdown-link-hover-bg:           $link-color;
+
+$dropdown-link-disabled-color:     lighten($body-color, 20%);
+
+$dropdown-header-color:            $body-color;
+
+$dropdown-link-color-danger:       $danger;
+$dropdown-link-hover-color-danger: $white;
+$dropdown-link-hover-bg-danger:    $danger;
 
 // Sidebar
 

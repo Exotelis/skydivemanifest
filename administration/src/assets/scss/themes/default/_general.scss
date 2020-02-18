@@ -1,3 +1,15 @@
 body {
   min-height: 100vh;
 }
+
+// New styles
+
+.menu-item-danger {
+  color: $dropdown-link-color-danger;
+
+  &.active,
+  &:hover {
+    color: $dropdown-link-hover-color-danger;
+    background-color: $dropdown-link-hover-bg-danger;
+  }
+}
