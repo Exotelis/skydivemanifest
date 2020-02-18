@@ -1,4 +1,4 @@
-import { shallowMount, config } from '@vue/test-utils';
+import { mount, config } from '@vue/test-utils';
 import LoginPage from '../LoginPage';
 
 config.mocks.$t = key => key;
@@ -7,7 +7,7 @@ describe('LoginPage.vue', () => {
   let component;
 
   beforeEach(() => {
-    component = shallowMount(LoginPage);
+    component = mount(LoginPage);
   });
 
   it('is Vue instance', () => {
@@ -46,5 +46,28 @@ describe('LoginPage.vue', () => {
   it('return "login.title.other"', () => {
     component.setData({ time: new Date('2020-01-26T00:00:00').getHours() });
     expect(component.vm.getTimeBasedTitle).toBe('login.title.other');
+  });
+
+  it('check if submit button is disabled when username or password is empty', () => {
+    component.setData({ username: ' '.repeat(7), password: ''.repeat(7) });
+    expect(component.find('button').attributes().disabled).toBe('disabled');
+    component.find('#username').setValue('a'.repeat(7));
+    expect(component.find('button').attributes().disabled).toBe('disabled');
+    component.find('#username').setValue(' '.repeat(7));
+    component.find('#password').setValue('b'.repeat(7));
+    expect(component.find('button').attributes().disabled).toBe('disabled');
+  });
+
+  it('show error message, when an input field is empty', async () => {
+    component.find('#password').setValue('b'.repeat(7));
+    component.find('button').trigger('click');
+    await component.vm.$nextTick();
+    expect(component.find('.invalid-feedback').text()).toBe('error.required');
+  });
+
+  it('handle login routine when the form is submitted', async () => {
+    component.find('form').trigger('submit');
+    await component.vm.$nextTick();
+    expect(component.vm.loading).toBeTruthy(); // TODO update when actual login route is implemented
   });
 });

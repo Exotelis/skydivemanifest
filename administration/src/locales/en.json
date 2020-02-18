@@ -18,8 +18,12 @@
     "general": {
       "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
       "allRightsReserved": "All rights reserved",
+      "loading": "Loading...",
       "reportBug": "Report a bug",
       "translations": "Translations"
+    },
+    "error": {
+      "required": "This field is required."
     },
     "dateTimeFormats": {
       "short": {
