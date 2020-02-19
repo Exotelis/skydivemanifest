@@ -23,7 +23,7 @@
   #main-navigation {
     .nav-link {
       flex-direction: column;
-      padding:        $mainnav-navlink-padding-y $mainnav-navlink-padding-x/2;
+      padding:        $mainnav-navlink-padding-y .25rem;
       font-size:      .7rem;
 
       &.mdi:before {

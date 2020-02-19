@@ -1,6 +1,6 @@
 <template>
   <div class="dropdown">
-    <button class="btn btn-link dropdown-toggle" type="button" id="languageSelector" data-toggle="dropdown"
+    <button class="btn btn-link dropdown-toggle default-font-size" type="button" id="languageSelector" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
       {{ $t('general.translations') }}
     </button>

@@ -36,6 +36,10 @@ label {
   }
 }
 
+.form-control {
+  border-left: $form-control-border-left;
+}
+
 form.was-validated {
   .form-control:valid:hover {
     border-color: $success!important;
@@ -56,4 +60,8 @@ form.was-validated {
 
 a {
   transition: $transition-color-fast;
+}
+
+.dropdown-menu a {
+  transition: none;
 }
