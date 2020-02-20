@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import mixinButton from '@/components/form/mixinButton';
+import mixinButton from '@/mixins/mixinButton';
 
 export default {
   name: 'SubmitButton',

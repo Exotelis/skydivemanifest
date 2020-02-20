@@ -27,12 +27,12 @@
 </template>
 
 <script>
-import mixinBasic from '@/components/form/mixinBasic';
-import mixinInputmode from '@/components/form/mixinInputmode';
-import mixinList from '@/components/form/mixinList';
-import mixinReadonly from '@/components/form/mixinReadonly';
-import mixinSpellcheck from '@/components/form/mixinSpellcheck';
-import mixinText from '@/components/form/mixinText';
+import mixinBasic from '@/mixins/mixinBasic';
+import mixinInputmode from '@/mixins/mixinInputmode';
+import mixinList from '@/mixins/mixinList';
+import mixinReadonly from '@/mixins/mixinReadonly';
+import mixinSpellcheck from '@/mixins/mixinSpellcheck';
+import mixinText from '@/mixins/mixinText';
 
 export default {
   name: 'TextInput',
