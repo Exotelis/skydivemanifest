@@ -16,6 +16,7 @@
 </template>
 
 <script>
+// TODO is going to be replaced
 export default {
   name: 'MainNavigation'
 };

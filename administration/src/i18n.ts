@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import axios from 'axios';
-import en from '@/locales/en';
+import en from '@/locales/en.json';
 
 Vue.use(VueI18n);
 
@@ -16,18 +16,17 @@ export const i18n = new VueI18n({
   },
   dateTimeFormats: {
     [defaultFallbackLanguage]: en.dateTimeFormats
-  },
-  availableLocales: [defaultFallbackLanguage] // our fallback language that is preloaded
+  }
 });
 
-function setI18nLanguage (lang) {
+function setI18nLanguage (lang: string) {
   i18n.locale = lang;
   axios.defaults.headers.common['Accept-Language'] = lang;
-  document.querySelector('html').setAttribute('lang', lang);
+  document.querySelector('html')!.setAttribute('lang', lang);
   return lang;
 }
 
-export function loadLanguageAsync (lang) {
+export function loadLanguageAsync (lang: string) {
   const langRegex = /^[A-Za-z]{2,3}([_\-.][A-Za-z]{2,4}){0,2}$/;
 
   // If lang is not a valid language identifier

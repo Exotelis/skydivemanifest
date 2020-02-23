@@ -1,11 +1,11 @@
 import { shallowMount } from '@vue/test-utils';
-import HiddenInput from '../HiddenInput';
+import InputHidden from '../InputHidden.vue';
 
-describe('HiddenInput.vue', () => {
-  let component;
+describe('InputHidden.vue', () => {
+  let component: any;
 
   beforeEach(() => {
-    component = shallowMount(HiddenInput, {
+    component = shallowMount(InputHidden, {
       propsData: {
         id: 'testId'
       }

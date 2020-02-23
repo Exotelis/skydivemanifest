@@ -48,17 +48,19 @@
   </div>
 </template>
 
-<script>
-import LanguageSelector from '@/components/ui/LanguageSelector';
-import LogoLicenseStatus from '@/components/ui/LogoLicenseStatus';
-import MainNavigation from '@/components/ui/MainNavigation';
+<script lang="ts">
+import Vue from 'vue';
+import { Component } from 'vue-property-decorator';
+import LanguageSelector from '@/components/ui/LanguageSelector.vue';
+import LogoLicenseStatus from '@/components/ui/LogoLicenseStatus.vue';
+import MainNavigation from '@/components/ui/MainNavigation.vue';
 
-export default {
-  name: 'DefaultLayout',
+@Component({
   components: {
     LanguageSelector,
     LogoLicenseStatus,
     MainNavigation
   }
-};
+})
+export default class DefaultLayout extends Vue {}
 </script>
