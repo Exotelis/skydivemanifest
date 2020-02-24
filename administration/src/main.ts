@@ -1,16 +1,13 @@
 import Vue from 'vue';
-import App from '@/App';
+import App from '@/App.vue';
 import router from '@/router/router';
 import '@/registerServiceWorker';
 import { defaultLanguage, i18n, loadLanguageAsync } from '@/i18n';
 
 // Import 3rd party libraries
-import jQuery from 'jquery';
+import 'jquery';
 import 'popper.js';
 import 'bootstrap';
-
-// Make jQuery accessible
-window.$ = window.jQuery = jQuery;
 
 Vue.config.productionTip = false;
 

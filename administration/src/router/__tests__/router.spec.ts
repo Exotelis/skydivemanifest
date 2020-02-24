@@ -28,20 +28,4 @@ describe('router', () => {
     expect(router.currentRoute.path).toBe('/notitle');
     expect(document.title).toBe(process.env.VUE_APP_TITLE);
   });
-
-  it('resolve all dynamic imports', async () => {
-    let results = [];
-
-    // Get and resolve all imports
-    for (let key in router.options.routes) {
-      let route = router.options.routes[key];
-      if (typeof route.component === 'function') {
-        await results.push(route.component());
-      }
-    }
-
-    for (let res in results) {
-      await expect(results[res]).resolves.toBeTruthy();
-    }
-  });
 });

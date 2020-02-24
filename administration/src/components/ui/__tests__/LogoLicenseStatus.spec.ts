@@ -1,11 +1,11 @@
 import { shallowMount, config } from '@vue/test-utils';
-import LogoLicenseStatus from '../LogoLicenseStatus';
-import { version } from '@/../package';
+import LogoLicenseStatus from '../LogoLicenseStatus.vue';
+import { version } from '@/../package.json';
 
-config.mocks.$t = key => key;
+config.mocks!.$t = (key: any) => key;
 
 describe('LogoLicenseStatus.vue', () => {
-  let component;
+  let component: any;
 
   beforeEach(() => {
     component = shallowMount(LogoLicenseStatus);

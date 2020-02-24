@@ -11,30 +11,27 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
+import locales from '@/locales/locales.json';
+import { Component } from 'vue-property-decorator';
 import { loadLanguageAsync } from '@/i18n';
-import locales from '@/locales/locales';
 
-export default {
-  name: 'LanguageSelector',
-  data: function () {
-    return {
-      languages: locales
-    };
-  },
-  methods: {
-    changeLanguage: function (language) {
-      // Update page title
-      Promise.all([loadLanguageAsync(language)])
-        .then(() => {
-          localStorage.setItem('locale', language); // Update local storage on success
-        })
-        .finally(() => {
-          document.title = typeof this.$route.meta !== 'undefined' && this.$route.meta.title
-            ? this.$t(this.$route.meta.title) + ' | ' + process.env.VUE_APP_TITLE
-            : process.env.VUE_APP_TITLE;
-        });
-    }
+@Component({})
+export default class LanguageSelector extends Vue {
+  languages: object = locales;
+
+  changeLanguage (language: string): void {
+    // Update page title
+    Promise.all([loadLanguageAsync(language)])
+      .then(() => {
+        localStorage.setItem('locale', language); // Update local storage on success
+      })
+      .finally(() => {
+        document.title = typeof this.$route.meta !== 'undefined' && this.$route.meta.title
+          ? this.$t(this.$route.meta.title) + ' | ' + process.env.VUE_APP_TITLE
+          : process.env.VUE_APP_TITLE;
+      });
   }
-};
+}
 </script>

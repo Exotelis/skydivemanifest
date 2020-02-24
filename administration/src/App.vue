@@ -4,24 +4,24 @@
   </component>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue';
+import { Component } from 'vue-property-decorator';
 
 // Import Layouts
-import DefaultLayout from '@/components/layouts/DefaultLayout';
-import WelcomeLayout from '@/components/layouts/WelcomeLayout';
+import DefaultLayout from '@/components/layouts/DefaultLayout.vue';
+import WelcomeLayout from '@/components/layouts/WelcomeLayout.vue';
 
 // Register components
 Vue.component('DefaultLayout', DefaultLayout);
 Vue.component('WelcomeLayout', WelcomeLayout);
 
-export default {
-  computed: {
-    getLayout: function () {
-      return (this.$route.meta.layout || 'Default') + 'Layout';
-    }
+@Component({})
+export default class App extends Vue {
+  get getLayout (): string {
+    return (this.$route.meta.layout || 'Default') + 'Layout';
   }
-};
+}
 </script>
 
 <style lang="scss">

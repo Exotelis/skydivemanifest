@@ -4,8 +4,10 @@
   </main>
 </template>
 
-<script>
-export default {
-  name: 'WelcomeLayout'
-};
+<script lang="ts">
+import Vue from 'vue';
+import { Component } from 'vue-property-decorator';
+
+@Component({})
+export default class WelcomeLayout extends Vue {}
 </script>

@@ -1,10 +1,10 @@
 import { mount, config } from '@vue/test-utils';
-import LoginPage from '../LoginPage';
+import LoginPage from '../LoginPage.vue';
 
-config.mocks.$t = key => key;
+config.mocks!.$t = (key: any) => key;
 
 describe('LoginPage.vue', () => {
-  let component;
+  let component: any;
 
   beforeEach(() => {
     component = mount(LoginPage);

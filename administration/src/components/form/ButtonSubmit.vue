@@ -12,11 +12,10 @@
   </button>
 </template>
 
-<script>
-import mixinButton from '@/mixins/mixinButton';
+<script lang="ts">
+import { Component, Mixins } from 'vue-property-decorator';
+import ButtonMixin from '@/mixins/ButtonMixin';
 
-export default {
-  name: 'SubmitButton',
-  mixins: [mixinButton]
-};
+@Component({})
+export default class ButtonSubmit extends Mixins(ButtonMixin) {}
 </script>

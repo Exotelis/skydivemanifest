@@ -1,13 +1,13 @@
 import { shallowMount, config } from '@vue/test-utils';
-import SubmitButton from '../SubmitButton';
+import ButtonSubmit from '../ButtonSubmit.vue';
 
-config.mocks.$t = key => key;
+config.mocks!.$t = (key: any) => key;
 
-describe('SubmitButton.vue', () => {
-  let component;
+describe('ButtonSubmit.vue', () => {
+  let component: any;
 
   beforeEach(() => {
-    component = shallowMount(SubmitButton, {
+    component = shallowMount(ButtonSubmit, {
       propsData: {
         id: 'testId'
       },

@@ -8,29 +8,27 @@
   </div>
 </template>
 
-<script>
-import { version } from '@/../package';
+<script lang="ts">
+import Vue from 'vue';
+import { Component } from 'vue-property-decorator';
+import { TranslateResult } from 'vue-i18n';
+import { version } from '@/../package.json';
 
-export default {
-  name: 'LogoLicenseStatus',
-  data: function () {
-    return {
-      status: '', // Todo get license status from api
-      version: version
-    };
-  },
-  computed: {
-    getLicenseStatus: function () {
-      if (this.status === 'active') {
-        return this.$t('app.license.active');
-      }
+@Component({})
+export default class LogoLicenseStatus extends Vue {
+  status: string = ''; // TODO - Get license status from when it exists
+  version: string = version;
 
-      if (this.status === 'inactive') {
-        return this.$t('app.license.inactive');
-      }
-
-      return this.$t('app.license.undefined');
+  get getLicenseStatus (): TranslateResult {
+    if (this.status === 'active') {
+      return this.$t('app.license.active');
     }
+
+    if (this.status === 'inactive') {
+      return this.$t('app.license.inactive');
+    }
+
+    return this.$t('app.license.undefined');
   }
-};
+}
 </script>
