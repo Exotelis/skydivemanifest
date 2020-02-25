@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.19",
+    "@types/jquery": "^3.3.33",
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-plugin-pwa": "^4.1.0",

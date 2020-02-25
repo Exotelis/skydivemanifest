@@ -1,46 +1,52 @@
 <template>
-  <nav>
-    <ul>
-      <navigation-item :start="this.dataStart" :depth="this.dataDepth"></navigation-item>
-    </ul>
-  </nav>
+  <ul class="nav">
+    <navigation-item v-for="(c, key) in config"
+                     @close-all="closeAll"
+                     @toggle-submenu="toggleSubmenu"
+                     :key="key"
+                     :config="c">
+    </navigation-item>
+  </ul>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
+import { NavigationGeneratorInterface } from '@/components/navigation/NavigationGeneratorInterface';
+import { NavigationModel } from '@/components/navigation/NavigationModel';
 import NavigationItem from '@/components/navigation/NavigationItem.vue';
 
-@Component({})
-export default class NavigationGenerator extends Vue {
-
-}
-
-export default {
-  name: 'NavigationGenerator',
+@Component({
   components: {
     NavigationItem
-  },
-  data: function () {
-    return {
-      dataStart: undefined,
-      dataDepth: undefined
-    };
-  },
-  props: ['start', 'depth'],
-  created: function () {
-    this.dataStart = this.$router.options.routes;
-    this.dataDepth = this.depth || 0;
-    // If start is defined, find it and set children as start. If it does not exist, use default
-    if (this.start) {
-      for (let i in this.$router.options.routes) {
-        let route = this.$router.options.routes[i];
-        if (this.start === route.path && Array.isArray(route.children) && route.children.length > 0) {
-          this.dataStart = route.children;
-          break; // leave loop on match
-        }
+  }
+})
+export default class NavigationGenerator extends Vue implements NavigationGeneratorInterface {
+  @Prop({ required: true }) readonly config!: Array<NavigationModel>;
+  @Prop({ default: true }) readonly onlyOneSubmenu!: boolean;
+  navigationItems: Array<Vue> = [];
+
+  closeAll () {
+    this.closeSubmenus();
+  }
+
+  toggleSubmenu (component: Vue) {
+    if (component.$data.isSubmenuOpen) {
+      if (this.onlyOneSubmenu) {
+        this.closeSubmenus();
       }
+      this.navigationItems.push(component);
+    } else {
+      this.navigationItems.splice(this.navigationItems.indexOf(component), 1);
     }
   }
-};
+
+  closeSubmenus () {
+    const len: number = this.navigationItems.length;
+    for (let i = 0; i < len; i++) {
+      const comp = this.navigationItems.pop();
+      comp!.$data.isSubmenuOpen = false;
+    }
+  }
+}
 </script>
