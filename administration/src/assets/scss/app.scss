@@ -48,6 +48,7 @@
 // Import Skydivemanifests additional scss and bootstrap overwrites
 @import 'themes/default/overrides';
 @import 'themes/default/general';
+@import 'themes/default/navigations';
 
 // Import Layouts
 @import 'themes/default/layouts/default';
@@ -55,4 +56,3 @@
 
 // Import components
 @import 'themes/default/components/logolicensestatus';
-@import 'themes/default/components/mainnavigation';
