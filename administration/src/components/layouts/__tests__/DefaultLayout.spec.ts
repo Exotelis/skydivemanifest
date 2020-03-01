@@ -22,4 +22,9 @@ describe('DefaultLayout.vue', () => {
   it('is Vue instance', () => {
     expect(component.isVueInstance()).toBeTruthy();
   });
+
+  it('close submenus of #main-navigation when clicking on the content container', async () => {
+    component.vm.$refs.mainNavigation.closeAll = jest.fn();
+    component.find('#default > div.content').trigger('click');
+  });
 });

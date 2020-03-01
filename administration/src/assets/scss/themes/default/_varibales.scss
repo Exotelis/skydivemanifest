@@ -129,14 +129,26 @@ $dropdown-link-hover-bg-danger:    $danger;
 
 // Sidebar
 
-$sidebar-padding-y: 0;
-$sidebar-padding-x: 0;
+$sidebar-width:       300px;
+$sidebar-width-small: 85px;
+$sidebar-padding-y:   0;
+$sidebar-padding-x:   0;
 
 // Main Navigation
 
-$mainnav-navlink-padding-y: .75rem;
-$mainnav-navlink-padding-x: 1.75rem;
-$mainnav-navicon-size:      1.5rem;
+$mainnav-navlink-padding-y:        .75rem;
+$mainnav-navlink-padding-x:        1.75rem;
+$mainnav-navicon-size:             1.5rem;
+
+$mainnav-menu-subtitle-color:      #899798;
+$mainnav-menu-subtitle-background: transparent;
+
+$mainnav-submenu-width:            290px;
+$mainnav-submenu-width-small:      250px;
+$mainnav-submenu-height:           60vh;
+$mainnav-submenu-background:       lighten($secondary, 5%);
+$mainnav-submenu-padding-y:        1rem;
+$mainnav-submenu-padding-x:        1rem;
 
 // Logo and License Status
 

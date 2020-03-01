@@ -10,6 +10,7 @@ development or to build the bundle, to use it in production.
   + [Test your app](#test-your-app)
   + [Lints and fixes files](#lints-and-fixes-files)
 - [Developer guide](#developer-guide)
+  + [NavigationGenerator and NavigationItems](#navigationgenerator-and-navigationitems)
   + [Form components](#form-components)
   + [Layouts](#layouts)
 - [Internationalization](#internationalization)
@@ -60,6 +61,45 @@ npm run lint
 
 ## Developer guide
 This section should help any developer to implement new features or fix bugs.
+
+### NavigationGenerator and NavigationItems
+To automatically generate a navigation menu, you can use the
+[NavigationGenerator](src/components/navigation/NavigationGenerator.vue) component. The component requires just a single
+property `config: Array<NavigationModel>`. Please see the definition of the
+[NavigationModel](src/components/navigation/NavigationModel.ts). The only required key of the NavigationModel is `type`.
+You can choose one out of three [NavigationTypes](src/components/navigation/NavigationType.ts). Using `Path` will
+automatically load the route information matching the given path:
+```
+{ path: '/', type: NavigationType.Path }
+```
+The type `Submenuhandler` will generate a submenu. `Title` can be used to group the menu items, since title is not
+clickable. When using one of those type, you should also provide a title for the menu item:
+```
+{ title: 'Submenutitel',
+  type: NavigationType.Submenuhandler,
+  children: [
+    { title: 'User stuff', type: NavigationType.Title },
+    { path: '/userroles', type: NavigationType.Path }
+  ]
+}
+```
+As you can see in the example above, a `Submenuhandler` just makes sense with some children defined. Finally, you can
+define an icon for each menu item. The icon must be the classname of an existing mdi icon:
+```
+{ icon: 'mdi-airplane', path: '/aircrafts', type: NavigationType.Path }
+```
+By default the property `onlyOneSubmenu` is true. That means that any other open submenu will be closed, when the user
+opens another one. Settings this to false allows the user to open multiple submenus.
+
+Of course, you don't have to use the `NavigationGenerator` and its config, you could also directly use the
+[NavigationItem](src/components/navigation/NavigationItem.vue) component. It also needs a config, but not as an array.
+
+Example usage:
+```
+<navigation-generator class="flex-column" ref="mainNavigation" :config="mainNavigationConfig"></navigation-generator>
+```
+The ref is used to call the `closeAll` method of the `NavigationGenerator`, when the user clicks anywhere outside of the
+navigation menu.
 
 ### Form components
 From components are more or less a wrapper for from elements such as input fields, select boxes and submit buttons. They

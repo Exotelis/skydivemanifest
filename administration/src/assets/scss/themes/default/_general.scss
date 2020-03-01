@@ -4,6 +4,10 @@ body {
 
 // New styles
 
+.default-font-size {
+  font-size: $font-size-base;
+}
+
 .menu-item-danger {
   color: $dropdown-link-color-danger;
 
@@ -12,8 +16,4 @@ body {
     color: $dropdown-link-hover-color-danger;
     background-color: $dropdown-link-hover-bg-danger;
   }
-}
-
-.default-font-size {
-  font-size: $font-size-base;
 }

@@ -1,21 +1,28 @@
 #default {
-  display:               -ms-grid;
-  display:               grid;
-  -ms-grid-columns:      300px 1fr;
-  grid-template-columns: 300px 1fr;
+  @include flexbox();
+  @include align-items(stretch);
   width:                 100%;
   min-height:            100vh;
   background-color:      $gray-200;
 
-  & > div.content {
-    -ms-grid-column:  2;
+  aside {
+    @include flex(0 $sidebar-width);
+    z-index: 1;
+
+    // Todo We might want to remote this workaround when we can use portals in vue3
+    .wrapper {
+      position:         relative;
+      width:            $sidebar-width;
+      background-color: $secondary;
+      color:            $white;
+      padding:          $sidebar-padding-y $sidebar-padding-x;
+      min-height:       100vh;
+    }
   }
 
-  aside {
-    min-height:       100vh;
-    color:            $white;
-    background-color: $secondary;
-    padding:          $sidebar-padding-y $sidebar-padding-x;
+  & > div.content {
+    @include flex(1);
+    min-height: 100vh;
   }
 
   header {
@@ -24,7 +31,7 @@
     background-color: $white;
 
     .container-fluid {
-      padding:        $header-padding-y $header-padding-x;
+      padding: $header-padding-y $header-padding-x;
     }
   }
 
@@ -32,22 +39,27 @@
     background-color: $white;
 
     .container-fluid {
-      padding:        $main-padding-y $main-padding-x;
+      padding: $main-padding-y $main-padding-x;
     }
   }
 
   footer {
-    border-top:       1px solid $border-color;
+    border-top: 1px solid $border-color;
 
     .container-fluid {
-      padding:        $footer-padding-y $footer-padding-x;
+      padding: $footer-padding-y $footer-padding-x;
     }
   }
 }
 
 @include media-breakpoint-down(lg) {
   #default {
-    -ms-grid-columns:      85px 1fr;
-    grid-template-columns: 85px 1fr;
+    aside {
+      @include flex(0 $sidebar-width-small);
+
+      .wrapper {
+        width: $sidebar-width-small;
+      }
+    }
   }
 }

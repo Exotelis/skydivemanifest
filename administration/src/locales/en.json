@@ -16,25 +16,32 @@
       }
     },
     "general": {
-      "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
       "allRightsReserved": "All rights reserved",
+      "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
       "loading": "Loading...",
+      "othersettings": "Other settings",
+      "permissions": "Permissions",
       "reportBug": "Report a bug",
+      "system": "System",
       "translations": "Translations"
     },
     "error": {
       "required": "This field is required."
     },
-    "dateTimeFormats": {
-      "short": {
-        "year": "numeric", "month": "short", "day": "numeric"
-      }
-    },
     "pages": {
       "title": {
+        "aircrafts": "Aircrafts",
+        "bookings": "Bookings",
         "dashboard": "Dashboard",
         "login": "Login",
-        "settings": "Settings"
+        "manifest": "Manifest",
+        "payments": "Payments",
+        "settings": "General settings",
+        "skydiver": "Skydiver",
+        "staff": "Staff",
+        "tickets": "Tickets",
+        "users": "All users",
+        "userroles": "User roles"
       }
     },
     "login": {

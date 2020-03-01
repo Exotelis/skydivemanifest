@@ -16,25 +16,32 @@
       }
     },
     "general": {
-      "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
       "allRightsReserved": "Alle Rechte vorbehalten",
+      "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
       "loading": "Lädt...",
+      "othersettings": "Andere Einstellungen",
+      "permissions": "Berechtigungen",
       "reportBug": "Ein Problem melden",
+      "system": "System",
       "translations": "Übersetzungen"
     },
     "error": {
       "required": "Dieses Feld ist ein Pflichtfeld."
     },
-    "dateTimeFormats": {
-      "short": {
-        "year": "numeric", "month": "short", "day": "numeric"
-      }
-    },
     "pages": {
       "title": {
+        "aircrafts": "Flugzeuge",
+        "bookings": "Buchungen",
         "dashboard": "Dashboard",
         "login": "Login",
-        "settings": "Einstellungen"
+        "manifest": "Manifest",
+        "payments": "Zahlungen",
+        "settings": "Allgemeine Einstellungen",
+        "skydiver": "Springer",
+        "staff": "Mitarbeiter",
+        "tickets": "Tickets",
+        "users": "Alle Benutzer",
+        "userroles": "Benutzerrollen"
       }
     },
     "login": {
