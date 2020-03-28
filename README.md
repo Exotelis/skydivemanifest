@@ -4,6 +4,7 @@ A tool to manage your dropzones manifest.
 ## Table of contents
 - [Getting started](#getting-started)
   + [Administration bundle](#administration-bundle)
+  + [Api bundle](#api-bundle)
 - [Roadmap](#roadmap)
 - [Server configuration](#server-configuration)
   + [Rewrite urls](#rewrite-urls)
@@ -21,6 +22,9 @@ different technologies.
 
 ### Administration bundle
 Please see the [REAMDE.md](administration/README.md) of the administration bundle for details.
+
+### Api bundle
+Please see the [REAMDE.md](api/README.md) of the api bundle for details.
 
 ## Roadmap
 Will be updated after the release of version 1
