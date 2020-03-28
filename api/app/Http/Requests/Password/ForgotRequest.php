@@ -4,6 +4,10 @@ namespace App\Http\Requests\Password;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class ForgotRequest
+ * @package App\Http\Requests\Password
+ */
 class ForgotRequest extends FormRequest
 {
     /**
@@ -13,7 +17,7 @@ class ForgotRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,7 @@ class ForgotRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'email' => 'required|email|max:255'
         ];
     }
 }

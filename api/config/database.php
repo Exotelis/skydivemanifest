@@ -39,7 +39,7 @@ return [
             'driver' => 'sqlite',
             'url' => env('DATABASE_URL'),
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
+            'prefix' => env('DB_PREFIX', ''),
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
@@ -54,10 +54,10 @@ return [
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => '',
+            'prefix' => env('DB_PREFIX', ''),
             'prefix_indexes' => true,
             'strict' => true,
-            'engine' => null,
+            'engine' => 'InnoDB',
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
@@ -72,7 +72,7 @@ return [
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
-            'prefix' => '',
+            'prefix' => env('DB_PREFIX', ''),
             'prefix_indexes' => true,
             'schema' => 'public',
             'sslmode' => 'prefer',
@@ -87,7 +87,7 @@ return [
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
-            'prefix' => '',
+            'prefix' => env('DB_PREFIX', ''),
             'prefix_indexes' => true,
         ],
 
@@ -143,5 +143,7 @@ return [
         ],
 
     ],
+
+    'default_string_length' => (int) env('DB_DEFAULT_STRING_LENGTH', 255),
 
 ];

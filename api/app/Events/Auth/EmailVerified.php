@@ -2,35 +2,31 @@
 
 namespace App\Events\Auth;
 
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class EmailVerified
+ * @package App\Events\Auth
+ */
 class EmailVerified
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use SerializesModels;
+
+    /**
+     * The user instance.
+     *
+     * @var \App\Contracts\User\MustVerifyEmail
+     */
+    public $user;
 
     /**
      * Create a new event instance.
      *
+     * @param  \App\Contracts\User\MustVerifyEmail $user
      * @return void
      */
-    public function __construct()
+    public function __construct($user)
     {
-        //
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('channel-name');
+        $this->user = $user;
     }
 }

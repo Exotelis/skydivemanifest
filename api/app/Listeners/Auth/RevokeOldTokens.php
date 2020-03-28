@@ -2,22 +2,15 @@
 
 namespace App\Listeners\Auth;
 
-use App\Events\Laravel\Passport\Events\AccessTokenCreated;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use \App\Models\User;
+use \Laravel\Passport\Events\AccessTokenCreated;
 
+/**
+ * Class RevokeOldTokens
+ * @package App\Listeners\Auth
+ */
 class RevokeOldTokens
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
     /**
      * Handle the event.
      *
@@ -26,6 +19,14 @@ class RevokeOldTokens
      */
     public function handle(AccessTokenCreated $event)
     {
-        //
+        if (! allowMultipleTokens()) {
+            $user = User::find($event->userId);
+
+            foreach($user->tokens as $token) {
+                if ((int) $event->clientId === $token->client_id && $event->tokenId !== $token->id) {
+                    $token->revoke();
+                }
+            }
+        }
     }
 }

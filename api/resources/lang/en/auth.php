@@ -13,7 +13,11 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'failed'                  => 'The username or password you entered is incorrect.',
+    'failed_registration'     => 'The registration failed.',
+    'oauth'                   => 'Could not get an access token.',
+    'oauth_could_not_revoke'  => 'Could not revoke access token.',
+    'registration_successful' => 'The user has been created successfully.',
+    'throttle'                => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];

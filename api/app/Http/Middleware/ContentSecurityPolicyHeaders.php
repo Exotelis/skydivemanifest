@@ -4,6 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 
+/**
+ * Class ContentSecurityPolicyHeaders
+ * @package App\Http\Middleware
+ */
 class ContentSecurityPolicyHeaders
 {
     /**
@@ -15,6 +19,13 @@ class ContentSecurityPolicyHeaders
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        $response = $next($request);
+
+        $response->header(
+            'Content-Security-Policy',
+            "default-src 'none', connect-src 'self', 'upgrade-insecure-requests';"
+        );
+
+        return $response;
     }
 }

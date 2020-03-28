@@ -2,29 +2,44 @@
 
 namespace App\Notifications;
 
+use App\Mail\EmailVerified as Mailable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class EmailVerified extends Notification
+/**
+ * Class EmailVerified
+ * @package App\Notifications
+ */
+class EmailVerified extends Notification implements ShouldQueue
 {
     use Queueable;
 
     /**
-     * Create a new notification instance.
+     * Number of attempts.
      *
-     * @return void
+     * @var int
      */
-    public function __construct()
-    {
-        //
-    }
+    public $tries = 3;
+
+    /**
+     * Retry after x seconds.
+     *
+     * @var int
+     */
+    public $retryAfter = 90;
+
+    /**
+     * Stop child process after x seconds.
+     *
+     * @var int
+     */
+    public $timeout = 75;
 
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
+     * @param  mixed $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -35,27 +50,11 @@ class EmailVerified extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @param  mixed $notifiable
+     * @return Mailable
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
+        return (new Mailable($notifiable))->to($notifiable);
     }
 }

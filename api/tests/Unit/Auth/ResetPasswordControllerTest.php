@@ -1,18 +1,42 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Auth;
 
+use App\Http\Controllers\ResetPasswordController;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class ResetPasswordControllerTest
+ * @package Tests\Unit
+ */
 class ResetPasswordControllerTest extends TestCase
 {
     /**
-     * A basic unit test example.
+     * ResetPasswordController instance
+     *
+     * @var ResetPasswordController
+     */
+    protected $controller;
+
+    /**
+     * This method is called before each test.
      *
      * @return void
      */
-    public function testExample()
+    public function setUp(): void
     {
-        $this->assertTrue(true);
+        parent::setUp();
+        $this->controller = new ResetPasswordController();
+    }
+
+    /**
+     * Test the default broker.
+     *
+     * @return void
+     * @covers \App\Http\Controllers\ResetPasswordController
+     */
+    public function testBroker()
+    {
+        $this->assertEquals('users', $this->controller->broker);
     }
 }

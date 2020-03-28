@@ -2,22 +2,15 @@
 
 namespace App\Listeners;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Events\NotificationSent;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 
+/**
+ * Class LogNotification
+ * @package App\Listeners
+ */
 class LogNotification
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
     /**
      * Handle the event.
      *
@@ -26,6 +19,9 @@ class LogNotification
      */
     public function handle(NotificationSent $event)
     {
-        //
+        $notification = get_class($event->notification);
+        $user = $event->notifiable;
+
+        Log::info("'{$notification}' notification has been sent to user '{$user->id}|{$user->email}'");
     }
 }

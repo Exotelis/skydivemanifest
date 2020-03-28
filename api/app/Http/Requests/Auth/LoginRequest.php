@@ -4,6 +4,10 @@ namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class LoginRequest
+ * @package App\Http\Requests\Auth
+ */
 class LoginRequest extends FormRequest
 {
     /**
@@ -13,7 +17,7 @@ class LoginRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,8 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'username' => 'required|string|max:255',
+            'password' => 'required|string|max:255',
         ];
     }
 }

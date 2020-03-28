@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class VerifyEmailProvider
+ * @package App\Providers
+ */
 class VerifyEmailProvider extends ServiceProvider
 {
     /**
@@ -13,7 +17,9 @@ class VerifyEmailProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        app()->bind('verifyemail', function() {
+            return new \App\Helpers\VerifyEmail;
+        });
     }
 
     /**
@@ -21,8 +27,5 @@ class VerifyEmailProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
-        //
-    }
+    public function boot() {}
 }

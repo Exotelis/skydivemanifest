@@ -17,18 +17,27 @@ return [
 
     'paths' => ['api/*'],
 
-    'allowed_methods' => ['*'],
-
     'allowed_origins' => ['*'],
+
+    'allowed_methods' => ['POST', 'GET', 'PUT', 'DELETE', 'OPTIONS'],
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'],
+    'allowed_headers' => [
+        'Authorization',
+        'Content-Language',
+        'Content-Length',
+        'Content-Type',
+        'Origin',
+        'User-Agent',
+        'X-Requested-With',
+        'X-XSRF-TOKEN',
+    ],
 
     'exposed_headers' => [],
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];

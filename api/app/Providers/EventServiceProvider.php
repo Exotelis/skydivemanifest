@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
+/**
+ * Class EventServiceProvider
+ * @package App\Providers
+ */
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -15,9 +16,32 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+
+        // 3rd party Events
+
+        'Illuminate\Auth\Events\Registered' => [
+            'App\Listeners\User\Registered',
         ],
+        'Illuminate\Notifications\Events\NotificationSent' => [
+            'App\Listeners\LogNotification',
+        ],
+        'Laravel\Passport\Events\AccessTokenCreated' => [
+            'App\Listeners\Auth\RevokeOldTokens',
+        ],
+
+        // App Events
+
+        'App\Events\Auth\EmailVerified' => [
+            'App\Listeners\Auth\LogEmailVerified',
+            'App\Listeners\Auth\SendEmailVerifiedNotification',
+        ],
+        'App\Events\Auth\LockAccount' => [
+            'App\Listeners\Auth\LogLockAccount',
+        ],
+        'App\Events\Auth\PasswordReset' => [
+            'App\Listeners\Auth\LogPasswordReset',
+        ],
+
     ];
 
     /**
@@ -28,7 +52,5 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
-        //
     }
 }

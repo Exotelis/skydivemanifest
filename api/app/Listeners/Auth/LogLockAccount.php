@@ -3,21 +3,14 @@
 namespace App\Listeners\Auth;
 
 use App\Events\Auth\LockAccount;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 
+/**
+ * Class LogLockAccount
+ * @package App\Listeners\Auth
+ */
 class LogLockAccount
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
     /**
      * Handle the event.
      *
@@ -26,6 +19,6 @@ class LogLockAccount
      */
     public function handle(LockAccount $event)
     {
-        //
+        Log::info("Account of user '{$event->user->id}|{$event->user->email}' has been locked temporarily.");
     }
 }

@@ -3,7 +3,12 @@
 namespace App\Http\Requests\Password;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class ChangeRequest
+ * @package App\Http\Requests\Password
+ */
 class ChangeRequest extends FormRequest
 {
     /**
@@ -13,7 +18,21 @@ class ChangeRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return (Auth::check() &&
+            array_key_exists('password_change', $this->user()->attributesToArray()) &&
+            $this->user()->password_change);
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'new_password.regex' => __('validation.' . defaultPasswordStrength())
+        ];
     }
 
     /**
@@ -24,7 +43,8 @@ class ChangeRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'password'     => 'required|password|max:255',
+            'new_password' => 'required|different:password|regex:'. passwordStrength() . '|confirmed|max:255',
         ];
     }
 }

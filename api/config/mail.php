@@ -106,4 +106,16 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Global "Support-Mail" Address
+    |--------------------------------------------------------------------------
+    |
+    | You may wish to attach a support email address to every email sent
+    | from your application.
+    |
+    */
+
+    'support_mail' => env('MAIL_SUPPORT_ADDRESS', null),
+
 ];

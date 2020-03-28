@@ -3,21 +3,14 @@
 namespace App\Listeners\Auth;
 
 use App\Events\Auth\EmailVerified;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 
+/**
+ * Class LogEmailVerified
+ * @package App\Listeners\Auth
+ */
 class LogEmailVerified
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
     /**
      * Handle the event.
      *
@@ -26,6 +19,6 @@ class LogEmailVerified
      */
     public function handle(EmailVerified $event)
     {
-        //
+        Log::info("Email address of user '{$event->user->id}|{$event->user->email}' has been verified.");
     }
 }

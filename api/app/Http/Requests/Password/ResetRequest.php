@@ -4,6 +4,10 @@ namespace App\Http\Requests\Password;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class ResetRequest
+ * @package App\Http\Requests\Password
+ */
 class ResetRequest extends FormRequest
 {
     /**
@@ -13,7 +17,19 @@ class ResetRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'password.regex' => __('validation.' . defaultPasswordStrength())
+        ];
     }
 
     /**
@@ -24,7 +40,9 @@ class ResetRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'token'    => 'required',
+            'email'    => 'required|email|exists:users|max:255',
+            'password' => 'required|regex:'. passwordStrength() . '|confirmed|max:255',
         ];
     }
 }

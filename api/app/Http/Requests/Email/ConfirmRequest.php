@@ -4,6 +4,10 @@ namespace App\Http\Requests\Email;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class ConfirmRequest
+ * @package App\Http\Requests\Email
+ */
 class ConfirmRequest extends FormRequest
 {
     /**
@@ -13,7 +17,7 @@ class ConfirmRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,7 @@ class ConfirmRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'token' => 'required|string|max:255',
         ];
     }
 }

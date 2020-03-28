@@ -2,27 +2,60 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\User;
+use App\Models\User;
 use Faker\Generator as Faker;
-use Illuminate\Support\Str;
-
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
+        'default_invoice'   => null,
+        'default_shipping'  => null,
+        'dob'               => $faker->date($format = 'Y-m-d', $max = 'now'),
+        'email'             => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        'remember_token' => Str::random(10),
+        'failed_logins'     => 0,
+        'firstname'         => $faker->firstName,
+        'gender'            => $faker->randomElement(validGender()),
+        'is_active'         => true,
+        'last_logged_in'    => now(),
+        'lastname'          => $faker->lastName,
+        'locale'            => 'en',
+        'lock_expires'      => null,
+        'middlename'        => $faker->firstName,
+        'mobile'            => null,
+        'password'          => 'secret',
+        'password_change'   => false,
+        'phone'             => null,
+        'role_id'           => adminRole(),
+        'username'          => $faker->unique()->userName,
+        'timezone'          => $faker->timezone,
     ];
+});
+
+$factory->state(User::class, 'allPermissions', [
+    'role_id' => adminRole(),
+]);
+
+$factory->state(User::class, 'isInactive', [
+    'is_active' => false,
+]);
+
+$factory->state(User::class, 'isLocked', [
+    'lock_expires' => now()->addMinutes(10),
+]);
+
+$factory->state(User::class, 'isNotVerified', [
+    'email_verified_at' => null,
+]);
+
+$factory->state(User::class, 'isUser', [
+    'role_id' => defaultRole(),
+]);
+
+$factory->state(User::class, 'passwordChange', [
+    'password_change' => true,
+]);
+
+$factory->afterCreatingState(User::class, 'allPermissions', function ($user) {
+    $user->role->permissions()->detach();
+    $user->role->permissions()->attach(factory(\App\Models\Permission::class)->state('all')->create());
 });

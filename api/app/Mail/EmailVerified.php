@@ -6,19 +6,32 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\App;
 
-class EmailVerified extends Mailable
+/**
+ * Class EmailVerified
+ * @package App\Mail
+ */
+class EmailVerified extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     /**
+     * The notifiable object.
+     *
+     * @var mixed
+     */
+    protected $notifiable;
+
+    /**
      * Create a new message instance.
      *
+     * @param  mixed $notifiable
      * @return void
      */
-    public function __construct()
+    public function __construct($notifiable)
     {
-        //
+        $this->notifiable = $notifiable;
     }
 
     /**
@@ -28,6 +41,16 @@ class EmailVerified extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        $lang = App::getLocale();
+        $subject = __('mails.subject_email_verified');
+
+        return $this->view('mails.user.verified')
+            ->text('mails.user.verified_plain')
+            ->locale($lang)
+            ->subject($subject)
+            ->with([
+                'firstname' => $this->notifiable->firstname,
+                'frontend'  => frontendUrl(),
+            ]);
     }
 }

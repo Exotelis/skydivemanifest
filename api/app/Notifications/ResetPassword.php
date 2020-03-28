@@ -2,29 +2,62 @@
 
 namespace App\Notifications;
 
+use App\Mail\ResetPassword as Mailable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ResetPassword extends Notification
+/**
+ * Class ResetPassword
+ * @package App\Notifications
+ */
+class ResetPassword extends Notification implements ShouldQueue
 {
     use Queueable;
 
     /**
+     * Number of attempts.
+     *
+     * @var int
+     */
+    public $tries = 3;
+
+    /**
+     * Retry after x seconds.
+     *
+     * @var int
+     */
+    public $retryAfter = 90;
+
+    /**
+     * Stop child process after x seconds.
+     *
+     * @var int
+     */
+    public $timeout = 75;
+
+    /**
+     * Reset password token.
+     *
+     * @var string
+     */
+    protected $token;
+
+    /**
      * Create a new notification instance.
      *
+     * @param  string $token
      * @return void
      */
-    public function __construct()
+    public function __construct($token)
     {
-        //
+        $this->token = $token;
     }
 
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
+     * @param  mixed $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -35,27 +68,11 @@ class ResetPassword extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @param  mixed $notifiable
+     * @return Mailable
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
+        return (new Mailable($notifiable, $this->token))->to($notifiable);
     }
 }

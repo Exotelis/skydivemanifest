@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard'     => 'api',
         'passwords' => 'users',
     ],
 
@@ -36,15 +36,9 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-
         'api' => [
-            'driver' => 'token',
+            'driver'   => 'passport',
             'provider' => 'users',
-            'hash' => false,
         ],
     ],
 
@@ -68,13 +62,8 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model'  => App\Models\User::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
@@ -90,14 +79,46 @@ return [
     | considered valid. This security feature keeps tokens short-lived so
     | they have less time to be guessed. You may change this as needed.
     |
+    | The throttle time is the number of seconds how long a user have to
+    | wait before resetting the password again.
+    |
     */
 
     'passwords' => [
         'users' => [
             'provider' => 'users',
-            'table' => 'password_resets',
-            'expire' => 60,
-            'throttle' => 60,
+            'table'    => 'password_resets',
+            'expire'   => 120,
+            'throttle' => 600,
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Email changes
+    |--------------------------------------------------------------------------
+    |
+    | You may specify multiple email change configurations if you have more
+    | than one user table or model in the application and you want to have
+    | separate email change settings based on the specific user types.
+    |
+    | The expire time is the number of minutes that the change token should be
+    | considered valid. This security feature keeps tokens short-lived so
+    | they have less time to be guessed. You may change this as needed.
+    | Default 1 day.
+    |
+    | The throttle time is the number of seconds how long a user have to
+    | wait before requesting or resending the email address change request
+    | again. Default 5 minutes.
+    |
+    */
+
+    'email_changes' => [
+        'users' => [
+            'provider' => 'users',
+            'table'    => 'email_changes',
+            'expire'   => 1440,
+            'throttle' => 300,
         ],
     ],
 
@@ -113,5 +134,59 @@ return [
     */
 
     'password_timeout' => 10800,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Failed logins
+    |--------------------------------------------------------------------------
+    |
+    | Those keys are used to define after how many failed login attempts the
+    | user account should be locked and how long the account should be locked.
+    | After x tries, for x minutes.
+    |
+    */
+
+    'lock' => [
+        'after_tries' => 3,
+        'for_minutes' => 30,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Password strength
+    |--------------------------------------------------------------------------
+    |
+    | This key defines the required strength of passwords used in you project.
+    | It is possible to choose out of three existing levels.
+    | regexWeakPassword, regexMediumPassword or regexStrongPassword
+    |
+    */
+
+    'password_strength' => 'regexMediumPassword',
+
+    /*
+    |--------------------------------------------------------------------------
+    | OAuth settings
+    |--------------------------------------------------------------------------
+    |
+    | This key defines the default oauth clients that should be used by your
+    | application. By default passport will create a personal and password
+    | client. Those clients we will store here.
+    | It also defines if user allowed to have multiple tokens. If not, all old
+    | tokens will be revoked when a new one is requested.
+    |
+    */
+
+    'oauth' => [
+        'password_client' => [
+            'id'     => env('OAUTH_PASSWORD_CLIENT_ID', null),
+            'secret' => env('OAUTH_PASSWORD_CLIENT_SECRET', null),
+        ],
+        'personal_client' => [
+            'id'     => env('OAUTH_PERSONAL_CLIENT_ID', null),
+            'secret' => env('OAUTH_PERSONAL_CLIENT_SECRET', null),
+        ],
+        'allow_multiple_tokens' => (bool) env('OAUTH_MULTIPLE_TOKENS', false),
+    ],
 
 ];

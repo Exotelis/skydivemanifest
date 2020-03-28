@@ -4,6 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 
+/**
+ * Class ServerHeader
+ * @package App\Http\Middleware
+ */
 class ServerHeader
 {
     /**
@@ -15,6 +19,14 @@ class ServerHeader
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        $response = $next($request);
+
+        $version = config('app.version');
+        $name = config('app.name');
+
+        $response->header('Server', sprintf('%s (%s)', $name, $version));
+        $response->header('X-Powered-By', sprintf('%s (%s)', $name, $version));
+
+        return $response;
     }
 }

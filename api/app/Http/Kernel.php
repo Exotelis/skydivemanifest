@@ -4,6 +4,10 @@ namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
+/**
+ * Class Kernel
+ * @package App\Http
+ */
 class Kernel extends HttpKernel
 {
     /**
@@ -14,6 +18,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
+        \App\Http\Middleware\Localization::class,
         \App\Http\Middleware\TrustProxies::class,
         \Fruitcake\Cors\HandleCors::class,
         \App\Http\Middleware\CheckForMaintenanceMode::class,
@@ -29,17 +34,25 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            \App\Http\Middleware\EncryptCookies::class,
-            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\Session\Middleware\StartSession::class,
-            // \Illuminate\Session\Middleware\AuthenticateSession::class,
-            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            //\App\Http\Middleware\EncryptCookies::class,
+            //\Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            //\Illuminate\Session\Middleware\StartSession::class,
+            //\Illuminate\Session\Middleware\AuthenticateSession::class,
+            //\Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            //\App\Http\Middleware\VerifyCsrfToken::class,
+            //\Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
         'api' => [
+            'account.active',
+            'csp.headers',
+            'disable.cache',
+            'log.requests',
+            'password.change',
+            'security.headers',
+            'server.headers',
             'throttle:60,1',
+            \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
@@ -52,15 +65,44 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \App\Http\Middleware\Authenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
-        'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'account.active'   => \App\Http\Middleware\EnsureAccountIsActive::class,
+        'auth'             => \App\Http\Middleware\Authenticate::class,
+        'auth.basic'       => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'bindings'         => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'cache.headers'    => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+        'csp.headers'      => \App\Http\Middleware\ContentSecurityPolicyHeaders::class,
+        'can'              => \Illuminate\Auth\Middleware\Authorize::class,
+        'disable.cache'    => \App\Http\Middleware\DisableCache::class,
+        'guest'            => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'log.requests'     => \App\Http\Middleware\LogRequests::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
-        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'password.change'  => \App\Http\Middleware\ChangePassword::class,
+        'security.headers' => \App\Http\Middleware\SecurityHeaders::class,
+        'server.headers'   => \App\Http\Middleware\ServerHeader::class,
+        'signed'           => \Illuminate\Routing\Middleware\ValidateSignature::class,
+        'throttle'         => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'verified'         => \App\Http\Middleware\EnsureEmailIsVerified::class,
+    ];
+
+    /**
+     * The priority-sorted list of middleware.
+     *
+     * Forces non-global middleware to always be in the given order.
+     *
+     * @var array
+     */
+    protected $middlewarePriority = [
+        //\Illuminate\Session\Middleware\StartSession::class,
+        //\Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \App\Http\Middleware\SecurityHeaders::class,
+        \App\Http\Middleware\ServerHeader::class,
+        \App\Http\Middleware\ContentSecurityPolicyHeaders::class,
+        \App\Http\Middleware\DisableCache::class,
+        \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        \App\Http\Middleware\EncryptCookies::class,
+        \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
+        //\Illuminate\Session\Middleware\AuthenticateSession::class,
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        //\Illuminate\Auth\Middleware\Authorize::class,
     ];
 }

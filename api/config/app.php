@@ -4,6 +4,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Version
+    |--------------------------------------------------------------------------
+    |
+    | This value is the version of your application. This can be used to
+    | display the current version of the api bundle. This information might be
+    | helpful for debugging.
+    |
+    */
+
+    'version' => '1.0.0',
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Name
     |--------------------------------------------------------------------------
     |
@@ -13,7 +26,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Skydivemanifest'),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,6 +69,8 @@ return [
 
     'asset_url' => env('ASSET_URL', null),
 
+    'frontend_url' => env('APP_URL_FRONTEND', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -80,7 +95,9 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => env('APP_LOCALE', 'en'),
+
+    'valid_locales' => ['en', 'de'],
 
     /*
     |--------------------------------------------------------------------------
@@ -122,6 +139,56 @@ return [
     'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Roles
+    |--------------------------------------------------------------------------
+    |
+    | Those keys are used to define the ids of the admin group and the default
+    | group, that a new user gets assigned. Usually the admin group is
+    | is id 1 and the user group id 2.
+    |
+    */
+
+    'groups' => [
+        'admin' => 1,
+        'user'  => 2,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | API-Version
+    |--------------------------------------------------------------------------
+    |
+    | This is the prefix for all the api routes defined by the api bundle.
+    | If a resource is no longer backward compatible, it might be a good idea
+    | to change the prefix.
+    |
+    */
+
+    'api_version' => 'v1',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Clear users
+    |--------------------------------------------------------------------------
+    |
+    | This key defines after how many months of inactivity a user should be
+    | deleted. It also defines, after how many days after the user has been
+    | created, not verified accounts should be deleted.
+    |
+    | 'delete_inactive_after' is the time in months after inactive users should
+    | be deleted.
+    | 'delete_unverified_after' is the time in days, after a user with an un-
+    | verified email should be deleted.
+    |
+    */
+
+    'users' => [
+        'delete_inactive_after'   => (int) env('APP_DELETE_INACTIVE_USERS', 120),
+        'delete_unverified_after' => (int) env('APP_DELETE_UNVERIFIED_USERS', 10),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -174,6 +241,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\VerifyEmailProvider::class,
 
     ],
 
@@ -226,6 +294,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Verify' => App\Facades\VerifyEmail::class,
 
     ],
 

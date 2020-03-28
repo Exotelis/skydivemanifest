@@ -2,30 +2,41 @@
 
 namespace App\Listeners\User;
 
-use Illuminate\Auth\Events\Registered;
+use App\Notifications\CreateUser as CreateUserNotification;
+use Illuminate\Auth\Events\Registered as Event;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 
-class Registered
+/**
+ * Class Registered
+ * @package App\Listeners\User
+ */
+class Registered implements ShouldQueue
 {
     /**
-     * Create the event listener.
+     * The name of the queue the job should be sent to.
      *
-     * @return void
+     * @var string|null
      */
-    public function __construct()
-    {
-        //
-    }
+    public $queue = 'listeners';
 
     /**
      * Handle the event.
      *
-     * @param  Registered  $event
+     * @param  Event  $event
      * @return void
      */
-    public function handle(Registered $event)
+    public function handle(Event $event)
     {
-        //
+        $user = $event->user;
+
+        if ($user instanceof \App\Models\User) {
+            $user->notify((new CreateUserNotification())->onQueue('mail'));
+            Log::info("New user has been registered: '{$user->id}|{$user->email}'");
+        }
+
+        if ($user instanceof \App\Contracts\User\MustVerifyEmail && ! $user->hasVerifiedEmail()) {
+            $user->sendEmailVerificationNotification($user->email);
+        }
     }
 }

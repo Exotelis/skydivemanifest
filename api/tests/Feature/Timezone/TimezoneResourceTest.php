@@ -2,21 +2,25 @@
 
 namespace Tests\Feature\Timezone;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
+/**
+ * Class TimezoneResourceTest
+ * @package Tests\Feature\Timezone
+ */
 class TimezoneResourceTest extends TestCase
 {
     /**
-     * A basic feature test example.
+     * Test tiezones resource.
      *
      * @return void
      */
-    public function testExample()
+    public function testTimezones()
     {
-        $response = $this->get('/');
+        $resource = self::API_URL . 'timezones';
 
-        $response->assertStatus(200);
+        // Success
+        $response = $this->getJson($resource);
+        $response->assertStatus(200)->assertJson(\Carbon\CarbonTimeZone::listIdentifiers());
     }
 }

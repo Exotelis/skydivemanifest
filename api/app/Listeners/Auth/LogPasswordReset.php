@@ -3,21 +3,14 @@
 namespace App\Listeners\Auth;
 
 use App\Events\Auth\PasswordReset;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 
+/**
+ * Class LogPasswordReset
+ * @package App\Listeners\Auth
+ */
 class LogPasswordReset
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
     /**
      * Handle the event.
      *
@@ -26,6 +19,6 @@ class LogPasswordReset
      */
     public function handle(PasswordReset $event)
     {
-        //
+        Log::info("Password of user '{$event->user->id}|{$event->user->email}' has been reset.");
     }
 }

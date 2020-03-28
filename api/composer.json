@@ -1,18 +1,20 @@
 {
-    "name": "laravel/laravel",
+    "name": "skydivemanifest/api",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "The Skydivemanifest api bundle.",
     "keywords": [
-        "framework",
-        "laravel"
+        "skydive",
+        "dropzone manager"
     ],
-    "license": "MIT",
     "require": {
         "php": "^7.2.5",
+        "ext-json": "*",
+        "ext-pdo": "*",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.0",
+        "laravel/passport": "^8.4",
         "laravel/tinker": "^2.0"
     },
     "require-dev": {
@@ -39,6 +41,9 @@
         "classmap": [
             "database/seeds",
             "database/factories"
+        ],
+        "files": [
+            "app/helpers.php"
         ]
     },
     "autoload-dev": {
