@@ -13,13 +13,13 @@
       <form @submit.prevent="login" novalidate>
         <input-text autofocus
                     id="username"
-                    v-model="username"
+                    v-model="form.username"
                     :error-text="$t('error.required')"
                     :label="$t('login.username.label')"
                     :placeholder="$t('login.username.placeholder')"
                     :required="true"></input-text>
         <input-password id="password"
-                        v-model="password"
+                        v-model="form.password"
                         :error-text="$t('error.required')"
                         :is-toggleable="true"
                         :label="$t('login.password.label')"
@@ -47,6 +47,11 @@ import ButtonWrapper from '@/components/form/ButtonWrapper.vue';
 import InputPassword from '@/components/form/InputPassword.vue';
 import InputText from '@/components/form/InputText.vue';
 
+interface FormElements {
+  username: string;
+  password: string;
+}
+
 @Component({
   components: {
     ButtonWrapper,
@@ -56,8 +61,10 @@ import InputText from '@/components/form/InputText.vue';
 })
 export default class LoginPage extends Vue {
   time: number = new Date().getHours();
-  username: string = '';
-  password: string = '';
+  form: FormElements = {
+    username: '',
+    password: ''
+  };
   loading: boolean = false;
   disabledSubmit: boolean = true;
 
@@ -81,10 +88,6 @@ export default class LoginPage extends Vue {
     return this.$t('login.title.other');
   }
 
-  get usernamePassword (): string {
-    return this.username + this.password;
-  }
-
   login (element: Event): void {
     const form = element.target as HTMLInputElement;
     form.classList.add('was-validated');
@@ -96,11 +99,9 @@ export default class LoginPage extends Vue {
     // Todo Login logic
   }
 
-  @Watch('usernamePassword')
-  onUsernamePasswordChange (): void {
-    this.username.trim().length > 0 && this.password.trim().length > 0
-      ? this.disabledSubmit = false
-      : this.disabledSubmit = true;
+  @Watch('form', { deep: true })
+  onFormChange (form: FormElements): void {
+    this.disabledSubmit = !(form.username.trim().length > 0 && this.form.password.trim().length > 0);
   }
 }
 </script>

@@ -49,7 +49,7 @@ describe('LoginPage.vue', () => {
   });
 
   it('check if submit button is disabled when username or password is empty', () => {
-    component.setData({ username: ' '.repeat(7), password: ''.repeat(7) });
+    component.setData({ form: { username: ' '.repeat(7), password: ''.repeat(7) } });
     expect(component.find('button').attributes().disabled).toBe('disabled');
     component.find('#username').setValue('a'.repeat(7));
     expect(component.find('button').attributes().disabled).toBe('disabled');
