@@ -1,13 +1,13 @@
-import { shallowMount, config } from '@vue/test-utils';
-import ButtonSubmit from '../ButtonSubmit.vue';
+import { mount, config } from '@vue/test-utils';
+import ButtonWrapper from '../ButtonWrapper.vue';
 
 config.mocks!.$t = (key: any) => key;
 
-describe('ButtonSubmit.vue', () => {
+describe('ButtonWrapper.vue', () => {
   let component: any;
 
   beforeEach(() => {
-    component = shallowMount(ButtonSubmit, {
+    component = mount(ButtonWrapper, {
       propsData: {
         id: 'testId'
       },
@@ -28,6 +28,8 @@ describe('ButtonSubmit.vue', () => {
     expect(component.props().loading).toBe(false);
     expect(component.props().rightAligned).toBe(false);
     expect(component.props().tabindex).toBe(null);
+    expect(component.props().type).toBe('button');
+    expect(component.props().variant).toBe('primary');
   });
 
   it('check if the attribute class contains "float-left" and "mr-2" if button isn\'t right aligned', () => {
@@ -90,5 +92,15 @@ describe('ButtonSubmit.vue', () => {
   it('check if the text of the button is general.loading if loading is true', () => {
     component.setProps({ loading: true });
     expect(component.find('button').text()).toBe('general.loading');
+  });
+
+  it('check if the attribute type of the button is submit', () => {
+    component.setProps({ type: 'submit' });
+    expect(component.find('button').attributes().type).toBe('submit');
+  });
+
+  it('check if the attribute variant of the button is danger', () => {
+    component.setProps({ variant: 'danger' });
+    expect(component.find('button').classes()).toContain('btn-danger');
   });
 });

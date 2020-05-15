@@ -26,11 +26,13 @@
                         :placeholder="$t('login.password.placeholder')"
                         :required="true"></input-password>
         <div class="clearfix">
-          <button-submit icon="mdi-login"
-                         id="signin"
-                         :disabled="disabledSubmit"
-                         :loading="loading"
-                         :right-aligned="true">{{ $t('login.signIn') }}</button-submit>
+          <button-wrapper class="test"
+                          icon="mdi-login"
+                          id="signin"
+                          type="submit"
+                          :disabled="disabledSubmit"
+                          :loading="loading"
+                          :right-aligned="true">{{ $t('login.signIn') }}</button-wrapper>
         </div>
       </form>
     </div>
@@ -41,13 +43,13 @@
 import Vue from 'vue';
 import { Component, Watch } from 'vue-property-decorator';
 import { TranslateResult } from 'vue-i18n';
-import ButtonSubmit from '@/components/form/ButtonSubmit.vue';
+import ButtonWrapper from '@/components/form/ButtonWrapper.vue';
 import InputPassword from '@/components/form/InputPassword.vue';
 import InputText from '@/components/form/InputText.vue';
 
 @Component({
   components: {
-    ButtonSubmit,
+    ButtonWrapper,
     InputPassword,
     InputText
   }
@@ -96,7 +98,8 @@ export default class LoginPage extends Vue {
 
   @Watch('usernamePassword')
   onUsernamePasswordChange (): void {
-    this.username.trim() !== '' && this.password.trim() !== '' ? this.disabledSubmit = false
+    this.username.trim().length > 0 && this.password.trim().length > 0
+      ? this.disabledSubmit = false
       : this.disabledSubmit = true;
   }
 }
