@@ -1,5 +1,14 @@
 {
   "dateTimeFormats": {
+    "datetime": {
+      "year": "numeric", "month": "numeric", "day": "numeric", "hour": "numeric", "minute": "numeric"
+    },
+    "month": {
+      "year": "numeric", "month": "long"
+    },
+    "time": {
+      "hour": "numeric", "minute": "numeric"
+    },
     "year": {
       "year": "numeric"
     }
@@ -26,7 +35,48 @@
       "translations": "Übersetzungen"
     },
     "error": {
-      "required": "Dieses Feld ist ein Pflichtfeld."
+      "form": {
+        "pattern": "Bitte passen Sie Ihre Eingabe an das gewünschte Format an.",
+        "rangeOverflow": {
+          "date": "Bitte wählen Sie ein Datum aus, welches nicht nach dem {max} liegt.",
+          "datetime": "Bitte wählen Sie ein Datum und eine, Uhrzeit die nicht nach dem {max} liegen.",
+          "default": "Bitte wählen Sie einen Wert, der kleiner oder gleich {max} ist.",
+          "month": "Bitte wählen Sie einen Monat, der nicht nach dem {max} liegt.",
+          "number": "Bitte wählen Sie eine Zahl, die kleiner oder gleich {max} ist.",
+          "time": "Bitte wählen Sie eine Uhrzeit, die nicht später als {max} ist.",
+          "week": "Bitte wählen Sie eine Woche, die nicht nach {max} liegt."
+        },
+        "rangeUnderflow": {
+          "date": "Bitte wählen Sie ein Datum aus, welches nicht vor dem {min} liegt.",
+          "datetime": "Bitte wählen Sie ein Datum und eine, Uhrzeit die nicht vor dem {min} liegen.",
+          "default": "Bitte wählen Sie einen Wert, der größer oder gleich {min} ist.",
+          "month": "Bitte wählen Sie einen Monat, der nicht vor dem {min} liegt.",
+          "number": "Bitte wählen Sie eine Zahl, die größer oder gleich {min} ist.",
+          "time": "Bitte wählen Sie eine Uhrzeit, die nicht früher als {min} ist.",
+          "week": "Bitte wählen Sie eine Woche, die nicht vor {min} liegt."
+        },
+        "required": {
+          "checkbox": "Bitte aktivieren Sie dieses Feld, um fortfahren zu können.",
+          "default": "Bitte füllen Sie dieses Feld aus.",
+          "email": "Bitte geben Sie eine E-Mail-Adresse an.",
+          "file": "Bitte wählen Sie eine Datei aus.",
+          "number": "Bitte geben Sie eine Nummer ein.",
+          "radio": "Bitte wählen Sie eine dieser Optionen.",
+          "text": "Bitte füllen Sie dieses Feld aus."
+        },
+        "step": {
+          "boundary": "Bitte wählen Sie einen gültigen Wert. Die beiden nähesten gültigen Werte sind {lowerBoundary} und {upperBoundary}.",
+          "default": "Bitte wählen Sie einen gültigen Wert."
+        },
+        "tooLong": "Bitte verwenden Sie maximal {max} Zeichen (Sie benutzen aktuell {current}).",
+        "tooShort": "Bitte verwenden Sie mindestens {min} Zeichen (Sie benutzen aktuell {current}).",
+        "type": {
+          "default": "Bitte geben Sie einen gültigen Wert ein.",
+          "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+          "number": "Bitte geben Sie eine Nummer ein.",
+          "url": "Bitte geben Sie eine gültige Webadresse ein."
+        }
+      }
     },
     "pages": {
       "title": {

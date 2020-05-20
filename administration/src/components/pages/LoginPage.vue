@@ -14,13 +14,13 @@
         <input-text autofocus
                     id="username"
                     v-model="form.username"
-                    :error-text="$t('error.required')"
+                    :error-text="$t('error.form.required.text')"
                     :label="$t('login.username.label')"
                     :placeholder="$t('login.username.placeholder')"
                     :required="true"></input-text>
         <input-password id="password"
                         v-model="form.password"
-                        :error-text="$t('error.required')"
+                        :error-text="$t('error.form.required.text')"
                         :is-toggleable="true"
                         :label="$t('login.password.label')"
                         :placeholder="$t('login.password.placeholder')"

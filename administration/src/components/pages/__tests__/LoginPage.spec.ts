@@ -62,7 +62,7 @@ describe('LoginPage.vue', () => {
     component.find('#password').setValue('b'.repeat(7));
     component.find('button').trigger('click');
     await component.vm.$nextTick();
-    expect(component.find('.invalid-feedback').text()).toBe('error.required');
+    expect(component.find('.invalid-feedback').text()).toBe('error.form.required.text');
   });
 
   it('handle login routine when the form is submitted', async () => {
