@@ -1,18 +1,38 @@
 import Vue from 'vue';
+import { AxiosResponse } from 'axios';
 import { Component } from 'vue-property-decorator';
+import { TranslateResult } from 'vue-i18n';
+
+interface VueHtmlElement extends HTMLFormElement {
+  vm?: Vue;
+}
 
 @Component({
   directives: {
     validate: {
       bind: function (el, binding, vnode) {
-        const vm: any = vnode.context;
-        const element: any = el;
+        if (!(el instanceof HTMLFormElement)) {
+          throw new Error('The validate directive must be used on a form element');
+        }
 
-        el.addEventListener('input', () => {
-          updateValidationError(vm, element);
-        });
+        const vm: Vue = vnode.context!;
+        let element: VueHtmlElement = el;
+        element.vm = vm;
+
+        el.addEventListener('input', inputEventListener);
+        el.addEventListener('focusout', focusoutEventListener);
+
         vm.$on('validate', () => {
-          updateValidationError(vm, element);
+          let elements: NodeList = getFormElements(element);
+          elements.forEach((node) => {
+            updateValidationError(vm, node as HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement);
+          });
+        });
+        vm.$on('validateResponse', () => {
+          let elements: NodeList = getFormElements(element);
+          elements.forEach((node) => {
+            checkValidity(vm, node as HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement);
+          });
         });
       }
     }
@@ -20,15 +40,74 @@ import { Component } from 'vue-property-decorator';
 })
 export default class FormValidationMixin extends Vue {
   errors: any = {};
+  validationTimeout: number[] = [];
 
   hasValidationError (): boolean {
     return Object.keys(this.errors).some(key => {
       return !!this.errors[key];
     });
   }
+
+  validateResponse (response: AxiosResponse): void {
+    if (response.status !== 422) {
+      return;
+    }
+
+    if (typeof response.data.errors === 'undefined') {
+      throw new Error('Response format is not supported for validation.');
+    }
+
+    Object.keys(response.data.errors).forEach((key: any) => {
+      response.data.errors[key] = response.data.errors[key].join(' ');
+    });
+
+    this.errors = Object.assign({}, this.errors, response.data.errors);
+    console.log(this.errors);
+    this.$emit('validateResponse');
+  }
 }
 
-function validate (vm: any, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement) {
+/**
+ * Core functions
+ */
+
+function inputEventListener (event: Event): void {
+  if (!isValidatableFormElement(event.target)) {
+    return;
+  }
+  const vm: Vue = (event.currentTarget as HTMLFormElement).vm;
+  const target: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement = event.target as any;
+
+  clearTimeout(vm.$data.validationTimeout[target.id]);
+  vm.$data.validationTimeout[target.id] = setTimeout(() => {
+    updateValidationError(vm, target);
+  }, 600);
+}
+
+function focusoutEventListener (event: Event): void {
+  if (!isValidatableFormElement(event.target)) {
+    return;
+  }
+  const vm: Vue = (event.currentTarget as HTMLFormElement).vm;
+  const target: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement = event.target as any;
+
+  clearTimeout(vm.$data.validationTimeout[target.id]);
+  updateValidationError(vm, target);
+}
+
+function updateValidationError (vm: Vue, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement) {
+  vm.$data.errors = Object.assign({}, vm.$data.errors, {
+    [el.id]: validate(vm, el) as string|undefined
+  });
+
+  checkValidity(vm, el);
+}
+
+/**
+ * Validation functions
+ */
+
+function validate (vm: Vue, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): TranslateResult|undefined {
   // Required fields
   if (el.validity.valueMissing) {
     return validateRequired(vm, el);
@@ -68,13 +147,7 @@ function validate (vm: any, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaE
   }
 }
 
-function updateValidationError (vm: any, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement) {
-  vm.errors = Object.assign({}, vm.errors, {
-    [el.id]: validate(vm, el)
-  });
-}
-
-function validateMax (vm: any, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): string {
+function validateMax (vm: Vue, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): TranslateResult {
   let max: any = el.getAttribute('max');
 
   switch (el.type) {
@@ -100,7 +173,7 @@ function validateMax (vm: any, el: HTMLInputElement|HTMLSelectElement|HTMLTextAr
   }
 }
 
-function validateMin (vm: any, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): string {
+function validateMin (vm: Vue, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): TranslateResult {
   let min: any = el.getAttribute('min');
 
   switch (el.type) {
@@ -126,19 +199,19 @@ function validateMin (vm: any, el: HTMLInputElement|HTMLSelectElement|HTMLTextAr
   }
 }
 
-function validateMaxLength (vm: any, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): string {
+function validateMaxLength (vm: Vue, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): TranslateResult {
   return vm.$t('error.form.tooLong', { current: el.value.length, max: el.getAttribute('maxlength') });
 }
 
-function validateMinLength (vm: any, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): string {
+function validateMinLength (vm: Vue, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): TranslateResult {
   return vm.$t('error.form.tooShort', { current: el.value.length, min: el.getAttribute('minlength') });
 }
 
-function validatePattern (vm: any): string {
+function validatePattern (vm: Vue): TranslateResult {
   return vm.$t('error.form.pattern');
 }
 
-function validateRequired (vm: any, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): string {
+function validateRequired (vm: Vue, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): TranslateResult {
   switch (el.type) {
     case 'checkbox':
     case 'file':
@@ -151,7 +224,7 @@ function validateRequired (vm: any, el: HTMLInputElement|HTMLSelectElement|HTMLT
   }
 }
 
-function validateStep (vm: any, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): string {
+function validateStep (vm: Vue, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): TranslateResult {
   let min: number = el.type === 'number'
     ? Number(el.getAttribute('min'))
     : Number(Date.parse(el.getAttribute('min')!));
@@ -194,7 +267,7 @@ function validateStep (vm: any, el: HTMLInputElement|HTMLSelectElement|HTMLTextA
   }
 }
 
-function validateType (vm: any, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): string {
+function validateType (vm: Vue, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): TranslateResult {
   switch (el.type) {
     case 'email':
     case 'number':
@@ -203,5 +276,49 @@ function validateType (vm: any, el: HTMLInputElement|HTMLSelectElement|HTMLTextA
 
     default:
       return vm.$t('error.form.required.default');
+  }
+}
+
+/**
+ * Helper functions
+ */
+
+function checkValidity (vm: Vue, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): boolean {
+  if (vm.$data.errors[el.id]) {
+    setInvalid(el);
+    return false;
+  }
+
+  setValid(el);
+  return true;
+}
+
+function getFormElements (element: HTMLFormElement): NodeList {
+  return element.querySelectorAll('input, select, textarea');
+}
+
+function isValidatableFormElement (target: EventTarget|null): boolean {
+  return target instanceof HTMLInputElement ||
+    target instanceof HTMLSelectElement ||
+    target instanceof HTMLTextAreaElement;
+}
+
+function setInvalid (el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): void {
+  if (!el.classList.contains('is-invalid')) {
+    el.classList.add('is-invalid');
+  }
+
+  if (el.classList.contains('is-valid')) {
+    el.classList.remove('is-valid');
+  }
+}
+
+function setValid (el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): void {
+  if (!el.classList.contains('is-valid')) {
+    el.classList.add('is-valid');
+  }
+
+  if (el.classList.contains('is-invalid')) {
+    el.classList.remove('is-invalid');
   }
 }

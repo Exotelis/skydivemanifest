@@ -27,6 +27,14 @@ label {
 .form-control {
   border-left: $form-control-border-left $input-border-color;
 
+  &.is-valid:hover {
+    border-color: $success !important;
+  }
+
+  &.is-invalid:hover {
+    border-color: $danger !important;
+  }
+
   &:hover:not(:focus):not(:disabled):not(:read-only) {
     border-color: $input-border-color-hover;
     transition: $transition-all-fast;
@@ -39,11 +47,11 @@ label {
 
 form.was-validated {
   .form-control:valid:hover {
-    border-color: $success!important;
+    border-color: $success !important;
   }
 
   .form-control:invalid:hover {
-    border-color: $danger!important;
+    border-color: $danger !important;
   }
 
   .form-control.untouched {
