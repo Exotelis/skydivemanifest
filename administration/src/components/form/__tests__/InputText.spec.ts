@@ -7,8 +7,7 @@ describe('InputText.vue', () => {
   beforeEach(() => {
     component = shallowMount(InputText, {
       propsData: {
-        id: 'testId',
-        label: 'Test label'
+        id: 'testId'
       }
     });
   });
@@ -20,9 +19,7 @@ describe('InputText.vue', () => {
   it('check default values of the text input', () => {
     expect(component.props().autocomplete).toBe(null);
     expect(component.props().autofocus).toBeFalsy();
-    expect(component.props().description).toBe(null);
     expect(component.props().disabled).toBeFalsy();
-    expect(component.props().errorText).toBe(null);
     expect(component.props().form).toBe(null);
     expect(component.props().inputmode).toBe(null);
     expect(component.props().list).toBe(null);
@@ -30,24 +27,12 @@ describe('InputText.vue', () => {
     expect(component.props().minlength).toBe(null);
     expect(component.props().pattern).toBe(null);
     expect(component.props().placeholder).toBe(null);
+    expect(component.props().plaintext).toBeFalsy();
     expect(component.props().readonly).toBeFalsy();
     expect(component.props().required).toBeFalsy();
-    expect(component.props().spellcheck).toBeFalsy();
+    expect(component.props().spellcheck).toBe('false');
     expect(component.props().tabindex).toBe(null);
-  });
-
-  it('check if class required is not set if field is not required', () => {
-    expect(component.find('.form-group').classes()).not.toContain('required');
-  });
-
-  it('check if class required is set if field is required', () => {
-    component.setProps({ required: true });
-    expect(component.find('.form-group').classes()).toContain('required');
-  });
-
-  it('check if the attribute for and the text of the label is set correctly', () => {
-    expect(component.find('label').attributes().for).toBe('testId');
-    expect(component.find('label').text()).toBe('Test label');
+    expect(component.props().value).toBe(null);
   });
 
   it('check if event is emitted when the input value changes', async () => {
@@ -134,31 +119,31 @@ describe('InputText.vue', () => {
     expect(component.find('input').attributes().tabindex).toBe('10');
   });
 
-  it('not render description text without description set', () => {
-    expect(component.find('#testIdDescription').exists()).toBeFalsy();
+  it('check if the attribute type of the input field is text', () => {
+    expect(component.find('input').attributes().type).toBe('text');
   });
 
-  it('render description text with description set', () => {
-    component.setProps({ description: 'Description message' });
-    expect(component.find('#testIdDescription').exists()).toBeTruthy();
+  it('check if class of input field is form-control if plaintext and readonly is false', () => {
+    component.setProps({ plaintext: false, readonly: false });
+    expect(component.find('input').classes()).toContain('form-control');
+    expect(component.find('input').classes()).not.toContain('form-control-plaintext');
   });
 
-  it('display the correct description text', () => {
-    component.setProps({ description: 'Description message' });
-    expect(component.find('#testIdDescription').text()).toBe('Description message');
+  it('check if class of input field is form-control if plaintext is true but readonly is false', () => {
+    component.setProps({ plaintext: true, readonly: false });
+    expect(component.find('input').classes()).toContain('form-control');
+    expect(component.find('input').classes()).not.toContain('form-control-plaintext');
   });
 
-  it('not render error message without errorText set', () => {
-    expect(component.find('.invalid-feedback').exists()).toBeFalsy();
+  it('check if class of input field is form-control if plaintext is false but readonly is true', () => {
+    component.setProps({ plaintext: false, readonly: true });
+    expect(component.find('input').classes()).toContain('form-control');
+    expect(component.find('input').classes()).not.toContain('form-control-plaintext');
   });
 
-  it('render error message with errorText set', () => {
-    component.setProps({ errorText: 'Validation failed' });
-    expect(component.find('.invalid-feedback').exists()).toBeTruthy();
-  });
-
-  it('display the correct error text', () => {
-    component.setProps({ errorText: 'Validation failed' });
-    expect(component.find('.invalid-feedback').text()).toBe('Validation failed');
+  it('check if class of input field is form-control-plaintext if plaintext and readonly is true', () => {
+    component.setProps({ plaintext: true, readonly: true });
+    expect(component.find('input').classes()).toContain('form-control-plaintext');
+    expect(component.find('input').classes()).not.toContain('form-control');
   });
 });

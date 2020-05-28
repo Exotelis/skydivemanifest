@@ -1,6 +1,5 @@
 <template>
-  <div class="form-group" :class="{ 'required': required, 'position-relative': isToggleable }">
-    <label :for="id">{{ label }}</label>
+  <div :class="{'input-group': isToggleable}">
     <input class="form-control"
            @input="$emit('input', $event.target.value)"
            :autocomplete="autocomplete"
@@ -20,24 +19,27 @@
            :tabindex="tabindex"
            :type="isVisible ? 'text' : 'password'"
            :value="value">
-    <small v-if="description" :id="id + 'Description'" class="form-text text-muted">{{ description }}</small>
-    <div v-if="errorText" class="invalid-feedback">{{ errorText }}</div>
-    <span v-if="isToggleable"
-          @click="isVisible = !isVisible"
-          :class="['mdi', isVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline' ]"></span>
+    <div class="input-group-append" v-if="isToggleable">
+      <span v-if="isToggleable"
+            @click="isVisible = !isVisible"
+            :class="['input-group-text password-toggle mdi', isVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline' ]">
+      </span>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import BasicMixin from '@/mixins/BasicMixin';
-import InputmodeMixin from '@/mixins/InputmodeMixin';
-import ListMixin from '@/mixins/ListMixin';
-import ReadonlyMixin from '@/mixins/ReadonlyMixin';
-import TextMixin from '@/mixins/TextMixin';
+import ListMixin from '@/mixins/form/ListMixin';
+import PatternMixin from '@/mixins/form/PatternMixin';
+import ReadonlyMixin from '@/mixins/form/ReadonlyMixin';
+import RequiredMixin from '@/mixins/form/RequiredMixin';
+import SharedMixin from '@/mixins/form/SharedMixin';
+import TextualMixin from '@/mixins/form/TextualMixin';
 
 @Component({})
-export default class InputPassword extends Mixins(BasicMixin, InputmodeMixin, ListMixin, ReadonlyMixin, TextMixin) {
+export default class InputText extends Mixins(ListMixin, PatternMixin, ReadonlyMixin, RequiredMixin, SharedMixin,
+  TextualMixin) {
   @Prop({ default: false }) readonly isToggleable!: boolean;
   isVisible: boolean = false;
 }

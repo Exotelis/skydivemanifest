@@ -7,8 +7,8 @@
 // Forms
 
 label {
-  font-size: $label-font-size;
-  margin-bottom: $label-margin-bottom;
+  font-size:   $label-font-size;
+  font-weight: $label-font-weight;
 }
 
 .form-group {
@@ -27,57 +27,33 @@ label {
 .form-control {
   border-left: $form-control-border-left $input-border-color;
 
-  &.is-valid:hover {
-    border-color: $success !important;
-  }
-
-  &.is-invalid:hover {
-    border-color: $danger !important;
-  }
-
-  &:hover:not(:focus):not(:disabled):not(:read-only) {
-    border-color: $input-border-color-hover;
-    transition: $transition-all-fast;
-  }
-
   &:focus {
     border-color: $input-border-color-focus;
   }
 }
 
-form.was-validated {
-  .form-control:valid:hover {
-    border-color: $success !important;
-  }
-
-  .form-control:invalid:hover {
-    border-color: $danger !important;
-  }
-
-  .form-control.untouched {
-    &:invalid {
-      border-color:  $input-border-color !important;
-      padding-right: $input-padding-x !important;
-      background:    none !important;
-
-      &:focus {
-        border-color:       $input-border-color-focus !important;
-        -webkit-box-shadow: $input-focus-box-shadow;
-        box-shadow:         $input-focus-box-shadow;
-      }
-    }
-
-    &:hover:not(:focus):not(:disabled):not(:read-only) {
-      border-color: $input-border-color-hover !important;
-      transition:   $transition-all-fast !important;
-    }
-  }
+.was-validated .form-control:invalid,
+.form-control.is-invalid {
+  background-color: rgba($form-feedback-invalid-color, .1);
 }
 
-::-webkit-input-placeholder,
-:-ms-input-placeholder,
-::placeholder {
-  color: rgba($body-color, .7) !important;
+.was-validated .form-control:valid,
+.form-control.is-valid {
+  background-color: rgba($form-feedback-valid-color, .1);
+}
+
+.was-validated .input-group .form-control:invalid,
+.was-validated .input-group .form-control:valid,
+.input-group .form-control.is-invalid,
+.input-group .form-control.is-valid {
+  // background-position: right center;
+}
+
+.password-toggle {
+  background-color: $input-bg;
+  padding: 0 .815rem;
+  font-size: 1.15rem;
+  line-height: 1.15rem;
 }
 
 // Links

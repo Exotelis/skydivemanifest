@@ -11,20 +11,24 @@
       <h3>{{ $t('login.formHeader') }}</h3>
 
       <form @submit.prevent="login" novalidate>
-        <input-text autofocus
-                    id="username"
-                    v-model="form.username"
-                    :error-text="$t('error.form.required.text')"
-                    :label="$t('login.username.label')"
-                    :placeholder="$t('login.username.placeholder')"
-                    :required="true"></input-text>
-        <input-password id="password"
-                        v-model="form.password"
-                        :error-text="$t('error.form.required.text')"
-                        :is-toggleable="true"
-                        :label="$t('login.password.label')"
-                        :placeholder="$t('login.password.placeholder')"
-                        :required="true"></input-password>
+        <form-group label-for="username"
+                    :invalid-feedback="$t('error.form.required.text')"
+                    :label="$t('login.username.label')">
+          <input-text autofocus
+                      id="username"
+                      required
+                      v-model="form.username"
+                      :placeholder="$t('login.username.placeholder')"></input-text>
+        </form-group>
+        <form-group label-for="password"
+                    :invalid-feedback="$t('error.form.required.text')"
+                    :label="$t('login.password.label')">
+          <input-password id="password"
+                          required
+                          v-model="form.password"
+                          :is-toggleable="true"
+                          :placeholder="$t('login.password.placeholder')"></input-password>
+        </form-group>
         <div class="clearfix">
           <button-wrapper class="test"
                           icon="mdi-login"
@@ -44,6 +48,7 @@ import Vue from 'vue';
 import { Component, Watch } from 'vue-property-decorator';
 import { TranslateResult } from 'vue-i18n';
 import ButtonWrapper from '@/components/form/ButtonWrapper.vue';
+import FormGroup from '@/components/form/FormGroup.vue';
 import InputPassword from '@/components/form/InputPassword.vue';
 import InputText from '@/components/form/InputText.vue';
 
@@ -55,6 +60,7 @@ interface FormElements {
 @Component({
   components: {
     ButtonWrapper,
+    FormGroup,
     InputPassword,
     InputText
   }
