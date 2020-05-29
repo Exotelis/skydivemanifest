@@ -7,8 +7,8 @@
 // Forms
 
 label {
-  font-size: $label-font-size;
-  margin-bottom: $label-margin-bottom;
+  font-size:   $label-font-size;
+  font-weight: $label-font-weight;
 }
 
 .form-group {
@@ -22,38 +22,46 @@ label {
     line-height: 1;
     z-index: 1;
   }
-
-  .form-control:hover:not(:focus):not(:disabled):not(:read-only) {
-    border-color: rgba($input-border-color, .5);
-    transition: $transition-all-fast;
-  }
-
-  .form-control:hover:not(:disabled):not(:read-only)::-webkit-input-placeholder,
-  .form-control:hover:not(:disabled):not(:read-only)::-ms-input-placeholder,
-  .form-control:hover:not(:disabled):not(:read-only)::placeholder {
-    color: rgba($body-color, .7)!important;
-    transition: $transition-color-fast;
-  }
 }
 
 .form-control {
-  border-left: $form-control-border-left;
-}
+  border-left: $form-control-border-left $input-border-color;
 
-form.was-validated {
-  .form-control:valid:hover {
-    border-color: $success!important;
-  }
-
-  .form-control:invalid:hover {
-    border-color: $danger!important;
+  &:focus {
+    border-color: $input-border-color-focus;
   }
 }
 
-::-webkit-input-placeholder,
-:-ms-input-placeholder,
-::placeholder {
-  color: rgba($body-color, .7) !important;
+.was-validated .form-control:invalid,
+.form-control.is-invalid {
+  background-color: rgba($form-feedback-invalid-color, .1);
+}
+
+.was-validated .form-control:valid,
+.form-control.is-valid {
+  background-color: rgba($form-feedback-valid-color, .1);
+}
+
+.was-validated .input-group .form-control:invalid,
+.was-validated .input-group .form-control:valid,
+.input-group .form-control.is-invalid,
+.input-group .form-control.is-valid {
+  // background-position: right center;
+}
+
+.password-toggle {
+  background-color: $input-bg;
+  padding: 0 .815rem;
+  font-size: 1.15rem;
+  line-height: 1.15rem;
+}
+
+.is-invalid .password-toggle {
+  background-color: rgba($form-feedback-invalid-color, .1);;
+}
+
+.is-valid .password-toggle {
+  background-color: rgba($form-feedback-valid-color, .1);;
 }
 
 // Links

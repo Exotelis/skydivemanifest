@@ -49,7 +49,7 @@ describe('LoginPage.vue', () => {
   });
 
   it('check if submit button is disabled when username or password is empty', () => {
-    component.setData({ username: ' '.repeat(7), password: ''.repeat(7) });
+    component.setData({ form: { username: ' '.repeat(7), password: ''.repeat(7) } });
     expect(component.find('button').attributes().disabled).toBe('disabled');
     component.find('#username').setValue('a'.repeat(7));
     expect(component.find('button').attributes().disabled).toBe('disabled');
@@ -60,9 +60,12 @@ describe('LoginPage.vue', () => {
 
   it('show error message, when an input field is empty', async () => {
     component.find('#password').setValue('b'.repeat(7));
-    component.find('button').trigger('click');
-    await component.vm.$nextTick();
-    expect(component.find('.invalid-feedback').text()).toBe('error.required');
+    component.find('#password').setValue('');
+
+    // 1.2 second timeout to wait for the validation
+    await new Promise(resolve => setTimeout(resolve, 1200));
+
+    expect(component.find('.invalid-feedback').text()).toBe('error.form.required.text');
   });
 
   it('handle login routine when the form is submitted', async () => {

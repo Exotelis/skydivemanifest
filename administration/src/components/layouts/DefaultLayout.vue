@@ -78,7 +78,7 @@ export default class DefaultLayout extends Vue {
     { icon: 'mdi-parachute', path: '/skydiver', type: NavigationType.Path },
     { icon: 'mdi-ticket', path: '/tickets', type: NavigationType.Path },
     { icon: 'mdi-monitor-dashboard', path: '/manifest', type: NavigationType.Path },
-    { icon: 'mdi-settings',
+    { icon: 'mdi-cog',
       title: 'general.system',
       type: NavigationType.Submenuhandler,
       children: [
@@ -89,7 +89,7 @@ export default class DefaultLayout extends Vue {
     },
     { icon: 'mdi-calendar', path: '/bookings', type: NavigationType.Path },
     { icon: 'mdi-receipt', path: '/payments', type: NavigationType.Path },
-    { icon: 'mdi-settings',
+    { icon: 'mdi-cog',
       title: 'general.system',
       type: NavigationType.Submenuhandler,
       children: [

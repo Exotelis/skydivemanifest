@@ -53,6 +53,8 @@ $grid-breakpoints: (
 
 $border-color: $gray-400;
 
+$border-radius: 0;
+
 // Fonts
 
 $font-family-sans-serif: "Roboto", "Helvetica Neue", Arial, BlinkMacSystemFont, -apple-system, "Segoe UI", "Noto Sans", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -82,7 +84,8 @@ $link-hover-decoration: none;
 
 // Forms
 
-$label-font-size:            .75rem;
+$label-font-size:            .85rem;
+$label-font-weight:          500;
 $label-margin-bottom:        .5rem;
 $label-asterisk-font-size:   .9rem;
 $label-asterisk-margin-left: .25rem;
@@ -91,14 +94,25 @@ $input-padding-y:            .75rem;
 $input-padding-x:            1rem;
 $input-font-size:            .75rem;
 
+$input-bg:                   rgba($body-color, .1);
+
 $input-color:                $body-color;
-$input-border-color:         rgba($body-color, .3);
+$input-border-color:         $primary;
+$input-border-color-focus:   $primary;
+$input-border-width:         0;
 
 $input-focus-box-shadow:     none;
 
+$input-placeholder-color:    rgba($body-color, .7);
+
 $form-group-margin-bottom:   1.25rem;
 
-$form-control-border-left:   .2rem solid;
+$form-control-border-left:   .25rem solid;
+
+// Form validation
+
+$form-feedback-valid-color:   $success;
+$form-feedback-invalid-color: $danger;
 
 // Buttons
 

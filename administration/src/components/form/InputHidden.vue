@@ -7,13 +7,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Component, Prop } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
+import SharedMixin from '@/mixins/form/SharedMixin';
 
 @Component({})
-export default class InputHidden extends Vue {
-  @Prop({ required: true }) readonly id!: string;
-  @Prop({ default: null }) readonly form!: string;
-  @Prop({ default: null }) readonly value!: string;
-}
+export default class InputHidden extends Mixins(SharedMixin) {}
 </script>

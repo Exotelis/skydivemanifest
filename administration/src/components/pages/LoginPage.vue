@@ -10,27 +10,33 @@
     <div class="welcome-right">
       <h3>{{ $t('login.formHeader') }}</h3>
 
-      <form @submit.prevent="login" novalidate>
-        <input-text autofocus
-                    id="username"
-                    v-model="username"
-                    :error-text="$t('error.required')"
-                    :label="$t('login.username.label')"
-                    :placeholder="$t('login.username.placeholder')"
-                    :required="true"></input-text>
-        <input-password id="password"
-                        v-model="password"
-                        :error-text="$t('error.required')"
-                        :is-toggleable="true"
-                        :label="$t('login.password.label')"
-                        :placeholder="$t('login.password.placeholder')"
-                        :required="true"></input-password>
+      <form @submit.prevent="login" novalidate v-validate>
+        <form-group label-for="username"
+                    :invalid-feedback="errors.username"
+                    :label="$t('login.username.label')">
+          <input-text autofocus
+                      id="username"
+                      required
+                      v-model="form.username"
+                      :placeholder="$t('login.username.placeholder')"></input-text>
+        </form-group>
+        <form-group label-for="password"
+                    :invalid-feedback="errors.password"
+                    :label="$t('login.password.label')">
+          <input-password id="password"
+                          required
+                          v-model="form.password"
+                          :is-toggleable="true"
+                          :placeholder="$t('login.password.placeholder')"></input-password>
+        </form-group>
         <div class="clearfix">
-          <button-submit icon="mdi-login"
-                         id="signin"
-                         :disabled="disabledSubmit"
-                         :loading="loading"
-                         :right-aligned="true">{{ $t('login.signIn') }}</button-submit>
+          <button-wrapper class="test"
+                          icon="mdi-login"
+                          id="signin"
+                          type="submit"
+                          :disabled="disabledSubmit"
+                          :loading="loading"
+                          :right-aligned="true">{{ $t('login.signIn') }}</button-wrapper>
         </div>
       </form>
     </div>
@@ -38,24 +44,33 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Component, Watch } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { TranslateResult } from 'vue-i18n';
-import ButtonSubmit from '@/components/form/ButtonSubmit.vue';
+import ButtonWrapper from '@/components/form/ButtonWrapper.vue';
+import FormGroup from '@/components/form/FormGroup.vue';
+import FormValidationMixin from '@/mixins/FormValidationMixin';
 import InputPassword from '@/components/form/InputPassword.vue';
 import InputText from '@/components/form/InputText.vue';
 
+interface FormElements {
+  username: string;
+  password: string;
+}
+
 @Component({
   components: {
-    ButtonSubmit,
+    ButtonWrapper,
+    FormGroup,
     InputPassword,
     InputText
   }
 })
-export default class LoginPage extends Vue {
+export default class LoginPage extends Mixins(FormValidationMixin) {
   time: number = new Date().getHours();
-  username: string = '';
-  password: string = '';
+  form: FormElements = {
+    username: '',
+    password: ''
+  };
   loading: boolean = false;
   disabledSubmit: boolean = true;
 
@@ -79,10 +94,6 @@ export default class LoginPage extends Vue {
     return this.$t('login.title.other');
   }
 
-  get usernamePassword (): string {
-    return this.username + this.password;
-  }
-
   login (element: Event): void {
     const form = element.target as HTMLInputElement;
     form.classList.add('was-validated');
@@ -94,10 +105,9 @@ export default class LoginPage extends Vue {
     // Todo Login logic
   }
 
-  @Watch('usernamePassword')
-  onUsernamePasswordChange (): void {
-    this.username.trim() !== '' && this.password.trim() !== '' ? this.disabledSubmit = false
-      : this.disabledSubmit = true;
+  @Watch('form', { deep: true })
+  onFormChange (form: FormElements): void {
+    this.disabledSubmit = !(form.username.trim().length > 0 && this.form.password.trim().length > 0);
   }
 }
 </script>

@@ -10,7 +10,7 @@ export const inputmodeList: Array<string> = ['verbatim', 'latin', 'latin-name', 
   'kana', 'katakana', 'numeric', 'tel', 'email', 'url'];
 
 export function autocompleteValidator (value: string): boolean {
-  return autocompleteList.indexOf(value) !== -1;
+  return autocompleteList.includes(value);
 }
 
 export function iconValidator (value: string): boolean {
@@ -18,5 +18,13 @@ export function iconValidator (value: string): boolean {
 }
 
 export function inputmodeValidator (value: string): boolean {
-  return inputmodeList.indexOf(value) !== -1;
+  return inputmodeList.includes(value);
+}
+
+export function maxMinLengthValidator (value: number): boolean {
+  return value >= 0;
+}
+
+export function spellcheckValidator (value: string): boolean {
+  return ['true', 'false', ''].includes(value);
 }

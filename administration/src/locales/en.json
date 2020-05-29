@@ -1,5 +1,14 @@
 {
   "dateTimeFormats": {
+    "datetime": {
+      "year": "numeric", "month": "numeric", "day": "numeric", "hour": "numeric", "minute": "numeric"
+    },
+    "month": {
+      "year": "numeric", "month": "long"
+    },
+    "time": {
+      "hour": "numeric", "minute": "numeric"
+    },
     "year": {
       "year": "numeric"
     }
@@ -26,7 +35,48 @@
       "translations": "Translations"
     },
     "error": {
-      "required": "This field is required."
+      "form": {
+        "pattern": "Please match the requested format.",
+        "rangeOverflow": {
+          "date": "Please select a date that is no later than {max}.",
+          "datetime": "Please select a date and time that is no later than {max}.",
+          "default": "Please select a value that is less or equal to {max}.",
+          "month": "Please select a month that is no later than {max}.",
+          "number": "Please select a value that is no more than {max}.",
+          "time": "Please select a time that is no later than {max}.",
+          "week": "Please select a week that is no later than {max}."
+        },
+        "rangeUnderflow": {
+          "date": "Please select a date that is no earlier than {min}.",
+          "datetime": "Please select a date and time that is no earlier than {min}.",
+          "default": "Please select a value that is greater or equal to {min}.",
+          "month": "Please select a month that is no earlier than {min}.",
+          "number": "Please select a value that is no less than {min}.",
+          "time": "Please select a time that is no earlier than {min}.",
+          "week": "Please select a week that is no earlier than {min}."
+        },
+        "required": {
+          "checkbox": "Please check this box if you want to proceed.",
+          "default": "Please fill out this field.",
+          "email": "Please enter an email address.",
+          "file": "Please select a file.",
+          "number": "Please enter a number.",
+          "radio": "Please select one of these options.",
+          "text": "Please fill out this field."
+        },
+        "step": {
+          "boundary": "Please select a valid value. The two nearest valid values are {lowerBoundary} and {upperBoundary}.",
+          "default": "Please select a valid value."
+        },
+        "tooLong": "Please use {max} characters at maximum (you are currently using {current}).",
+        "tooShort": "Please use at least {min} characters (you are currently using {current}).",
+        "type": {
+          "default": "Please enter a valid value.",
+          "email": "Please enter a valid email address.",
+          "number": "Please enter a number.",
+          "url": "Please enter valid URL."
+        }
+      }
     },
     "pages": {
       "title": {

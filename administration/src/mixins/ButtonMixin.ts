@@ -11,4 +11,6 @@ export default class ButtonMixin extends Vue {
   @Prop({ default: false }) readonly loading!: boolean;
   @Prop({ default: false }) readonly rightAligned!: boolean;
   @Prop({ default: null }) readonly tabindex!: string;
+  @Prop({ default: 'button' }) readonly type!: string;
+  @Prop({ default: 'primary' }) readonly variant!: string;
 }

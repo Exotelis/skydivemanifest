@@ -7,8 +7,7 @@ describe('InputPassword.vue', () => {
   beforeEach(() => {
     component = shallowMount(InputPassword, {
       propsData: {
-        id: 'testId',
-        label: 'Test label'
+        id: 'testId'
       }
     });
   });
@@ -20,9 +19,7 @@ describe('InputPassword.vue', () => {
   it('check default values of the password input', () => {
     expect(component.props().autocomplete).toBe(null);
     expect(component.props().autofocus).toBeFalsy();
-    expect(component.props().description).toBe(null);
     expect(component.props().disabled).toBeFalsy();
-    expect(component.props().errorText).toBe(null);
     expect(component.props().form).toBe(null);
     expect(component.props().inputmode).toBe(null);
     expect(component.props().isToggleable).toBe(false);
@@ -34,34 +31,30 @@ describe('InputPassword.vue', () => {
     expect(component.props().readonly).toBeFalsy();
     expect(component.props().required).toBeFalsy();
     expect(component.props().tabindex).toBe(null);
+    expect(component.props().value).toBe(null);
   });
 
   it('check if password is invisible by default', () => {
     expect(component.vm.isVisible).toBeFalsy();
   });
 
-  it('check if class required is not set if field is not required', () => {
-    expect(component.find('.form-group').classes()).not.toContain('required');
+  it('check if an element with class input-group does not exist if isToggleable is false', () => {
+    expect(component.find('.input-group').exists()).toBeFalsy();
   });
 
-  it('check if class required is set if field is required', () => {
-    component.setProps({ required: true });
-    expect(component.find('.form-group').classes()).toContain('required');
-  });
-
-  it('check if class position-relative is not set if isToggleable is false', () => {
-    expect(component.find('.form-group').classes()).not.toContain('position-relative');
-  });
-
-  it('check if class position-relative is set if isToggleable is true', () => {
+  it('check if an element with class input-group exists if isToggleable is true', () => {
     component.setProps({ isToggleable: true });
-    expect(component.find('.form-group').classes()).toContain('position-relative');
+    expect(component.find('.input-group').exists()).toBeTruthy();
   });
 
-  it('check if the attribute for and the text of the label is set correctly', () => {
-    expect(component.find('label').attributes().for).toBe('testId');
-    expect(component.find('label').text()).toBe('Test label');
+  it('check if an element with class input-group-append does not exist if isToggleable is false', () => {
+    expect(component.find('.input-group-append').exists()).toBeFalsy();
   });
+
+  it('check if an element with class input-group-append exists if isToggleable is true', () => {
+    component.setProps({ isToggleable: true });
+    expect(component.find('.input-group-append').exists()).toBeTruthy();
+  }); // TODO
 
   it('check if event is emitted when the input value changes', async () => {
     component.find('input').setValue('User input');
@@ -151,41 +144,13 @@ describe('InputPassword.vue', () => {
     expect(component.find('input').attributes().type).toBe('text');
   });
 
-  it('not render description text without description set', () => {
-    expect(component.find('#testIdDescription').exists()).toBeFalsy();
-  });
-
-  it('render description text with description set', () => {
-    component.setProps({ description: 'Description message' });
-    expect(component.find('#testIdDescription').exists()).toBeTruthy();
-  });
-
-  it('display the correct description text', () => {
-    component.setProps({ description: 'Description message' });
-    expect(component.find('#testIdDescription').text()).toBe('Description message');
-  });
-
-  it('not render error message without errorText set', () => {
-    expect(component.find('.invalid-feedback').exists()).toBeFalsy();
-  });
-
-  it('render error message with errorText set', () => {
-    component.setProps({ errorText: 'Validation failed' });
-    expect(component.find('.invalid-feedback').exists()).toBeTruthy();
-  });
-
-  it('display the correct error text', () => {
-    component.setProps({ errorText: 'Validation failed' });
-    expect(component.find('.invalid-feedback').text()).toBe('Validation failed');
-  });
-
   it('not render toggle icon without isToggleable to be true', () => {
-    expect(component.find('.mdi').exists()).toBeFalsy();
+    expect(component.find('.password-toggle').exists()).toBeFalsy();
   });
 
   it('render toggle icon with isToggleable to be true', () => {
     component.setProps({ isToggleable: true });
-    expect(component.find('.mdi').exists()).toBeTruthy();
+    expect(component.find('.password-toggle').exists()).toBeTruthy();
   });
 
   it('display the password when the toggle icon is clicked', async () => {
@@ -193,14 +158,14 @@ describe('InputPassword.vue', () => {
     const input = component.find('input');
 
     expect(input.attributes().type).toBe('password');
-    component.find('.mdi').trigger('click');
+    component.find('.password-toggle').trigger('click');
     await component.vm.$nextTick();
     expect(input.attributes().type).toBe('text');
   });
 
   it('change the toggle icon when it is clicked', async () => {
     component.setProps({ isToggleable: true });
-    const toggleIcon = component.find('.mdi');
+    const toggleIcon = component.find('.password-toggle');
 
     expect(toggleIcon.classes()).toContain('mdi-eye-outline');
     toggleIcon.trigger('click');
