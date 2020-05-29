@@ -12,6 +12,8 @@ development or to build the bundle, to use it in production.
 - [Developer guide](#developer-guide)
   + [NavigationGenerator and NavigationItems](#navigationgenerator-and-navigationitems)
   + [Form components](#form-components)
+    * [form-group](#form-group)
+  + [Form validation](#form-validation)
   + [Layouts](#layouts)
 - [Internationalization](#internationalization)
   + [Change the default language](#change-the-default-language)
@@ -105,10 +107,10 @@ navigation menu.
 From components are more or less a wrapper for from elements such as input fields, select boxes and submit buttons. They
 should guarantee that the html structure is unified.
 
-All existing form components are placed in the [form](src/components/form/) directory. As you might have noticed, there
-are also a lot of mixins. Since some attributes are not available on the different form elements or input types, it was
+All existing form components are located in the [form](src/components/form/) directory. As you might have noticed, we
+also defined some mixins. Since some attributes are not available on the different form elements or input types, it was
 easier to create different mixins to share the props. So if some specification will change in the future, it'll be
-easier to adapt the probs. To learn more about the available attributes please see
+easier to adapt the props. To learn more about the available attributes please see
 [the input documentation](https://developer.mozilla.org/de/docs/Web/HTML/Element/Input).
 
 Example Code:
@@ -117,9 +119,190 @@ Example Code:
   <text-input id="username" :label="$t('login.username.label')" :required="true" v-model="username"></text-input>
   <password-input id="password" :is-toggleable="true" :label="$t('login.password.label')" :required="true" v-model="password"></password-input>
   <div class="clearfix">
-    <submit-button right-aligned>{{ $t('login.signIn') }}</submit-button>
+    <button-wrapper right-aligned>{{ $t('login.signIn') }}</button-wrapper>
   </div>
 </form>
+```
+Every wrapper component needs to be imported and defined in the component decorator:
+```
+// Other imports
+import FormGroup from '@/components/form/FormGroup.vue';
+
+@Component({
+  components: {
+    // Other components
+    FormGroup
+  }
+})
+export default class ExampleClass extends Vue {}
+```
+
+These are the available form element wrapper:
+
+#### form-group
+The `form-group` is the surrounding element of almost every form element, except buttons. The `form-group` can be used
+to add a label, validation text, or a description. It can also be used the change the look of the form elements. Usually
+the label would be placed above the form element, but if you set the `horizontal` attribute, the label and the form
+element will be on the same row. Responsiveness is another important thing in modern web-app. If you set the horizontal
+attribute, it would also make sense to use the `labelColXs, labelColSm, labelColMd, labelColLg, labelColXl, labelColXxl,
+labelColXxxl` attributes. Those `labelCol` attributes are the grid. You can choose a number out of 1 to 12. The
+available space of the form will be divided by 12, the label will then take the space of x parts of it, depending on
+what number you chose. The `Xs, Sm, Md, Lg, Xl, Xxl and Xxxl` identifier indicate the with of the browser in px. To see
+for what width which identifier stands for, see the
+[_variables.scss](https://github.com/Exotelis/skydivemanifest/blob/api/administration/src/assets/scss/themes/default/_varibales.scss#L39).
+```
+<form-group label="Example"
+            label-for="exampleId"
+            label-col-md="4"
+            description="Please enter some example text"
+            invalid-feedback="Something went wrong"
+            valid-feedback="Ok!"
+            :horizontal="true">
+<!-- your form element wrapper goes here -->
+</form-group>
+```
+
+#### input-text
+Creates an input element with type text. If the attributes `plaintext` and `readonly` are both true, the styling of the
+form element will be removed.
+
+A full list of available attributes you can find in the [InputText.vue component](src/components/form/InputText.vue).
+
+Example:
+```
+<input-text autofocus
+            id="name"
+            placeholder="Your name"
+            required
+            v-model="form.name"
+            :plaintext="true"
+            :readonly="true"></input-text>
+```
+
+#### input-password
+Creates an input element with type password. The attribute `:is-toggleable` is true, an icon will be displayed to toggle
+the visibility of the password.
+
+A full list of available attributes you can find in the
+[InputPassword.vue component](src/components/form/InputPassword.vue).
+
+Example:
+```
+<input-password id="password"
+                placeholder="Your password"
+                required
+                v-model="form.password"
+                :is-toggleable="true"></input-password>
+```
+
+#### input-hidden
+Creates an input element with type hidden. The attribute `value` must be set, to submit any data.
+
+Example:
+```
+<input-hidden form="formId" id="hidden01" type="hidden" value="Some value">
+```
+
+#### button-wrapper
+Creates a button. By setting the `variant` attribute, you can choose the color scheme of the button. The `:loading`
+attribute can be used to disable the button as long as a request is pending. If you want to right align a button, you
+can set the attribute `:right-aligned` to `true`. Note that this requires to wrap the button in a clearfix `div`.
+
+Example:
+```
+<div class="clearfix">
+    <button-wrapper icon="mdi-login"
+                    id="signin"
+                    type="submit"
+                    :disabled="disabledSubmit"
+                    :loading="loading"
+                    :right-aligned="true">{{ $t('login.signIn') }}</button-wrapper>
+</div>
+```
+
+### Form validation
+The form validation in this project covers both, the client and the server side validation. To make use of the
+validation, you have to import and extend the `FormValidationMixin`:
+```
+import FormValidationMixin from '@/mixins/FormValidationMixin';
+
+@Component({})
+export default class YourClass extends Mixins(FormValidationMixin) {
+```
+This will add all required functionalities to your component. To validate all elements of form you can add the
+`v-validate` directive to this specific form element.
+```
+<form v-validate novalidate>
+```
+Note that the `novalidate` attribute suppresses the build in HTML5 validation. By adding the `v-validate` directive all
+form elements with one or more of the already existing attributes `type, required, min, max, minlength, maxlength, step,
+pattern` will be checked. You MUST also add an id attribute to every form element:
+```
+<input type="email" id="usermail">
+```
+This will already validate your form correctly, but will neither display any error nor style the form element correctly.
+However, if the validation fails it will add a class `is-invalid` to the form element. You could either add your
+customized css or make use of the [form components](#form-components). We recommend:
+```
+<input-email id="usermail" required>
+```
+If the validation fails, the error will be stored in the `errors` object. You can either define your own element to
+display the error message:
+```
+<!-- This approach is not recommended, please see the form-group -->
+<input-email id="usermail" required>
+<span v-if="errors.usermail">{{ errors.usermail }}</span>
+```
+or make use of the `form-group` component, which is recommended.
+```
+<form-group :invalid-feedback="errors.usermail">
+    <input-email id="usermail" required>
+</form-group>
+```
+As you might have noticed already, the `id` of the form element will be the key in the errors object.
+
+Once this is done, the form element will be validated when the user focuses another element, or when the user stops
+typing for some while. You can also validate the form, when the user clicks the submit button. You need to catch the
+`submit` event and handle the validation in your typescript code:
+```
+<form @submit.prevent="handleSubmit" v-validate novalidate>
+
+handleSubmit (): void {
+    this.$emit('validate');
+}
+```
+Broadcasting the `validate` event will check all form elements for errors. In the `handleSubmit` method, you can also
+validate the server response. If the validation fails on the server side, the response code MUST be 422, and the
+response body must have the following structure:
+```
+data: {
+  'message': 'The given data was invalid.',
+  'errors': {
+    'usermail': [
+      'An account with this email address already exists.'
+    ]
+  }
+}
+```
+Note that the key is once again the id of the form element. The server response must be validated after broadcasting the
+`validate` event, otherwise it would not work:
+```
+handleSubmit (): void {
+    let response = // Get response from server
+    this.$emit('validate');
+    this.validateResponse(response);
+}
+```
+Last but not least you can also check for errors before handling the response or sending a request:
+```
+handleSubmit (): void {
+    let response = // Get response from server
+    this.$emit('validate');
+    this.validateResponse(response);
+    if (this.hasValidationError()) {
+        // Do something
+    }
+}
 ```
 
 ### Layouts
