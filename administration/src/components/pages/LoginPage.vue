@@ -10,9 +10,9 @@
     <div class="welcome-right">
       <h3>{{ $t('login.formHeader') }}</h3>
 
-      <form @submit.prevent="login" novalidate>
+      <form @submit.prevent="login" novalidate v-validate>
         <form-group label-for="username"
-                    :invalid-feedback="$t('error.form.required.text')"
+                    :invalid-feedback="errors.username"
                     :label="$t('login.username.label')">
           <input-text autofocus
                       id="username"
@@ -21,7 +21,7 @@
                       :placeholder="$t('login.username.placeholder')"></input-text>
         </form-group>
         <form-group label-for="password"
-                    :invalid-feedback="$t('error.form.required.text')"
+                    :invalid-feedback="errors.password"
                     :label="$t('login.password.label')">
           <input-password id="password"
                           required
@@ -44,11 +44,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Component, Watch } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { TranslateResult } from 'vue-i18n';
 import ButtonWrapper from '@/components/form/ButtonWrapper.vue';
 import FormGroup from '@/components/form/FormGroup.vue';
+import FormValidationMixin from '@/mixins/FormValidationMixin';
 import InputPassword from '@/components/form/InputPassword.vue';
 import InputText from '@/components/form/InputText.vue';
 
@@ -65,7 +65,7 @@ interface FormElements {
     InputText
   }
 })
-export default class LoginPage extends Vue {
+export default class LoginPage extends Mixins(FormValidationMixin) {
   time: number = new Date().getHours();
   form: FormElements = {
     username: '',

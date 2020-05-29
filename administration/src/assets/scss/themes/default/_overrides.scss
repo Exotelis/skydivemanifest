@@ -56,6 +56,14 @@ label {
   line-height: 1.15rem;
 }
 
+.is-invalid .password-toggle {
+  background-color: rgba($form-feedback-invalid-color, .1);;
+}
+
+.is-valid .password-toggle {
+  background-color: rgba($form-feedback-valid-color, .1);;
+}
+
 // Links
 
 a {
