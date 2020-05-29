@@ -60,8 +60,11 @@ describe('LoginPage.vue', () => {
 
   it('show error message, when an input field is empty', async () => {
     component.find('#password').setValue('b'.repeat(7));
-    component.find('button').trigger('click');
-    await component.vm.$nextTick();
+    component.find('#password').setValue('');
+
+    // 1.2 second timeout to wait for the validation
+    await new Promise(resolve => setTimeout(resolve, 1200));
+
     expect(component.find('.invalid-feedback').text()).toBe('error.form.required.text');
   });
 
