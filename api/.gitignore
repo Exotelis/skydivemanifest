@@ -1,0 +1,17 @@
+/node_modules
+/public/hot
+/public/storage
+/report/*
+/storage/*.key
+/vendor
+.env
+.env.backup
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+
+# views
+resources/views/mails/imprint.blade.php
+resources/views/mails/imprint_plain.blade.php
