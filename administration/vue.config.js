@@ -2,9 +2,10 @@ module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? '/skydivemanifest/administration/dist' : '/',
   productionSourceMap: false,
   devServer: {
-    https: false,
+    https: true,
     host: '0.0.0.0',
-    port: 5000
+    port: 5000,
+    proxy: process.env.VUE_APP_DEV_PROXY || ''
   },
   pluginOptions: {
     i18n: {
