@@ -17,6 +17,7 @@
     "bootstrap-vue": "^2.14.0",
     "core-js": "^3.6.5",
     "jquery": "^3.5.1",
+    "jwt-decode": "^2.2.0",
     "popper.js": "^1.16.0",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
@@ -28,6 +29,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.19",
     "@types/jquery": "^3.3.33",
+    "@types/jwt-decode": "^2.2.1",
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-plugin-pwa": "^4.1.0",
