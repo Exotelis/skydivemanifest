@@ -9,7 +9,7 @@ development or to build the bundle, to use it in production.
   + [Compiles and bundles for production](#compiles-and-bundles-for-production)
   + [Test your app](#test-your-app)
   + [Lints and fixes files](#lints-and-fixes-files)
-- [Developer guide](#developer-guide)
+- [Developers guide](#developers-guide)
   + [NavigationGenerator and NavigationItems](#navigationgenerator-and-navigationitems)
   + [Form components](#form-components)
     * [form-group](#form-group)
@@ -61,7 +61,7 @@ for more details on how to write tests.
 npm run lint
 ```
 
-## Developer guide
+## Developers guide
 This section should help any developer to implement new features or fix bugs.
 
 ### NavigationGenerator and NavigationItems
@@ -352,7 +352,7 @@ The second option is to set the parameter `locale` in the users localStorage. A 
 care of this, for example.
 
 If neither in the [.env](.env) nor the `localStorage` a default language is set, english will be the default. English
-will also be always the fallback language, if the configured default language couldn't be loaded or some string is not
+will also be the fallback language always, if the configured default language couldn't be loaded or some string is not
 translated.
 
 Note: The `localStorage.locale` has a higher priority than the `.env*` files.
