@@ -107,7 +107,7 @@ $input-placeholder-color:    rgba($body-color, .7);
 
 $form-group-margin-bottom:   1.25rem;
 
-$form-control-border-left:   .25rem solid;
+$form-control-border-left:   .25rem solid $input-border-color;
 
 // Form validation
 

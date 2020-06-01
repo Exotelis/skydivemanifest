@@ -25,7 +25,7 @@ label {
 }
 
 .form-control {
-  border-left: $form-control-border-left $input-border-color;
+  border-left: $form-control-border-left;
 
   &:focus {
     border-color: $input-border-color-focus;
