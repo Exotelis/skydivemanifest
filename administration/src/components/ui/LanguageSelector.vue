@@ -28,9 +28,9 @@ export default class LanguageSelector extends Vue {
         localStorage.setItem('locale', language); // Update local storage on success
       })
       .finally(() => {
+        const title = process.env.VUE_APP_TITLE || 'Skydivemanifest Administration';
         document.title = typeof this.$route.meta !== 'undefined' && this.$route.meta.title
-          ? this.$t(this.$route.meta.title) + ' | ' + process.env.VUE_APP_TITLE
-          : process.env.VUE_APP_TITLE;
+          ? this.$t(this.$route.meta.title) + ' | ' + title : title;
       });
   }
 }
