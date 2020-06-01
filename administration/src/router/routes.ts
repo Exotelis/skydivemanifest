@@ -11,7 +11,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "dashboard" */ '@/components/pages/DashboardPage.vue'),
     meta: {
       title: 'pages.title.dashboard',
-      requiresAuth: false
+      requiresAuth: true
     }
   },
   {
@@ -19,7 +19,7 @@ const routes = [
     name: 'aircrafts',
     meta: {
       title: 'pages.title.aircrafts',
-      requiresAuth: false
+      requiresAuth: true
     }
   },
   {
@@ -27,7 +27,7 @@ const routes = [
     name: 'bookings',
     meta: {
       title: 'pages.title.bookings',
-      requiresAuth: false
+      requiresAuth: true
     }
   },
   {
@@ -45,7 +45,7 @@ const routes = [
     name: 'manifest',
     meta: {
       title: 'pages.title.manifest',
-      requiresAuth: false
+      requiresAuth: true
     }
   },
   {
@@ -53,7 +53,7 @@ const routes = [
     name: 'payments',
     meta: {
       title: 'pages.title.payments',
-      requiresAuth: false
+      requiresAuth: true
     }
   },
   {
@@ -70,7 +70,7 @@ const routes = [
     name: 'skydiver',
     meta: {
       title: 'pages.title.skydiver',
-      requiresAuth: false
+      requiresAuth: true
     }
   },
   {
@@ -78,7 +78,7 @@ const routes = [
     name: 'staff',
     meta: {
       title: 'pages.title.staff',
-      requiresAuth: false
+      requiresAuth: true
     }
   },
   {
@@ -86,7 +86,7 @@ const routes = [
     name: 'System',
     meta: {
       title: 'pages.title.system',
-      requiresAuth: false
+      requiresAuth: true
     }
   },
   {
@@ -94,7 +94,7 @@ const routes = [
     name: 'tickets',
     meta: {
       title: 'pages.title.tickets',
-      requiresAuth: false
+      requiresAuth: true
     }
   },
   {
@@ -102,7 +102,7 @@ const routes = [
     name: 'users',
     meta: {
       title: 'pages.title.users',
-      requiresAuth: false
+      requiresAuth: true
     }
   },
   {
@@ -110,7 +110,7 @@ const routes = [
     name: 'userroles',
     meta: {
       title: 'pages.title.userroles',
-      requiresAuth: false
+      requiresAuth: true
     }
   }
 ];
