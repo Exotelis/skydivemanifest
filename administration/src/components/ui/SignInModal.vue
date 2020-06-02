@@ -12,19 +12,20 @@
       <span class="mdi mdi-clock-outline highlight"></span>
     </div>
 
-    <h3 class="font-weight-normal mb-4 text-center" v-html="$t('login.title.modal', { name: firstname })"></h3>
+    <h3 class="font-weight-normal mb-4 text-center"
+        v-html="$t('component.signInModal.title', { name: firstname })"></h3>
 
     <div v-if="error" class="alert alert-danger mx-4" role="alert">
       {{ error }}
     </div>
 
     <form @submit.prevent="handleLogin" class="mx-4" novalidate>
-      <form-group :hide-label="true" :label="$t('login.password.label')">
+      <form-group :hide-label="true" :label="$t('form.label.password')">
         <input-password id="sign-in-password"
                         required
                         v-model.trim="form.password"
                         :is-toggleable="true"
-                        :placeholder="$t('login.password.placeholder')"></input-password>
+                        :placeholder="$t('form.placeholder.password')"></input-password>
       </form-group>
       <button-wrapper block
                       class="mb-3"
@@ -32,10 +33,10 @@
                       id="sign-in-modal-signin"
                       type="submit"
                       :disabled="disabledSubmit"
-                      :loading="loading">{{ $t('login.remainSignedIn') }}</button-wrapper>
+                      :loading="loading">{{ $t('component.signInModal.remainSignedIn') }}</button-wrapper>
     </form>
     <div class="text-center">
-      <a href="#" v-logout><small>{{ $t('login.signOut') }}</small></a>
+      <a href="#" v-logout><small>{{ $t('general.signOut') }}</small></a>
     </div>
   </b-modal>
 </template>

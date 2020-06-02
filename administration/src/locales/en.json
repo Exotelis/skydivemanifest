@@ -24,15 +24,11 @@
         "undefined": "not configured"
       }
     },
-    "general": {
-      "allRightsReserved": "All rights reserved",
-      "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
-      "loading": "Loading...",
-      "othersettings": "Other settings",
-      "permissions": "Permissions",
-      "reportBug": "Report a bug",
-      "system": "System",
-      "translations": "Translations"
+    "component": {
+      "signInModal": {
+        "remainSignedIn": "Remain signed in",
+        "title": "Hey <strong>%{name}</strong>,<br>are you still there?"
+      }
     },
     "error": {
       "form": {
@@ -79,7 +75,41 @@
       },
       "signOutError": "Sign out failed"
     },
+    "form": {
+      "label": {
+        "password": "Password",
+        "username": "Email / Username"
+      },
+      "placeholder": {
+        "password": "Enter your password...",
+        "username": "Enter your email address or username..."
+      }
+    },
+    "general": {
+      "allRightsReserved": "All rights reserved",
+      "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
+      "loading": "Loading...",
+      "othersettings": "Other settings",
+      "permissions": "Permissions",
+      "reportBug": "Report a bug",
+      "signIn": "Sign In",
+      "signOut": "Sign Out",
+      "system": "System",
+      "translations": "Translations"
+    },
     "pages": {
+      "login": {
+        "title": {
+          "morning": "Good morning,",
+          "noon": "Good afternoon,",
+          "afternoon": "Good afternoon,",
+          "evening": "Good evening,",
+          "other": "Hello,"
+        },
+        "subtitle": "welcome back!",
+        "imageAuthor": "Photo by {author} on {platform}",
+        "formHeader": "Please sign in."
+      },
       "title": {
         "aircrafts": "Aircrafts",
         "bookings": "Bookings",
@@ -94,30 +124,6 @@
         "users": "All users",
         "userroles": "User roles"
       }
-    },
-    "login": {
-      "title": {
-        "modal": "Hey <strong>%{name}</strong>,<br>are you still there?",
-        "morning": "Good morning,",
-        "noon": "Good afternoon,",
-        "afternoon": "Good afternoon,",
-        "evening": "Good evening,",
-        "other": "Hello,"
-      },
-      "subtitle": "welcome back!",
-      "imageAuthor": "Photo by {author} on {platform}",
-      "formHeader": "Please sign in.",
-      "username": {
-        "label": "Email / Username",
-        "placeholder": "Enter your email address or username..."
-      },
-      "password": {
-        "label": "Password",
-        "placeholder": "Enter your password..."
-      },
-      "remainSignedIn": "Remain signed in",
-      "signIn": "Sign In",
-      "signOut": "Sign Out"
     }
   }
 }

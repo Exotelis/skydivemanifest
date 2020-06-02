@@ -3,12 +3,14 @@
     <div class="welcome-left">
       <div class="welcome-textbox">
         <div class="welcome-title">{{ getTimeBasedTitle }}</div>
-        <div class="welcome-subtitle">{{ $t('login.subtitle') }}</div>
-        <div class="welcome-author">{{ $t('login.imageAuthor', { author: 'wesleyjharrison', platform: 'pixabay'}) }}</div>
+        <div class="welcome-subtitle">{{ $t('pages.login.subtitle') }}</div>
+        <div class="welcome-author">
+          {{ $t('pages.login.imageAuthor', { author: 'wesleyjharrison', platform: 'pixabay'}) }}
+        </div>
       </div>
     </div>
     <div class="welcome-right">
-      <h3>{{ $t('login.formHeader') }}</h3>
+      <h3>{{ $t('pages.login.formHeader') }}</h3>
 
       <div v-if="error" class="alert alert-danger" role="alert">
         {{ error }}
@@ -17,21 +19,21 @@
       <form @submit.prevent="login" novalidate v-validate>
         <form-group label-for="username"
                     :invalid-feedback="errors.username"
-                    :label="$t('login.username.label')">
+                    :label="$t('form.label.username')">
           <input-text autofocus
                       id="username"
                       required
                       v-model.trim="form.username"
-                      :placeholder="$t('login.username.placeholder')"></input-text>
+                      :placeholder="$t('form.placeholder.username')"></input-text>
         </form-group>
         <form-group label-for="password"
                     :invalid-feedback="errors.password"
-                    :label="$t('login.password.label')">
+                    :label="$t('form.label.password')">
           <input-password id="password"
                           required
                           v-model.trim="form.password"
                           :is-toggleable="true"
-                          :placeholder="$t('login.password.placeholder')"></input-password>
+                          :placeholder="$t('form.placeholder.password')"></input-password>
         </form-group>
         <div class="clearfix">
           <button-wrapper icon="mdi-login"
@@ -39,7 +41,7 @@
                           type="submit"
                           :disabled="disabledSubmit"
                           :loading="loading"
-                          :right-aligned="true">{{ $t('login.signIn') }}</button-wrapper>
+                          :right-aligned="true">{{ $t('general.signIn') }}</button-wrapper>
         </div>
       </form>
     </div>
@@ -82,22 +84,22 @@ export default class LoginPage extends Mixins(FormValidationMixin) {
 
   get getTimeBasedTitle (): TranslateResult {
     if (this.time >= 5 && this.time < 12) {
-      return this.$t('login.title.morning');
+      return this.$t('pages.login.title.morning');
     }
 
     if (this.time >= 12 && this.time < 15) {
-      return this.$t('login.title.noon');
+      return this.$t('pages.login.title.noon');
     }
 
     if (this.time >= 15 && this.time < 18) {
-      return this.$t('login.title.afternoon');
+      return this.$t('pages.login.title.afternoon');
     }
 
     if (this.time >= 18 && this.time <= 23) {
-      return this.$t('login.title.evening');
+      return this.$t('pages.login.title.evening');
     }
 
-    return this.$t('login.title.other');
+    return this.$t('pages.login.title.other');
   }
 
   async login (): Promise<any> {

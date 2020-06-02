@@ -24,15 +24,21 @@
         "undefined": "nicht eingerichtet"
       }
     },
-    "general": {
-      "allRightsReserved": "Alle Rechte vorbehalten",
-      "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
-      "loading": "Lädt...",
-      "othersettings": "Andere Einstellungen",
-      "permissions": "Berechtigungen",
-      "reportBug": "Ein Problem melden",
-      "system": "System",
-      "translations": "Übersetzungen"
+    "component": {
+      "signInModal": {
+        "remainSignedIn": "Angemeldet bleiben",
+        "title": "Hey <strong>%{name}</strong>,<br>bist Du noch da?"
+      }
+    },
+    "form": {
+      "label": {
+        "password": "Passwort",
+        "username": "E-Mail / Benutzername"
+      },
+      "placeholder": {
+        "password": "Geben Sie Ihr Passwort ein...",
+        "username": "Geben Sie Ihre E-Mail-Adresse oder Ihren Benutzernamen ein..."
+      }
     },
     "error": {
       "form": {
@@ -79,7 +85,31 @@
       },
       "signOutError": "Abmelden fehlgeschlagen"
     },
+    "general": {
+      "allRightsReserved": "Alle Rechte vorbehalten",
+      "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
+      "loading": "Lädt...",
+      "othersettings": "Andere Einstellungen",
+      "permissions": "Berechtigungen",
+      "reportBug": "Ein Problem melden",
+      "signIn": "Anmelden",
+      "signOut": "Abmelden",
+      "system": "System",
+      "translations": "Übersetzungen"
+    },
     "pages": {
+      "login": {
+        "title": {
+          "morning": "Guten Morgen,",
+          "noon": "Guten Mittag,",
+          "afternoon": "Guten Nachmittag,",
+          "evening": "Guten Abend,",
+          "other": "Hallo,"
+        },
+        "subtitle": "willkommen zurück!",
+        "imageAuthor": "Foto von {author} auf {platform}",
+        "formHeader": "Bitte melden Sie sich an."
+      },
       "title": {
         "aircrafts": "Flugzeuge",
         "bookings": "Buchungen",
@@ -94,30 +124,6 @@
         "users": "Alle Benutzer",
         "userroles": "Benutzerrollen"
       }
-    },
-    "login": {
-      "title": {
-        "modal": "Hey <strong>%{name}</strong>,<br>bist Du noch da?",
-        "morning": "Guten Morgen,",
-        "noon": "Guten Mittag,",
-        "afternoon": "Guten Nachmittag,",
-        "evening": "Guten Abend,",
-        "other": "Hallo,"
-      },
-      "subtitle": "willkommen zurück!",
-      "imageAuthor": "Foto von {author} auf {platform}",
-      "formHeader": "Bitte melden Sie sich an.",
-      "username": {
-        "label": "E-Mail / Benutzername",
-        "placeholder": "Geben Sie Ihre E-Mail-Adresse oder Ihren Benutzernamen ein..."
-      },
-      "password": {
-        "label": "Passwort",
-        "placeholder": "Geben Sie Ihr Passwort ein..."
-      },
-      "remainSignedIn": "Angemeldet bleiben",
-      "signIn": "Anmelden",
-      "signOut": "Abmelden"
     }
   }
 }

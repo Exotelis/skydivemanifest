@@ -32,29 +32,29 @@ describe('LoginPage.vue', () => {
     expect(component.vm.time).toBe(20);
   });
 
-  it('return "login.title.morning"', () => {
+  it('return "pages.login.title.morning"', () => {
     component.setData({ time: new Date('2020-01-26T05:00:00').getHours() });
-    expect(component.vm.getTimeBasedTitle).toBe('login.title.morning');
+    expect(component.vm.getTimeBasedTitle).toBe('pages.login.title.morning');
   });
 
-  it('return "login.title.noon"', () => {
+  it('return "pages.login.title.noon"', () => {
     component.setData({ time: new Date('2020-01-26T12:00:00').getHours() });
-    expect(component.vm.getTimeBasedTitle).toBe('login.title.noon');
+    expect(component.vm.getTimeBasedTitle).toBe('pages.login.title.noon');
   });
 
-  it('return "login.title.afternoon"', () => {
+  it('return "pages.login.title.afternoon"', () => {
     component.setData({ time: new Date('2020-01-26T15:00:00').getHours() });
-    expect(component.vm.getTimeBasedTitle).toBe('login.title.afternoon');
+    expect(component.vm.getTimeBasedTitle).toBe('pages.login.title.afternoon');
   });
 
-  it('return "login.title.evening"', () => {
+  it('return "pages.login.title.evening"', () => {
     component.setData({ time: new Date('2020-01-26T18:00:00').getHours() });
-    expect(component.vm.getTimeBasedTitle).toBe('login.title.evening');
+    expect(component.vm.getTimeBasedTitle).toBe('pages.login.title.evening');
   });
 
-  it('return "login.title.other"', () => {
+  it('return "pages.login.title.other"', () => {
     component.setData({ time: new Date('2020-01-26T00:00:00').getHours() });
-    expect(component.vm.getTimeBasedTitle).toBe('login.title.other');
+    expect(component.vm.getTimeBasedTitle).toBe('pages.login.title.other');
   });
 
   it('check if submit button is disabled when username or password is empty', () => {
