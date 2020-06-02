@@ -78,18 +78,9 @@ export default class DefaultLayout extends Vue {
     { icon: 'mdi-parachute', path: '/skydiver', type: NavigationType.Path },
     { icon: 'mdi-ticket', path: '/tickets', type: NavigationType.Path },
     { icon: 'mdi-monitor-dashboard', path: '/manifest', type: NavigationType.Path },
-    { icon: 'mdi-cog',
-      title: 'general.system',
-      type: NavigationType.Submenuhandler,
-      children: [
-        { title: 'general.permissions', type: NavigationType.Title },
-        { title: 'general.permissions', type: NavigationType.Submenuhandler },
-        { path: '/userroles', type: NavigationType.Path }
-      ]
-    },
     { icon: 'mdi-calendar', path: '/bookings', type: NavigationType.Path },
     { icon: 'mdi-receipt', path: '/payments', type: NavigationType.Path },
-    { icon: 'mdi-cog',
+    { icon: 'mdi-cogs',
       title: 'general.system',
       type: NavigationType.Submenuhandler,
       children: [
