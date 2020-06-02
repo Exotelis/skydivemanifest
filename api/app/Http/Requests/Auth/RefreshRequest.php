@@ -4,6 +4,10 @@ namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class RefreshRequest
+ * @package App\Http\Requests\Auth
+ */
 class RefreshRequest extends FormRequest
 {
     /**
@@ -13,7 +17,7 @@ class RefreshRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,7 @@ class RefreshRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'token' => 'required|string'
         ];
     }
 }

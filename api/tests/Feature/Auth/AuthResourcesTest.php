@@ -59,6 +59,12 @@ class AuthResourcesTest extends TestCase
             ->assertJsonStructure(['message', 'errors'])
             ->assertJsonFragment(['message' => 'The given data was invalid.']);
 
+        // Invalid request with cookie
+        $response = $this->postJson($resource, ['password' => 'secret'], ['X-Requested-With' => 'XMLHttpRequest']);
+        $response->assertStatus(422)
+            ->assertJsonStructure(['message', 'errors'])
+            ->assertJsonFragment(['message' => 'The validation of your data has been failed. Errors have been highlighted in the form below.']);
+
         // Invalid user
         $response = $this->postJson($resource, ['username' => 'unknownuser', 'password' => 'secret']);
         $response->assertStatus(401)
@@ -125,6 +131,38 @@ class AuthResourcesTest extends TestCase
         $response = $this->postJson($resource, [], ['Authorization' => $token]);
         $response->assertStatus(200)->assertJson(['message' => 'Logged out successfully.']);
         $this->assertDatabaseHas('oauth_access_tokens', ['user_id' => $user->id, 'revoked' => 1]);
+    }
+
+    /**
+     * Test refresh resource.
+     *
+     * @covers \App\Http\Controllers\AuthController
+     * @return void
+     */
+    public function testRefresh()
+    {
+        $resource = self::API_URL . 'auth/refresh';
+        $loginResource = self::API_URL . 'auth';
+        $user = factory(User::class)->state('allPermissions')->create();
+
+        // Sign in
+        $response = $this->postJson($loginResource, ['username' => $user->email, 'password' => 'secret']);
+        $refreshToken = $response->original['refresh_token'];
+
+        // Invalid request
+        $response = $this->postJson($resource, []);
+        $response->assertStatus(422)
+            ->assertJsonStructure(['message', 'errors'])
+            ->assertJsonFragment(['message' => 'The given data was invalid.']);
+
+        // Incorrect token
+        $response = $this->postJson($resource, ['token' => 'wrongtoken']);
+        $response->assertStatus(401)
+            ->assertJson(['message' => 'Could not get an access token.']);
+
+        // Success
+        $response = $this->postJson($resource, ['token' => $refreshToken]);
+        $response->assertStatus(200)->assertJsonStructure(['expires_in', 'access_token', 'refresh_token']);
     }
 
     /**

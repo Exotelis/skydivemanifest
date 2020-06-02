@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RefreshRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\Role;
 use App\Models\User;
@@ -95,6 +96,42 @@ class AuthController extends Controller
         }
 
         abort(400, __('error.could_not_sign_out'));
+    }
+
+    /**
+     * Refresh the access token.
+     *
+     * @param RefreshRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh(RefreshRequest $request)
+    {
+        $route = route('passport.token', null, false);
+
+        $data = [
+            'grant_type' => 'refresh_token',
+            'client_id' => config('auth.oauth.password_client.id'),
+            'client_secret' => config('auth.oauth.password_client.secret'),
+            'refresh_token' => $request->token,
+        ];
+
+        $tokenRequest = Request::create($route, 'post', $data);
+        $tokenResponse = app()->handle($tokenRequest);
+        $tokenContent = [];
+
+        if ($tokenResponse instanceof \Illuminate\Http\Response) {
+            if (! $tokenResponse->isSuccessful()) {
+                abort(401, __('auth.oauth'));
+            }
+            $tokenContent = json_decode($tokenResponse->content(), true);
+        }
+
+        // If the request was an ajax call, response with cookies (webapp)
+        if ($request->ajax()) {
+            return $this->respondWithCookies($tokenContent);
+        }
+
+        return response()->json($tokenContent);
     }
 
     /**
