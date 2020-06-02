@@ -62,7 +62,6 @@ export default class FormValidationMixin extends Vue {
     });
 
     this.errors = Object.assign({}, this.errors, response.data.errors);
-    console.log(this.errors);
     this.$emit('validateResponse');
   }
 }
