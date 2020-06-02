@@ -76,7 +76,8 @@
           "number": "Bitte geben Sie eine Nummer ein.",
           "url": "Bitte geben Sie eine gültige Webadresse ein."
         }
-      }
+      },
+      "signOutError": "Abmelden fehlgeschlagen"
     },
     "pages": {
       "title": {
@@ -96,6 +97,7 @@
     },
     "login": {
       "title": {
+        "modal": "Hey <strong>%{name}</strong>,<br>bist Du noch da?",
         "morning": "Guten Morgen,",
         "noon": "Guten Mittag,",
         "afternoon": "Guten Nachmittag,",
@@ -106,14 +108,16 @@
       "imageAuthor": "Foto von {author} auf {platform}",
       "formHeader": "Bitte melden Sie sich an.",
       "username": {
-        "label": "Benutzername",
-        "placeholder": "Geben Sie Ihren Benutzernamen ein..."
+        "label": "E-Mail / Benutzername",
+        "placeholder": "Geben Sie Ihre E-Mail-Adresse oder Ihren Benutzernamen ein..."
       },
       "password": {
         "label": "Passwort",
         "placeholder": "Geben Sie Ihr Passwort ein..."
       },
-      "signIn": "Anmelden"
+      "remainSignedIn": "Angemeldet bleiben",
+      "signIn": "Anmelden",
+      "signOut": "Abmelden"
     }
   }
 }

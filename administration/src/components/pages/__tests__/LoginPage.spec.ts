@@ -1,5 +1,8 @@
 import { mount, config } from '@vue/test-utils';
 import LoginPage from '../LoginPage.vue';
+import flushPromises from 'flush-promises';
+
+jest.mock('@/services/AuthService');
 
 config.mocks!.$t = (key: any) => key;
 
@@ -7,7 +10,13 @@ describe('LoginPage.vue', () => {
   let component: any;
 
   beforeEach(() => {
-    component = mount(LoginPage);
+    component = mount(LoginPage, {
+      mocks: {
+        $router: {
+          push: () => { component.vm.$emit('changeRoute'); return Promise.resolve(); }
+        }
+      }
+    });
   });
 
   it('is Vue instance', () => {
@@ -68,9 +77,28 @@ describe('LoginPage.vue', () => {
     expect(component.find('.invalid-feedback').text()).toBe('error.form.required.text');
   });
 
-  it('handle login routine when the form is submitted', async () => {
+  it('sign the user in', async () => {
+    component.find('#username').setValue('admin');
+    component.find('#password').setValue('admin');
     component.find('form').trigger('submit');
+
     await component.vm.$nextTick();
-    expect(component.vm.loading).toBeTruthy(); // TODO update when actual login route is implemented
+    expect(component.vm.loading).toBeTruthy();
+
+    await flushPromises();
+    await component.vm.$nextTick();
+    expect(component.emitted().changeRoute).toBeTruthy();
+    expect(component.vm.loading).toBeFalsy();
+  });
+
+  it('fail to sign in', async () => {
+    component.find('#username').setValue('admin');
+    component.find('#password').setValue('wrongpassword');
+    component.find('form').trigger('submit');
+
+    await component.vm.$nextTick();
+
+    await flushPromises();
+    expect(component.vm.error).toBe('Something went wrong.');
   });
 });

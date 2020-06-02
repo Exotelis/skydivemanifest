@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import routes from '@/router/routes';
 import { i18n } from '@/i18n';
+import AuthService from '@/services/AuthService';
+import routes from '@/router/routes';
 
 Vue.use(VueRouter);
 
@@ -12,13 +13,18 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // Check if the user is authenticated
-  if (to.meta.requiresAuth) {
-    next('/login'); // Todo implement login func
+  let auth: boolean = AuthService.checkAuth();
+
+  if (to.path === '/login' && auth) {
+    // If signed in - go to dashboard
+    next('/');
+  } else if (to.path !== '/login' && to.meta.requiresAuth && !auth) {
+    // If not signed in and on restricted page - go to login
+    next('login');
   } else {
-    // Set page title on route change
-    document.title = to.meta.title ? i18n.t(to.meta.title) + ' | ' +
-      process.env.VUE_APP_TITLE : process.env.VUE_APP_TITLE;
+    // Update title on route change
+    const title = process.env.VUE_APP_TITLE || 'Skydivemanifest Administration';
+    document.title = to.meta.title ? i18n.t(to.meta.title) + ' | ' + title : title;
     next();
   }
 });

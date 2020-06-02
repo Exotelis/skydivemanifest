@@ -10,6 +10,10 @@
     <div class="welcome-right">
       <h3>{{ $t('login.formHeader') }}</h3>
 
+      <div v-if="error" class="alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+
       <form @submit.prevent="login" novalidate v-validate>
         <form-group label-for="username"
                     :invalid-feedback="errors.username"
@@ -17,7 +21,7 @@
           <input-text autofocus
                       id="username"
                       required
-                      v-model="form.username"
+                      v-model.trim="form.username"
                       :placeholder="$t('login.username.placeholder')"></input-text>
         </form-group>
         <form-group label-for="password"
@@ -25,13 +29,12 @@
                     :label="$t('login.password.label')">
           <input-password id="password"
                           required
-                          v-model="form.password"
+                          v-model.trim="form.password"
                           :is-toggleable="true"
                           :placeholder="$t('login.password.placeholder')"></input-password>
         </form-group>
         <div class="clearfix">
-          <button-wrapper class="test"
-                          icon="mdi-login"
+          <button-wrapper icon="mdi-login"
                           id="signin"
                           type="submit"
                           :disabled="disabledSubmit"
@@ -45,7 +48,9 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { CredentialsModel } from '@/models/CredentialsModel';
 import { TranslateResult } from 'vue-i18n';
+import AuthService from '@/services/AuthService';
 import ButtonWrapper from '@/components/form/ButtonWrapper.vue';
 import FormGroup from '@/components/form/FormGroup.vue';
 import FormValidationMixin from '@/mixins/FormValidationMixin';
@@ -66,13 +71,14 @@ interface FormElements {
   }
 })
 export default class LoginPage extends Mixins(FormValidationMixin) {
-  time: number = new Date().getHours();
+  disabledSubmit: boolean = true;
+  error: string|null = null;
   form: FormElements = {
     username: '',
     password: ''
   };
   loading: boolean = false;
-  disabledSubmit: boolean = true;
+  time: number = new Date().getHours();
 
   get getTimeBasedTitle (): TranslateResult {
     if (this.time >= 5 && this.time < 12) {
@@ -94,20 +100,23 @@ export default class LoginPage extends Mixins(FormValidationMixin) {
     return this.$t('login.title.other');
   }
 
-  login (element: Event): void {
-    const form = element.target as HTMLInputElement;
-    form.classList.add('was-validated');
-
+  async login (): Promise<any> {
+    let credentials: CredentialsModel = { username: this.form.username, password: this.form.password };
     this.loading = true;
-    setTimeout(() => {
-      this.loading = false;
-    }, 3000);
-    // Todo Login logic
+
+    try {
+      await AuthService.login(credentials);
+      await this.$router.push('/');
+    } catch (e) {
+      this.validateResponse(e.response);
+      this.error = e.response.data.message;
+    }
+    this.loading = false;
   }
 
   @Watch('form', { deep: true })
   onFormChange (form: FormElements): void {
-    this.disabledSubmit = !(form.username.trim().length > 0 && this.form.password.trim().length > 0);
+    this.disabledSubmit = !(form.username.length > 0 && form.password.length > 0);
   }
 }
 </script>

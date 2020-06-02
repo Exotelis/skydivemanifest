@@ -4,7 +4,8 @@ import { iconValidator } from '@/validators';
 
 @Component({})
 export default class ButtonMixin extends Vue {
-  @Prop({ default: false }) readonly disabled!: Boolean;
+  @Prop({ default: false }) readonly block!: boolean;
+  @Prop({ default: false }) readonly disabled!: boolean;
   @Prop({ default: null }) readonly form!: string;
   @Prop({ default: null, validator: iconValidator }) readonly icon!: string;
   @Prop({ required: true }) readonly id!: string;

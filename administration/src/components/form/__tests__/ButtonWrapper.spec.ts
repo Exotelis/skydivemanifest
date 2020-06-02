@@ -22,14 +22,24 @@ describe('ButtonWrapper.vue', () => {
   });
 
   it('check default values of the submit button', () => {
-    expect(component.props().disabled).toBe(false);
+    expect(component.props().block).toBeFalsy();
+    expect(component.props().disabled).toBeFalsy();
     expect(component.props().form).toBe(null);
     expect(component.props().icon).toBe(null);
-    expect(component.props().loading).toBe(false);
-    expect(component.props().rightAligned).toBe(false);
+    expect(component.props().loading).toBeFalsy();
+    expect(component.props().rightAligned).toBeFalsy();
     expect(component.props().tabindex).toBe(null);
     expect(component.props().type).toBe('button');
     expect(component.props().variant).toBe('primary');
+  });
+
+  it('check if the attribute class doesn\'t contain "btn-block" if block is false', () => {
+    expect(component.find('button').classes()).not.toContain('btn-block');
+  });
+
+  it('check if the attribute class contains "btn-block" if block is true', () => {
+    component.setProps({ block: true });
+    expect(component.find('button').classes()).toContain('btn-block');
   });
 
   it('check if the attribute class contains "float-left" and "mr-2" if button isn\'t right aligned', () => {

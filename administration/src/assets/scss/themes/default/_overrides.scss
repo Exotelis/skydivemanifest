@@ -73,3 +73,19 @@ a {
 .dropdown-menu a {
   transition: none;
 }
+
+// Modals
+
+.modal.blur {
+  backdrop-filter: $modal-blur;
+}
+
+.modal-backdrop {
+  opacity: $modal-backdrop-opacity;
+}
+
+// Alerts
+
+.alert {
+  font-size: $alert-font-size;
+}

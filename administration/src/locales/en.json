@@ -76,7 +76,8 @@
           "number": "Please enter a number.",
           "url": "Please enter valid URL."
         }
-      }
+      },
+      "signOutError": "Sign out failed"
     },
     "pages": {
       "title": {
@@ -96,6 +97,7 @@
     },
     "login": {
       "title": {
+        "modal": "Hey <strong>%{name}</strong>,<br>are you still there?",
         "morning": "Good morning,",
         "noon": "Good afternoon,",
         "afternoon": "Good afternoon,",
@@ -106,14 +108,16 @@
       "imageAuthor": "Photo by {author} on {platform}",
       "formHeader": "Please sign in.",
       "username": {
-        "label": "Username",
-        "placeholder": "Enter your username..."
+        "label": "Email / Username",
+        "placeholder": "Enter your email address or username..."
       },
       "password": {
         "label": "Password",
         "placeholder": "Enter your password..."
       },
-      "signIn": "Sign In"
+      "remainSignedIn": "Remain signed in",
+      "signIn": "Sign In",
+      "signOut": "Sign Out"
     }
   }
 }

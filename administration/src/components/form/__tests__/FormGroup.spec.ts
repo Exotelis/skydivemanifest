@@ -22,6 +22,7 @@ describe('FormGroup.vue', () => {
 
   it('check default values of the form group', () => {
     expect(component.props().description).toBe(null);
+    expect(component.props().hideLabel).toBeFalsy();
     expect(component.props().horizontal).toBeFalsy();
     expect(component.props().invalidFeedback).toBe(null);
     expect(component.props().labelColXs).toBe(2);
@@ -67,6 +68,16 @@ describe('FormGroup.vue', () => {
   it('check if attribute id is set on description when labelFor is defined', () => {
     component.setProps({ description: 'Description message', labelFor: 'test' });
     expect(component.find('.form-text.text-muted').attributes().id).toBe('testDescription');
+  });
+
+  it('check if class sr-only is not set if hideLabel is false', () => {
+    component.setProps({ label: 'Test' });
+    expect(component.find('label').classes()).not.toContain('sr-only');
+  });
+
+  it('check if class sr-only is set if hideLabel is true', () => {
+    component.setProps({ label: 'Test', hideLabel: true });
+    expect(component.find('label').classes()).toContain('sr-only');
   });
 
   it('check if class row is not set if horizontal is false', () => {
