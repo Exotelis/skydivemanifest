@@ -14,4 +14,5 @@ return [
     'email_token_not_found' => 'Sie haben keine Änderung Ihrer E-Mail-Adresse angefordert.',
     'email_token_throttled' => 'Bitte warten Sie, bevor Sie es erneut versuchen. Sie können nur einmal pro :time eine neue Bestätigungsmail anfordern.',
     'temporarily_locked'    => 'Sie haben Ihre Benutzerdaten zu häufig falsch eingegeben, daher wurde Ihr Benutzerkonto vorübergehend gesperrt. Es wird automatisch in :expires freigeschaltet.',
+    'validation_error'      => 'Die Überprüfung Ihrer Daten ist fehlgeschlagen. Die Fehler wurden im unten stehenden Formular markiert.',
 ];

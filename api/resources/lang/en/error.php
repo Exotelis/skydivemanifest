@@ -14,4 +14,5 @@ return [
     'email_token_not_found' => 'You haven\'t requested an email address change.',
     'email_token_throttled' => 'Please wait before retrying. You can resend the verification email once every :time.',
     'temporarily_locked'    => 'Your account has been locked temporarily, because you entered incorrect user credentials too often. It will be unlocked in :expires.',
+    'validation_error'      => 'The validation of your data has been failed. Errors have been highlighted in the form below.',
 ];
