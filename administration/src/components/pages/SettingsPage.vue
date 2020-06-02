@@ -1,6 +1,6 @@
 <template>
   <div>
-   {{ $t('pages.title.settings') }}
+   {{ $t('page.title.settings') }}
   </div>
 </template>
 

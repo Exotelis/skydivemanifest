@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>{{ $t('pages.login.formHeader') }}</h3>
+    <h3>{{ $t('page.login.formHeader') }}</h3>
 
     <div v-if="error" class="alert alert-danger" role="alert">
       {{ error }}

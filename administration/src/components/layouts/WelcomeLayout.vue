@@ -5,9 +5,9 @@
       <div class="welcome-left">
         <div class="welcome-textbox">
           <div class="welcome-title">{{ getTimeBasedTitle }}</div>
-          <div class="welcome-subtitle">{{ $t('pages.login.subtitle') }}</div>
+          <div class="welcome-subtitle">{{ $t('page.login.subtitle') }}</div>
           <div class="welcome-author">
-            {{ $t('pages.login.imageAuthor', { author: 'wesleyjharrison', platform: 'pixabay'}) }}
+            {{ $t('page.login.imageAuthor', { author: 'wesleyjharrison', platform: 'pixabay'}) }}
           </div>
         </div>
       </div>
@@ -29,22 +29,22 @@ export default class WelcomeLayout extends Vue {
 
   get getTimeBasedTitle (): TranslateResult {
     if (this.time >= 5 && this.time < 12) {
-      return this.$t('pages.login.title.morning');
+      return this.$t('page.login.title.morning');
     }
 
     if (this.time >= 12 && this.time < 15) {
-      return this.$t('pages.login.title.noon');
+      return this.$t('page.login.title.noon');
     }
 
     if (this.time >= 15 && this.time < 18) {
-      return this.$t('pages.login.title.afternoon');
+      return this.$t('page.login.title.afternoon');
     }
 
     if (this.time >= 18 && this.time <= 23) {
-      return this.$t('pages.login.title.evening');
+      return this.$t('page.login.title.evening');
     }
 
-    return this.$t('pages.login.title.other');
+    return this.$t('page.login.title.other');
   }
 }
 </script>

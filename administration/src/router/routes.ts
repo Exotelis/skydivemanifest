@@ -10,7 +10,7 @@ const routes = [
     name: 'dashboard',
     component: () => import(/* webpackChunkName: "dashboard" */ '@/components/pages/DashboardPage.vue'),
     meta: {
-      title: 'pages.title.dashboard',
+      title: 'page.title.dashboard',
       requiresAuth: true
     }
   },
@@ -18,7 +18,7 @@ const routes = [
     path: '/aircrafts',
     name: 'aircrafts',
     meta: {
-      title: 'pages.title.aircrafts',
+      title: 'page.title.aircrafts',
       requiresAuth: true
     }
   },
@@ -26,7 +26,7 @@ const routes = [
     path: '/bookings',
     name: 'bookings',
     meta: {
-      title: 'pages.title.bookings',
+      title: 'page.title.bookings',
       requiresAuth: true
     }
   },
@@ -35,7 +35,7 @@ const routes = [
     name: 'login',
     component: LoginPage,
     meta: {
-      title: 'pages.title.login',
+      title: 'page.title.login',
       layout: 'Welcome',
       requiresAuth: false
     }
@@ -44,7 +44,7 @@ const routes = [
     path: '/manifest',
     name: 'manifest',
     meta: {
-      title: 'pages.title.manifest',
+      title: 'page.title.manifest',
       requiresAuth: true
     }
   },
@@ -52,7 +52,7 @@ const routes = [
     path: '/payments',
     name: 'payments',
     meta: {
-      title: 'pages.title.payments',
+      title: 'page.title.payments',
       requiresAuth: true
     }
   },
@@ -61,7 +61,7 @@ const routes = [
     name: 'settings',
     component: () => import(/* webpackChunkName: "settings" */ '@/components/pages/SettingsPage.vue'),
     meta: {
-      title: 'pages.title.settings',
+      title: 'page.title.settings',
       requiresAuth: true
     }
   },
@@ -69,7 +69,7 @@ const routes = [
     path: '/skydiver',
     name: 'skydiver',
     meta: {
-      title: 'pages.title.skydiver',
+      title: 'page.title.skydiver',
       requiresAuth: true
     }
   },
@@ -77,7 +77,7 @@ const routes = [
     path: '/staff',
     name: 'staff',
     meta: {
-      title: 'pages.title.staff',
+      title: 'page.title.staff',
       requiresAuth: true
     }
   },
@@ -85,7 +85,7 @@ const routes = [
     path: '/system',
     name: 'System',
     meta: {
-      title: 'pages.title.system',
+      title: 'page.title.system',
       requiresAuth: true
     }
   },
@@ -93,7 +93,7 @@ const routes = [
     path: '/tickets',
     name: 'tickets',
     meta: {
-      title: 'pages.title.tickets',
+      title: 'page.title.tickets',
       requiresAuth: true
     }
   },
@@ -101,7 +101,7 @@ const routes = [
     path: '/users',
     name: 'users',
     meta: {
-      title: 'pages.title.users',
+      title: 'page.title.users',
       requiresAuth: true
     }
   },
@@ -109,7 +109,7 @@ const routes = [
     path: '/userroles',
     name: 'userroles',
     meta: {
-      title: 'pages.title.userroles',
+      title: 'page.title.userroles',
       requiresAuth: true
     }
   }

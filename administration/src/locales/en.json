@@ -97,7 +97,7 @@
       "system": "System",
       "translations": "Translations"
     },
-    "pages": {
+    "page": {
       "login": {
         "title": {
           "morning": "Good morning,",

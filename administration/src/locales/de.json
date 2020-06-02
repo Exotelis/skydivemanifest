@@ -30,16 +30,6 @@
         "title": "Hey <strong>%{name}</strong>,<br>bist Du noch da?"
       }
     },
-    "form": {
-      "label": {
-        "password": "Passwort",
-        "username": "E-Mail / Benutzername"
-      },
-      "placeholder": {
-        "password": "Geben Sie Ihr Passwort ein...",
-        "username": "Geben Sie Ihre E-Mail-Adresse oder Ihren Benutzernamen ein..."
-      }
-    },
     "error": {
       "form": {
         "pattern": "Bitte passen Sie Ihre Eingabe an das gewünschte Format an.",
@@ -85,6 +75,16 @@
       },
       "signOutError": "Abmelden fehlgeschlagen"
     },
+    "form": {
+      "label": {
+        "password": "Passwort",
+        "username": "E-Mail / Benutzername"
+      },
+      "placeholder": {
+        "password": "Geben Sie Ihr Passwort ein...",
+        "username": "Geben Sie Ihre E-Mail-Adresse oder Ihren Benutzernamen ein..."
+      }
+    },
     "general": {
       "allRightsReserved": "Alle Rechte vorbehalten",
       "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
@@ -97,7 +97,7 @@
       "system": "System",
       "translations": "Übersetzungen"
     },
-    "pages": {
+    "page": {
       "login": {
         "title": {
           "morning": "Guten Morgen,",

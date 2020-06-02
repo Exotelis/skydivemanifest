@@ -25,28 +25,28 @@ describe('WelcomeLayout.vue', () => {
     expect(component.vm.time).toBe(20);
   });
 
-  it('return "pages.login.title.morning"', () => {
+  it('return "page.login.title.morning"', () => {
     component.setData({ time: new Date('2020-01-26T05:00:00').getHours() });
-    expect(component.vm.getTimeBasedTitle).toBe('pages.login.title.morning');
+    expect(component.vm.getTimeBasedTitle).toBe('page.login.title.morning');
   });
 
-  it('return "pages.login.title.noon"', () => {
+  it('return "page.login.title.noon"', () => {
     component.setData({ time: new Date('2020-01-26T12:00:00').getHours() });
-    expect(component.vm.getTimeBasedTitle).toBe('pages.login.title.noon');
+    expect(component.vm.getTimeBasedTitle).toBe('page.login.title.noon');
   });
 
-  it('return "pages.login.title.afternoon"', () => {
+  it('return "page.login.title.afternoon"', () => {
     component.setData({ time: new Date('2020-01-26T15:00:00').getHours() });
-    expect(component.vm.getTimeBasedTitle).toBe('pages.login.title.afternoon');
+    expect(component.vm.getTimeBasedTitle).toBe('page.login.title.afternoon');
   });
 
-  it('return "pages.login.title.evening"', () => {
+  it('return "page.login.title.evening"', () => {
     component.setData({ time: new Date('2020-01-26T18:00:00').getHours() });
-    expect(component.vm.getTimeBasedTitle).toBe('pages.login.title.evening');
+    expect(component.vm.getTimeBasedTitle).toBe('page.login.title.evening');
   });
 
-  it('return "pages.login.title.other"', () => {
+  it('return "page.login.title.other"', () => {
     component.setData({ time: new Date('2020-01-26T00:00:00').getHours() });
-    expect(component.vm.getTimeBasedTitle).toBe('pages.login.title.other');
+    expect(component.vm.getTimeBasedTitle).toBe('page.login.title.other');
   });
 });

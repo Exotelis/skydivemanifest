@@ -24,13 +24,13 @@ describe('NavigationItem.vue', () => {
   it('create a link with a title of the / route', () => {
     const component: any = factory({ path: '/', type: NavigationType.Path });
     expect(component.find('.nav-link').attributes().to).toBe('/');
-    expect(component.find('.nav-link').text()).toBe('pages.title.dashboard');
+    expect(component.find('.nav-link').text()).toBe('page.title.dashboard');
   });
 
   it('create a title that is not an anchor', () => {
-    const component: any = factory({ title: 'pages.title.dashboard', type: NavigationType.Title });
+    const component: any = factory({ title: 'page.title.dashboard', type: NavigationType.Title });
     expect(component.find('.nav-link').classes()).toContain('menu-subtitle');
-    expect(component.find('.nav-link').text()).toBe('pages.title.dashboard');
+    expect(component.find('.nav-link').text()).toBe('page.title.dashboard');
   });
 
   it('create a submenu with a title, a close button and some children', () => {
@@ -38,7 +38,7 @@ describe('NavigationItem.vue', () => {
       type: NavigationType.Submenuhandler,
       children: [
         { title: 'general.permissions', type: NavigationType.Title },
-        { title: 'pages.title.users', path: '/users', type: NavigationType.Path }
+        { title: 'page.title.users', path: '/users', type: NavigationType.Path }
       ]
     });
     expect(component.find('.nav-link').text()).toBe('general.system');
@@ -50,7 +50,7 @@ describe('NavigationItem.vue', () => {
 
   it('create each type and display an icon', () => {
     const path: any = factory({ icon: 'test', path: '/', type: NavigationType.Path });
-    const title: any = factory({ icon: 'test', title: 'pages.title.dashboard', type: NavigationType.Title });
+    const title: any = factory({ icon: 'test', title: 'page.title.dashboard', type: NavigationType.Title });
     const submenu: any = factory({ icon: 'test',
       title: 'general.system',
       type: NavigationType.Submenuhandler,
@@ -74,7 +74,7 @@ describe('NavigationItem.vue', () => {
       type: NavigationType.Submenuhandler,
       children: [
         { title: 'general.permissions', type: NavigationType.Title },
-        { title: 'pages.title.users', path: '/users', type: NavigationType.Path }
+        { title: 'page.title.users', path: '/users', type: NavigationType.Path }
       ]
     });
     component.find('.nav-link').trigger('click');
@@ -89,7 +89,7 @@ describe('NavigationItem.vue', () => {
       type: NavigationType.Submenuhandler,
       children: [
         { title: 'general.permissions', type: NavigationType.Title },
-        { title: 'pages.title.users', path: '/users', type: NavigationType.Path }
+        { title: 'page.title.users', path: '/users', type: NavigationType.Path }
       ]
     });
     component.vm.isSubmenuOpen = true; // Mock open submenu
