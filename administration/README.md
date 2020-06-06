@@ -13,6 +13,13 @@ development or to build the bundle, to use it in production.
   + [NavigationGenerator and NavigationItems](#navigationgenerator-and-navigationitems)
   + [Form components](#form-components)
     * [form-group](#form-group)
+    * [input-date](#input-date)
+    * [input-email](#input-email)
+    * [input-hidden](#input-hidden)
+    * [input-password](#input-password)
+    * [input-text](#input-text)
+    * [select-wrapper](#select-wrapper)
+    * [button-wrapper](#button-wrapper)
   + [Form validation](#form-validation)
   + [Layouts](#layouts)
 - [Internationalization](#internationalization)
@@ -162,21 +169,44 @@ for what width which identifier stands for, see the
 </form-group>
 ```
 
-#### input-text
-Creates an input element with type text. If the attributes `plaintext` and `readonly` are both true, the styling of the
-form element will be removed.
+#### input-date
+Creates an input element with type date. The format of min and max must be `YYYY-MM-DD`. the value of `step` must be
+given in days. The default value of `step` is 1, indicating 1 day. In the example below, `max` is set to the current
+date.
 
-A full list of available attributes you can find in the [InputText.vue component](src/components/form/InputText.vue).
+A full list of available attributes you can find in the [InputDate.vue component](src/components/form/InputDate.vue).
 
 Example:
 ```
-<input-text autofocus
+<input-date autofocus
             id="name"
-            placeholder="Your name"
+            min="1980-10-23"
             required
-            v-model="form.name"
-            :plaintext="true"
-            :readonly="true"></input-text>
+            step="5"
+            v-model="form.date"
+            :max="new Date(Date.now()).toISOString().split('T')[0]"></input-date>
+```
+
+#### input-email
+Creates an input element with type email. In the example below, only email addresses with the tld .org are allowed.
+
+A full list of available attributes you can find in the [InputEmail.vue component](src/components/form/InputEmail.vue).
+
+Example:
+```
+<input-email id="email"
+             pattern=".*.org"
+             required
+             v-model.trim="form.email"
+             :placeholder="$t('form.placeholder.email')"></input-email>
+```
+
+#### input-hidden
+Creates an input element with type hidden. The attribute `value` must be set, to submit any data.
+
+Example:
+```
+<input-hidden form="formId" id="hidden01" type="hidden" value="Some value"></input-hidden>
 ```
 
 #### input-password
@@ -189,18 +219,115 @@ A full list of available attributes you can find in the
 Example:
 ```
 <input-password id="password"
+                is-toggleable
                 placeholder="Your password"
                 required
-                v-model="form.password"
-                :is-toggleable="true"></input-password>
+                v-model="form.password"></input-password>
 ```
 
-#### input-hidden
-Creates an input element with type hidden. The attribute `value` must be set, to submit any data.
+#### input-text
+Creates an input element with type text. If the attributes `plaintext` and `readonly` are both true, the styling of the
+form element will be removed.
+
+A full list of available attributes you can find in the [InputText.vue component](src/components/form/InputText.vue).
 
 Example:
 ```
-<input-hidden form="formId" id="hidden01" type="hidden" value="Some value">
+<input-text autofocus
+            id="name"
+            placeholder="Your name"
+            plaintext
+            readonly
+            required
+            v-model="form.name"></input-text>
+```
+
+#### select-wrapper
+Creates a select element. You can define options in two different ways or even mix them. The first way is to define the
+`option` elements inside the `select-wrapper`:
+```
+<select-wrapper>
+    <option value="female">Female</option>
+    <option value="male">Male</option>
+</select-wrapper>
+```
+The second way is to use the `options` attribute of the `select-wrapper`:
+```
+<select-wrapper :options="options"></select-wrapper>
+
+// In typescript:
+import { Options } from '@/types/Options';
+
+export default class SomeClass extends Vue {
+  options: Options = [
+    { value: 'female', text: 'Female' },
+    { value: 'male', text: 'Male' }
+  ];
+}
+```
+Note: If you mix both approaches, make sure the `value` is unique.
+
+It is also possible to define `optgroups` in the typescript option. This is the structure of options and optgroups:
+```
+// Options
+{ disabled?: boolean; text: string; value: string|number|boolean|object|null|Array<string|number|boolean|object>; }
+
+// OptGroups
+{ disabled?: boolean; label: string; options: Options[]; }
+```
+
+It is also possible to pre select values. Without multiple:
+```
+<select-wrapper v-model="selected">
+    <option value="foo">Foo</option>
+    <option value="bar">Bar</option>
+</select-wrapper>
+
+// In Typescript
+selected = 'foo';
+```
+With multiple:
+```
+<select-wrapper multiple v-model="selected">
+    <option value="foo">Foo</option>
+    <option value="bar">Bar</option>
+</select-wrapper>
+
+// In Typescript
+selected = ['foo', 'bar']';
+```
+Note: If you don't want to pre select some value, just leave the string or array empty.
+
+When multiple is not set and no default value is defined, a placeholder option with the text
+`-- Please select an option --` will be rendered. In some cases you might want to use a custom text. In this case you
+can overwrite the placeholder:
+```
+<select-wrapper>
+    <template #placeholder>Custom text</template>
+</select-wrapper>
+```
+or with a translatable string:
+```
+<select-wrapper>
+    <template #placeholder>{{ $t('form.placeholder.dob') }}</template>
+</select-wrapper>
+```
+
+A full list of available attributes you can find in the [SelectWrapper.vue component](src/components/form/SelectWrapper.vue).
+
+Full example:
+```
+<select-wrapper id="someId" v-model="selected" :options="options" required>
+    <template #placeholder>-- Please select with custom text --></template>
+    <option value="foo">Foo</option>
+</select-wrapper>
+
+// In typescript
+selected = '';
+options: Options = [
+  { value: 'bar', text: 'Bar' },
+  { value: 'baz', text: 'Baz' }
+];
 ```
 
 #### button-wrapper
@@ -213,10 +340,10 @@ Example:
 <div class="clearfix">
     <button-wrapper icon="mdi-login"
                     id="signin"
+                    right-aligned
                     type="submit"
                     :disabled="disabledSubmit"
-                    :loading="loading"
-                    :right-aligned="true">{{ $t('login.signIn') }}</button-wrapper>
+                    :loading="loading">{{ $t('login.signIn') }}</button-wrapper>
 </div>
 ```
 
@@ -304,6 +431,8 @@ handleSubmit (): void {
     }
 }
 ```
+
+Note: For a full support of the validation, please use the [from-group component](#form-group) as a wrapper.
 
 ### Layouts
 Different routes can have different layouts. To set a layout for a specific route just add the meta field `layout` with

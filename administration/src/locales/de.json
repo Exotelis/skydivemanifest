@@ -54,7 +54,7 @@
         "required": {
           "checkbox": "Bitte aktivieren Sie dieses Feld, um fortfahren zu können.",
           "default": "Bitte füllen Sie dieses Feld aus.",
-          "email": "Bitte geben Sie eine E-Mail-Adresse an.",
+          "email": "Bitte geben Sie eine gültige E-Mail-Adresse an.",
           "file": "Bitte wählen Sie eine Datei aus.",
           "number": "Bitte geben Sie eine Nummer ein.",
           "radio": "Bitte wählen Sie eine dieser Optionen.",
@@ -82,6 +82,7 @@
       },
       "placeholder": {
         "password": "Geben Sie Ihr Passwort ein...",
+        "select": "-- Bitte wählen Sie eine Option --",
         "username": "Geben Sie Ihre E-Mail-Adresse oder Ihren Benutzernamen ein..."
       }
     },

@@ -52,8 +52,8 @@ import { Component, Prop } from 'vue-property-decorator';
 @Component({})
 export default class InputText extends Vue {
   @Prop({ default: null }) readonly description!: string;
-  @Prop({ default: false }) readonly hideLabel!: boolean;
-  @Prop({ default: false }) readonly horizontal!: boolean;
+  @Prop([Boolean]) readonly hideLabel!: boolean;
+  @Prop([Boolean]) readonly horizontal!: boolean;
   @Prop({ default: null }) readonly invalidFeedback!: string;
   @Prop({ default: null }) readonly label!: string;
   @Prop({ default: null }) readonly labelFor!: string;

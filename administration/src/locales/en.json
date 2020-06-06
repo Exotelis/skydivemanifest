@@ -54,7 +54,7 @@
         "required": {
           "checkbox": "Please check this box if you want to proceed.",
           "default": "Please fill out this field.",
-          "email": "Please enter an email address.",
+          "email": "Please enter a valid email address.",
           "file": "Please select a file.",
           "number": "Please enter a number.",
           "radio": "Please select one of these options.",
@@ -82,6 +82,7 @@
       },
       "placeholder": {
         "password": "Enter your password...",
+        "select": "-- Please select an option --",
         "username": "Enter your email address or username..."
       }
     },

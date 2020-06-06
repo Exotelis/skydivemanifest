@@ -6,6 +6,6 @@ import { Component, Prop } from 'vue-property-decorator';
 
 @Component({})
 export default class ReadonlyMixin extends Vue {
-  @Prop({ default: false }) readonly plaintext!: boolean;
-  @Prop({ default: false }) readonly readonly!: boolean;
+  @Prop([Boolean]) readonly plaintext!: boolean;
+  @Prop([Boolean]) readonly readonly!: boolean;
 }

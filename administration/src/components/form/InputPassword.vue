@@ -40,7 +40,7 @@ import TextualMixin from '@/mixins/form/TextualMixin';
 @Component({})
 export default class InputText extends Mixins(ListMixin, PatternMixin, ReadonlyMixin, RequiredMixin, SharedMixin,
   TextualMixin) {
-  @Prop({ default: false }) readonly isToggleable!: boolean;
+  @Prop([Boolean]) readonly isToggleable!: boolean;
   isVisible: boolean = false;
 }
 </script>

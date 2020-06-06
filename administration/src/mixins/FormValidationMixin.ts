@@ -83,11 +83,19 @@ function inputEventListener (event: Event): void {
   }, 600);
 }
 
-function focusoutEventListener (event: Event): void {
+function focusoutEventListener (event: FocusEvent): void {
+  const currentTarget = event.currentTarget as HTMLFormElement;
+  const relatedTarget = event.relatedTarget as HTMLFormElement;
+
+  if ((!currentTarget.contains(relatedTarget) && relatedTarget !== null) ||
+    relatedTarget instanceof HTMLSelectElement) {
+    return;
+  }
+
   if (!isValidatableFormElement(event.target)) {
     return;
   }
-  const vm: Vue = (event.currentTarget as HTMLFormElement).vm;
+  const vm: Vue = currentTarget.vm;
   const target: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement = event.target as any;
 
   clearTimeout(vm.$data.validationTimeout[target.id]);

@@ -5,5 +5,5 @@ import { Component, Prop } from 'vue-property-decorator';
 
 @Component({})
 export default class MultipleMixin extends Vue {
-  @Prop({ default: false }) readonly multiple!: boolean;
+  @Prop([Boolean]) readonly multiple!: boolean;
 }

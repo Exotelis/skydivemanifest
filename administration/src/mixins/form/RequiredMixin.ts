@@ -7,5 +7,5 @@ import { Component, Prop } from 'vue-property-decorator';
 
 @Component({})
 export default class RequiredMixin extends Vue {
-  @Prop({ default: false }) readonly required!: boolean;
+  @Prop([Boolean]) readonly required!: boolean;
 }
