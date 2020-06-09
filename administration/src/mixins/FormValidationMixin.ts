@@ -313,7 +313,9 @@ function isValidatableFormElement (target: EventTarget|null): boolean {
 function setInvalid (el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): void {
   if (!el.classList.contains('is-invalid')) {
     el.classList.add('is-invalid');
-    el.parentElement!.classList.add('is-invalid');
+    if (el.parentElement!.localName !== 'form') {
+      el.parentElement!.classList.add('is-invalid');
+    }
   }
 
   if (el.classList.contains('is-valid')) {
@@ -325,7 +327,9 @@ function setInvalid (el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement)
 function setValid (el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): void {
   if (!el.classList.contains('is-valid')) {
     el.classList.add('is-valid');
-    el.parentElement!.classList.add('is-valid');
+    if (el.parentElement!.localName !== 'form') {
+      el.parentElement!.classList.add('is-valid');
+    }
   }
 
   if (el.classList.contains('is-invalid')) {
