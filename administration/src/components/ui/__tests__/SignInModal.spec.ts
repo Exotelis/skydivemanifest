@@ -65,6 +65,8 @@ describe('SignInModal.vue', () => {
 
     await flushPromises();
     expect(component.vm.error).toBe('Something went wrong.');
+
+    spy.mockRestore();
   });
 
   it('remain signed in', async () => {
@@ -77,5 +79,7 @@ describe('SignInModal.vue', () => {
 
     await flushPromises();
     expect(spy).toHaveBeenCalledWith('sign-in-modal');
+
+    spy.mockRestore();
   });
 });
