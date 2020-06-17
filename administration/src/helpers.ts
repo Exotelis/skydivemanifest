@@ -22,3 +22,11 @@ export function getUser (): UserShortModel {
 
   return JSON.parse(user) as UserShortModel;
 }
+
+export function htmlEntities (str: string): string {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}

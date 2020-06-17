@@ -4,6 +4,7 @@ import { CredentialsModel } from '@/models/CredentialsModel';
 import { EventBus } from '@/event-bus';
 import { getCookie } from '@/helpers';
 import { loadLanguageAsync } from '@/i18n';
+import { RegisterModel } from '@/models/RegisterModel';
 import { UserShortModel } from '@/models/UserShortModel';
 
 export default {
@@ -38,6 +39,10 @@ export default {
 
     // In case of success: Set new refresh_token
     this.refreshToken = response.data.refresh_token;
+  },
+
+  async register (data: RegisterModel): Promise<any> {
+    return axios.post('/auth/register', data);
   },
 
   checkAuth (): boolean {

@@ -57,6 +57,26 @@ const routes = [
     }
   },
   {
+    path: '/register',
+    name: 'register',
+    component: () => import(/* webpackChunkName: "register" */ '@/components/pages/RegisterPage.vue'),
+    meta: {
+      title: 'page.title.register',
+      layout: 'Welcome',
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/register-success',
+    name: 'registerSuccess',
+    component: () => import(/* webpackChunkName: "registerSuccess" */ '@/components/pages/RegisterSuccessPage.vue'),
+    meta: {
+      title: 'page.title.registerSuccess',
+      layout: 'Welcome',
+      requiresAuth: false
+    }
+  },
+  {
     path: '/settings',
     name: 'settings',
     component: () => import(/* webpackChunkName: "settings" */ '@/components/pages/SettingsPage.vue'),

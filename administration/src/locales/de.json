@@ -77,24 +77,46 @@
     },
     "form": {
       "label": {
+        "dob": "Geburtsdatum",
+        "email": "E-Mail-Adresse",
+        "firstName": "Vorname",
+        "gender": "Geschlecht",
+        "lastName": "Nachname",
         "password": "Passwort",
-        "username": "E-Mail / Benutzername"
+        "passwordConfirmation": "Passwort bestätigen",
+        "username": "Benutzername",
+        "usernameEmail": "E-Mail / Benutzername"
       },
       "placeholder": {
+        "dob": "Geben Sie Ihr Geburtsdatum ein...",
+        "email": "Geben Sie Ihre E-Mail-Adresse ein...",
+        "firstName": "Geben Sie Ihren Vornamen ein...",
+        "gender": "-- Bitte wählen Sie Ihr Geschlecht --",
+        "lastName": "Geben Sie Ihren Nachnamen ein...",
         "password": "Geben Sie Ihr Passwort ein...",
+        "passwordConfirmation": "Bestätigen Sie Ihr Passwort...",
         "select": "-- Bitte wählen Sie eine Option --",
-        "username": "Geben Sie Ihre E-Mail-Adresse oder Ihren Benutzernamen ein..."
+        "username": "Geben Sie Ihren Benutzernamen ein...",
+        "usernameEmail": "Geben Sie Ihre E-Mail-Adresse oder Ihren Benutzernamen ein..."
       }
     },
     "general": {
       "allRightsReserved": "Alle Rechte vorbehalten",
       "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
+      "gender": {
+        "diverse": "divers",
+        "female": "weiblich",
+        "male": "männlich",
+        "unspecified": "unbekannt"
+      },
       "loading": "Lädt...",
       "othersettings": "Andere Einstellungen",
       "permissions": "Berechtigungen",
       "reportBug": "Ein Problem melden",
       "signIn": "Anmelden",
+      "signInNow": "Jetzt anmelden",
       "signOut": "Abmelden",
+      "signUp": "Registrieren",
       "system": "System",
       "translations": "Übersetzungen"
     },
@@ -111,6 +133,15 @@
         "imageAuthor": "Foto von {author} auf {platform}",
         "formHeader": "Bitte melden Sie sich an."
       },
+      "register": {
+        "back": "Bereits registriert?"
+      },
+      "registerSuccess": {
+        "confirmation": "Prüfen Sie die Bestätigungs-Email unter <strong>{email}</strong>",
+        "contactUs": "Können Sie dennoch keine E-Mail von uns finden, nehmen Sie bitte Kontakt zu uns auf.",
+        "header": "Vielen Dank für Ihre Registrierung!",
+        "note": "Sollten Sie keine E-Mail erhalten haben, prüfen Sie zunächst Ihren Spam-Ordner und vergewissern Sie sich, dass Sie die E-Mail-Adresse korrekt eingegeben haben."
+      },
       "title": {
         "aircrafts": "Flugzeuge",
         "bookings": "Buchungen",
@@ -118,6 +149,8 @@
         "login": "Login",
         "manifest": "Manifest",
         "payments": "Zahlungen",
+        "register": "Registrierung",
+        "registerSuccess": "Registrierung erfolgreich",
         "settings": "Allgemeine Einstellungen",
         "skydiver": "Springer",
         "staff": "Mitarbeiter",

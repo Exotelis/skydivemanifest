@@ -77,24 +77,46 @@
     },
     "form": {
       "label": {
+        "dob": "Date of birth",
+        "email": "Email address",
+        "firstName": "First name",
+        "gender": "Gender",
+        "lastName": "Last name",
         "password": "Password",
-        "username": "Email / Username"
+        "passwordConfirmation": "Confirm password",
+        "username": "Username",
+        "usernameEmail": "Email / Username"
       },
       "placeholder": {
+        "dob": "Enter your date of birth...",
+        "email": "Enter your email address...",
+        "firstName": "Enter your first name...",
+        "gender": "-- Please select your gender --",
+        "lastName": "Enter your last name...",
         "password": "Enter your password...",
+        "passwordConfirmation": "Confirm your password...",
         "select": "-- Please select an option --",
-        "username": "Enter your email address or username..."
+        "username": "Enter your username...",
+        "usernameEmail": "Enter your email address or username..."
       }
     },
     "general": {
       "allRightsReserved": "All rights reserved",
       "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
+      "gender": {
+        "diverse": "Diverse",
+        "female": "Female",
+        "male": "Male",
+        "unspecified": "Unspecified"
+      },
       "loading": "Loading...",
       "othersettings": "Other settings",
       "permissions": "Permissions",
       "reportBug": "Report a bug",
       "signIn": "Sign In",
+      "signInNow": "Sign In now",
       "signOut": "Sign Out",
+      "signUp": "Sign Up",
       "system": "System",
       "translations": "Translations"
     },
@@ -111,6 +133,15 @@
         "imageAuthor": "Photo by {author} on {platform}",
         "formHeader": "Please sign in."
       },
+      "register": {
+        "back": "Already have an account?"
+      },
+      "registerSuccess": {
+        "confirmation": "Check the confirmation email at <strong>{email}</strong>",
+        "contactUs": "If you still cannot find an email, please contact us.",
+        "header": "Thank You for Signing Up!",
+        "note": "Note: If you do not receive the email in few minutes, please check your spam folder and verify if you typed your email correctly."
+      },
       "title": {
         "aircrafts": "Aircrafts",
         "bookings": "Bookings",
@@ -118,6 +149,8 @@
         "login": "Login",
         "manifest": "Manifest",
         "payments": "Payments",
+        "register": "Sign Up",
+        "registerSuccess": "Registration successful",
         "settings": "General settings",
         "skydiver": "Skydiver",
         "staff": "Staff",

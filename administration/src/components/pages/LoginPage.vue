@@ -9,12 +9,12 @@
     <form @submit.prevent="login" novalidate v-validate>
       <form-group label-for="username"
                   :invalid-feedback="errors.username"
-                  :label="$t('form.label.username')">
+                  :label="$t('form.label.usernameEmail')">
         <input-text autofocus
                     id="username"
                     required
                     v-model.trim="form.username"
-                    :placeholder="$t('form.placeholder.username')"></input-text>
+                    :placeholder="$t('form.placeholder.usernameEmail')"></input-text>
       </form-group>
       <form-group label-for="password"
                   :invalid-feedback="errors.password"
@@ -22,18 +22,20 @@
         <input-password id="password"
                         required
                         v-model.trim="form.password"
-                        :is-toggleable="true"
+                        is-toggleable
                         :placeholder="$t('form.placeholder.password')"></input-password>
       </form-group>
-      <div class="clearfix">
-        <button-wrapper icon="mdi-login"
-                        id="signin"
-                        type="submit"
-                        :disabled="disabledSubmit"
-                        :loading="loading"
-                        :right-aligned="true">{{ $t('general.signIn') }}</button-wrapper>
-      </div>
+      <button-wrapper block
+                      class="mb-4"
+                      icon="mdi-login"
+                      id="signin"
+                      type="submit"
+                      :disabled="disabledSubmit"
+                      :loading="loading">{{ $t('general.signIn') }}</button-wrapper>
     </form>
+    <div class="text-center">
+      <router-link to="/register"><small><strong>{{ $t('general.signUp') }}</strong></small></router-link>
+    </div>
   </div>
 </template>
 
