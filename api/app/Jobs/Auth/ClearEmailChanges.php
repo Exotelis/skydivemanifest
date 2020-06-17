@@ -26,10 +26,15 @@ class ClearEmailChanges implements ShouldQueue
      */
     public function handle()
     {
+        // Convert delete unverified after from days to minutes
+        $deleteUserAfter = config('app.users.delete_unverified_after') * 24 * 60;
+
         foreach(config('auth.email_changes') as $config) {
+            $minutes = $deleteUserAfter > $config['expire'] ? $deleteUserAfter : $config['expire'];
+
             try {
                 DB::table($config['table'])
-                    ->where('created_at', '<', Carbon::now()->subMinutes($config['expire']))
+                    ->where('created_at', '<', Carbon::now()->subMinutes($minutes))
                     ->delete();
             } catch(\Exception $exception) {
                 Log::error('Failed to delete email changes: ' . $exception->getMessage());
