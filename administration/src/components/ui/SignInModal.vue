@@ -46,7 +46,7 @@ import Vue from 'vue';
 import { Component, Watch } from 'vue-property-decorator';
 import { CredentialsModel } from '@/models/CredentialsModel';
 import { EventBus } from '@/event-bus';
-import { getUser } from '@/helpers';
+import { getUser, htmlEntities } from '@/helpers';
 import { ModalPlugin } from 'bootstrap-vue';
 import AuthService from '@/services/AuthService';
 import ButtonWrapper from '@/components/form/ButtonWrapper.vue';
@@ -78,7 +78,7 @@ export default class SignInModal extends Vue {
   }
 
   async handleLogin (): Promise<any> {
-    let credentials: CredentialsModel = { username: getUser().username!, password: this.form.password };
+    let credentials: CredentialsModel = { username: htmlEntities(getUser().username!), password: this.form.password };
     this.loading = true;
 
     try {
