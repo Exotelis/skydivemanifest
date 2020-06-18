@@ -20,7 +20,7 @@ router.beforeEach((to, from, next) => {
     parameterList = '?' + Object.entries(to.query).map((k) => k.join('=')).join('&');
   }
 
-  if (to.path === '/login' && auth) {
+  if (!to.meta.requiresAuth && auth) {
     // If signed in - go to dashboard
     next('/' + parameterList);
   } else if (to.path !== '/login' && to.meta.requiresAuth && !auth) {
