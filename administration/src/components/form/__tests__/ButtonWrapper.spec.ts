@@ -42,8 +42,7 @@ describe('ButtonWrapper.vue', () => {
     expect(component.find('button').classes()).toContain('btn-block');
   });
 
-  it('check if the attribute class contains "float-left" and "mr-2" if button isn\'t right aligned', () => {
-    expect(component.find('button').classes()).toContain('float-left');
+  it('check if the attribute class contains "mr-2" if button isn\'t right aligned', () => {
     expect(component.find('button').classes()).toContain('mr-2');
   });
 
