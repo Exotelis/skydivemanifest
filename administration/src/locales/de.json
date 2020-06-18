@@ -25,6 +25,12 @@
       }
     },
     "component": {
+      "confirmEmailModal": {
+        "errorMsg": "Ihre E-Mail-Adresse konnte nicht bestätigt werden. %{reason}",
+        "solution": "Wenn Sie mit Ihrem Benutzerkonto angemeldet sind, können Sie sich über ihr persönliches Profil ein neues Token anfordern.",
+        "successMsg": "Ihre E-Mail-Adresse wurde erfolgreich bestätigt.",
+        "title": "E-Mail Bestätigung"
+      },
       "signInModal": {
         "remainSignedIn": "Angemeldet bleiben",
         "title": "Hey <strong>%{name}</strong>,<br>bist Du noch da?"
@@ -102,6 +108,9 @@
     },
     "general": {
       "allRightsReserved": "Alle Rechte vorbehalten",
+      "close": "Schließen",
+      "continue": "Fortsetzen",
+      "continueUsing": "Weitermachen",
       "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
       "gender": {
         "diverse": "divers",

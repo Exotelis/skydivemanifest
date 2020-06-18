@@ -3,6 +3,30 @@ import { CredentialsModel } from '@/models/CredentialsModel';
 import { RegisterModel } from '@/models/RegisterModel';
 
 export default {
+  confirmEmail (token: String): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      if (token === 'ace97ba108eb058d18384e70cba8f13a91332165ea9b271b4f2d0003ae0f0337') {
+        resolve({
+          data: { message: 'Email address has been verified successfully.' },
+          status: 200,
+          statusText: 'OK',
+          headers: {},
+          config: {}
+        });
+      }
+
+      const e = new Error('Something went wrong') as AxiosError;
+      e.response = {
+        data: { message: 'This email change token is invalid.' },
+        status: 400,
+        statusText: 'Bad Request',
+        headers: {},
+        config: {}
+      };
+      reject(e);
+    });
+  },
+
   login (credentials: CredentialsModel): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       if (credentials.username === 'admin' && credentials.password === 'admin') {

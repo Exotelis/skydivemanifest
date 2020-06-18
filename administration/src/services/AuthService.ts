@@ -11,6 +11,10 @@ export default {
   expires: 0,
   refreshToken: null,
 
+  async confirmEmail (token: string): Promise<any> {
+    return axios.post('/auth/email/confirm', { token: token });
+  },
+
   async login (credentials: CredentialsModel): Promise<any> {
     const response: AxiosResponse = await axios.post('/auth', {
       username: credentials.username,

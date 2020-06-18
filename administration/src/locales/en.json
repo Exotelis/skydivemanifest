@@ -25,6 +25,12 @@
       }
     },
     "component": {
+      "confirmEmailModal": {
+        "errorMsg": "Could not verify your email address. %{reason}",
+        "solution": "When you are signed in to your user account, you can request a new token in your user profile.",
+        "successMsg": "Your email address has been verified successfully.",
+        "title": "Email confirmation"
+      },
       "signInModal": {
         "remainSignedIn": "Remain signed in",
         "title": "Hey <strong>%{name}</strong>,<br>are you still there?"
@@ -102,6 +108,9 @@
     },
     "general": {
       "allRightsReserved": "All rights reserved",
+      "close": "Close",
+      "continue": "Continue",
+      "continueUsing": "Continue using",
       "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
       "gender": {
         "diverse": "Diverse",

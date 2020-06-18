@@ -1,6 +1,9 @@
 <template>
   <component :is="getLayout">
     <router-view></router-view>
+
+    <!-- Modal components -->
+    <confirm-email-modal></confirm-email-modal>
     <sign-in-modal></sign-in-modal>
   </component>
 </template>
@@ -14,15 +17,16 @@ import DefaultLayout from '@/components/layouts/DefaultLayout.vue';
 import WelcomeLayout from '@/components/layouts/WelcomeLayout.vue';
 
 // Import other components
+import ConfirmEmailModal from '@/components/ui/ConfirmEmailModal.vue';
 import SignInModal from '@/components/ui/SignInModal.vue';
 
 // Register components
 Vue.component('DefaultLayout', DefaultLayout);
 Vue.component('WelcomeLayout', WelcomeLayout);
-Vue.component('SignInModal', SignInModal);
 
 @Component({
   components: {
+    ConfirmEmailModal,
     SignInModal
   }
 })
