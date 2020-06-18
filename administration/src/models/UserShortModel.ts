@@ -1,3 +1,5 @@
+import { Gender } from '@/enum/Gender';
+
 export interface UserShortModel {
   email: string
   firstname: string
@@ -8,11 +10,4 @@ export interface UserShortModel {
   permissions: string[]
   timezone?: string
   username?: string
-}
-
-enum Gender {
-  m = 'm',
-  f = 'f',
-  d = 'd',
-  u = 'u'
 }
