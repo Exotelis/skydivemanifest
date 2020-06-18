@@ -59,7 +59,7 @@ class VerifyEmail extends Mailable implements ShouldQueue
             ->subject($subject)
             ->with([
                 'firstname' => $this->notifiable->firstname,
-                'confirmUrl' => frontendUrl() . '/confirm-email?token=' . $this->token,
+                'confirmUrl' => frontendUrl() . '?email-token=' . $this->token,
             ]);
     }
 }

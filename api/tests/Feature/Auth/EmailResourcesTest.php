@@ -40,7 +40,7 @@ class EmailResourcesTest extends TestCase
 
         // Invalid user
         $response = $this->postJson($resource, ['token' => '0000000000']);
-        $response->assertStatus(400)->assertJson(['message' => 'This email change token is invalid.']);
+        $response->assertStatus(400)->assertJson(['message' => 'The email confirm token is invalid.']);
 
         // Token expired
         $token = VerifyEmail::create($user->email, $newEmail);
@@ -49,7 +49,7 @@ class EmailResourcesTest extends TestCase
         $this->assertDatabaseHas($table, ['email' => $user->email]);
         $this->getConnection()->table($table)->where('email', '=', $user->email)->update($tokenExpired);
         $response = $this->postJson($resource, ['token' => $token]);
-        $response->assertStatus(400)->assertJson(['message' => 'This email change token has expired.']);
+        $response->assertStatus(400)->assertJson(['message' => 'The email confirm token has expired.']);
 
         // Success
         $token = VerifyEmail::create($user->email, $newEmail);

@@ -128,7 +128,7 @@ class PasswordResourcesTest extends TestCase
         $invalidToken['token'] = 'invalid' . $invalidToken['email'];
         $response = $this->postJson($resource, $invalidToken);
         $response->assertStatus(400)
-            ->assertJson(['message' => 'This password reset token is invalid or expired.']);
+            ->assertJson(['message' => 'The password reset token is invalid or expired.']);
 
         //Success
         $response = $this->postJson($resource, $json);

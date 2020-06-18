@@ -17,7 +17,7 @@ return [
     'reset'     => 'Your password has been reset!',
     'sent'      => 'We have emailed your password reset link!',
     'throttled' => 'Please wait before retrying. You can request a new password once every :time.',
-    'token'     => 'This password reset token is invalid or expired.',
+    'token'     => 'The password reset token is invalid or expired.',
     'user'      => "We can't find a user with that email address.",
 
 ];
