@@ -68,7 +68,7 @@ const routes = [
   },
   {
     path: '/register-success',
-    name: 'registerSuccess',
+    name: 'register-success',
     component: () => import(/* webpackChunkName: "registerSuccess" */ '@/components/pages/RegisterSuccessPage.vue'),
     meta: {
       title: 'page.title.registerSuccess',
