@@ -1,5 +1,9 @@
 import { UserShortModel } from '@/models/UserShortModel';
 
+export function capitalize (s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
 export function getCookie (name: string): string|undefined {
   return document.cookie
     .split(';')

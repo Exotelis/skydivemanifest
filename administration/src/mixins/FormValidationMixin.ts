@@ -2,6 +2,7 @@ import Vue from 'vue';
 import { AxiosResponse } from 'axios';
 import { Component } from 'vue-property-decorator';
 import { TranslateResult } from 'vue-i18n';
+import { capitalize } from '@/helpers';
 
 interface VueHtmlElement extends HTMLFormElement {
   vm?: Vue;
@@ -151,6 +152,26 @@ function validate (vm: Vue, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaE
   // Pattern
   if (el.validity.patternMismatch) {
     return validatePattern(vm);
+  }
+
+  // Confirmation
+  if (el.id.substr(-13) === '_confirmation') {
+    return validateConfirmation(vm, el);
+  }
+}
+
+function validateConfirmation (vm: Vue, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement):
+  TranslateResult|undefined {
+  let siblingId:string = el.id.replace('_confirmation', '');
+  const element: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement|null =
+    vm.$el.querySelector('#' + siblingId);
+
+  if (element === null) {
+    return;
+  }
+
+  if (el.value !== element.value) {
+    return vm.$t('error.form.confirmation', { field: capitalize(siblingId) });
   }
 }
 

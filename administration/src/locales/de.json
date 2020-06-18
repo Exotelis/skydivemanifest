@@ -38,6 +38,7 @@
     },
     "error": {
       "form": {
+        "confirmation": "Die %{field}bestätigung stimmt nicht überein.",
         "pattern": "Bitte passen Sie Ihre Eingabe an das gewünschte Format an.",
         "rangeOverflow": {
           "date": "Bitte wählen Sie ein Datum aus, welches nicht nach dem {max} liegt.",
