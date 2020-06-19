@@ -12,14 +12,15 @@ class UserClaim
         $user = User::find($token->getUserIdentifier());
 
         $token->addClaim('user', [
-            'id'          => $user->id,
-            'email'       => $user->email,
-            'username'    => $user->username,
-            'firstname'   => $user->firstname,
-            'lastname'    => $user->lastname,
-            'gender'      => $user->gender,
-            'locale'      => $user->locale,
-            'timezone'    => $user->timezone,
+            'id'              => $user->id,
+            'email'           => $user->email,
+            'username'        => $user->username,
+            'firstname'       => $user->firstname,
+            'lastname'        => $user->lastname,
+            'gender'          => $user->gender,
+            'locale'          => $user->locale,
+            'password_change' => $user->password_change,
+            'timezone'        => $user->timezone,
         ]);
         return $next($token);
     }
