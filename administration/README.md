@@ -144,6 +144,9 @@ import FormGroup from '@/components/form/FormGroup.vue';
 export default class ExampleClass extends Vue {}
 ```
 
+Any component with a form should extend the [FormMixin](src/mixins/FormMixin.ts), because it provides all important
+variables such as the `disabledSubmit` and `loading`.
+
 These are the available form element wrapper:
 
 #### form-group
