@@ -38,7 +38,7 @@
     },
     "error": {
       "form": {
-        "confirmation": "The %{field} confirmation does not match.",
+        "confirmation": "The confirmation does not match.",
         "pattern": "Please match the requested format.",
         "rangeOverflow": {
           "date": "Please select a date that is no later than {max}.",

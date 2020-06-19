@@ -437,8 +437,6 @@ ids of the two fields could look like:
 id="password"
 id="password_confirmation"
 ```
-The error message will display the part in front of the `_confirmation`, to give the user feedback which field is wrong.
-That's why you should make sure, that the id of the field is meaningful.
 
 Note: For a full support of the validation, please use the [from-group component](#form-group) as a wrapper.
 

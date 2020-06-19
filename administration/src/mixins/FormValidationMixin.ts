@@ -2,7 +2,6 @@ import Vue from 'vue';
 import { AxiosResponse } from 'axios';
 import { Component } from 'vue-property-decorator';
 import { TranslateResult } from 'vue-i18n';
-import { capitalize } from '@/helpers';
 
 interface VueHtmlElement extends HTMLFormElement {
   vm?: Vue;
@@ -171,7 +170,7 @@ function validateConfirmation (vm: Vue, el: HTMLInputElement|HTMLSelectElement|H
   }
 
   if (el.value !== element.value) {
-    return vm.$t('error.form.confirmation', { field: capitalize(siblingId) });
+    return vm.$t('error.form.confirmation');
   }
 }
 
