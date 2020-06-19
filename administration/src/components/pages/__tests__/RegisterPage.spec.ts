@@ -56,7 +56,7 @@ describe('RegisterPage.vue', () => {
     expect(wrapper.vm.form.timezone).toBe('Europe/Berlin');
   });
 
-  it('check if submit button is disabled when username or password is empty', () => {
+  it('check if submit button is disabled when a required field is empty', () => {
     expect(component.find('button').attributes().disabled).toBe('disabled');
     component.find('#dob').setValue('1970-01-01');
     component.find('#email').setValue('test@example.com');
