@@ -1,3 +1,4 @@
+/* eslint camelcase: 0 */
 import { Gender } from '@/enum/Gender';
 
 export interface UserShortModel {
@@ -7,6 +8,7 @@ export interface UserShortModel {
   id: number
   lastname: string
   locale: string
+  password_change: boolean
   permissions: string[]
   timezone?: string
   username?: string
