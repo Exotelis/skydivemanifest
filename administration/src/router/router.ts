@@ -15,17 +15,15 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   let auth: boolean = AuthService.checkAuth();
 
-  let parameterList = '';
-  if (Object.keys(to.query).length > 0) {
-    parameterList = '?' + Object.entries(to.query).map((k) => k.join('=')).join('&');
-  }
-
-  if (!to.meta.requiresAuth && auth) {
+  if (AuthService.passwordChangeRequired() && to.path !== '/password-change') {
+    // If user need to change the password
+    next({ path: '/password-change', query: to.query });
+  } else if (!to.meta.requiresAuth && auth) {
     // If signed in - go to dashboard
-    next('/' + parameterList);
+    next({ path: '/', query: to.query });
   } else if (to.path !== '/login' && to.meta.requiresAuth && !auth) {
     // If not signed in and on restricted page - go to login
-    next('login' + parameterList);
+    next({ path: 'login', query: to.query });
   } else {
     // Update title on route change
     const title = process.env.VUE_APP_TITLE || 'Skydivemanifest Administration';

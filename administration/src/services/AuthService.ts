@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import jwtDecode from 'jwt-decode';
+import { ChangePasswordModel } from '@/models/ChangePasswordModel';
 import { CredentialsModel } from '@/models/CredentialsModel';
 import { EventBus } from '@/event-bus';
 import { getCookie } from '@/helpers';
@@ -10,6 +11,10 @@ import { UserShortModel } from '@/models/UserShortModel';
 export default {
   expires: 0,
   refreshToken: null,
+
+  async changePassword (passwords: ChangePasswordModel): Promise<any> {
+    return axios.post('/auth/password/change', passwords);
+  },
 
   async confirmEmail (token: string): Promise<any> {
     return axios.post('/auth/email/confirm', { token: token });
@@ -92,5 +97,17 @@ export default {
 
     // Check login status
     return decryptedPayload.exp >= Date.now();
+  },
+
+  passwordChangeRequired (): boolean {
+    const cookie: string|undefined = getCookie('XSRF-TOKEN');
+
+    if (cookie === undefined) {
+      return false;
+    }
+
+    const decryptedPayload: any = jwtDecode(cookie);
+    let user: UserShortModel = decryptedPayload.user;
+    return user.password_change;
   }
 };

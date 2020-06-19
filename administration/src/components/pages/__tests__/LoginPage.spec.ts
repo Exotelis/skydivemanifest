@@ -13,7 +13,7 @@ describe('LoginPage.vue', () => {
     component = mount(LoginPage, {
       mocks: {
         $router: {
-          push: () => { component.vm.$emit('changeRoute'); return Promise.resolve(); }
+          push: (route: any) => { component.vm.$emit('changeRoute'); return Promise.resolve(route); }
         }
       },
       stubs: ['router-link']
@@ -40,6 +40,22 @@ describe('LoginPage.vue', () => {
     await new Promise(resolve => setTimeout(resolve, 1200));
 
     expect(component.find('.invalid-feedback').text()).toBe('error.form.required.text');
+  });
+
+  it('check if the correct redirect is called', async () => {
+    const spy = jest.spyOn(component.vm.$router, 'push');
+    component.vm.form = {
+      username: 'admin',
+      password: 'admin'
+    };
+
+    component.vm.login();
+    await component.vm.$nextTick();
+    expect(spy).toHaveBeenCalledWith('/password-change');
+
+    component.vm.login();
+    await component.vm.$nextTick();
+    expect(spy).toHaveBeenCalledWith('/');
   });
 
   it('sign the user in', async () => {

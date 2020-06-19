@@ -1,8 +1,33 @@
 import { AxiosError } from 'axios';
+import { ChangePasswordModel } from '@/models/ChangePasswordModel';
 import { CredentialsModel } from '@/models/CredentialsModel';
 import { RegisterModel } from '@/models/RegisterModel';
 
 export default {
+  changePassword (passwords: ChangePasswordModel): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      if (passwords.password === 'secret') {
+        resolve({
+          data: { message: 'Your password has been changed successfully.' },
+          status: 200,
+          statusText: 'OK',
+          headers: {},
+          config: {}
+        });
+      }
+
+      const e = new Error('Something went wrong') as AxiosError;
+      e.response = {
+        data: { message: 'This action is unauthorized.' },
+        status: 403,
+        statusText: 'Forbidden',
+        headers: {},
+        config: {}
+      };
+      reject(e);
+    });
+  },
+
   confirmEmail (token: String): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       if (token === 'ace97ba108eb058d18384e70cba8f13a91332165ea9b271b4f2d0003ae0f0337') {
@@ -48,6 +73,18 @@ export default {
         config: {}
       };
       reject(e);
+    });
+  },
+
+  logout (): Promise<any> {
+    return new Promise<any>((resolve) => {
+      resolve({
+        data: {},
+        status: 200,
+        statusText: 'Success',
+        headers: {},
+        config: {}
+      });
     });
   },
 
@@ -112,5 +149,10 @@ export default {
 
   checkAuth (): boolean {
     return true;
-  }
+  },
+
+  passwordChangeRequired: jest.fn()
+    .mockReturnValue(true)
+    .mockReturnValueOnce(true)
+    .mockReturnValueOnce(false)
 };
