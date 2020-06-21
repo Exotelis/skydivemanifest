@@ -32,6 +32,12 @@ label {
   }
 }
 
+.form-control-plaintext {
+  &:focus {
+    outline: solid 2px rgba($primary, .25);
+  }
+}
+
 .was-validated .form-control:invalid,
 .form-control.is-invalid {
   background-color: rgba($form-feedback-invalid-color, .1);

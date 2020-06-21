@@ -6,6 +6,7 @@ import { loadLanguageAsync } from '@/i18n';
 import ChangePasswordModel from '@/models/ChangePasswordModel';
 import CredentialsModel from '@/models/CredentialsModel';
 import RegisterModel from '@/models/RegisterModel';
+import ResetPasswordModel from '@/models/ResetPasswordModel';
 import UserShortModel from '@/models/UserShortModel';
 
 export default {
@@ -18,6 +19,10 @@ export default {
 
   async confirmEmail (token: string): Promise<any> {
     return axios.post('/auth/email/confirm', { token: token });
+  },
+
+  async forgotPassword (email: string): Promise<any> {
+    return axios.post('/auth/password/forgot', { email: email });
   },
 
   async login (credentials: CredentialsModel): Promise<any> {
@@ -52,6 +57,10 @@ export default {
 
   async register (data: RegisterModel): Promise<any> {
     return axios.post('/auth/register', data);
+  },
+
+  async resetPassword (data: ResetPasswordModel): Promise<any> {
+    return axios.post('/auth/password/reset', data);
   },
 
   checkAuth (): boolean {

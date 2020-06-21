@@ -2,6 +2,7 @@ import { AxiosError } from 'axios';
 import ChangePasswordModel from '@/models/ChangePasswordModel';
 import CredentialsModel from '@/models/CredentialsModel';
 import RegisterModel from '@/models/RegisterModel';
+import ResetPasswordModel from '@/models/ResetPasswordModel';
 
 export default {
   changePassword (passwords: ChangePasswordModel): Promise<any> {
@@ -43,6 +44,30 @@ export default {
       const e = new Error('Something went wrong') as AxiosError;
       e.response = {
         data: { message: 'This email change token is invalid.' },
+        status: 400,
+        statusText: 'Bad Request',
+        headers: {},
+        config: {}
+      };
+      reject(e);
+    });
+  },
+
+  forgotPassword (email: string): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      if (email === 'exotelis@mailbox.org') {
+        resolve({
+          data: { message: 'We have emailed your password reset link!' },
+          status: 200,
+          statusText: 'OK',
+          headers: {},
+          config: {}
+        });
+      }
+
+      const e = new Error('Something went wrong') as AxiosError;
+      e.response = {
+        data: { message: 'Your password cannot be reset.' },
         status: 400,
         statusText: 'Bad Request',
         headers: {},
@@ -140,6 +165,30 @@ export default {
         data: { message: 'The registration failed.' },
         status: 500,
         statusText: 'Internal Server Error',
+        headers: {},
+        config: {}
+      };
+      reject(e);
+    });
+  },
+
+  resetPassword (data: ResetPasswordModel): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      if (data.email === 'exotelis@mailbox.org') {
+        resolve({
+          data: { message: 'Your password has been reset!' },
+          status: 200,
+          statusText: 'OK',
+          headers: {},
+          config: {}
+        });
+      }
+
+      const e = new Error('Something went wrong') as AxiosError;
+      e.response = {
+        data: { message: 'The password reset token is invalid or expired.' },
+        status: 400,
+        statusText: 'Bad Request',
         headers: {},
         config: {}
       };

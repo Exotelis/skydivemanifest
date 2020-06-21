@@ -94,6 +94,7 @@
         "oldPassword": "Altes Passwort",
         "password": "Passwort",
         "passwordConfirmation": "Passwort bestätigen",
+        "securityToken": "Sicherheitstoken",
         "username": "Benutzername",
         "usernameEmail": "E-Mail / Benutzername"
       },
@@ -108,6 +109,7 @@
         "oldPassword": "Geben Sie Ihr altes Passwort ein...",
         "password": "Geben Sie Ihr Passwort ein...",
         "passwordConfirmation": "Bestätigen Sie Ihr Passwort...",
+        "securityToken": "Geben Sie das Sicherheitstoken ein...",
         "select": "-- Bitte wählen Sie eine Option --",
         "username": "Geben Sie Ihren Benutzernamen ein...",
         "usernameEmail": "Geben Sie Ihre E-Mail-Adresse oder Ihren Benutzernamen ein..."
@@ -115,11 +117,13 @@
     },
     "general": {
       "allRightsReserved": "Alle Rechte vorbehalten",
+      "backToSignIn": "Zurück zur Anmeldung.",
       "changePassword": "Passwort ändern",
       "close": "Schließen",
       "continue": "Fortsetzen",
       "continueUsing": "Weitermachen",
       "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
+      "forgotPassword": "Passwort vergessen?",
       "gender": {
         "diverse": "divers",
         "female": "weiblich",
@@ -131,6 +135,7 @@
       "passwordExpired": "Ihr Passwort ist abgelaufen, bitte wählen Sie ein neues.",
       "permissions": "Berechtigungen",
       "reportBug": "Ein Problem melden",
+      "resetPassword": "Passwort zurücksetzen",
       "signIn": "Anmelden",
       "signInNow": "Jetzt anmelden",
       "signInAnotherAccount": "Melden Sie sich mit einem anderem Benutzerkonto an.",
@@ -152,6 +157,12 @@
         "imageAuthor": "Foto von {author} auf {platform}",
         "formHeader": "Bitte melden Sie sich an."
       },
+      "passwordForgot": {
+        "infoText": "Bitte geben Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen."
+      },
+      "passwordReset": {
+        "infoText": "Bitte geben Sie Ihre E-Mail-Adresse, ein neues Passwort und das Sicherheitstoken, welches wir Ihnen per E-Mail zugesendet haben, ein, um ihr Passwort zurückzusetzen."
+      },
       "register": {
         "back": "Bereits registriert?",
         "confirmation": "Prüfen Sie die Bestätigungs-Email unter <strong>{email}</strong>",
@@ -166,6 +177,8 @@
         "login": "Login",
         "manifest": "Manifest",
         "passwordChange": "Passwort ändern",
+        "passwordForgot": "Passwort vergessen",
+        "passwordReset": "Passwort zurücksetzen",
         "payments": "Zahlungen",
         "register": "Registrierung",
         "settings": "Allgemeine Einstellungen",

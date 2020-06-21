@@ -94,6 +94,7 @@
         "oldPassword": "Old password",
         "password": "Password",
         "passwordConfirmation": "Confirm password",
+        "securityToken": "Security token",
         "username": "Username",
         "usernameEmail": "Email / Username"
       },
@@ -108,6 +109,7 @@
         "oldPassword": "Enter your old password...",
         "password": "Enter your password...",
         "passwordConfirmation": "Confirm your password...",
+        "securityToken": "Enter the security token...",
         "select": "-- Please select an option --",
         "username": "Enter your username...",
         "usernameEmail": "Enter your email address or username..."
@@ -115,11 +117,13 @@
     },
     "general": {
       "allRightsReserved": "All rights reserved",
+      "backToSignIn": "Back to sign in.",
       "changePassword": "Change password",
       "close": "Close",
       "continue": "Continue",
       "continueUsing": "Continue using",
       "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
+      "forgotPassword": "Forgot password?",
       "gender": {
         "diverse": "Diverse",
         "female": "Female",
@@ -131,6 +135,7 @@
       "passwordExpired": "Your password expired. Please choose a new one.",
       "permissions": "Permissions",
       "reportBug": "Report a bug",
+      "resetPassword": "Reset password",
       "signIn": "Sign In",
       "signInNow": "Sign In now",
       "signInAnotherAccount": "Sign in with another user account.",
@@ -152,6 +157,12 @@
         "imageAuthor": "Photo by {author} on {platform}",
         "formHeader": "Please sign in."
       },
+      "passwordForgot": {
+        "infoText": "Please enter your email address to reset your password."
+      },
+      "passwordReset": {
+        "infoText": "Please enter your email address, a new password and the security token, we sent you per email, to reset your password."
+      },
       "register": {
         "back": "Already have an account?",
         "confirmation": "Check the confirmation email at <strong>{email}</strong>",
@@ -166,6 +177,8 @@
         "login": "Login",
         "manifest": "Manifest",
         "passwordChange": "Change password",
+        "passwordForgot": "Forgot password",
+        "passwordReset": "Reset password",
         "payments": "Payments",
         "register": "Sign Up",
         "settings": "General settings",

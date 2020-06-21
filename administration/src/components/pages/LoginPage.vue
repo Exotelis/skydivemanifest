@@ -34,7 +34,17 @@
                       :loading="loading">{{ $t('general.signIn') }}</button-wrapper>
     </form>
     <div class="text-center">
-      <router-link to="/register"><small><strong>{{ $t('general.signUp') }}</strong></small></router-link>
+      <router-link to="/register">
+        <small>
+          <strong>{{ $t('general.signUp') }}</strong>
+        </small>
+      </router-link>
+      <span> | </span>
+      <router-link to="/password-forgot">
+        <small>
+          <strong>{{ $t('general.forgotPassword') }}</strong>
+        </small>
+      </router-link>
     </div>
   </div>
 </template>

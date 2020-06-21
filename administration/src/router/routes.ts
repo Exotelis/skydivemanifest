@@ -59,6 +59,26 @@ const routes = [
     }
   },
   {
+    path: '/password-forgot',
+    name: 'password-forgot',
+    component: () => import(/* webpackChunkName: "passwordForgot" */ '@/components/pages/PasswordForgotPage.vue'),
+    meta: {
+      title: 'page.title.passwordForgot',
+      layout: 'Welcome',
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/password-reset',
+    name: 'password-reset',
+    component: () => import(/* webpackChunkName: "passwordReset" */ '@/components/pages/PasswordResetPage.vue'),
+    meta: {
+      title: 'page.title.passwordReset',
+      layout: 'Welcome',
+      requiresAuth: false
+    }
+  },
+  {
     path: '/payments',
     name: 'payments',
     meta: {
