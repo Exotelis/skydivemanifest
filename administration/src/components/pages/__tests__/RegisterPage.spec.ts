@@ -105,9 +105,11 @@ describe('RegisterPage.vue', () => {
       password_confirmation: 'secret'
     };
 
+    expect(component.find('h3').text()).toBe('general.signUp');
     await component.vm.handleSubmit();
-    expect(localStorage.getItem('tmpEmail')).toBe('exotelis@mailbox.org');
-    expect(component.emitted().changeRoute).toBeTruthy();
+    expect(component.vm.email).toBe('exotelis@mailbox.org');
+    expect(component.vm.error).toBeNull();
+    expect(component.find('h3').text()).toBe('page.register.successTitle');
   });
 
   it('check if registration failed', async () => {

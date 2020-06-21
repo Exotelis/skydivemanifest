@@ -153,13 +153,11 @@
         "formHeader": "Please sign in."
       },
       "register": {
-        "back": "Already have an account?"
-      },
-      "registerSuccess": {
+        "back": "Already have an account?",
         "confirmation": "Check the confirmation email at <strong>{email}</strong>",
         "contactUs": "If you still cannot find an email, please contact us.",
-        "header": "Thank You for Signing Up!",
-        "note": "Note: If you do not receive the email in few minutes, please check your spam folder and verify if you typed your email correctly."
+        "note": "Note: If you do not receive the email in few minutes, please check your spam folder and verify if you typed your email correctly.",
+        "successTitle": "Thank You for Signing Up!"
       },
       "title": {
         "aircrafts": "Aircrafts",
@@ -170,7 +168,6 @@
         "passwordChange": "Change password",
         "payments": "Payments",
         "register": "Sign Up",
-        "registerSuccess": "Registration successful",
         "settings": "General settings",
         "skydiver": "Skydiver",
         "staff": "Staff",

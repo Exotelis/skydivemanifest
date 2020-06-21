@@ -153,13 +153,11 @@
         "formHeader": "Bitte melden Sie sich an."
       },
       "register": {
-        "back": "Bereits registriert?"
-      },
-      "registerSuccess": {
+        "back": "Bereits registriert?",
         "confirmation": "Prüfen Sie die Bestätigungs-Email unter <strong>{email}</strong>",
         "contactUs": "Können Sie dennoch keine E-Mail von uns finden, nehmen Sie bitte Kontakt zu uns auf.",
-        "header": "Vielen Dank für Ihre Registrierung!",
-        "note": "Sollten Sie keine E-Mail erhalten haben, prüfen Sie zunächst Ihren Spam-Ordner und vergewissern Sie sich, dass Sie die E-Mail-Adresse korrekt eingegeben haben."
+        "note": "Sollten Sie keine E-Mail erhalten haben, prüfen Sie zunächst Ihren Spam-Ordner und vergewissern Sie sich, dass Sie die E-Mail-Adresse korrekt eingegeben haben.",
+        "successTitle": "Vielen Dank für Ihre Registrierung!"
       },
       "title": {
         "aircrafts": "Flugzeuge",
@@ -170,7 +168,6 @@
         "passwordChange": "Passwort ändern",
         "payments": "Zahlungen",
         "register": "Registrierung",
-        "registerSuccess": "Registrierung erfolgreich",
         "settings": "Allgemeine Einstellungen",
         "skydiver": "Springer",
         "staff": "Mitarbeiter",
