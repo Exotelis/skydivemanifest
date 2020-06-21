@@ -38,7 +38,7 @@ import SharedMixin from '@/mixins/form/SharedMixin';
 import TextualMixin from '@/mixins/form/TextualMixin';
 
 @Component({})
-export default class InputText extends Mixins(ListMixin, PatternMixin, ReadonlyMixin, RequiredMixin, SharedMixin,
+export default class InputPassword extends Mixins(ListMixin, PatternMixin, ReadonlyMixin, RequiredMixin, SharedMixin,
   TextualMixin) {
   @Prop([Boolean]) readonly isToggleable!: boolean;
   isVisible: boolean = false;

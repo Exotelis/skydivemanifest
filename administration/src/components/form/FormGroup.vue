@@ -50,7 +50,7 @@ import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
 
 @Component({})
-export default class InputText extends Vue {
+export default class FormGroup extends Vue {
   @Prop({ default: null }) readonly description!: string;
   @Prop([Boolean]) readonly hideLabel!: boolean;
   @Prop([Boolean]) readonly horizontal!: boolean;
