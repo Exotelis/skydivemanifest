@@ -33,9 +33,9 @@
                         :invalid-feedback="errors.password"
                         :label="$t('form.label.password')">
               <input-password id="password"
+                              is-toggleable
                               required
                               v-model.trim="form.password"
-                              :is-toggleable="true"
                               :placeholder="$t('form.placeholder.password')"></input-password>
             </form-group>
           </div>
@@ -45,8 +45,8 @@
                         :label="$t('form.label.passwordConfirmation')">
               <input-password id="password_confirmation"
                               required
+                              is-toggleable
                               v-model.trim="form.password_confirmation"
-                              :is-toggleable="true"
                               :placeholder="$t('form.placeholder.passwordConfirmation')"></input-password>
             </form-group>
           </div>
@@ -120,7 +120,6 @@ import { AxiosResponse } from 'axios';
 import { defaultLanguage } from '@/i18n';
 import { Gender } from '@/enum/Gender';
 import { Options } from '@/types/Options';
-import { RegisterModel } from '@/models/RegisterModel';
 import AuthService from '@/services/AuthService';
 import ButtonWrapper from '@/components/form/ButtonWrapper.vue';
 import FormGroup from '@/components/form/FormGroup.vue';
@@ -130,6 +129,7 @@ import InputDate from '@/components/form/InputDate.vue';
 import InputEmail from '@/components/form/InputEmail.vue';
 import InputPassword from '@/components/form/InputPassword.vue';
 import InputText from '@/components/form/InputText.vue';
+import RegisterModel from '@/models/RegisterModel';
 import SelectWrapper from '@/components/form/SelectWrapper.vue';
 
 @Component({

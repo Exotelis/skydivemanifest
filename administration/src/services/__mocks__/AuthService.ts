@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
-import { ChangePasswordModel } from '@/models/ChangePasswordModel';
-import { CredentialsModel } from '@/models/CredentialsModel';
-import { RegisterModel } from '@/models/RegisterModel';
+import ChangePasswordModel from '@/models/ChangePasswordModel';
+import CredentialsModel from '@/models/CredentialsModel';
+import RegisterModel from '@/models/RegisterModel';
 
 export default {
   changePassword (passwords: ChangePasswordModel): Promise<any> {

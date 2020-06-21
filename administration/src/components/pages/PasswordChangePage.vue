@@ -50,9 +50,9 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { ChangePasswordModel } from '@/models/ChangePasswordModel';
 import AuthService from '@/services/AuthService';
 import ButtonWrapper from '@/components/form/ButtonWrapper.vue';
+import ChangePasswordModel from '@/models/ChangePasswordModel';
 import FormGroup from '@/components/form/FormGroup.vue';
 import FormMixin from '@/mixins/FormMixin';
 import FormValidationMixin from '@/mixins/FormValidationMixin';

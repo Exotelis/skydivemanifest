@@ -1,7 +1,7 @@
 /* eslint camelcase: 0 */
 import { Gender } from '@/enum/Gender';
 
-export interface UserShortModel {
+export default interface UserShortModel {
   email: string
   firstname: string
   gender: Gender

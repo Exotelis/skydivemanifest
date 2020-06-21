@@ -1,12 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
 import jwtDecode from 'jwt-decode';
-import { ChangePasswordModel } from '@/models/ChangePasswordModel';
-import { CredentialsModel } from '@/models/CredentialsModel';
 import { EventBus } from '@/event-bus';
 import { getCookie } from '@/helpers';
 import { loadLanguageAsync } from '@/i18n';
-import { RegisterModel } from '@/models/RegisterModel';
-import { UserShortModel } from '@/models/UserShortModel';
+import ChangePasswordModel from '@/models/ChangePasswordModel';
+import CredentialsModel from '@/models/CredentialsModel';
+import RegisterModel from '@/models/RegisterModel';
+import UserShortModel from '@/models/UserShortModel';
 
 export default {
   expires: 0,

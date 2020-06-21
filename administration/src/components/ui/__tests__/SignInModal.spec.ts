@@ -54,7 +54,7 @@ describe('SignInModal.vue', () => {
   });
 
   it('handle the submit when remain sign in button is clicked', async () => {
-    const spy = jest.spyOn(component.vm, 'handleLogin');
+    const spy = jest.spyOn(component.vm, 'handleSubmit');
 
     EventBus.$emit('sign-in-modal');
     await component.vm.$nextTick();

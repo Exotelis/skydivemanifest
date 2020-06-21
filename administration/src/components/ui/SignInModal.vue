@@ -19,12 +19,12 @@
       {{ error }}
     </div>
 
-    <form @submit.prevent="handleLogin" class="mx-4" novalidate>
+    <form @submit.prevent="handleSubmit" class="mx-4" novalidate>
       <form-group :hide-label="true" :label="$t('form.label.password')">
         <input-password id="sign-in-password"
+                        is-toggleable
                         required
                         v-model.trim="form.password"
-                        :is-toggleable="true"
                         :placeholder="$t('form.placeholder.password')"></input-password>
       </form-group>
       <button-wrapper block
@@ -43,14 +43,15 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Component, Watch } from 'vue-property-decorator';
-import { CredentialsModel } from '@/models/CredentialsModel';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { EventBus } from '@/event-bus';
 import { getUser, htmlEntities } from '@/helpers';
 import { ModalPlugin } from 'bootstrap-vue';
 import AuthService from '@/services/AuthService';
 import ButtonWrapper from '@/components/form/ButtonWrapper.vue';
+import CredentialsModel from '@/models/CredentialsModel';
 import FormGroup from '@/components/form/FormGroup.vue';
+import FormMixin from '@/mixins/FormMixin';
 import InputPassword from '@/components/form/InputPassword.vue';
 import Logout from '@/directives/LogoutDirective';
 
@@ -64,20 +65,17 @@ interface FormElements {
   components: { ButtonWrapper, FormGroup, InputPassword },
   directives: { Logout }
 })
-export default class SignInModal extends Vue {
-  disabledSubmit: boolean = true;
-  error: string|null = null;
+export default class SignInModal extends Mixins(FormMixin) {
   firstname: string = '';
   form: FormElements = {
     password: ''
   };
-  loading: boolean = false;
 
   mounted () {
     EventBus.$on('sign-in-modal', this.handleSignInModal);
   }
 
-  async handleLogin (): Promise<any> {
+  async handleSubmit (): Promise<any> {
     let credentials: CredentialsModel = { username: htmlEntities(getUser().username!), password: this.form.password };
     this.loading = true;
 

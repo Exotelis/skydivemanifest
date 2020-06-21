@@ -49,11 +49,11 @@ describe('LoginPage.vue', () => {
       password: 'admin'
     };
 
-    component.vm.login();
+    component.vm.handleSubmit();
     await component.vm.$nextTick();
     expect(spy).toHaveBeenCalledWith('/password-change');
 
-    component.vm.login();
+    component.vm.handleSubmit();
     await component.vm.$nextTick();
     expect(spy).toHaveBeenCalledWith('/');
   });

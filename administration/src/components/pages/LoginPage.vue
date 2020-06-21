@@ -6,7 +6,7 @@
       {{ error }}
     </div>
 
-    <form @submit.prevent="login" novalidate v-validate>
+    <form @submit.prevent="handleSubmit" novalidate v-validate>
       <form-group label-for="username"
                   :invalid-feedback="errors.username"
                   :label="$t('form.label.usernameEmail')">
@@ -41,18 +41,14 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { CredentialsModel } from '@/models/CredentialsModel';
 import AuthService from '@/services/AuthService';
 import ButtonWrapper from '@/components/form/ButtonWrapper.vue';
+import CredentialsModel from '@/models/CredentialsModel';
 import FormGroup from '@/components/form/FormGroup.vue';
+import FormMixin from '@/mixins/FormMixin';
 import FormValidationMixin from '@/mixins/FormValidationMixin';
 import InputPassword from '@/components/form/InputPassword.vue';
 import InputText from '@/components/form/InputText.vue';
-
-interface FormElements {
-  username: string;
-  password: string;
-}
 
 @Component({
   components: {
@@ -62,16 +58,13 @@ interface FormElements {
     InputText
   }
 })
-export default class LoginPage extends Mixins(FormValidationMixin) {
-  disabledSubmit: boolean = true;
-  error: string|null = null;
-  form: FormElements = {
+export default class LoginPage extends Mixins(FormMixin, FormValidationMixin) {
+  form: CredentialsModel = {
     username: '',
     password: ''
   };
-  loading: boolean = false;
 
-  async login (): Promise<any> {
+  async handleSubmit (): Promise<any> {
     let credentials: CredentialsModel = { username: this.form.username, password: this.form.password };
     this.loading = true;
 
@@ -91,7 +84,7 @@ export default class LoginPage extends Mixins(FormValidationMixin) {
   }
 
   @Watch('form', { deep: true })
-  onFormChange (form: FormElements): void {
+  onFormChange (form: CredentialsModel): void {
     this.disabledSubmit = !(form.username.length > 0 && form.password.length > 0);
   }
 }
