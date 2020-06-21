@@ -51,7 +51,7 @@ class LockAccount extends Mailable implements ShouldQueue
             ->with([
                 'expire'    => $this->notifiable->lockExpires()->timezone($timezone)->isoFormat('LLL'),
                 'firstname' => $this->notifiable->firstname,
-                'forgotUrl' => frontendUrl() . '/forgot-password?email=' . $this->notifiable->email,
+                'forgotUrl' => frontendUrl() . '/password-forgot?email=' . $this->notifiable->email,
                 'timezone'  => $timezone,
             ]);
     }

@@ -344,20 +344,20 @@ kinds of attacks.
 If your are about to develop a new frontend, you have to make sure, that some routes exist to make use of the full
 functionality of the backend.
 
-The first route is the `forgot-password` route, where a user can request a new password.
+The first route is the `password-forgot` route, where a user can request a new password.
 ```
-https://<path-to-your-frontend>/forgot-password
+https://<path-to-your-frontend>/password-forgot
 ```
-The second route is the `reset-password` route, where a user should be able to set a new password for the account. The
+The second route is the `password-reset` route, where a user should be able to set a new password for the account. The
 full URL could look like:
 ```
-https://<path-to-your-frontend>/reset-password
+https://<path-to-your-frontend>/password-reset
 ```
-The third route is the `change-password` route, where a user gets forced to set a new password. After the user signed
+The third route is the `password-change` route, where a user gets forced to set a new password. After the user signed
 in, the payload of the access token can be decrypted. If the `password_change` value is true, the user must set a new
 password.
 ```
-https://<path-to-your-frontend>/reset-password
+https://<path-to-your-frontend>/password-change
 ```
 Without having those routes, you cannot make use of those features.
 
