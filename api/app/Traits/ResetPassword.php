@@ -144,6 +144,7 @@ trait ResetPassword
     {
         event(new \App\Events\Auth\PasswordReset($user));
         $user->password = $password;
+        $user->lock_expires = null;
 
         return $user->save();
     }
