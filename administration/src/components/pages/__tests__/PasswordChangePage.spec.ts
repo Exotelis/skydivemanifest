@@ -10,11 +10,6 @@ describe('PasswordChangePage.vue', () => {
 
   beforeEach(() => {
     component = mount(PasswordChangePage, {
-      mocks: {
-        $router: {
-          push: () => { component.vm.$emit('changeRoute'); return Promise.resolve(); }
-        }
-      },
       stubs: ['router-link']
     });
   });
@@ -63,7 +58,8 @@ describe('PasswordChangePage.vue', () => {
     };
 
     await component.vm.handleSubmit();
-    expect(component.emitted().changeRoute).toBeTruthy();
+    expect(component.vm.error).toBeNull();
+    expect(component.vm.successMessage).toBe('Your password has been changed successfully.');
   });
 
   it('check if password change failed', async () => {
@@ -74,7 +70,7 @@ describe('PasswordChangePage.vue', () => {
     };
 
     await component.vm.handleSubmit();
-    expect(component.emitted().changeRoute).toBeFalsy();
+    expect(component.vm.successMessage).toBeNull();
     expect(component.vm.error).toBe('This action is unauthorized.');
   });
 });

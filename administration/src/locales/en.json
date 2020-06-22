@@ -138,6 +138,7 @@
       "reportBug": "Report a bug",
       "resetPassword": "Reset password",
       "signIn": "Sign In",
+      "signInAgain": "Please sign in again that the changes take effect.",
       "signInNow": "Sign In now",
       "signInAnotherAccount": "Sign in with another user account.",
       "signOut": "Sign Out",

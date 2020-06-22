@@ -1,54 +1,67 @@
 <template>
   <div class="my-4">
     <h3>{{ $t('page.title.passwordChange') }}</h3>
-    <p>{{ $t('general.passwordExpired') }}</p>
 
-    <div v-if="error" class="alert alert-danger" role="alert">
-      {{ error }}
-    </div>
+    <template v-if="error === null && successMessage != null">
+      <p>{{ successMessage }} {{ $t('general.signInAgain') }}</p>
 
-    <form @submit.prevent="handleSubmit" novalidate v-validate>
-      <form-group label-for="password"
-                  :invalid-feedback="errors.password"
-                  :label="$t('form.label.oldPassword')">
-        <input-password id="password"
-                        is-toggleable
-                        required
-                        v-model.trim="form.password"
-                        :placeholder="$t('form.placeholder.oldPassword')"></input-password>
-      </form-group>
-      <form-group label-for="new_password"
-                  :invalid-feedback="errors.new_password"
-                  :label="$t('form.label.newPassword')">
-        <input-password id="new_password"
-                        is-toggleable
-                        required
-                        v-model.trim="form.new_password"
-                        :placeholder="$t('form.placeholder.newPassword')"></input-password>
-      </form-group>
-      <form-group label-for="new_password_confirmation"
-                  :invalid-feedback="errors.new_password_confirmation"
-                  :label="$t('form.label.newPasswordConfirmation')">
-        <input-password id="new_password_confirmation"
-                        is-toggleable
-                        required
-                        v-model.trim="form.new_password_confirmation"
-                        :placeholder="$t('form.placeholder.newPasswordConfirmation')"></input-password>
-      </form-group>
+      <router-link to="/login">
+        <small>
+          <strong>{{ $t('general.backToSignIn') }}</strong>
+        </small>
+      </router-link>
+    </template>
+    <template v-else>
+      <p>{{ $t('general.passwordExpired') }}</p>
 
-      <button-wrapper block
-                      class="mb-4"
-                      icon="mdi-lock-reset"
-                      id="change-password"
-                      type="submit"
-                      :disabled="disabledSubmit"
-                      :loading="loading">{{ $t('general.changePassword') }}</button-wrapper>
-    </form>
-    <a href="#" v-logout><small>{{ $t('general.signInAnotherAccount') }}</small></a>
+      <div v-if="error" class="alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+
+      <form @submit.prevent="handleSubmit" novalidate v-validate>
+        <form-group label-for="password"
+                    :invalid-feedback="errors.password"
+                    :label="$t('form.label.oldPassword')">
+          <input-password id="password"
+                          is-toggleable
+                          required
+                          v-model.trim="form.password"
+                          :placeholder="$t('form.placeholder.oldPassword')"></input-password>
+        </form-group>
+        <form-group label-for="new_password"
+                    :invalid-feedback="errors.new_password"
+                    :label="$t('form.label.newPassword')">
+          <input-password id="new_password"
+                          is-toggleable
+                          required
+                          v-model.trim="form.new_password"
+                          :placeholder="$t('form.placeholder.newPassword')"></input-password>
+        </form-group>
+        <form-group label-for="new_password_confirmation"
+                    :invalid-feedback="errors.new_password_confirmation"
+                    :label="$t('form.label.newPasswordConfirmation')">
+          <input-password id="new_password_confirmation"
+                          is-toggleable
+                          required
+                          v-model.trim="form.new_password_confirmation"
+                          :placeholder="$t('form.placeholder.newPasswordConfirmation')"></input-password>
+        </form-group>
+
+        <button-wrapper block
+                        class="mb-4"
+                        icon="mdi-lock-reset"
+                        id="change-password"
+                        type="submit"
+                        :disabled="disabledSubmit"
+                        :loading="loading">{{ $t('general.changePassword') }}</button-wrapper>
+      </form>
+      <a href="#" v-logout><small>{{ $t('general.signInAnotherAccount') }}</small></a>
+    </template>
   </div>
 </template>
 
 <script lang="ts">
+import { AxiosResponse } from 'axios';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import AuthService from '@/services/AuthService';
 import ButtonWrapper from '@/components/form/ButtonWrapper.vue';
@@ -77,13 +90,16 @@ export default class PasswordChangePage extends Mixins(FormMixin, FormValidation
     this.loading = true;
 
     try {
-      await AuthService.changePassword(this.form);
+      let response: AxiosResponse = await AuthService.changePassword(this.form);
       await AuthService.logout();
-      await this.$router.push('/login');
+      this.error = null;
+      this.successMessage = response.data.message;
     } catch (e) {
       this.validateResponse(e.response);
+      this.successMessage = null;
       this.error = e.response.data.message;
     }
+
     this.loading = false;
   }
 
