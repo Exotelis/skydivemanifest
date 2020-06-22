@@ -17,9 +17,7 @@
             <div class="col d-flex align-items-center">
               <h1 class="h2 m-0 font-weight-normal">{{ $t( $route.meta.title ) }}</h1>
             </div>
-            <div class="col-md-auto d-none d-md-block">
-              <language-selector></language-selector>
-            </div>
+            <user-menu></user-menu>
           </div>
         </div>
       </header>
@@ -59,15 +57,15 @@ import { Component } from 'vue-property-decorator';
 import { NavigationGeneratorInterface } from '@/components/navigation/NavigationGeneratorInterface';
 import { NavigationModel } from '@/components/navigation/NavigationModel';
 import { NavigationType } from '@/components/navigation/NavigationType';
-import LanguageSelector from '@/components/ui/LanguageSelector.vue';
 import LogoLicenseStatus from '@/components/ui/LogoLicenseStatus.vue';
 import NavigationGenerator from '@/components/navigation/NavigationGenerator.vue';
+import UserMenu from '@/components/ui/UserMenu.vue';
 
 @Component({
   components: {
-    LanguageSelector,
     LogoLicenseStatus,
-    NavigationGenerator
+    NavigationGenerator,
+    UserMenu
   }
 })
 export default class DefaultLayout extends Vue {

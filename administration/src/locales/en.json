@@ -116,6 +116,7 @@
       }
     },
     "general": {
+      "accountSettings": "Account settings (%{email})",
       "allRightsReserved": "All rights reserved",
       "backToSignIn": "Back to sign in.",
       "changePassword": "Change password",
