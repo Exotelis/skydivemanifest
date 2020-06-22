@@ -19,7 +19,7 @@ router.beforeEach((to, from, next) => {
     // If user need to change the password
     next({ path: '/password-change', query: to.query });
   } else if (!to.meta.requiresAuth && auth) {
-    // If signed in - go to dashboard
+    // If signed in and on page that don't requires auth - go to dashboard
     next({ path: '/', query: to.query });
   } else if (to.path !== '/login' && to.meta.requiresAuth && !auth) {
     // If not signed in and on restricted page - go to login

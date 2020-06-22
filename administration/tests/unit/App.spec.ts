@@ -15,7 +15,7 @@ const factory = (values = {}) => {
         }
       }
     },
-    stubs: ['router-link', 'router-view']
+    stubs: ['ConfirmEmailModal', 'DefaultLayout', 'router-link', 'router-view', 'SignInModal', 'WelcomeLayout']
   });
 };
 
