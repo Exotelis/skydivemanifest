@@ -34,3 +34,13 @@ export function htmlEntities (str: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 }
+
+export function setUserAttribute (key: any, value: any): void {
+  const user: UserShortModel = getUser();
+
+  if (key in user) {
+    // @ts-ignore
+    user[key] = value;
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+}
