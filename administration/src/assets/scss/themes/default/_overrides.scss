@@ -15,6 +15,7 @@ label {
   &.required label:after {
     content: '*';
     margin-left: $label-asterisk-margin-left;
+    font-family: "Roboto", "Helvetica Neue", Arial, BlinkMacSystemFont, -apple-system, "Segoe UI", "Noto Sans", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: $label-asterisk-font-size;
     color: $primary;
     display: inline-block;
