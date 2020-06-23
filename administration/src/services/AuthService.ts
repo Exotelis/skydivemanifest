@@ -21,8 +21,8 @@ export default {
     return axios.post('/auth/email/confirm', { token: token });
   },
 
-  async forgotPassword (email: string): Promise<any> {
-    return axios.post('/auth/password/forgot', { email: email });
+  async forgotPassword (username: string): Promise<any> {
+    return axios.post('/auth/password/forgot', { username: username });
   },
 
   async login (credentials: CredentialsModel): Promise<any> {

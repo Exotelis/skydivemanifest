@@ -53,9 +53,9 @@ export default {
     });
   },
 
-  forgotPassword (email: string): Promise<any> {
+  forgotPassword (username: string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      if (email === 'exotelis@mailbox.org') {
+      if (username === 'exotelis@mailbox.org') {
         resolve({
           data: { message: 'We have emailed your password reset link!' },
           status: 200,

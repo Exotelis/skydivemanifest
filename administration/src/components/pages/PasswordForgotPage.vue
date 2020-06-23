@@ -14,15 +14,15 @@
       </div>
 
       <form @submit.prevent="handleSubmit" novalidate v-validate>
-        <form-group label-for="email"
-                    :invalid-feedback="errors.email"
-                    :label="$t('form.label.email')">
-          <input-email id="email"
-                       required
-                       v-model.trim="email"
-                       :placeholder="$t('form.placeholder.email')"
-                       :plaintext="emailPreFilled"
-                       :readonly="emailPreFilled"></input-email>
+        <form-group label-for="username"
+                    :invalid-feedback="errors.username"
+                    :label="$t('form.label.usernameEmail')">
+          <input-text id="username"
+                      required
+                      v-model.trim="username"
+                      :placeholder="$t('form.placeholder.usernameEmail')"
+                      :plaintext="usernamePreFilled"
+                      :readonly="usernamePreFilled"></input-text>
         </form-group>
 
         <button-wrapper block
@@ -51,19 +51,19 @@ import ButtonWrapper from '@/components/form/ButtonWrapper.vue';
 import FormGroup from '@/components/form/FormGroup.vue';
 import FormMixin from '@/mixins/FormMixin';
 import FormValidationMixin from '@/mixins/FormValidationMixin';
-import InputEmail from '@/components/form/InputEmail.vue';
+import InputText from '@/components/form/InputText.vue';
 
 @Component({
-  components: { ButtonWrapper, FormGroup, InputEmail }
+  components: { ButtonWrapper, FormGroup, InputText }
 })
 export default class PasswordForgotPage extends Mixins(FormMixin, FormValidationMixin) {
-  email: string = '';
-  emailPreFilled: boolean = false;
+  username: string = '';
+  usernamePreFilled: boolean = false;
 
   mounted () {
     if (this.$route.query.email) {
-      this.email = this.$route.query.email as string;
-      this.emailPreFilled = true;
+      this.username = this.$route.query.email as string;
+      this.usernamePreFilled = true;
     }
   }
 
@@ -74,7 +74,7 @@ export default class PasswordForgotPage extends Mixins(FormMixin, FormValidation
     this.loading = true;
 
     try {
-      const response: AxiosResponse = await AuthService.forgotPassword(this.email);
+      const response: AxiosResponse = await AuthService.forgotPassword(this.username);
       this.error = null;
       this.successMessage = response.data.message;
     } catch (e) {
@@ -86,9 +86,9 @@ export default class PasswordForgotPage extends Mixins(FormMixin, FormValidation
     this.loading = false;
   }
 
-  @Watch('email')
-  onEmailChange (email: string): void {
-    this.disabledSubmit = !(email.length > 0);
+  @Watch('username')
+  onUsernameChange (username: string): void {
+    this.disabledSubmit = !(username.length > 0);
   }
 }
 </script>
