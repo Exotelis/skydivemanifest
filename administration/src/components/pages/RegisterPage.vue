@@ -182,6 +182,7 @@ export default class RegisterPage extends Mixins(FormMixin, FormValidationMixin)
       const response: AxiosResponse = await AuthService.register(this.form);
       this.email = response.data.data.email;
       this.error = null;
+      this.dirty = false;
     } catch (e) {
       this.validateResponse(e.response);
       this.error = e.response.data.message;
@@ -191,6 +192,7 @@ export default class RegisterPage extends Mixins(FormMixin, FormValidationMixin)
 
   @Watch('form', { deep: true })
   onFormChange (form: RegisterModel): void {
+    this.dirty = true;
     this.disabledSubmit = !(form.dob.length > 0 && form.email.length > 0 && form.firstname.length > 0 &&
       form.lastname.length > 0 && form.password.length > 0 && form.password_confirmation.length > 0);
   }

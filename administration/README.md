@@ -21,6 +21,7 @@ development or to build the bundle, to use it in production.
     * [select-wrapper](#select-wrapper)
     * [button-wrapper](#button-wrapper)
   + [Form validation](#form-validation)
+  + [Prevent from leaving route](#prevent-from-leaving-route)
   + [Layouts](#layouts)
 - [Internationalization](#internationalization)
   + [Change the default language](#change-the-default-language)
@@ -442,6 +443,30 @@ id="password_confirmation"
 ```
 
 Note: For a full support of the validation, please use the [from-group component](#form-group) as a wrapper.
+
+### Prevent from leaving route
+When a form has been manipulated, you can prevent the user from changing the route without saving the data. The only
+thing you have to do is to set the `dirty` variable to `true` when implementing the `FormMixin`. The best place to set
+`dirty` to `true` is a watcher:
+```
+@Watch('form', { deep: true })
+onFormChange (form: RegisterModel): void {
+    this.dirty = true;
+    this.disabledSubmit = !(form.dob.length > 0 && form.email.length > 0 && form.firstname.length > 0 &&
+      form.lastname.length > 0 && form.password.length > 0 && form.password_confirmation.length > 0);
+}
+```
+After the form has been submitted successfully, you have to reset `dirty` before any route change:
+```
+async handleSubmit (): Promise<any> {
+    try {
+        // Some api request
+        this.dirty = false;
+    } catch (e) {
+        // Error handling
+    }
+}
+```
 
 ### Layouts
 Different routes can have different layouts. To set a layout for a specific route just add the meta field `layout` with

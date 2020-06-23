@@ -126,6 +126,7 @@ export default class PasswordResetPage extends Mixins(FormMixin, FormValidationM
       const response: AxiosResponse = await AuthService.resetPassword(this.form);
       this.error = null;
       this.successMessage = response.data.message;
+      this.dirty = false;
     } catch (e) {
       this.validateResponse(e.response);
       this.successMessage = null;
@@ -137,6 +138,7 @@ export default class PasswordResetPage extends Mixins(FormMixin, FormValidationM
 
   @Watch('form', { deep: true })
   onFormChange (form: ResetPasswordModel): void {
+    this.dirty = true;
     this.disabledSubmit = !(form.email.length > 0 && form.password.length > 0 &&
       form.password_confirmation.length > 0 && form.token.length > 0);
   }

@@ -31,6 +31,12 @@
         "successMsg": "Your email address has been verified successfully.",
         "title": "Email confirmation"
       },
+      "leavePageModal": {
+        "cancelButton": "Stay",
+        "okButton": "Leave",
+        "text": "Do you really want to leave this page without saving? Any unsaved information will be lost.",
+        "title": "Leave page without saving?"
+      },
       "signInModal": {
         "remainSignedIn": "Remain signed in",
         "title": "Hey <strong>%{name}</strong>,<br>are you still there?"

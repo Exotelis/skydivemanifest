@@ -31,6 +31,12 @@
         "successMsg": "Ihre E-Mail-Adresse wurde erfolgreich bestätigt.",
         "title": "E-Mail Bestätigung"
       },
+      "leavePageModal": {
+        "cancelButton": "Auf Seite bleiben",
+        "okButton": "Seite verlassen",
+        "text": "Möchten Sie wirklich die Seite ohne zu speichern verlassen? Alle nicht gespeicherten Daten gehen verloren.",
+        "title": "Seite ohne Speichern verlassen?"
+      },
       "signInModal": {
         "remainSignedIn": "Angemeldet bleiben",
         "title": "Hey <strong>%{name}</strong>,<br>bist Du noch da?"

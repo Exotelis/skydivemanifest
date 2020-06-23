@@ -109,6 +109,7 @@ describe('RegisterPage.vue', () => {
     await component.vm.handleSubmit();
     expect(component.vm.email).toBe('exotelis@mailbox.org');
     expect(component.vm.error).toBeNull();
+    expect(component.vm.dirty).toBeFalsy();
     expect(component.find('h3').text()).toBe('page.register.successTitle');
   });
 
@@ -126,5 +127,11 @@ describe('RegisterPage.vue', () => {
     await component.vm.handleSubmit();
     expect(component.emitted().changeRoute).toBeFalsy();
     expect(component.vm.error).toBe('The registration failed.');
+  });
+
+  it('check if form is dirty after some input', async () => {
+    expect(component.vm.dirty).toBeFalsy();
+    component.find('#email').setValue('exotelis@example.com');
+    expect(component.vm.dirty).toBeTruthy();
   });
 });

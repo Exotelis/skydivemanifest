@@ -96,6 +96,7 @@ describe('PasswordResetPage.vue', () => {
     await wrapper.vm.handleSubmit();
     expect(wrapper.vm.error).toBeNull();
     expect(wrapper.vm.successMessage).toBe('Your password has been reset!');
+    expect(wrapper.vm.dirty).toBeFalsy();
   });
 
   it('check if password forgot failed', async () => {
@@ -125,5 +126,13 @@ describe('PasswordResetPage.vue', () => {
     wrapper.find('#email').setValue('exotelis@mailbox.org');
     await wrapper.vm.handleSubmit();
     expect(wrapper.find('.alert-danger').exists()).toBeFalsy();
+  });
+
+  it('check if form is dirty after some input', async () => {
+    const wrapper: any = factory();
+
+    expect(wrapper.vm.dirty).toBeFalsy();
+    wrapper.find('#email').setValue('exotelis@example.com');
+    expect(wrapper.vm.dirty).toBeTruthy();
   });
 });
