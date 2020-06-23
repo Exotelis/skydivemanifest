@@ -6,6 +6,7 @@ use App\Http\Requests\Password\ForgotRequest;
 use App\Http\Requests\Password\ResetRequest;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * Trait ResetPassword
@@ -34,8 +35,17 @@ trait ResetPassword
     public function sendResetLinkEmail(ForgotRequest $request)
     {
         $broker = $this->getBroker();
+        $validator = Validator::make($request->only('username'), [
+            'username' => 'email'
+        ]);
 
-        $response = Password::broker($broker)->sendResetLink($request->only('email'));
+        if ($validator->fails()) {
+            $credentials = $request->only('username');
+        } else {
+            $credentials = ['email' => $request->only('username')['username']];
+        }
+
+        $response = Password::broker($broker)->sendResetLink($credentials);
 
         switch ($response) {
             case Password::RESET_LINK_SENT:
