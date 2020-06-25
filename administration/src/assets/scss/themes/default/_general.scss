@@ -17,3 +17,26 @@ body {
     background-color: $dropdown-link-hover-bg-danger;
   }
 }
+
+// Autofill - Does not work in any browser
+// If the success, danger or the input-bg color will change, we need to adapt the hex color to the new rgba color
+
+@mixin autofill($color) {
+  box-shadow: 0 0 0 ($input-padding-y + (($input-btn-font-size * $input-btn-line-height) /2)) $color inset;
+  transition: none;
+  border-radius: 0;
+}
+
+input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus,
+select:-webkit-autofill, select:-webkit-autofill:hover, select:-webkit-autofill:focus,
+textarea:-webkit-autofill, textarea:-webkit-autofill:hover, textarea:-webkit-autofill:focus {
+  @include autofill(#edeff1);
+}
+
+.form-control.is-valid:-webkit-autofill, .form-control.is-valid:-webkit-autofill:focus {
+  @include autofill(#e5f9f2);
+}
+
+.form-control.is-invalid:-webkit-autofill, .form-control.is-invalid:-webkit-autofill:focus {
+  @include autofill(#feecef);
+}

@@ -14,14 +14,14 @@ $black:        #000;
 
 $orange:       #ed7c3b;
 $yellow:       #ffdd57;
-$green:        #00c281;
+$green:        #00c281; // When changing, see autofill section in _general
 $turquoise:    #20cb98;
 $cyan:         #17a4ba;
 $blue:         #2d81e1;
 $indigo:       #6f26e7;
 $purple:       #6f42c2;
 $pink:         #e83e8c;
-$red:          #f14668;
+$red:          #f14668; // When changing, see autofill section in _general
 $rusty:        #dc3545;
 $spacegray:    #4c6876;
 $darkgunmetal: #1d2530;
@@ -31,10 +31,10 @@ $body-color:   $spacegray;
 
 $primary:      $green;
 $secondary:    $darkgunmetal;
-$success:      $green;
+$success:      $green; // When changing, see autofill section in _general
 $info:         $cyan;
 $warning:      $yellow;
-$danger:       $red;
+$danger:       $red; // When changing, see autofill section in _general
 
 // Breakpoints
 
@@ -102,7 +102,7 @@ $input-padding-y:            .75rem;
 $input-padding-x:            1rem;
 $input-font-size:            .75rem;
 
-$input-bg:                   rgba($body-color, .1);
+$input-bg:                   rgba($body-color, .1); // When changing, see autofill section in _general
 
 $input-color:                $body-color;
 $input-border-color:         $primary;
