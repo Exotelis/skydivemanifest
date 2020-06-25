@@ -1,7 +1,12 @@
+import jwtDecode from 'jwt-decode';
 import UserShortModel from '@/models/UserShortModel';
 
 export function capitalize (s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+export function checkPermissions (a: Array<string>, b: Array<string> = getUserPermissions()): boolean {
+  return a.some((permission: string) => b.includes(permission));
 }
 
 export function getCookie (name: string): string|undefined {
@@ -25,6 +30,17 @@ export function getUser (): UserShortModel {
   }
 
   return JSON.parse(user) as UserShortModel;
+}
+
+export function getUserPermissions (): Array<string> {
+  const cookie: string|undefined = getCookie('XSRF-TOKEN');
+
+  if (cookie === undefined) {
+    return [];
+  }
+
+  const decryptedPayload: any = jwtDecode(cookie);
+  return decryptedPayload.scopes;
 }
 
 export function htmlEntities (str: string): string {

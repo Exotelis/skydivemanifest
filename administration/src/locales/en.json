@@ -138,6 +138,8 @@
         "unspecified": "Unspecified"
       },
       "loading": "Loading...",
+      "noPermissionsText": "You don't have the permissions to visit the '%{title}' page.",
+      "noPermissionsTitle": "No permissions",
       "othersettings": "Other settings",
       "passwordExpired": "Your password expired. Please choose a new one.",
       "permissions": "Permissions",

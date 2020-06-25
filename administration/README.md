@@ -23,6 +23,7 @@ development or to build the bundle, to use it in production.
   + [Form validation](#form-validation)
   + [Prevent from leaving route](#prevent-from-leaving-route)
   + [Layouts](#layouts)
+  + [Permissions](#permissions)
 - [Internationalization](#internationalization)
   + [Change the default language](#change-the-default-language)
   + [Disable prefetch](#disable-prefetch)
@@ -77,28 +78,42 @@ To automatically generate a navigation menu, you can use the
 [NavigationGenerator](src/components/navigation/NavigationGenerator.vue) component. The component requires just a single
 property `config: Array<NavigationModel>`. Please see the definition of the
 [NavigationModel](src/components/navigation/NavigationModel.ts). The only required key of the NavigationModel is `type`.
-You can choose one out of three [NavigationTypes](src/components/navigation/NavigationType.ts). Using `Path` will
+You can choose one out of four [NavigationTypes](src/components/navigation/NavigationType.ts). Using `Path` will
 automatically load the route information matching the given path:
 ```
 { path: '/', type: NavigationType.Path }
 ```
-The type `Submenuhandler` will generate a submenu. `Title` can be used to group the menu items, since title is not
-clickable. When using one of those type, you should also provide a title for the menu item:
+The type `Submenuhandler` will generate a submenu. `Title` can be used to group the menu items. When using one of those
+types, you should also provide a title for the menu item:
 ```
 { title: 'Submenutitel',
   type: NavigationType.Submenuhandler,
   children: [
-    { title: 'User stuff', type: NavigationType.Title },
-    { path: '/userroles', type: NavigationType.Path }
+    { title: 'User stuff',
+      type: NavigationType.Title
+      children: [
+        { path: '/userroles', type: NavigationType.Path }
+      ]
+    }
   ]
 }
 ```
-As you can see in the example above, a `Submenuhandler` just makes sense with some children defined. Finally, you can
-define an icon for each menu item. The icon must be the classname of an existing mdi icon:
+As you can see in the example above, a `Submenuhandler` just makes sense with some children defined.
+
+Note: When using the type `title`, all menu items that should belong to this group, must be placed in the children array
+of the title object.
+
+The type `Hidden` must not be defined manually, but will be set when the user doesn't have the required permissions.
+When all menu items of a submenu have    been hidden, the submenu will also be hidden. The same goes for the `Title` type,
+if all children have been hidden the `Title` item will also be hidden.
+
+Note: If `Submenuhandler` and `Title` elements have an empty `children` array, these elements will be hidden.
+
+Finally, you can define an icon for each menu item. The icon must be the classname of an existing mdi icon:
 ```
 { icon: 'mdi-airplane', path: '/aircrafts', type: NavigationType.Path }
 ```
-By default the property `onlyOneSubmenu` is true. That means that any other open submenu will be closed, when the user
+By default, the property `onlyOneSubmenu` is true. That means that any other open submenu will be closed, when the user
 opens another one. Settings this to false allows the user to open multiple submenus.
 
 Of course, you don't have to use the `NavigationGenerator` and its config, you could also directly use the
@@ -490,6 +505,34 @@ You can also style your layouts separately. Just add a file to the directory
 stylesheet in the [app.scss](src/assets/scss/app.scss).
 
 Note: The path in the assets folder might be different, when not using the default theme.
+
+### Permissions
+When a user gets signed in, the users permissions will stored in the locale storage with some other information. You can
+use the permission to deny to access to specific pages or hide elements.
+
+For example the following route will only be accessible if the user has at least one of the defined permissions:
+```
+{
+  path: '/aircrafts',
+  name: 'aircrafts',
+  meta: {
+    title: 'page.title.aircrafts',
+    permissions: ['aircrafts:delete', 'aircrafts:read', 'aircrafts:write'],
+    requiresAuth: true
+  }
+}
+```
+Note: When you want make use of the permissions `requiresAuth` must be true.
+
+If neither the `aircrafts:delete` nor the `aircrafts:read` nor the `aircrafts:write` will be part of the users
+permissions, the page will not be accessible. When you use the
+[NavigationGenerator](#navigationgenerator-and-navigationitems), all menu items without permissions will be hidden
+automatically. You can use the helper `checkPermissions()`, to check manually for permissions:
+```
+checkPermissions(['permissionX::read'])
+```
+
+See the api [README](../api/README.md) to learn more about permissions.
 
 ## Internationalization
 The internationalization support is enabled by default. You'll find all supported languages in the

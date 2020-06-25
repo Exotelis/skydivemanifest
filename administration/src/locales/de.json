@@ -138,6 +138,8 @@
         "unspecified": "unbekannt"
       },
       "loading": "Lädt...",
+      "noPermissionsText": "Sie haben nicht die erforderlichen Berechtigungen die Seite '%{title}' zu besuchen.",
+      "noPermissionsTitle": "Keine Berechtigungen",
       "othersettings": "Andere Einstellungen",
       "passwordExpired": "Ihr Passwort ist abgelaufen, bitte wählen Sie ein neues.",
       "permissions": "Berechtigungen",

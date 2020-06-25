@@ -142,6 +142,7 @@ const routes = [
     name: 'users',
     meta: {
       title: 'page.title.users',
+      permissions: ['users:delete', 'users:read', 'users:write'],
       requiresAuth: true
     }
   },
@@ -150,6 +151,7 @@ const routes = [
     name: 'userroles',
     meta: {
       title: 'page.title.userroles',
+      permissions: ['roles:delete', 'roles:read', 'roles:write'],
       requiresAuth: true
     }
   }

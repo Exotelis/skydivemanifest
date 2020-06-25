@@ -14,6 +14,8 @@
             :class="[config.icon ? 'mdi ' + config.icon : '']">
         {{ $t(config.title) }}
       </span>
+      <navigation-item v-for="(c, key) in config.children" v-on="$listeners" :key="key" :config="c">
+      </navigation-item>
     </template>
 
     <template v-if="config.type === 'submenuhandler'">
@@ -30,13 +32,18 @@
         </navigation-item>
       </ul>
     </template>
+
+    <template v-if="config.type === 'hidden'"></template>
   </li>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { Component, Prop } from 'vue-property-decorator';
+import { Component, Prop, Watch } from 'vue-property-decorator';
+import { checkPermissions } from '@/helpers';
 import { NavigationModel } from '@/components/navigation/NavigationModel';
+import { NavigationType } from '@/components/navigation/NavigationType';
+import { Route } from 'vue-router';
 import { routesMap } from '@/router/routes';
 
 // Todo Use portals for sub navigation in vue 3 to prevent the css workaround
@@ -44,17 +51,37 @@ import { routesMap } from '@/router/routes';
 export default class NavigationItem extends Vue {
   @Prop({ required: true }) readonly config!: NavigationModel;
   isSubmenuOpen: boolean = false;
-  route!: object;
+  route!: Route;
 
   created (): void {
-    if (this.config.type === 'path') {
-      this.route = routesMap.get(this.config.path) as object;
+    if (this.config.type === NavigationType.Path) {
+      this.route = routesMap.get(this.config.path) as Route;
+
+      // Hide element if not permissions for this route
+      if (this.route.meta.permissions && !checkPermissions(this.route.meta.permissions)) {
+        this.config.type = NavigationType.Hidden;
+      }
+    }
+
+    // Hide empty submenus and empty title groups
+    if (this.config.type === NavigationType.Submenuhandler || this.config.type === NavigationType.Title) {
+      if (typeof this.config.children === 'undefined' || this.config.children.length === 0) {
+        this.config.type = NavigationType.Hidden;
+      }
     }
   }
 
   toggleSubmenu (): void {
     this.isSubmenuOpen = !this.isSubmenuOpen;
     this.$emit('toggle-submenu', this);
+  }
+
+  @Watch('config.children', { deep: true })
+  onChildrenUpdate (children: Array<NavigationModel>): void {
+    // Check if all children are hidden then hide this as well
+    if (!children.some((child) => child.type !== NavigationType.Hidden)) {
+      this.config.type = NavigationType.Hidden;
+    }
   }
 }
 </script>
