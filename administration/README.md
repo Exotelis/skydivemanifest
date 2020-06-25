@@ -77,8 +77,8 @@ This section should help any developer to implement new features or fix bugs.
 To automatically generate a navigation menu, you can use the
 [NavigationGenerator](src/components/navigation/NavigationGenerator.vue) component. The component requires just a single
 property `config: Array<NavigationModel>`. Please see the definition of the
-[NavigationModel](src/components/navigation/NavigationModel.ts). The only required key of the NavigationModel is `type`.
-You can choose one out of four [NavigationTypes](src/components/navigation/NavigationType.ts). Using `Path` will
+[NavigationModel](src/models/NavigationModel.ts). The only required key of the NavigationModel is `type`.
+You can choose one out of four [NavigationTypes](src/enum/NavigationType.ts). Using `Path` will
 automatically load the route information matching the given path:
 ```
 { path: '/', type: NavigationType.Path }

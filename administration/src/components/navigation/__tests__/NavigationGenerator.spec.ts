@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import NavigationGenerator from '../NavigationGenerator.vue';
-import { NavigationType } from '@/components/navigation/NavigationType';
+import { NavigationType } from '@/enum/NavigationType';
 
 describe('NavigationGenerator.vue', () => {
   let component: any;

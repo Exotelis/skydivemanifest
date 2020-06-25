@@ -54,9 +54,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
-import { NavigationGeneratorInterface } from '@/components/navigation/NavigationGeneratorInterface';
-import { NavigationModel } from '@/components/navigation/NavigationModel';
-import { NavigationType } from '@/components/navigation/NavigationType';
+import { NavigationGeneratorInterface } from '@/interfaces/NavigationGeneratorInterface';
+import { NavigationModel } from '@/models/NavigationModel';
+import { NavigationType } from '@/enum/NavigationType';
 import LogoLicenseStatus from '@/components/ui/LogoLicenseStatus.vue';
 import NavigationGenerator from '@/components/navigation/NavigationGenerator.vue';
 import UserMenu from '@/components/ui/UserMenu.vue';

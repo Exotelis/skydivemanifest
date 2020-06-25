@@ -1,4 +1,4 @@
-import { NavigationType } from '@/components/navigation/NavigationType';
+import { NavigationType } from '@/enum/NavigationType';
 
 export interface NavigationModel {
   children?: Array<NavigationModel>

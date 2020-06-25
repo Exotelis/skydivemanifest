@@ -41,8 +41,8 @@
 import Vue from 'vue';
 import { Component, Prop, Watch } from 'vue-property-decorator';
 import { checkPermissions } from '@/helpers';
-import { NavigationModel } from '@/components/navigation/NavigationModel';
-import { NavigationType } from '@/components/navigation/NavigationType';
+import { NavigationModel } from '@/models/NavigationModel';
+import { NavigationType } from '@/enum/NavigationType';
 import { Route } from 'vue-router';
 import { routesMap } from '@/router/routes';
 

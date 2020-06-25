@@ -1,8 +1,8 @@
 import { config, mount } from '@vue/test-utils';
 import NavigationItem from '../NavigationItem.vue';
 import * as helpers from '@/helpers';
-import { NavigationType } from '@/components/navigation/NavigationType';
-import { NavigationModel } from '@/components/navigation/NavigationModel';
+import { NavigationType } from '@/enum/NavigationType';
+import { NavigationModel } from '@/models/NavigationModel';
 
 config.mocks!.$t = (key: any) => key;
 
