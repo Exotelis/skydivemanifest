@@ -23,7 +23,7 @@ class RevokeOldTokens
             $user = User::find($event->userId);
 
             foreach($user->tokens as $token) {
-                if ((int) $event->clientId === $token->client_id && $event->tokenId !== $token->id) {
+                if ($event->clientId === $token->client_id && $event->tokenId !== $token->id) {
                     $token->revoke();
                 }
             }
