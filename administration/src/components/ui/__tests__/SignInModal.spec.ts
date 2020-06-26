@@ -11,14 +11,14 @@ describe('SignInModal.vue', () => {
   let component: any;
 
   beforeEach(() => {
-    localStorage.setItem('user', '{ "firstname": "John" }');
+    document.cookie = 'XSRF-TOKEN=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImZpcnN0bmFtZSI6IkpvaG4ifX0';
     component = mount(SignInModal, {
       stubs: ['b-modal']
     });
   });
 
   afterEach(() => {
-    localStorage.removeItem('user');
+    document.cookie = 'XSRF-TOKEN= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
   });
 
   it('is Vue instance', () => {
@@ -71,7 +71,7 @@ describe('SignInModal.vue', () => {
 
   it('remain signed in', async () => {
     const spy = jest.spyOn(component.vm.$bvModal, 'hide');
-    localStorage.setItem('user', '{ "firstname": "John", "username": "admin" }');
+    document.cookie = 'XSRF-TOKEN=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImZpcnN0bmFtZSI6IkpvaG4iLCJ1c2VybmFtZSI6ImFkbWluIn19';
     EventBus.$emit('sign-in-modal');
     await component.vm.$nextTick();
     component.find('#sign-in-password').setValue('admin');

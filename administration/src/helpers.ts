@@ -22,20 +22,31 @@ export function getCookie (name: string): string|undefined {
 }
 
 export function getUser (): UserShortModel {
-  const user: any|null = localStorage.getItem('user') as any;
+  const cookie: string|undefined = getCookie('XSRF-TOKEN');
 
-  if (user === null) {
-    // Todo - Force logout or show toast
-    throw new Error('No user object found in local storage, but it should exist. Please sign in again.');
+  if (!cookie) {
+    throw new Error('No user found. Please sign in again.');
   }
 
-  return JSON.parse(user) as UserShortModel;
+  const decryptedPayload: any = jwtDecode(cookie);
+  return decryptedPayload.user;
+}
+
+export function getUserId (): number|undefined {
+  const cookie: string|undefined = getCookie('XSRF-TOKEN');
+
+  if (!cookie) {
+    return;
+  }
+
+  const decryptedPayload: any = jwtDecode(cookie);
+  return decryptedPayload.user.id;
 }
 
 export function getUserPermissions (): Array<string> {
   const cookie: string|undefined = getCookie('XSRF-TOKEN');
 
-  if (cookie === undefined) {
+  if (!cookie) {
     return [];
   }
 
@@ -49,14 +60,4 @@ export function htmlEntities (str: string): string {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
-}
-
-export function setUserAttribute (key: any, value: any): void {
-  const user: UserShortModel = getUser();
-
-  if (key in user) {
-    // @ts-ignore
-    user[key] = value;
-    localStorage.setItem('user', JSON.stringify(user));
-  }
 }

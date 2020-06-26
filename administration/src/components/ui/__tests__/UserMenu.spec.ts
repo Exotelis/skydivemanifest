@@ -5,17 +5,13 @@ config.mocks!.$t = (key: any) => key;
 
 describe('UserMenu.vue', () => {
   let component: any;
-  let user: any = {
-    email: 'exotelis@mailbox.org',
-    firstname: 'John'
-  };
 
   beforeAll(() => {
-    localStorage.setItem('user', JSON.stringify(user));
+    document.cookie = 'XSRF-TOKEN=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiZXhvdGVsaXNAbWFpbGJveC5vcmciLCJmaXJzdG5hbWUiOiJKb2huIn19';
   });
 
   afterAll(() => {
-    localStorage.removeItem('user');
+    document.cookie = 'XSRF-TOKEN= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
   });
 
   beforeEach(() => {
@@ -27,6 +23,9 @@ describe('UserMenu.vue', () => {
   });
 
   it('set the user', () => {
-    expect(component.vm.user).toStrictEqual(user);
+    expect(component.vm.user).toStrictEqual({
+      email: 'exotelis@mailbox.org',
+      firstname: 'John'
+    });
   });
 });

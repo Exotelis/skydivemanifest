@@ -42,7 +42,6 @@ export default {
 
     // In case of success: Clear timeout, local storage and delete cookie
     clearTimeout(this.expires);
-    localStorage.removeItem('user');
     document.cookie = 'XSRF-TOKEN= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
 
     return response;
@@ -67,24 +66,17 @@ export default {
     const cookie: string|undefined = getCookie('XSRF-TOKEN');
 
     if (cookie === undefined) {
-      localStorage.removeItem('user'); // Clear user information
       return false;
     }
 
     const decryptedPayload: any = jwtDecode(cookie);
+    const user = decryptedPayload.user;
     decryptedPayload.exp = decryptedPayload.exp * 1000; // Convert exp date to ms
 
-    // Set user information and permissions
-    if (localStorage.getItem('user') === null) {
-      let user: UserShortModel = decryptedPayload.user;
-      user['permissions'] = decryptedPayload.scopes;
-      localStorage.setItem('user', JSON.stringify(user));
-
-      // Set language
-      if (user.locale !== null) {
-        loadLanguageAsync(user.locale);
-        localStorage.setItem('locale', user.locale);
-      }
+    // Set language
+    if (user.locale !== null) {
+      loadLanguageAsync(user.locale);
+      localStorage.setItem('locale', user.locale);
     }
 
     // Refresh token automatically or show modal dialog one minute before the user gets signed out automatically
