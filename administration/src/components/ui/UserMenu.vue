@@ -9,7 +9,6 @@
         <a class="dropdown-item disabled" href="#" tabindex="-1" >
           {{ $t('general.accountSettings', { email: user.email }) }}
         </a>
-        <div class="dropdown-divider"></div>
         <a class="dropdown-item menu-item-danger" href="#" tabindex="-1"  v-logout>
           {{ $t('general.signOut') }}
         </a>
@@ -30,5 +29,7 @@ import UserShortModel from '@/models/UserShortModel';
 })
 export default class UserMenu extends Vue {
   user: UserShortModel = getUser();
+  // TODO pull user information from api as soon as the users/:id resource exist.
+  // TODO pull on login and when the user changed.
 }
 </script>
