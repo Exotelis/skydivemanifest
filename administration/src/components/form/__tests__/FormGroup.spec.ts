@@ -142,7 +142,6 @@ describe('FormGroup.vue', () => {
     expect(component.find('label').attributes().for).toBe('test');
   });
 
-  // TODO lavel cols kram
   it('check if class col-xs-2 is not set if horizontal is false', () => {
     component.setProps({ label: 'Test' });
     expect(component.find('label').classes()).not.toContain('col-xs-2');

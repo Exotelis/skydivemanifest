@@ -56,7 +56,7 @@ describe('NavigationGenerator.vue', () => {
     expect(component.vm.navigationItems.length).toBe(3);
   });
 
-  it('close a submenu', () => { // TODO mit name auch bei mit only one
+  it('close a submenu', () => {
     component.setData({ navigationItems: [
       { name: 'child1', $data: { isSubmenuOpen: true } },
       { name: 'child2', $data: { isSubmenuOpen: true } },
