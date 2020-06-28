@@ -102,12 +102,20 @@ class VerifyEmail
 
     /**
      * Return the time in minutes, when a token should expire. Default is 1 day.
+     * If an user is submitted, the token expires not before the user is deleted. Default is 10 days.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $user
      *
      * @return int
      */
-    public function expires()
+    public function expires($user = null)
     {
         $config = $this->getConfiguration();
+
+        if (!is_null($user) && is_null($user->email_verified_at)) {
+            return config('app.users.delete_unverified_after') * 24 * 60;
+        }
+
         return $config['expire'] ?? 1440;
     }
 
@@ -252,7 +260,7 @@ class VerifyEmail
 
         $request = $this->get($user->email);
 
-        if (Carbon::parse($request->created_at)->addMinutes($this->expires())->isPast())
+        if (Carbon::parse($request->created_at)->addMinutes($this->expires($user))->isPast())
         {
             abort(400, __('error.email_token_expired'));
         }

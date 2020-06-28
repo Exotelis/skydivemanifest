@@ -22,7 +22,7 @@ use it in production.
   + [Running tests](#running-tests)
   + [API documentation](#api-documentation)
   + [Authorization options](#authorization-options)
-  + [Required frontend routes](#required-frontend-routes)
+  + [Frontend requirements](#frontend-requirements)
   + [Permissions](#permissions)
   + [OAuth client credentials](#oauth-client-credentials)
   + [Create a migration](#create-a-migration)
@@ -340,24 +340,30 @@ Storing the token just in the local storage makes it vulnerable to XSS attacks. 
 vulnerable to CSRF attacks. By sending one part of the token in a cookie, and the other part in a header mitigates those
 kinds of attacks.
 
-### Required frontend routes
+### Frontend requirements
 If your are about to develop a new frontend, you have to make sure, that some routes exist to make use of the full
 functionality of the backend.
 
-The first route is the `forgot-password` route, where a user can request a new password.
+The first route is the `password-forgot` route, where a user can request a new password.
 ```
-https://<path-to-your-frontend>/forgot-password
+https://<path-to-your-frontend>/password-forgot
 ```
-The second route is the `reset-password` route, where a user should be able to set a new password for the account. The
+The second route is the `password-reset` route, where a user should be able to set a new password for the account. The
 full URL could look like:
 ```
-https://<path-to-your-frontend>/reset-password
+https://<path-to-your-frontend>/password-reset
 ```
-The third route is the `confirm-email` route, where users can verify their email address:
+The third route is the `password-change` route, where a user gets forced to set a new password. After the user signed
+in, the payload of the access token can be decrypted. If the `password_change` value is true, the user must set a new
+password.
 ```
-https://<path-to-your-frontend>/confirm-email
+https://<path-to-your-frontend>/password-change
 ```
 Without having those routes, you cannot make use of those features.
+
+Apart from those routes, you also have to check if the parameter `email-token` was submitted. If it was submitted you
+should handle it and call the `/auth/email/confirm` resource. This does not require a separate route. A better UX would
+be to give the user feedback by displaying a modal dialog.
 
 ### Permissions
 When adding new tables and models to the project, you might want to specify permissions to restrict or grant access to

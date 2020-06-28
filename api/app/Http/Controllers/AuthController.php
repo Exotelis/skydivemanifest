@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RefreshRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\Role;
 use App\Models\User;
@@ -66,7 +67,6 @@ class AuthController extends Controller
          * If account is not locked, inactive or password must reset then proceed.
          */
         $response = $this->forwardLoginRequest($input['username'], $input['password']);
-        $response = $this->attachUserInformation($response);
 
         // Login was successful, set last login date to now and reset the failed login attempts
         $this->user->setLastLogin();
@@ -96,6 +96,42 @@ class AuthController extends Controller
         }
 
         abort(400, __('error.could_not_sign_out'));
+    }
+
+    /**
+     * Refresh the access token.
+     *
+     * @param RefreshRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh(RefreshRequest $request)
+    {
+        $route = route('passport.token', null, false);
+
+        $data = [
+            'grant_type' => 'refresh_token',
+            'client_id' => config('auth.oauth.password_client.id'),
+            'client_secret' => config('auth.oauth.password_client.secret'),
+            'refresh_token' => $request->token,
+        ];
+
+        $tokenRequest = Request::create($route, 'post', $data);
+        $tokenResponse = app()->handle($tokenRequest);
+        $tokenContent = [];
+
+        if ($tokenResponse instanceof \Illuminate\Http\Response) {
+            if (! $tokenResponse->isSuccessful()) {
+                abort(401, __('auth.oauth'));
+            }
+            $tokenContent = json_decode($tokenResponse->content(), true);
+        }
+
+        // If the request was an ajax call, response with cookies (webapp)
+        if ($request->ajax()) {
+            return $this->respondWithCookies($tokenContent);
+        }
+
+        return response()->json($tokenContent);
     }
 
     /**
@@ -134,31 +170,6 @@ class AuthController extends Controller
         }
 
         return response()->json(['message' => __('auth.registration_successful'), 'data' => $newUser], 201);
-    }
-
-    /**
-     * Attach user information to the response.
-     *
-     * @param  array $response
-     * @return array
-     */
-    protected function attachUserInformation(array $response)
-    {
-        // TODO would be better if those information could be added as claims to the token directly. Keep an eye on:
-        //      https://github.com/laravel/passport/issues/94
-        //      https://github.com/corbosman/laravel-passport-claims
-        $response['user'] = [
-            'id'          => $this->user->id,
-            'email'       => $this->user->email,
-            'username'    => $this->user->username,
-            'firstname'   => $this->user->firstname,
-            'lastname'    => $this->user->lastname,
-            'gender'      => $this->user->gender,
-            'locale'      => $this->user->locale,
-            'timezone'    => $this->user->timezone,
-        ];
-
-        return $response;
     }
 
     /**

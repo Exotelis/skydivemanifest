@@ -15,6 +15,7 @@ label {
   &.required label:after {
     content: '*';
     margin-left: $label-asterisk-margin-left;
+    font-family: "Roboto", "Helvetica Neue", Arial, BlinkMacSystemFont, -apple-system, "Segoe UI", "Noto Sans", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     font-size: $label-asterisk-font-size;
     color: $primary;
     display: inline-block;
@@ -25,10 +26,16 @@ label {
 }
 
 .form-control {
-  border-left: $form-control-border-left $input-border-color;
+  border-left: $form-control-border-left;
 
   &:focus {
     border-color: $input-border-color-focus;
+  }
+}
+
+.form-control-plaintext {
+  &:focus {
+    outline: solid 2px rgba($primary, .25);
   }
 }
 
@@ -72,4 +79,30 @@ a {
 
 .dropdown-menu a {
   transition: none;
+}
+
+// Modals
+
+.modal.blur {
+  backdrop-filter: $modal-blur;
+}
+
+.modal-backdrop {
+  opacity: $modal-backdrop-opacity;
+}
+
+.modal-header {
+  .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    color: inherit;
+  }
+}
+
+// Alerts
+
+.alert {
+  font-size: $alert-font-size;
 }

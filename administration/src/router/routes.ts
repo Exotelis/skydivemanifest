@@ -10,24 +10,24 @@ const routes = [
     name: 'dashboard',
     component: () => import(/* webpackChunkName: "dashboard" */ '@/components/pages/DashboardPage.vue'),
     meta: {
-      title: 'pages.title.dashboard',
-      requiresAuth: false
+      title: 'page.title.dashboard',
+      requiresAuth: true
     }
   },
   {
     path: '/aircrafts',
     name: 'aircrafts',
     meta: {
-      title: 'pages.title.aircrafts',
-      requiresAuth: false
+      title: 'page.title.aircrafts',
+      requiresAuth: true
     }
   },
   {
     path: '/bookings',
     name: 'bookings',
     meta: {
-      title: 'pages.title.bookings',
-      requiresAuth: false
+      title: 'page.title.bookings',
+      requiresAuth: true
     }
   },
   {
@@ -35,7 +35,7 @@ const routes = [
     name: 'login',
     component: LoginPage,
     meta: {
-      title: 'pages.title.login',
+      title: 'page.title.login',
       layout: 'Welcome',
       requiresAuth: false
     }
@@ -44,7 +44,37 @@ const routes = [
     path: '/manifest',
     name: 'manifest',
     meta: {
-      title: 'pages.title.manifest',
+      title: 'page.title.manifest',
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/password-change',
+    name: 'password-change',
+    component: () => import(/* webpackChunkName: "passwordChange" */ '@/components/pages/PasswordChangePage.vue'),
+    meta: {
+      title: 'page.title.passwordChange',
+      layout: 'Welcome',
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/password-forgot',
+    name: 'password-forgot',
+    component: () => import(/* webpackChunkName: "passwordForgot" */ '@/components/pages/PasswordForgotPage.vue'),
+    meta: {
+      title: 'page.title.passwordForgot',
+      layout: 'Welcome',
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/password-reset',
+    name: 'password-reset',
+    component: () => import(/* webpackChunkName: "passwordReset" */ '@/components/pages/PasswordResetPage.vue'),
+    meta: {
+      title: 'page.title.passwordReset',
+      layout: 'Welcome',
       requiresAuth: false
     }
   },
@@ -52,7 +82,17 @@ const routes = [
     path: '/payments',
     name: 'payments',
     meta: {
-      title: 'pages.title.payments',
+      title: 'page.title.payments',
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import(/* webpackChunkName: "register" */ '@/components/pages/RegisterPage.vue'),
+    meta: {
+      title: 'page.title.register',
+      layout: 'Welcome',
       requiresAuth: false
     }
   },
@@ -61,7 +101,7 @@ const routes = [
     name: 'settings',
     component: () => import(/* webpackChunkName: "settings" */ '@/components/pages/SettingsPage.vue'),
     meta: {
-      title: 'pages.title.settings',
+      title: 'page.title.settings',
       requiresAuth: true
     }
   },
@@ -69,48 +109,50 @@ const routes = [
     path: '/skydiver',
     name: 'skydiver',
     meta: {
-      title: 'pages.title.skydiver',
-      requiresAuth: false
+      title: 'page.title.skydiver',
+      requiresAuth: true
     }
   },
   {
     path: '/staff',
     name: 'staff',
     meta: {
-      title: 'pages.title.staff',
-      requiresAuth: false
+      title: 'page.title.staff',
+      requiresAuth: true
     }
   },
   {
     path: '/system',
     name: 'System',
     meta: {
-      title: 'pages.title.system',
-      requiresAuth: false
+      title: 'page.title.system',
+      requiresAuth: true
     }
   },
   {
     path: '/tickets',
     name: 'tickets',
     meta: {
-      title: 'pages.title.tickets',
-      requiresAuth: false
+      title: 'page.title.tickets',
+      requiresAuth: true
     }
   },
   {
     path: '/users',
     name: 'users',
     meta: {
-      title: 'pages.title.users',
-      requiresAuth: false
+      title: 'page.title.users',
+      permissions: ['users:delete', 'users:read', 'users:write'],
+      requiresAuth: true
     }
   },
   {
     path: '/userroles',
     name: 'userroles',
     meta: {
-      title: 'pages.title.userroles',
-      requiresAuth: false
+      title: 'page.title.userroles',
+      permissions: ['roles:delete', 'roles:read', 'roles:write'],
+      requiresAuth: true
     }
   }
 ];

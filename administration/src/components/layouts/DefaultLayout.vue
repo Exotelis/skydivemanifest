@@ -17,9 +17,7 @@
             <div class="col d-flex align-items-center">
               <h1 class="h2 m-0 font-weight-normal">{{ $t( $route.meta.title ) }}</h1>
             </div>
-            <div class="col-md-auto d-none d-md-block">
-              <language-selector></language-selector>
-            </div>
+            <user-menu></user-menu>
           </div>
         </div>
       </header>
@@ -56,18 +54,18 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
-import { NavigationGeneratorInterface } from '@/components/navigation/NavigationGeneratorInterface';
-import { NavigationModel } from '@/components/navigation/NavigationModel';
-import { NavigationType } from '@/components/navigation/NavigationType';
-import LanguageSelector from '@/components/ui/LanguageSelector.vue';
+import { NavigationGeneratorInterface } from '@/interfaces/NavigationGeneratorInterface';
+import { NavigationModel } from '@/models/NavigationModel';
+import { NavigationType } from '@/enum/NavigationType';
 import LogoLicenseStatus from '@/components/ui/LogoLicenseStatus.vue';
 import NavigationGenerator from '@/components/navigation/NavigationGenerator.vue';
+import UserMenu from '@/components/ui/UserMenu.vue';
 
 @Component({
   components: {
-    LanguageSelector,
     LogoLicenseStatus,
-    NavigationGenerator
+    NavigationGenerator,
+    UserMenu
   }
 })
 export default class DefaultLayout extends Vue {
@@ -78,26 +76,28 @@ export default class DefaultLayout extends Vue {
     { icon: 'mdi-parachute', path: '/skydiver', type: NavigationType.Path },
     { icon: 'mdi-ticket', path: '/tickets', type: NavigationType.Path },
     { icon: 'mdi-monitor-dashboard', path: '/manifest', type: NavigationType.Path },
-    { icon: 'mdi-cog',
-      title: 'general.system',
-      type: NavigationType.Submenuhandler,
-      children: [
-        { title: 'general.permissions', type: NavigationType.Title },
-        { title: 'general.permissions', type: NavigationType.Submenuhandler },
-        { path: '/userroles', type: NavigationType.Path }
-      ]
-    },
     { icon: 'mdi-calendar', path: '/bookings', type: NavigationType.Path },
     { icon: 'mdi-receipt', path: '/payments', type: NavigationType.Path },
-    { icon: 'mdi-cog',
+    {
+      icon: 'mdi-cogs',
       title: 'general.system',
       type: NavigationType.Submenuhandler,
       children: [
-        { title: 'general.permissions', type: NavigationType.Title },
-        { path: '/users', type: NavigationType.Path },
-        { path: '/userroles', type: NavigationType.Path },
-        { title: 'general.othersettings', type: NavigationType.Title },
-        { path: '/settings', type: NavigationType.Path }
+        {
+          title: 'general.permissions',
+          type: NavigationType.Title,
+          children: [
+            { path: '/users', type: NavigationType.Path },
+            { path: '/userroles', type: NavigationType.Path }
+          ]
+        },
+        {
+          title: 'general.othersettings',
+          type: NavigationType.Title,
+          children: [
+            { path: '/settings', type: NavigationType.Path }
+          ]
+        }
       ]
     }
   ];

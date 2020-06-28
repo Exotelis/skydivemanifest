@@ -54,7 +54,7 @@ describe('InputPassword.vue', () => {
   it('check if an element with class input-group-append exists if isToggleable is true', () => {
     component.setProps({ isToggleable: true });
     expect(component.find('.input-group-append').exists()).toBeTruthy();
-  }); // TODO
+  });
 
   it('check if event is emitted when the input value changes', async () => {
     component.find('input').setValue('User input');

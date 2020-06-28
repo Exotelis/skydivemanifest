@@ -9,12 +9,21 @@ development or to build the bundle, to use it in production.
   + [Compiles and bundles for production](#compiles-and-bundles-for-production)
   + [Test your app](#test-your-app)
   + [Lints and fixes files](#lints-and-fixes-files)
-- [Developer guide](#developer-guide)
+- [Developers guide](#developers-guide)
   + [NavigationGenerator and NavigationItems](#navigationgenerator-and-navigationitems)
   + [Form components](#form-components)
     * [form-group](#form-group)
+    * [input-date](#input-date)
+    * [input-email](#input-email)
+    * [input-hidden](#input-hidden)
+    * [input-password](#input-password)
+    * [input-text](#input-text)
+    * [select-wrapper](#select-wrapper)
+    * [button-wrapper](#button-wrapper)
   + [Form validation](#form-validation)
+  + [Prevent from leaving route](#prevent-from-leaving-route)
   + [Layouts](#layouts)
+  + [Permissions](#permissions)
 - [Internationalization](#internationalization)
   + [Change the default language](#change-the-default-language)
   + [Disable prefetch](#disable-prefetch)
@@ -61,36 +70,50 @@ for more details on how to write tests.
 npm run lint
 ```
 
-## Developer guide
+## Developers guide
 This section should help any developer to implement new features or fix bugs.
 
 ### NavigationGenerator and NavigationItems
 To automatically generate a navigation menu, you can use the
 [NavigationGenerator](src/components/navigation/NavigationGenerator.vue) component. The component requires just a single
 property `config: Array<NavigationModel>`. Please see the definition of the
-[NavigationModel](src/components/navigation/NavigationModel.ts). The only required key of the NavigationModel is `type`.
-You can choose one out of three [NavigationTypes](src/components/navigation/NavigationType.ts). Using `Path` will
+[NavigationModel](src/models/NavigationModel.ts). The only required key of the NavigationModel is `type`.
+You can choose one out of four [NavigationTypes](src/enum/NavigationType.ts). Using `Path` will
 automatically load the route information matching the given path:
 ```
 { path: '/', type: NavigationType.Path }
 ```
-The type `Submenuhandler` will generate a submenu. `Title` can be used to group the menu items, since title is not
-clickable. When using one of those type, you should also provide a title for the menu item:
+The type `Submenuhandler` will generate a submenu. `Title` can be used to group the menu items. When using one of those
+types, you should also provide a title for the menu item:
 ```
 { title: 'Submenutitel',
   type: NavigationType.Submenuhandler,
   children: [
-    { title: 'User stuff', type: NavigationType.Title },
-    { path: '/userroles', type: NavigationType.Path }
+    { title: 'User stuff',
+      type: NavigationType.Title
+      children: [
+        { path: '/userroles', type: NavigationType.Path }
+      ]
+    }
   ]
 }
 ```
-As you can see in the example above, a `Submenuhandler` just makes sense with some children defined. Finally, you can
-define an icon for each menu item. The icon must be the classname of an existing mdi icon:
+As you can see in the example above, a `Submenuhandler` just makes sense with some children defined.
+
+Note: When using the type `title`, all menu items that should belong to this group, must be placed in the children array
+of the title object.
+
+The type `Hidden` must not be defined manually, but will be set when the user doesn't have the required permissions.
+When all menu items of a submenu have    been hidden, the submenu will also be hidden. The same goes for the `Title` type,
+if all children have been hidden the `Title` item will also be hidden.
+
+Note: If `Submenuhandler` and `Title` elements have an empty `children` array, these elements will be hidden.
+
+Finally, you can define an icon for each menu item. The icon must be the classname of an existing mdi icon:
 ```
 { icon: 'mdi-airplane', path: '/aircrafts', type: NavigationType.Path }
 ```
-By default the property `onlyOneSubmenu` is true. That means that any other open submenu will be closed, when the user
+By default, the property `onlyOneSubmenu` is true. That means that any other open submenu will be closed, when the user
 opens another one. Settings this to false allows the user to open multiple submenus.
 
 Of course, you don't have to use the `NavigationGenerator` and its config, you could also directly use the
@@ -137,6 +160,9 @@ import FormGroup from '@/components/form/FormGroup.vue';
 export default class ExampleClass extends Vue {}
 ```
 
+Any component with a form should extend the [FormMixin](src/mixins/FormMixin.ts), because it provides all important
+variables such as the `disabledSubmit` and `loading`.
+
 These are the available form element wrapper:
 
 #### form-group
@@ -149,7 +175,7 @@ labelColXxxl` attributes. Those `labelCol` attributes are the grid. You can choo
 available space of the form will be divided by 12, the label will then take the space of x parts of it, depending on
 what number you chose. The `Xs, Sm, Md, Lg, Xl, Xxl and Xxxl` identifier indicate the with of the browser in px. To see
 for what width which identifier stands for, see the
-[_variables.scss](https://github.com/Exotelis/skydivemanifest/blob/api/administration/src/assets/scss/themes/default/_varibales.scss#L39).
+[_variables.scss](src/assets/scss/themes/default/_variables.scss#L39).
 ```
 <form-group label="Example"
             label-for="exampleId"
@@ -160,6 +186,62 @@ for what width which identifier stands for, see the
             :horizontal="true">
 <!-- your form element wrapper goes here -->
 </form-group>
+```
+
+#### input-date
+Creates an input element with type date. The format of min and max must be `YYYY-MM-DD`. the value of `step` must be
+given in days. The default value of `step` is 1, indicating 1 day. In the example below, `max` is set to the current
+date.
+
+A full list of available attributes you can find in the [InputDate.vue component](src/components/form/InputDate.vue).
+
+Example:
+```
+<input-date autofocus
+            id="name"
+            min="1980-10-23"
+            required
+            step="5"
+            v-model="form.date"
+            :max="new Date(Date.now()).toISOString().split('T')[0]"></input-date>
+```
+
+#### input-email
+Creates an input element with type email. In the example below, only email addresses with the tld .org are allowed.
+
+A full list of available attributes you can find in the [InputEmail.vue component](src/components/form/InputEmail.vue).
+
+Example:
+```
+<input-email id="email"
+             pattern=".*.org"
+             required
+             v-model.trim="form.email"
+             :placeholder="$t('form.placeholder.email')"></input-email>
+```
+
+#### input-hidden
+Creates an input element with type hidden. The attribute `value` must be set, to submit any data.
+
+Example:
+```
+<input-hidden form="formId" id="hidden01" type="hidden" value="Some value"></input-hidden>
+```
+
+#### input-password
+Creates an input element with type password. The attribute `:is-toggleable` is true, an icon will be displayed to toggle
+the visibility of the password.
+
+A full list of available attributes you can find in the
+[InputPassword.vue component](src/components/form/InputPassword.vue).
+
+Example:
+```
+<input-password id="password"
+                is-toggleable
+                placeholder="Your password"
+                required
+                v-model="form.password"></input-password>
 ```
 
 #### input-text
@@ -173,34 +255,98 @@ Example:
 <input-text autofocus
             id="name"
             placeholder="Your name"
+            plaintext
+            readonly
             required
-            v-model="form.name"
-            :plaintext="true"
-            :readonly="true"></input-text>
+            v-model="form.name"></input-text>
 ```
 
-#### input-password
-Creates an input element with type password. The attribute `:is-toggleable` is true, an icon will be displayed to toggle
-the visibility of the password.
-
-A full list of available attributes you can find in the
-[InputPassword.vue component](src/components/form/InputPassword.vue).
-
-Example:
+#### select-wrapper
+Creates a select element. You can define options in two different ways or even mix them. The first way is to define the
+`option` elements inside the `select-wrapper`:
 ```
-<input-password id="password"
-                placeholder="Your password"
-                required
-                v-model="form.password"
-                :is-toggleable="true"></input-password>
+<select-wrapper>
+    <option value="female">Female</option>
+    <option value="male">Male</option>
+</select-wrapper>
+```
+The second way is to use the `options` attribute of the `select-wrapper`:
+```
+<select-wrapper :options="options"></select-wrapper>
+
+// In typescript:
+import { Options } from '@/types/Options';
+
+export default class SomeClass extends Vue {
+  options: Options = [
+    { value: 'female', text: 'Female' },
+    { value: 'male', text: 'Male' }
+  ];
+}
+```
+Note: If you mix both approaches, make sure the `value` is unique.
+
+It is also possible to define `optgroups` in the typescript option. This is the structure of options and optgroups:
+```
+// Options
+{ disabled?: boolean; text: string; value: string|number|boolean|object|null|Array<string|number|boolean|object>; }
+
+// OptGroups
+{ disabled?: boolean; label: string; options: Options[]; }
 ```
 
-#### input-hidden
-Creates an input element with type hidden. The attribute `value` must be set, to submit any data.
-
-Example:
+It is also possible to pre select values. Without multiple:
 ```
-<input-hidden form="formId" id="hidden01" type="hidden" value="Some value">
+<select-wrapper v-model="selected">
+    <option value="foo">Foo</option>
+    <option value="bar">Bar</option>
+</select-wrapper>
+
+// In Typescript
+selected = 'foo';
+```
+With multiple:
+```
+<select-wrapper multiple v-model="selected">
+    <option value="foo">Foo</option>
+    <option value="bar">Bar</option>
+</select-wrapper>
+
+// In Typescript
+selected = ['foo', 'bar']';
+```
+Note: If you don't want to pre select some value, just leave the string or array empty.
+
+When multiple is not set and no default value is defined, a placeholder option with the text
+`-- Please select an option --` will be rendered. In some cases you might want to use a custom text. In this case you
+can overwrite the placeholder:
+```
+<select-wrapper>
+    <template #placeholder>Custom text</template>
+</select-wrapper>
+```
+or with a translatable string:
+```
+<select-wrapper>
+    <template #placeholder>{{ $t('form.placeholder.dob') }}</template>
+</select-wrapper>
+```
+
+A full list of available attributes you can find in the [SelectWrapper.vue component](src/components/form/SelectWrapper.vue).
+
+Full example:
+```
+<select-wrapper id="someId" v-model="selected" :options="options" required>
+    <template #placeholder>-- Please select with custom text --></template>
+    <option value="foo">Foo</option>
+</select-wrapper>
+
+// In typescript
+selected = '';
+options: Options = [
+  { value: 'bar', text: 'Bar' },
+  { value: 'baz', text: 'Baz' }
+];
 ```
 
 #### button-wrapper
@@ -213,12 +359,14 @@ Example:
 <div class="clearfix">
     <button-wrapper icon="mdi-login"
                     id="signin"
+                    right-aligned
                     type="submit"
                     :disabled="disabledSubmit"
-                    :loading="loading"
-                    :right-aligned="true">{{ $t('login.signIn') }}</button-wrapper>
+                    :loading="loading">{{ $t('login.signIn') }}</button-wrapper>
 </div>
 ```
+
+A full list of available attributes you can find in the [ButtonWrapper.vue component](src/components/form/ButtonWrapper.vue).
 
 ### Form validation
 The form validation in this project covers both, the client and the server side validation. To make use of the
@@ -304,6 +452,38 @@ handleSubmit (): void {
     }
 }
 ```
+To check if the values of two fields are equal, the id of one of those fields must have the suffix `_confirmation`. The
+ids of the two fields could look like:
+```
+id="password"
+id="password_confirmation"
+```
+
+Note: For a full support of the validation, please use the [from-group component](#form-group) as a wrapper.
+
+### Prevent from leaving route
+When a form has been manipulated, you can prevent the user from changing the route without saving the data. The only
+thing you have to do is to set the `dirty` variable to `true` when implementing the `FormMixin`. The best place to set
+`dirty` to `true` is a watcher:
+```
+@Watch('form', { deep: true })
+onFormChange (form: RegisterModel): void {
+    this.dirty = true;
+    this.disabledSubmit = !(form.dob.length > 0 && form.email.length > 0 && form.firstname.length > 0 &&
+      form.lastname.length > 0 && form.password.length > 0 && form.password_confirmation.length > 0);
+}
+```
+After the form has been submitted successfully, you have to reset `dirty` before any route change:
+```
+async handleSubmit (): Promise<any> {
+    try {
+        // Some api request
+        this.dirty = false;
+    } catch (e) {
+        // Error handling
+    }
+}
+```
 
 ### Layouts
 Different routes can have different layouts. To set a layout for a specific route just add the meta field `layout` with
@@ -319,7 +499,7 @@ Browse the directory [layout](src/components/layouts) to see which layouts does 
 If you want to add your own layouts, just add a new component in the directory mentioned above. To start your work, just
 copy the content of the [DefaultLayout.vue](src/components/layouts/DefaultLayout.vue). Note that the line
 `<slot><router-view></router-view></slot>` is very important to display the component of each route. Once you added your
-layout, import and register your component in [main.js](src/main.js).
+layout, import and register your component in [main.ts](src/main.ts).
 
 You can also style your layouts separately. Just add a file to the directory
 [layouts](src/assets/scss/themes/default/layouts) and name it appropriate to your layout. If your layouts name is
@@ -328,10 +508,38 @@ stylesheet in the [app.scss](src/assets/scss/app.scss).
 
 Note: The path in the assets folder might be different, when not using the default theme.
 
+### Permissions
+When a user gets signed in, the users permissions will stored in the locale storage with some other information. You can
+use the permission to deny to access to specific pages or hide elements.
+
+For example the following route will only be accessible if the user has at least one of the defined permissions:
+```
+{
+  path: '/aircrafts',
+  name: 'aircrafts',
+  meta: {
+    title: 'page.title.aircrafts',
+    permissions: ['aircrafts:delete', 'aircrafts:read', 'aircrafts:write'],
+    requiresAuth: true
+  }
+}
+```
+Note: When you want make use of the permissions `requiresAuth` must be true.
+
+If neither the `aircrafts:delete` nor the `aircrafts:read` nor the `aircrafts:write` will be part of the users
+permissions, the page will not be accessible. When you use the
+[NavigationGenerator](#navigationgenerator-and-navigationitems), all menu items without permissions will be hidden
+automatically. You can use the helper `checkPermissions()`, to check manually for permissions:
+```
+checkPermissions(['permissionX::read'])
+```
+
+See the api [README](../api/README.md) to learn more about permissions.
+
 ## Internationalization
 The internationalization support is enabled by default. You'll find all supported languages in the
 [src/locales](src/locales) directory. All languages defined in [src/locales/locales.json](src/locales/locales.json) will
-be available in the [languageSelector](src/components/ui/LanguageSelector.vue) The file [i18n.js](src/i18n.js) provides
+be available in the [languageSelector](src/components/ui/LanguageSelector.vue) The file [i18n.ts](src/i18n.ts) provides
 the `VueI18n` object and a function `loadLanguageAsync` that lazy loads files.
 
 By running `npm run i18n:report` you'll get an overview about which entries are missing and which translations are not
@@ -352,7 +560,7 @@ The second option is to set the parameter `locale` in the users localStorage. A 
 care of this, for example.
 
 If neither in the [.env](.env) nor the `localStorage` a default language is set, english will be the default. English
-will also be always the fallback language, if the configured default language couldn't be loaded or some string is not
+will also be the fallback language always, if the configured default language couldn't be loaded or some string is not
 translated.
 
 Note: The `localStorage.locale` has a higher priority than the `.env*` files.

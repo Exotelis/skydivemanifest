@@ -28,7 +28,7 @@ class ForgotRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|max:255'
+            'username' => 'required|string|max:255'
         ];
     }
 }

@@ -62,7 +62,6 @@ export default class FormValidationMixin extends Vue {
     });
 
     this.errors = Object.assign({}, this.errors, response.data.errors);
-    console.log(this.errors);
     this.$emit('validateResponse');
   }
 }
@@ -84,11 +83,19 @@ function inputEventListener (event: Event): void {
   }, 600);
 }
 
-function focusoutEventListener (event: Event): void {
+function focusoutEventListener (event: FocusEvent): void {
+  const currentTarget = event.currentTarget as HTMLFormElement;
+  const relatedTarget = event.relatedTarget as HTMLFormElement;
+
+  if ((!currentTarget.contains(relatedTarget) && relatedTarget !== null) ||
+    relatedTarget instanceof HTMLSelectElement) {
+    return;
+  }
+
   if (!isValidatableFormElement(event.target)) {
     return;
   }
-  const vm: Vue = (event.currentTarget as HTMLFormElement).vm;
+  const vm: Vue = currentTarget.vm;
   const target: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement = event.target as any;
 
   clearTimeout(vm.$data.validationTimeout[target.id]);
@@ -144,6 +151,26 @@ function validate (vm: Vue, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaE
   // Pattern
   if (el.validity.patternMismatch) {
     return validatePattern(vm);
+  }
+
+  // Confirmation
+  if (el.id.substr(-13) === '_confirmation') {
+    return validateConfirmation(vm, el);
+  }
+}
+
+function validateConfirmation (vm: Vue, el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement):
+  TranslateResult|undefined {
+  let siblingId:string = el.id.replace('_confirmation', '');
+  const element: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement|null =
+    vm.$el.querySelector('#' + siblingId);
+
+  if (element === null) {
+    return;
+  }
+
+  if (el.value !== element.value) {
+    return vm.$t('error.form.confirmation');
   }
 }
 
@@ -306,7 +333,9 @@ function isValidatableFormElement (target: EventTarget|null): boolean {
 function setInvalid (el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): void {
   if (!el.classList.contains('is-invalid')) {
     el.classList.add('is-invalid');
-    el.parentElement!.classList.add('is-invalid');
+    if (el.parentElement!.localName !== 'form') {
+      el.parentElement!.classList.add('is-invalid');
+    }
   }
 
   if (el.classList.contains('is-valid')) {
@@ -318,7 +347,9 @@ function setInvalid (el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement)
 function setValid (el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): void {
   if (!el.classList.contains('is-valid')) {
     el.classList.add('is-valid');
-    el.parentElement!.classList.add('is-valid');
+    if (el.parentElement!.localName !== 'form') {
+      el.parentElement!.classList.add('is-valid');
+    }
   }
 
   if (el.classList.contains('is-invalid')) {

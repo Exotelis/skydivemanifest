@@ -22,6 +22,7 @@ export const i18n = new VueI18n({
 function setI18nLanguage (lang: string) {
   i18n.locale = lang;
   axios.defaults.headers.common['Accept-Language'] = lang;
+  axios.defaults.headers.common['Content-Language'] = lang;
   document.querySelector('html')!.setAttribute('lang', lang);
   return lang;
 }

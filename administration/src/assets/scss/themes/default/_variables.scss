@@ -14,14 +14,14 @@ $black:        #000;
 
 $orange:       #ed7c3b;
 $yellow:       #ffdd57;
-$green:        #00c281;
+$green:        #00c281; // When changing, see autofill section in _general
 $turquoise:    #20cb98;
 $cyan:         #17a4ba;
 $blue:         #2d81e1;
 $indigo:       #6f26e7;
 $purple:       #6f42c2;
 $pink:         #e83e8c;
-$red:          #f14668;
+$red:          #f14668; // When changing, see autofill section in _general
 $rusty:        #dc3545;
 $spacegray:    #4c6876;
 $darkgunmetal: #1d2530;
@@ -31,10 +31,10 @@ $body-color:   $spacegray;
 
 $primary:      $green;
 $secondary:    $darkgunmetal;
-$success:      $green;
+$success:      $green; // When changing, see autofill section in _general
 $info:         $cyan;
 $warning:      $yellow;
-$danger:       $red;
+$danger:       $red; // When changing, see autofill section in _general
 
 // Breakpoints
 
@@ -57,7 +57,15 @@ $border-radius: 0;
 
 // Fonts
 
-$font-family-sans-serif: "Roboto", "Helvetica Neue", Arial, BlinkMacSystemFont, -apple-system, "Segoe UI", "Noto Sans", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+@font-face {
+  font-family: 'Raleway';
+  src: url('./assets/fonts/Raleway-VariableFont.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Work Sans';
+  src: url('./assets/fonts/WorkSans-VariableFont.ttf') format('truetype');
+}
+$font-family-sans-serif: "Raleway", "Work Sans", "Roboto", "Helvetica Neue", Arial, BlinkMacSystemFont, -apple-system, "Segoe UI", "Noto Sans", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
 // Typography
 
@@ -73,7 +81,7 @@ $h6-font-size: $font-size-base;
 $headings-margin-bottom: 1.25rem;
 $headings-font-weight:   600;
 
-$small-font-size: .8rem;
+$small-font-size: 85%;
 
 $text-muted: lighten($body-color, 20%);
 
@@ -94,7 +102,7 @@ $input-padding-y:            .75rem;
 $input-padding-x:            1rem;
 $input-font-size:            .75rem;
 
-$input-bg:                   rgba($body-color, .1);
+$input-bg:                   rgba($body-color, .1); // When changing, see autofill section in _general
 
 $input-color:                $body-color;
 $input-border-color:         $primary;
@@ -107,7 +115,7 @@ $input-placeholder-color:    rgba($body-color, .7);
 
 $form-group-margin-bottom:   1.25rem;
 
-$form-control-border-left:   .25rem solid;
+$form-control-border-left:   .25rem solid $input-border-color;
 
 // Form validation
 
@@ -140,6 +148,18 @@ $dropdown-header-color:            $body-color;
 $dropdown-link-color-danger:       $danger;
 $dropdown-link-hover-color-danger: $white;
 $dropdown-link-hover-bg-danger:    $danger;
+
+// Modals
+
+$modal-blur: blur(5px);
+
+// Alerts
+
+$alert-font-size: .875rem;
+
+// Close
+
+$close-text-shadow: none;
 
 // Sidebar
 

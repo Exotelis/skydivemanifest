@@ -10,6 +10,7 @@
         "php": "^7.2.5",
         "ext-json": "*",
         "ext-pdo": "*",
+        "corbosman/laravel-passport-claims": "^1.4",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",

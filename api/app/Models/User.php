@@ -20,6 +20,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
+use Laravel\Passport\RefreshToken;
 
 /**
  * Class User
@@ -328,6 +329,7 @@ class User extends Model implements
     {
         foreach($this->tokens as $token) {
             $revoked = $token->revoke();
+            RefreshToken::firstWhere('access_token_id', $token->id)->revoke();
             if (! $revoked) {
                 abort(500, __('auth.oauth_revoke'));
             }

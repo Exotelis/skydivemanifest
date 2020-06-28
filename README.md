@@ -35,7 +35,7 @@ If you want to use the system in production, you have to keep some things in min
 ### Rewrite urls
 Since the administration bundle is running in history mode, which makes it possible to use the backward and forward
 buttons of your browser, you have to configure your web server properly. To learn more about the Vue Router and the
-history mode see [404 error when accessing a route directly](#404-error-when-accessing-a-route-directly).
+history mode see [404 error when accessing a route directly](administration/README.md#404-error-when-accessing-a-route-directly).
 
 #### Apache
 Before you add any rewrite rules to your .htaccess or web server configuration files, you should check if all required

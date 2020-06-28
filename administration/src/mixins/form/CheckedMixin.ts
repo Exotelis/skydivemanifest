@@ -5,5 +5,5 @@ import { Component, Prop } from 'vue-property-decorator';
 
 @Component({})
 export default class CheckedMixin extends Vue {
-  @Prop({ default: false }) readonly checked!: boolean;
+  @Prop([Boolean]) readonly checked!: boolean;
 }

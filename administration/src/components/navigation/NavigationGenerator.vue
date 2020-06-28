@@ -12,8 +12,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
-import { NavigationGeneratorInterface } from '@/components/navigation/NavigationGeneratorInterface';
-import { NavigationModel } from '@/components/navigation/NavigationModel';
+import { NavigationGeneratorInterface } from '@/interfaces/NavigationGeneratorInterface';
+import { NavigationModel } from '@/models/NavigationModel';
 import NavigationItem from '@/components/navigation/NavigationItem.vue';
 
 @Component({

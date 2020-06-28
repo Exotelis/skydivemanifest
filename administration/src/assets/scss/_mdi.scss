@@ -39,3 +39,19 @@
   top: 0.26rem;
   margin-right: 0.5rem;
 }
+.mdi.highlight {
+  font-size: 5rem;
+  line-height: 6rem;
+  border-radius: 5rem;
+  width: 6rem;
+  height: 6rem;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, .2);
+  display: inline-block;
+}
+
+@for $i from 1 through 10 {
+  .mdi-#{$i}rem.mdi-set, .mdi-#{$i}rem.mdi:before {
+    font-size: #{$i}rem;
+    line-height: #{$i}rem;
+  }
+}

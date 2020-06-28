@@ -10,7 +10,7 @@
                labelColXl ? 'col-xl-' + labelColXl : '',
                labelColXxl ? 'col-xxl-' + labelColXxl : '',
                labelColXxxl ? 'col-xxxl-' + labelColXxxl : ''
-               ] : '', { 'col-form-label': horizontal }]">{{ label }}</label>
+               ] : '', { 'col-form-label': horizontal, 'sr-only': hideLabel }]">{{ label }}</label>
     </slot>
 
     <template v-if="horizontal">
@@ -50,9 +50,10 @@ import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
 
 @Component({})
-export default class InputText extends Vue {
+export default class FormGroup extends Vue {
   @Prop({ default: null }) readonly description!: string;
-  @Prop({ default: false }) readonly horizontal!: boolean;
+  @Prop([Boolean]) readonly hideLabel!: boolean;
+  @Prop([Boolean]) readonly horizontal!: boolean;
   @Prop({ default: null }) readonly invalidFeedback!: string;
   @Prop({ default: null }) readonly label!: string;
   @Prop({ default: null }) readonly labelFor!: string;

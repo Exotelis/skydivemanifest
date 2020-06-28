@@ -67,21 +67,21 @@ class PasswordResourcesTest extends TestCase
         Notification::fake();
 
         // Does not exist
-        $response = $this->postJson($resource, ['email' => 'test@example.com']);
+        $response = $this->postJson($resource, ['username' => 'test@example.com']);
         $response->assertStatus(400)->assertJson(['message' => 'Your password cannot be reset.']);
 
         // Invalid request
-        $response = $this->postJson($resource, ['email' => 'novalidemail']);
+        $response = $this->postJson($resource, ['username' => '']);
         $response->assertStatus(422)
             ->assertJsonStructure(['message', 'errors'])
             ->assertJsonFragment(['message' => 'The given data was invalid.']);
 
         // Invalid user
-        $response = $this->postJson($resource, ['email' => 'invaliduser@example.com']);
+        $response = $this->postJson($resource, ['username' => 'invaliduser@example.com']);
         $response->assertStatus(400)->assertJson(['message' => 'Your password cannot be reset.']);
 
         // Success
-        $response = $this->postJson($resource, ['email' => $user->email]);
+        $response = $this->postJson($resource, ['username' => $user->email]);
         $response->assertStatus(200)->assertJson(['message' => 'We have emailed your password reset link!']);
         Notification::assertSentTo(
             [$user],
@@ -92,7 +92,7 @@ class PasswordResourcesTest extends TestCase
         );
 
         // Throttled
-        $response = $this->postJson($resource, ['email' => $user->email]);
+        $response = $this->postJson($resource, ['username' => $user->email]);
         $response->assertStatus(429)->assertJson([
             'message' => 'Please wait before retrying. You can request a new password once every 10 minutes.'
         ]);
@@ -128,7 +128,7 @@ class PasswordResourcesTest extends TestCase
         $invalidToken['token'] = 'invalid' . $invalidToken['email'];
         $response = $this->postJson($resource, $invalidToken);
         $response->assertStatus(400)
-            ->assertJson(['message' => 'This password reset token is invalid or expired.']);
+            ->assertJson(['message' => 'The password reset token is invalid or expired.']);
 
         //Success
         $response = $this->postJson($resource, $json);

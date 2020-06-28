@@ -24,18 +24,27 @@
         "undefined": "not configured"
       }
     },
-    "general": {
-      "allRightsReserved": "All rights reserved",
-      "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
-      "loading": "Loading...",
-      "othersettings": "Other settings",
-      "permissions": "Permissions",
-      "reportBug": "Report a bug",
-      "system": "System",
-      "translations": "Translations"
+    "component": {
+      "confirmEmailModal": {
+        "errorMsg": "Could not verify your email address. %{reason}",
+        "solution": "When you are signed in to your user account, you can request a new token in your user profile.",
+        "successMsg": "Your email address has been verified successfully.",
+        "title": "Email confirmation"
+      },
+      "leavePageModal": {
+        "cancelButton": "Stay",
+        "okButton": "Leave",
+        "text": "Do you really want to leave this page without saving? Any unsaved information will be lost.",
+        "title": "Leave page without saving?"
+      },
+      "signInModal": {
+        "remainSignedIn": "Remain signed in",
+        "title": "Hey <strong>%{name}</strong>,<br>are you still there?"
+      }
     },
     "error": {
       "form": {
+        "confirmation": "The confirmation does not match.",
         "pattern": "Please match the requested format.",
         "rangeOverflow": {
           "date": "Please select a date that is no later than {max}.",
@@ -58,7 +67,7 @@
         "required": {
           "checkbox": "Please check this box if you want to proceed.",
           "default": "Please fill out this field.",
-          "email": "Please enter an email address.",
+          "email": "Please enter a valid email address.",
           "file": "Please select a file.",
           "number": "Please enter a number.",
           "radio": "Please select one of these options.",
@@ -76,16 +85,112 @@
           "number": "Please enter a number.",
           "url": "Please enter valid URL."
         }
+      },
+      "signOutError": "Sign out failed"
+    },
+    "form": {
+      "label": {
+        "dob": "Date of birth",
+        "email": "Email address",
+        "firstName": "First name",
+        "gender": "Gender",
+        "lastName": "Last name",
+        "newPassword": "New password",
+        "newPasswordConfirmation": "Confirm new password",
+        "oldPassword": "Old password",
+        "password": "Password",
+        "passwordConfirmation": "Confirm password",
+        "securityToken": "Security token",
+        "username": "Username",
+        "usernameEmail": "Email / Username"
+      },
+      "placeholder": {
+        "dob": "Enter your date of birth...",
+        "email": "Enter your email address...",
+        "firstName": "Enter your first name...",
+        "gender": "-- Please select your gender --",
+        "lastName": "Enter your last name...",
+        "newPassword": "Enter your new password...",
+        "newPasswordConfirmation": "Confirm your new password...",
+        "oldPassword": "Enter your old password...",
+        "password": "Enter your password...",
+        "passwordConfirmation": "Confirm your password...",
+        "securityToken": "Enter the security token...",
+        "select": "-- Please select an option --",
+        "username": "Enter your username...",
+        "usernameEmail": "Enter your email address or username..."
       }
     },
-    "pages": {
+    "general": {
+      "accountSettings": "Account settings (%{email})",
+      "allRightsReserved": "All rights reserved",
+      "backToSignIn": "Back to sign in.",
+      "changePassword": "Change password",
+      "close": "Close",
+      "continue": "Continue",
+      "continueUsing": "Continue using",
+      "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
+      "forgotPassword": "Forgot password?",
+      "gender": {
+        "diverse": "Diverse",
+        "female": "Female",
+        "male": "Male",
+        "unspecified": "Unspecified"
+      },
+      "loading": "Loading...",
+      "noPermissionsText": "You don't have the permissions to visit the '%{title}' page.",
+      "noPermissionsTitle": "No permissions",
+      "othersettings": "Other settings",
+      "passwordExpired": "Your password expired. Please choose a new one.",
+      "permissions": "Permissions",
+      "reportBug": "Report a bug",
+      "resetPassword": "Reset password",
+      "signIn": "Sign In",
+      "signInAgain": "Please sign in again that the changes take effect.",
+      "signInNow": "Sign In now",
+      "signInAnotherAccount": "Sign in with another user account.",
+      "signOut": "Sign Out",
+      "signUp": "Sign Up",
+      "system": "System",
+      "translations": "Translations"
+    },
+    "page": {
+      "login": {
+        "title": {
+          "morning": "Good morning,",
+          "noon": "Good afternoon,",
+          "afternoon": "Good afternoon,",
+          "evening": "Good evening,",
+          "other": "Hello,"
+        },
+        "subtitle": "welcome back!",
+        "imageAuthor": "Photo by {author} on {platform}",
+        "formHeader": "Please sign in."
+      },
+      "passwordForgot": {
+        "infoText": "Please enter your email address to reset your password."
+      },
+      "passwordReset": {
+        "infoText": "Please enter your email address, a new password and the security token, we sent you per email, to reset your password."
+      },
+      "register": {
+        "back": "Already have an account?",
+        "confirmation": "Check the confirmation email at <strong>{email}</strong>",
+        "contactUs": "If you still cannot find an email, please contact us.",
+        "note": "Note: If you do not receive the email in few minutes, please check your spam folder and verify if you typed your email correctly.",
+        "successTitle": "Thank You for Signing Up!"
+      },
       "title": {
         "aircrafts": "Aircrafts",
         "bookings": "Bookings",
         "dashboard": "Dashboard",
         "login": "Login",
         "manifest": "Manifest",
+        "passwordChange": "Change password",
+        "passwordForgot": "Forgot password",
+        "passwordReset": "Reset password",
         "payments": "Payments",
+        "register": "Sign Up",
         "settings": "General settings",
         "skydiver": "Skydiver",
         "staff": "Staff",
@@ -93,27 +198,6 @@
         "users": "All users",
         "userroles": "User roles"
       }
-    },
-    "login": {
-      "title": {
-        "morning": "Good morning,",
-        "noon": "Good afternoon,",
-        "afternoon": "Good afternoon,",
-        "evening": "Good evening,",
-        "other": "Hello,"
-      },
-      "subtitle": "welcome back!",
-      "imageAuthor": "Photo by {author} on {platform}",
-      "formHeader": "Please sign in.",
-      "username": {
-        "label": "Username",
-        "placeholder": "Enter your username..."
-      },
-      "password": {
-        "label": "Password",
-        "placeholder": "Enter your password..."
-      },
-      "signIn": "Sign In"
     }
   }
 }

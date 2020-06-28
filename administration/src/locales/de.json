@@ -24,18 +24,27 @@
         "undefined": "nicht eingerichtet"
       }
     },
-    "general": {
-      "allRightsReserved": "Alle Rechte vorbehalten",
-      "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
-      "loading": "Lädt...",
-      "othersettings": "Andere Einstellungen",
-      "permissions": "Berechtigungen",
-      "reportBug": "Ein Problem melden",
-      "system": "System",
-      "translations": "Übersetzungen"
+    "component": {
+      "confirmEmailModal": {
+        "errorMsg": "Ihre E-Mail-Adresse konnte nicht bestätigt werden. %{reason}",
+        "solution": "Wenn Sie mit Ihrem Benutzerkonto angemeldet sind, können Sie sich über ihr persönliches Profil ein neues Token anfordern.",
+        "successMsg": "Ihre E-Mail-Adresse wurde erfolgreich bestätigt.",
+        "title": "E-Mail Bestätigung"
+      },
+      "leavePageModal": {
+        "cancelButton": "Auf Seite bleiben",
+        "okButton": "Seite verlassen",
+        "text": "Möchten Sie wirklich die Seite ohne zu speichern verlassen? Alle nicht gespeicherten Daten gehen verloren.",
+        "title": "Seite ohne Speichern verlassen?"
+      },
+      "signInModal": {
+        "remainSignedIn": "Angemeldet bleiben",
+        "title": "Hey <strong>%{name}</strong>,<br>bist Du noch da?"
+      }
     },
     "error": {
       "form": {
+        "confirmation": "Der eingegebene Wert stimmt nicht mit dem anderen überein.",
         "pattern": "Bitte passen Sie Ihre Eingabe an das gewünschte Format an.",
         "rangeOverflow": {
           "date": "Bitte wählen Sie ein Datum aus, welches nicht nach dem {max} liegt.",
@@ -58,7 +67,7 @@
         "required": {
           "checkbox": "Bitte aktivieren Sie dieses Feld, um fortfahren zu können.",
           "default": "Bitte füllen Sie dieses Feld aus.",
-          "email": "Bitte geben Sie eine E-Mail-Adresse an.",
+          "email": "Bitte geben Sie eine gültige E-Mail-Adresse an.",
           "file": "Bitte wählen Sie eine Datei aus.",
           "number": "Bitte geben Sie eine Nummer ein.",
           "radio": "Bitte wählen Sie eine dieser Optionen.",
@@ -76,16 +85,112 @@
           "number": "Bitte geben Sie eine Nummer ein.",
           "url": "Bitte geben Sie eine gültige Webadresse ein."
         }
+      },
+      "signOutError": "Abmelden fehlgeschlagen"
+    },
+    "form": {
+      "label": {
+        "dob": "Geburtsdatum",
+        "email": "E-Mail-Adresse",
+        "firstName": "Vorname",
+        "gender": "Geschlecht",
+        "lastName": "Nachname",
+        "newPassword": "Neues Passwort",
+        "newPasswordConfirmation": "Neues Passwort bestätigen",
+        "oldPassword": "Altes Passwort",
+        "password": "Passwort",
+        "passwordConfirmation": "Passwort bestätigen",
+        "securityToken": "Sicherheitstoken",
+        "username": "Benutzername",
+        "usernameEmail": "E-Mail / Benutzername"
+      },
+      "placeholder": {
+        "dob": "Geben Sie Ihr Geburtsdatum ein...",
+        "email": "Geben Sie Ihre E-Mail-Adresse ein...",
+        "firstName": "Geben Sie Ihren Vornamen ein...",
+        "gender": "-- Bitte wählen Sie Ihr Geschlecht --",
+        "lastName": "Geben Sie Ihren Nachnamen ein...",
+        "newPassword": "Geben Sie Ihr neues Passwort ein...",
+        "newPasswordConfirmation": "Bestätigen Sie Ihr neues Passwort...",
+        "oldPassword": "Geben Sie Ihr altes Passwort ein...",
+        "password": "Geben Sie Ihr Passwort ein...",
+        "passwordConfirmation": "Bestätigen Sie Ihr Passwort...",
+        "securityToken": "Geben Sie das Sicherheitstoken ein...",
+        "select": "-- Bitte wählen Sie eine Option --",
+        "username": "Geben Sie Ihren Benutzernamen ein...",
+        "usernameEmail": "Geben Sie Ihre E-Mail-Adresse oder Ihren Benutzernamen ein..."
       }
     },
-    "pages": {
+    "general": {
+      "accountSettings": "Kontoeinstellungen (%{email})",
+      "allRightsReserved": "Alle Rechte vorbehalten",
+      "backToSignIn": "Zurück zur Anmeldung.",
+      "changePassword": "Passwort ändern",
+      "close": "Schließen",
+      "continue": "Fortsetzen",
+      "continueUsing": "Weitermachen",
+      "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
+      "forgotPassword": "Passwort vergessen?",
+      "gender": {
+        "diverse": "divers",
+        "female": "weiblich",
+        "male": "männlich",
+        "unspecified": "unbekannt"
+      },
+      "loading": "Lädt...",
+      "noPermissionsText": "Sie haben nicht die erforderlichen Berechtigungen die Seite '%{title}' zu besuchen.",
+      "noPermissionsTitle": "Keine Berechtigungen",
+      "othersettings": "Andere Einstellungen",
+      "passwordExpired": "Ihr Passwort ist abgelaufen, bitte wählen Sie ein neues.",
+      "permissions": "Berechtigungen",
+      "reportBug": "Ein Problem melden",
+      "resetPassword": "Passwort zurücksetzen",
+      "signIn": "Anmelden",
+      "signInAgain": "Bitte melden Sie sich erneut an, damit die Änderungen wirksam werden.",
+      "signInNow": "Jetzt anmelden",
+      "signInAnotherAccount": "Melden Sie sich mit einem anderem Benutzerkonto an.",
+      "signOut": "Abmelden",
+      "signUp": "Registrieren",
+      "system": "System",
+      "translations": "Übersetzungen"
+    },
+    "page": {
+      "login": {
+        "title": {
+          "morning": "Guten Morgen,",
+          "noon": "Guten Mittag,",
+          "afternoon": "Guten Nachmittag,",
+          "evening": "Guten Abend,",
+          "other": "Hallo,"
+        },
+        "subtitle": "willkommen zurück!",
+        "imageAuthor": "Foto von {author} auf {platform}",
+        "formHeader": "Bitte melden Sie sich an."
+      },
+      "passwordForgot": {
+        "infoText": "Bitte geben Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen."
+      },
+      "passwordReset": {
+        "infoText": "Bitte geben Sie Ihre E-Mail-Adresse, ein neues Passwort und das Sicherheitstoken, welches wir Ihnen per E-Mail zugesendet haben, ein, um ihr Passwort zurückzusetzen."
+      },
+      "register": {
+        "back": "Bereits registriert?",
+        "confirmation": "Prüfen Sie die Bestätigungs-Email unter <strong>{email}</strong>",
+        "contactUs": "Können Sie dennoch keine E-Mail von uns finden, nehmen Sie bitte Kontakt zu uns auf.",
+        "note": "Sollten Sie keine E-Mail erhalten haben, prüfen Sie zunächst Ihren Spam-Ordner und vergewissern Sie sich, dass Sie die E-Mail-Adresse korrekt eingegeben haben.",
+        "successTitle": "Vielen Dank für Ihre Registrierung!"
+      },
       "title": {
         "aircrafts": "Flugzeuge",
         "bookings": "Buchungen",
         "dashboard": "Dashboard",
         "login": "Login",
         "manifest": "Manifest",
+        "passwordChange": "Passwort ändern",
+        "passwordForgot": "Passwort vergessen",
+        "passwordReset": "Passwort zurücksetzen",
         "payments": "Zahlungen",
+        "register": "Registrierung",
         "settings": "Allgemeine Einstellungen",
         "skydiver": "Springer",
         "staff": "Mitarbeiter",
@@ -93,27 +198,6 @@
         "users": "Alle Benutzer",
         "userroles": "Benutzerrollen"
       }
-    },
-    "login": {
-      "title": {
-        "morning": "Guten Morgen,",
-        "noon": "Guten Mittag,",
-        "afternoon": "Guten Nachmittag,",
-        "evening": "Guten Abend,",
-        "other": "Hallo,"
-      },
-      "subtitle": "willkommen zurück!",
-      "imageAuthor": "Foto von {author} auf {platform}",
-      "formHeader": "Bitte melden Sie sich an.",
-      "username": {
-        "label": "Benutzername",
-        "placeholder": "Geben Sie Ihren Benutzernamen ein..."
-      },
-      "password": {
-        "label": "Passwort",
-        "placeholder": "Geben Sie Ihr Passwort ein..."
-      },
-      "signIn": "Anmelden"
     }
   }
 }

@@ -54,13 +54,15 @@ class ResetPassword extends Mailable implements ShouldQueue
         $lang = App::getLocale();
         $subject = $this->getEmailSubject();
 
+        $email = $this->notifiable->email;
+
         return $this->view('mails.password.reset')
             ->text('mails.password.reset_plain')
             ->locale($lang)
             ->subject($subject)
             ->with([
                 'firstname' => $this->notifiable->firstname,
-                'resetUrl' => frontendUrl() . '/reset-password?token=' . $this->token,
+                'resetUrl' => frontendUrl() . '/password-reset?email=' . $email . '&token=' . $this->token,
             ]);
     }
 }

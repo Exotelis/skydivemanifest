@@ -1,8 +1,13 @@
-import { shallowMount } from '@vue/test-utils';
+import { createLocalVue, shallowMount } from '@vue/test-utils';
+import { ToastPlugin } from 'bootstrap-vue';
 import App from '@/App.vue';
+
+const localVue = createLocalVue();
+localVue.use(ToastPlugin);
 
 const factory = (values = {}) => {
   return shallowMount(App, {
+    localVue,
     mocks: {
       $route: {
         meta: {
@@ -10,7 +15,7 @@ const factory = (values = {}) => {
         }
       }
     },
-    stubs: ['router-link', 'router-view']
+    stubs: ['ConfirmEmailModal', 'DefaultLayout', 'router-link', 'router-view', 'SignInModal', 'WelcomeLayout']
   });
 };
 

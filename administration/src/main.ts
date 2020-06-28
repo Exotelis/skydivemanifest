@@ -9,6 +9,9 @@ import 'jquery';
 import 'popper.js';
 import 'bootstrap';
 
+// Require api config
+require('@/api.ts');
+
 Vue.config.productionTip = false;
 
 // Wait for Promise to be resolved (language file to be loaded)

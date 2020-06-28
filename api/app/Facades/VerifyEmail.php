@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static string create(string $email, string $newEmail)
  * @method static bool delete(string $email)
  * @method static bool exists(string $email)
- * @method static int expires()
+ * @method static int expires(\Illuminate\Database\Eloquent\Model $user = null)
  * @method static mixed findUser(string $token)
  * @method static \Illuminate\Database\Eloquent\Model|object|null get(string $email)
  * @method static bool createdRecently(string $email)
