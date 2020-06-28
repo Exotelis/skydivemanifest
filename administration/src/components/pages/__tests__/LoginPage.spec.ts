@@ -63,9 +63,6 @@ describe('LoginPage.vue', () => {
     component.find('#password').setValue('admin');
     component.find('form').trigger('submit');
 
-    await component.vm.$nextTick();
-    expect(component.vm.loading).toBeTruthy();
-
     await flushPromises();
     await component.vm.$nextTick();
     expect(component.emitted().changeRoute).toBeTruthy();

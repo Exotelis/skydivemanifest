@@ -50,12 +50,6 @@ describe('RegisterPage.vue', () => {
     Date.prototype.getTimezoneOffset = getTimezoneOffset; // eslint-disable-line no-extend-native
   });
 
-  it('check if timezone is Europe/Berlin', () => {
-    Intl.DateTimeFormat().resolvedOptions().timeZone = 'Europe/Berlin';
-    const wrapper: any = mount(RegisterPage, { stubs: ['router-link'] });
-    expect(wrapper.vm.form.timezone).toBe('Europe/Berlin');
-  });
-
   it('check if submit button is disabled when a required field is empty', () => {
     expect(component.find('button').attributes().disabled).toBe('disabled');
     component.find('#dob').setValue('1970-01-01');
