@@ -175,7 +175,7 @@ labelColXxxl` attributes. Those `labelCol` attributes are the grid. You can choo
 available space of the form will be divided by 12, the label will then take the space of x parts of it, depending on
 what number you chose. The `Xs, Sm, Md, Lg, Xl, Xxl and Xxxl` identifier indicate the with of the browser in px. To see
 for what width which identifier stands for, see the
-[_variables.scss](https://github.com/Exotelis/skydivemanifest/blob/api/administration/src/assets/scss/themes/default/_varibales.scss#L39).
+[_variables.scss](src/assets/scss/themes/default/_variables.scss#L39).
 ```
 <form-group label="Example"
             label-for="exampleId"
@@ -366,6 +366,8 @@ Example:
 </div>
 ```
 
+A full list of available attributes you can find in the [ButtonWrapper.vue component](src/components/form/ButtonWrapper.vue).
+
 ### Form validation
 The form validation in this project covers both, the client and the server side validation. To make use of the
 validation, you have to import and extend the `FormValidationMixin`:
@@ -497,7 +499,7 @@ Browse the directory [layout](src/components/layouts) to see which layouts does 
 If you want to add your own layouts, just add a new component in the directory mentioned above. To start your work, just
 copy the content of the [DefaultLayout.vue](src/components/layouts/DefaultLayout.vue). Note that the line
 `<slot><router-view></router-view></slot>` is very important to display the component of each route. Once you added your
-layout, import and register your component in [main.js](src/main.js).
+layout, import and register your component in [main.ts](src/main.ts).
 
 You can also style your layouts separately. Just add a file to the directory
 [layouts](src/assets/scss/themes/default/layouts) and name it appropriate to your layout. If your layouts name is
@@ -537,7 +539,7 @@ See the api [README](../api/README.md) to learn more about permissions.
 ## Internationalization
 The internationalization support is enabled by default. You'll find all supported languages in the
 [src/locales](src/locales) directory. All languages defined in [src/locales/locales.json](src/locales/locales.json) will
-be available in the [languageSelector](src/components/ui/LanguageSelector.vue) The file [i18n.js](src/i18n.js) provides
+be available in the [languageSelector](src/components/ui/LanguageSelector.vue) The file [i18n.ts](src/i18n.ts) provides
 the `VueI18n` object and a function `loadLanguageAsync` that lazy loads files.
 
 By running `npm run i18n:report` you'll get an overview about which entries are missing and which translations are not
