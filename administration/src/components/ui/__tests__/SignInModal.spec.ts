@@ -48,9 +48,14 @@ describe('SignInModal.vue', () => {
     expect(component.vm.disabledSubmit).toBeFalsy();
   });
 
-  it('set the firstname', () => {
-    component.vm.handleShow();
+  it('set the firstname and the email in the background', async () => {
+    document.cookie = 'XSRF-TOKEN=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiZXhvdGVsaXNAbWFpbGJveC5vcmciLCJmaXJzdG5hbWUiOiJKb2huIn19';
+    EventBus.$emit('sign-in-modal');
+    await component.vm.$nextTick();
     expect(component.vm.firstname).toBe('John');
+    expect(component.vm.form.username).toBe('exotelis@mailbox.org');
+    expect(component.vm.form.password).toBe('');
+    expect(component.vm.error).toBeNull();
   });
 
   it('handle the submit when remain sign in button is clicked', async () => {
@@ -71,7 +76,7 @@ describe('SignInModal.vue', () => {
 
   it('remain signed in', async () => {
     const spy = jest.spyOn(component.vm.$bvModal, 'hide');
-    document.cookie = 'XSRF-TOKEN=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImZpcnN0bmFtZSI6IkpvaG4iLCJ1c2VybmFtZSI6ImFkbWluIn19';
+    document.cookie = 'XSRF-TOKEN=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiZXhvdGVsaXNAbWFpbGJveC5vcmciLCJmaXJzdG5hbWUiOiJKb2huIn19';
     EventBus.$emit('sign-in-modal');
     await component.vm.$nextTick();
     component.find('#sign-in-password').setValue('admin');
@@ -79,6 +84,9 @@ describe('SignInModal.vue', () => {
 
     await flushPromises();
     expect(spy).toHaveBeenCalledWith('sign-in-modal');
+
+    expect(component.vm.form.password).toBe('');
+    expect(component.vm.error).toBeNull();
 
     spy.mockRestore();
   });

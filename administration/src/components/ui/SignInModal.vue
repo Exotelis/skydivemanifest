@@ -6,8 +6,7 @@
            id="sign-in-modal"
            modal-class="blur"
            no-close-on-backdrop
-           no-close-on-esc
-           @show="handleShow">
+           no-close-on-esc>
     <div class="mx-auto my-3 text-center">
       <span class="mdi mdi-clock-outline highlight"></span>
     </div>
@@ -45,7 +44,7 @@
 import Vue from 'vue';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { EventBus } from '@/event-bus';
-import { getUser, htmlEntities } from '@/helpers';
+import { getUser } from '@/helpers';
 import { ModalPlugin } from 'bootstrap-vue';
 import AuthService from '@/services/AuthService';
 import ButtonWrapper from '@/components/form/ButtonWrapper.vue';
@@ -54,12 +53,9 @@ import FormGroup from '@/components/form/FormGroup.vue';
 import FormMixin from '@/mixins/FormMixin';
 import InputPassword from '@/components/form/InputPassword.vue';
 import Logout from '@/directives/LogoutDirective';
+import UserShortModel from '@/models/UserShortModel';
 
 Vue.use(ModalPlugin);
-
-interface FormElements {
-  password: string;
-}
 
 @Component({
   components: { ButtonWrapper, FormGroup, InputPassword },
@@ -67,7 +63,8 @@ interface FormElements {
 })
 export default class SignInModal extends Mixins(FormMixin) {
   firstname: string = '';
-  form: FormElements = {
+  form: CredentialsModel = {
+    username: '',
     password: ''
   };
 
@@ -76,13 +73,14 @@ export default class SignInModal extends Mixins(FormMixin) {
   }
 
   async handleSubmit (): Promise<any> {
-    let credentials: CredentialsModel = { username: htmlEntities(getUser().username!), password: this.form.password };
     this.loading = true;
 
     try {
-      await AuthService.login(credentials);
+      await AuthService.login(this.form);
       AuthService.checkAuth();
       this.$bvModal.hide('sign-in-modal');
+      this.form.password = '';
+      this.error = null;
     } catch (e) {
       this.error = e.response.data.message;
     }
@@ -90,16 +88,15 @@ export default class SignInModal extends Mixins(FormMixin) {
     this.loading = false;
   }
 
-  handleShow (): void {
-    this.firstname = getUser().firstname;
-  }
-
   handleSignInModal (): void {
+    const user: UserShortModel = getUser();
+    this.firstname = user.firstname;
+    this.form.username = user.email;
     this.$bvModal.show('sign-in-modal');
   }
 
   @Watch('form', { deep: true })
-  onFormChange (form: FormElements): void {
+  onFormChange (form: CredentialsModel): void {
     this.disabledSubmit = !(form.password.length > 0);
   }
 }
