@@ -344,6 +344,6 @@ class User extends Model implements
      */
     public function sendPasswordResetNotification($token)
     {
-        $this->notify((new ResetPasswordNotification($token))->onQueue('mail'));
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

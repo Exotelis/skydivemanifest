@@ -79,7 +79,7 @@ trait MustVerifyEmail
 
         $token = VerifyEmail::create($this->email, $request->new_email);
 
-        $this->notify((new VerifyEmailNotification($request->new_email, $token))->onQueue('mail'));
+        $this->notify(new VerifyEmailNotification($request->new_email, $token));
 
         return response()->json(['message' => __('messages.email_sent')]);
     }
@@ -95,7 +95,7 @@ trait MustVerifyEmail
         $token = VerifyEmail::create($this->email, $email);
 
         $delay = Carbon::now()->addSeconds(15);
-        $this->notify((new VerifyEmailNotification($email, $token))->onQueue('mail')->delay($delay));
+        $this->notify((new VerifyEmailNotification($email, $token))->delay($delay));
 
         return response()->json(['message' => __('messages.email_sent')]);
     }

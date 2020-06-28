@@ -31,7 +31,7 @@ class Registered implements ShouldQueue
         $user = $event->user;
 
         if ($user instanceof \App\Models\User) {
-            $user->notify((new CreateUserNotification())->onQueue('mail'));
+            $user->notify(new CreateUserNotification());
             Log::info("New user has been registered: '{$user->id}|{$user->email}'");
         }
 
