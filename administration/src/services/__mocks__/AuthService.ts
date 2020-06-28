@@ -79,7 +79,8 @@ export default {
 
   login (credentials: CredentialsModel): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      if (credentials.username === 'admin' && credentials.password === 'admin') {
+      if ((credentials.username === 'admin' || credentials.username === 'exotelis@mailbox.org') &&
+        credentials.password === 'admin') {
         resolve({
           data: {},
           status: 200,

@@ -89,11 +89,15 @@ export default {
           instance.checkAuth();
           return;
         }
-      } catch (e) {
-      }
 
-      // Emit show modal event
-      EventBus.$emit('sign-in-modal');
+        // Emit show modal event
+        EventBus.$emit('sign-in-modal');
+      } catch (e) {
+        if (decryptedPayload.exp >= Date.now() && getCookie('XSRF-TOKEN') !== undefined) {
+          // Emit show modal event
+          EventBus.$emit('sign-in-modal');
+        }
+      }
     }, (decryptedPayload.exp - Date.now()) - 60000, this);
 
     // Check login status
