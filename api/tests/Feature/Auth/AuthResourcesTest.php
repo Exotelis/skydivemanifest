@@ -102,10 +102,7 @@ class AuthResourcesTest extends TestCase
         Event::assertDispatched(\App\Events\Auth\LockAccount::class);
         Notification::assertSentTo(
             [$user],
-            \App\Notifications\LockAccount::class,
-            function ($notification) use ($user) {
-                return $notification->queue === 'mail';
-            }
+            \App\Notifications\LockAccount::class
         );
     }
 

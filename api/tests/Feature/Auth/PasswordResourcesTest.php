@@ -85,10 +85,7 @@ class PasswordResourcesTest extends TestCase
         $response->assertStatus(200)->assertJson(['message' => 'We have emailed your password reset link!']);
         Notification::assertSentTo(
             [$user],
-            \App\Notifications\ResetPassword::class,
-            function ($notification) use ($user) {
-                return $notification->queue === 'mail';
-            }
+            \App\Notifications\ResetPassword::class
         );
 
         // Throttled

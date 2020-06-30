@@ -131,10 +131,7 @@ class EmailResourcesTest extends TestCase
         $response->assertStatus(200)->assertJson(['message' => 'Email has been sent successfully.']);
         Notification::assertSentTo(
             [$user],
-            \App\Notifications\VerifyEmail::class,
-            function ($notification) use ($user) {
-                return $notification->queue === 'mail';
-            }
+            \App\Notifications\VerifyEmail::class
         );
     }
 }

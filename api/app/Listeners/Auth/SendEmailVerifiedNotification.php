@@ -19,7 +19,7 @@ class SendEmailVerifiedNotification
     public function handle(EmailVerified $event)
     {
         if (method_exists($event->user, 'notify')) {
-            $event->user->notify((new \App\Notifications\EmailVerified())->onQueue('mail'));
+            $event->user->notify(new \App\Notifications\EmailVerified());
         }
     }
 }

@@ -75,6 +75,6 @@ trait CanBeLockedTemporarily
      */
     public function sendLockNotification()
     {
-        $this->notify((new LockAccountNotification())->onQueue('mail'));
+        $this->notify(new LockAccountNotification());
     }
 }

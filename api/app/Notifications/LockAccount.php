@@ -44,6 +44,18 @@ class LockAccount extends Notification implements ShouldQueue
     }
 
     /**
+     * Determine which queues should be used for each notification channel.
+     *
+     * @return array
+     */
+    public function viaQueues()
+    {
+        return [
+            'mail' => 'mail'
+        ];
+    }
+
+    /**
      * Get the mail representation of the notification.
      *
      * @param  mixed $notifiable
