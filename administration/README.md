@@ -104,7 +104,7 @@ Note: When using the type `title`, all menu items that should belong to this gro
 of the title object.
 
 The type `Hidden` must not be defined manually, but will be set when the user doesn't have the required permissions.
-When all menu items of a submenu have    been hidden, the submenu will also be hidden. The same goes for the `Title` type,
+When all menu items of a submenu have been hidden, the submenu will also be hidden. The same goes for the `Title` type,
 if all children have been hidden the `Title` item will also be hidden.
 
 Note: If `Submenuhandler` and `Title` elements have an empty `children` array, these elements will be hidden.
@@ -113,8 +113,30 @@ Finally, you can define an icon for each menu item. The icon must be the classna
 ```
 { icon: 'mdi-airplane', path: '/aircrafts', type: NavigationType.Path }
 ```
-By default, the property `onlyOneSubmenu` is true. That means that any other open submenu will be closed, when the user
-opens another one. Settings this to false allows the user to open multiple submenus.
+By default, the property `onlyOneSubmenu` is false. Setting this to `true` means any other open submenu will be closed,
+when the user opens another submenu. Settings this to false allows the user to open multiple submenus at the same time.
+```
+<navigation-generator only-one-submenu :config="..."></navigation-generator>
+```
+It is possible to display a title, and a close button inside the submenus. Just add the attributes `show-submenu-close`
+and/or `show-submenu-title`:
+```
+<navigation-generator show-submenu-close show-submenu-title :config="..."></navigation-generator>
+```
+The title of a submenu will be the text of the submenu handler (The menu item which opens the submenu).
+
+If you want the submenu to be right aligned, in relation to the submenu handler you can set the attribute
+`submenus-right`:
+```
+<navigation-generator submenus-right :config="..."></navigation-generator>
+```
+
+You can change the layout of the navigation by setting one of the supported bootstrap classes on the
+`navigation-generator`:
+```
+<navigation-generator class="nav-pills" :config="..."></navigation-generator>
+```
+Please see the [bootstrap documentation](https://getbootstrap.com/docs/4.4/components/navs/) for more details.
 
 Of course, you don't have to use the `NavigationGenerator` and its config, you could also directly use the
 [NavigationItem](src/components/navigation/NavigationItem.vue) component. It also needs a config, but not as an array.

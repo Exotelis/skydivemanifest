@@ -1,7 +1,7 @@
 <template>
   <li class="nav-item">
     <template v-if="config.type === 'path' && this.route">
-      <router-link class="nav-link font-weight-bold"
+      <router-link class="nav-link"
                    @click.native="$emit('close-all')"
                    :to="route.path"
                    :class="[config.icon ? 'mdi ' + config.icon : '']">
@@ -10,7 +10,7 @@
     </template>
 
     <template v-if="config.type === 'title'">
-      <span class="nav-link font-weight-bold menu-subtitle"
+      <span class="nav-link menu-subtitle"
             :class="[config.icon ? 'mdi ' + config.icon : '']">
         {{ $t(config.title) }}
       </span>
@@ -19,18 +19,32 @@
     </template>
 
     <template v-if="config.type === 'submenuhandler'">
-      <a class="nav-link font-weight-bold"
+      <a class="nav-link"
          href=""
          @click.prevent="toggleSubmenu()"
          :class="[config.icon ? 'mdi ' + config.icon : '']">
         {{ $t(config.title) }}
       </a>
-      <ul class="nav flex-column submenu" :class="{ 'open': isSubmenuOpen }">
-        <li><span class="submenu-title">{{ $t(config.title) }}</span></li>
-        <li><a class="mdi mdi-close" @click.prevent="toggleSubmenu()" href=""></a></li>
-        <navigation-item v-for="(c, key) in config.children" v-on="$listeners" :key="key" :config="c">
-        </navigation-item>
-      </ul>
+
+      <template v-if="portal">
+        <!-- TODO replace in vue 3 with build in portals -->
+        <portal :to="portal">
+          <ul class="nav flex-column submenu" :class="{ 'open': isSubmenuOpen, 'right': submenusRight }">
+            <li v-if="showSubmenuTitle"><span class="submenu-title">{{ $t(config.title) }}</span></li>
+            <li v-if="showSubmenuClose"><a class="mdi mdi-close" @click.prevent="toggleSubmenu()" href=""></a></li>
+            <navigation-item v-for="(c, key) in config.children" v-on="$listeners" :key="key" :config="c">
+            </navigation-item>
+          </ul>
+        </portal>
+      </template>
+      <template v-else>
+        <ul class="nav flex-column submenu" :class="{ 'open': isSubmenuOpen, 'right': submenusRight }">
+          <li v-if="showSubmenuTitle"><span class="submenu-title">{{ $t(config.title) }}</span></li>
+          <li v-if="showSubmenuClose"><a class="mdi mdi-close" @click.prevent="toggleSubmenu()" href=""></a></li>
+          <navigation-item v-for="(c, key) in config.children" v-on="$listeners" :key="key" :config="c">
+          </navigation-item>
+        </ul>
+      </template>
     </template>
 
     <template v-if="config.type === 'hidden'"></template>
@@ -50,6 +64,11 @@ import { routesMap } from '@/router/routes';
 @Component({ name: 'navigation-item' })
 export default class NavigationItem extends Vue {
   @Prop({ required: true }) readonly config!: NavigationModel;
+  @Prop({ default: null }) readonly portal!: string;
+  @Prop([Boolean]) readonly showSubmenuClose!: boolean;
+  @Prop([Boolean]) readonly showSubmenuTitle!: boolean;
+  @Prop([Boolean]) readonly submenusRight!: boolean;
+
   isSubmenuOpen: boolean = false;
   route!: Route;
 

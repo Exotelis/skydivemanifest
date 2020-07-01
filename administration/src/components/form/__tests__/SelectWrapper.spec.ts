@@ -30,7 +30,7 @@ describe('SelectWrapper.vue', () => {
     expect(component.isVueInstance()).toBeTruthy();
   });
 
-  it('check default values of the text input', () => {
+  it('check default values of the select wrapper', () => {
     expect(component.props().autocomplete).toBe(null);
     expect(component.props().autofocus).toBeFalsy();
     expect(component.props().disabled).toBeFalsy();

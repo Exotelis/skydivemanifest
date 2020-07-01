@@ -16,7 +16,7 @@ describe('InputDate.vue', () => {
     expect(component.isVueInstance()).toBeTruthy();
   });
 
-  it('check default values of the text input', () => {
+  it('check default values of the date input', () => {
     expect(component.props().autocomplete).toBe(null);
     expect(component.props().autofocus).toBeFalsy();
     expect(component.props().disabled).toBeFalsy();

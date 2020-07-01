@@ -36,6 +36,11 @@ $info:         $cyan;
 $warning:      $yellow;
 $danger:       $red; // When changing, see autofill section in _general
 
+// Links
+
+$link-color:            $primary;
+$link-hover-decoration: none;
+
 // Breakpoints
 
 $grid-breakpoints: (
@@ -49,13 +54,17 @@ $grid-breakpoints: (
   xxxl: 1920px
 );
 
+// Grid columns
+
+$grid-gutter-width: 2rem;
+
 // Components
 
 $border-color: $gray-400;
 
 $border-radius: 0;
 
-// Fonts
+// Typography
 
 @font-face {
   font-family: 'Raleway';
@@ -67,9 +76,13 @@ $border-radius: 0;
 }
 $font-family-sans-serif: "Raleway", "Work Sans", "Roboto", "Helvetica Neue", Arial, BlinkMacSystemFont, -apple-system, "Segoe UI", "Noto Sans", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
-// Typography
-
 $font-size-base: 1rem;
+
+$font-weight-lighter: lighter;
+$font-weight-light:   300;
+$font-weight-normal:  400;
+$font-weight-bold:    700;
+$font-weight-bolder:  bolder;
 
 $h1-font-size: $font-size-base * 2;
 $h2-font-size: $font-size-base * 1.75;
@@ -85,10 +98,14 @@ $small-font-size: 85%;
 
 $text-muted: lighten($body-color, 20%);
 
-// Links
+// Buttons
 
-$link-color:            $primary;
-$link-hover-decoration: none;
+$btn-padding-y:        .5rem;
+$btn-padding-x:        1.5rem;
+$btn-font-size:        .875rem;
+
+$btn-font-weight:      600;
+$btn-focus-box-shadow: none !important;
 
 // Forms
 
@@ -122,15 +139,6 @@ $form-control-border-left:   .25rem solid $input-border-color;
 $form-feedback-valid-color:   $success;
 $form-feedback-invalid-color: $danger;
 
-// Buttons
-
-$btn-padding-y:        .5rem;
-$btn-padding-x:        1.5rem;
-$btn-font-size:        .875rem;
-
-$btn-font-weight:      600;
-$btn-focus-box-shadow: none !important;
-
 // Dropdowns
 
 $dropdown-font-size:               .875rem;
@@ -161,14 +169,18 @@ $alert-font-size: .875rem;
 
 $close-text-shadow: none;
 
+/* CUSTOM */
+
 // Sidebar
 
 $sidebar-width:       300px;
 $sidebar-width-small: 85px;
-$sidebar-padding-y:   0;
-$sidebar-padding-x:   0;
 
 // Main Navigation
+
+$mainnav-font-size:                .875rem;
+$mainnav-font-size-small:          .7rem;
+$mainnav-font-weight:              $font-weight-bold;
 
 $mainnav-navlink-padding-y:        .75rem;
 $mainnav-navlink-padding-x:        1.75rem;
@@ -180,9 +192,13 @@ $mainnav-menu-subtitle-background: transparent;
 $mainnav-submenu-width:            290px;
 $mainnav-submenu-width-small:      250px;
 $mainnav-submenu-height:           60vh;
+
 $mainnav-submenu-background:       lighten($secondary, 5%);
 $mainnav-submenu-padding-y:        1rem;
 $mainnav-submenu-padding-x:        1rem;
+
+$mainnav-submenu-title-size:       1.5rem;
+$mainnav-submenu-title-size-small: 1.25rem;
 
 // Logo and License Status
 
@@ -193,24 +209,12 @@ $license-circle-size:               .5rem;
 
 // Header
 
-$header-padding-y:     0;
-$header-padding-x:     1.75rem;
 $header-height:        81px;
 $header-border-bottom: 2px solid $primary;
 
-// Main
-
-$main-padding-y: 0;
-$main-padding-x: $header-padding-x;
-
-// Footer
-
-$footer-padding-y: 1.625rem;
-$footer-padding-x: $header-padding-x;
-
 // Mdi
 
-$mdi-font-path:      '../node_modules/@mdi/font/fonts'; // Relative to src
+$mdi-font-path: '../node_modules/@mdi/font/fonts'; // Relative to src
 
 // Transitions
 

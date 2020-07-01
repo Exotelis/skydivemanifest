@@ -26,6 +26,14 @@ describe('NavigationGenerator.vue', () => {
     expect(component.isVueInstance()).toBeTruthy();
   });
 
+  it('check default values of the navigation generator', () => {
+    expect(component.props().onlyOneSubmenu).toBeFalsy();
+    expect(component.props().portal).toBeNull();
+    expect(component.props().showSubmenuClose).toBeFalsy();
+    expect(component.props().showSubmenuTitle).toBeFalsy();
+    expect(component.props().submenusRight).toBeFalsy();
+  });
+
   it('close all open submenus by settings the isSubmenuOpen prop of its children to false', () => {
     component.setData({ navigationItems: [{ $data: { isSubmenuOpen: true } }, { $data: { isSubmenuOpen: true } }] });
     const firstChild = component.vm.navigationItems[0];

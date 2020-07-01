@@ -1,132 +1,58 @@
-#main-navigation {
-  .nav-link {
-    color:       $white;
-    padding:     $mainnav-navlink-padding-y $mainnav-navlink-padding-x;
-    font-size:   .875rem;
-    display:     flex;
-    align-items: center;
+.nav.submenu {
+  background-color: $dropdown-bg;
+  border:           $dropdown-border-width solid $dropdown-border-color;
+  border-radius:    $dropdown-border-radius;
+  color:            $body-color;
+  display:          none;
+  min-width:        $dropdown-min-width;
+  padding:          $dropdown-padding-y 0;
+  position:         absolute;
+  white-space:      nowrap;
+  z-index:          $zindex-dropdown;
 
-    &.menu-subtitle {
-      color: $mainnav-menu-subtitle-color;
-
-      &:hover {
-        background-color: $mainnav-menu-subtitle-background;
-      }
-    }
-
-    &.mdi:before {
-      font-size:    $mainnav-navicon-size;
-      margin-right: 1.5rem;
-      top:          0;
-      transition:   $transition-font-size;
-    }
-
-    &:hover, &.router-link-exact-active {
-      background-color: lighten($secondary, 5%);
-    }
+  &.open {
+    display: block;
   }
 
-  .submenu {
-    background-color: $mainnav-submenu-background;
-    box-shadow:       0 0 3px $black;
-    position:         absolute;
-    padding:          $mainnav-submenu-padding-y $mainnav-submenu-padding-x;
-    width:            $mainnav-submenu-width;
-    min-height:       $mainnav-submenu-height;
-    top:              0;
-    right:            3px;
-    transition:       all .3s ease-in-out;
-    visibility:       hidden;
-    z-index:          -2;
+  &.right {
+    right: 0;
+  }
 
-    &.open {
-      right:      -$mainnav-submenu-width;
-      visibility: visible;
-      z-index:    -1;
+  .submenu-title {
+    display:   block;
+    font-size: $font-size-base * 1.25;
+    padding:   $dropdown-item-padding-y $dropdown-item-padding-x;
+  }
+
+  .mdi-close {
+    font-size: $font-size-base * 1.25;
+    padding:   $dropdown-item-padding-y $dropdown-item-padding-x;
+    position:  absolute;
+    right:     0;
+    top:       0 + $dropdown-padding-y;
+  }
+
+  .menu-subtitle {
+    margin-top: $dropdown-padding-y;
+  }
+
+  .nav-link {
+    padding: $dropdown-item-padding-y $dropdown-item-padding-x;
+
+    &:hover {
+      background-color: $dropdown-bg;
+      border-color:     transparent;
     }
 
-    .submenu-title {
-      margin:     0 0 1rem $mainnav-navlink-padding-x;
-      font-size:  $h3-font-size;
-      transition: $transition-color-fast;
-    }
-
-    .mdi-close {
-      position:   absolute;
-      padding:    $mainnav-navlink-padding-y $mainnav-navlink-padding-x;
-      right:      0;
-      top:        0;
-      font-size:  $h3-font-size;
-      transition: $transition-all-fast;
-
-      &:hover {
-        color: $white;
-      }
-    }
-
-    .nav-link {
-      border-radius: 2px;
-      padding:       $mainnav-navlink-padding-y $mainnav-submenu-padding-x * 1.5;
-      white-space:   nowrap;
-      transition:    $transition-font-size-fast;
-
-      &.menu-subtitle {
-        color: $mainnav-menu-subtitle-color;
-        margin-top: 1.5rem;
-
-        &:hover {
-          background-color: $mainnav-menu-subtitle-background;
-        }
-      }
-
-      &:hover, &.router-link-exact-active {
-        background-color: $secondary;
-      }
+    &.active {
+      background-color: $dropdown-link-active-bg;
+      border-color:     transparent;
+      color:            $dropdown-link-active-color;
     }
   }
 }
 
-@include media-breakpoint-down(lg) {
-  #main-navigation {
-    .nav-link {
-      flex-direction: column;
-      padding:        $mainnav-navlink-padding-y .25rem;
-      font-size:      .7rem;
-
-      &.mdi:before {
-        font-size:    $mainnav-navicon-size * 1.5;
-        margin-right: 0;
-      }
-    }
-
-    .submenu {
-      width: $mainnav-submenu-width-small;
-
-      &.open {
-        right: -$mainnav-submenu-width-small;
-      }
-
-      .submenu-title {
-        margin:     0 0 2rem ($mainnav-navlink-padding-x / 2);
-        font-size:  $h4-font-size;
-        transition: $transition-color-fast;
-      }
-
-      .mdi-close {
-        padding:   $mainnav-navlink-padding-y ($mainnav-navlink-padding-x / 2);
-        font-size: $h4-font-size;
-      }
-
-      .nav-link {
-        flex-direction: row;
-        padding:        $mainnav-navlink-padding-y ($mainnav-navlink-padding-x / 2);
-        font-size:      .875rem;
-
-        &.mdi:before {
-          font-size:    $mainnav-navicon-size;
-          margin-right: 1rem;
-        }
-      }
-    }
-  }
+.flex-column .nav.submenu {
+  position: relative;
+  border: 0;
 }
