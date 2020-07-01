@@ -10,7 +10,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import PortalVue from 'portal-vue';
 import { Component } from 'vue-property-decorator';
+
+// Register Plugins
+// TODO: Remove as soon as we moved to vue 3
+Vue.use(PortalVue);
 
 // Register async components globally
 /* istanbul ignore next */

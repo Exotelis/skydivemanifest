@@ -1,4 +1,4 @@
-import { shallowMount, config } from '@vue/test-utils';
+import { config, shallowMount } from '@vue/test-utils';
 import DefaultLayout from '../DefaultLayout.vue';
 
 config.mocks!.$t = (key: any) => key;
@@ -15,7 +15,7 @@ describe('DefaultLayout.vue', () => {
           }
         }
       },
-      stubs: ['router-view']
+      stubs: ['router-view', 'portal-target']
     });
   });
 
@@ -25,6 +25,7 @@ describe('DefaultLayout.vue', () => {
 
   it('close submenus of #main-navigation when clicking on the content container', async () => {
     component.vm.$refs.mainNavigation.closeAll = jest.fn();
-    component.find('#default > div.content').trigger('click');
+    component.find('#default > #content').trigger('click');
+    expect(component.vm.$refs.mainNavigation.closeAll).toHaveBeenCalled();
   });
 });

@@ -4,7 +4,11 @@
                      @close-all="closeAll"
                      @toggle-submenu="toggleSubmenu"
                      :key="key"
-                     :config="c">
+                     :config="c"
+                     :portal="portal"
+                     :showSubmenuClose="showSubmenuClose"
+                     :showSubmenuTitle="showSubmenuTitle"
+                     :submenusRight="submenusRight">
     </navigation-item>
   </ul>
 </template>
@@ -23,7 +27,11 @@ import NavigationItem from '@/components/navigation/NavigationItem.vue';
 })
 export default class NavigationGenerator extends Vue implements NavigationGeneratorInterface {
   @Prop({ required: true }) readonly config!: Array<NavigationModel>;
-  @Prop({ default: true }) readonly onlyOneSubmenu!: boolean;
+  @Prop([Boolean]) readonly onlyOneSubmenu!: boolean;
+  @Prop({ default: null }) readonly portal!: string;
+  @Prop([Boolean]) readonly showSubmenuClose!: boolean;
+  @Prop([Boolean]) readonly showSubmenuTitle!: boolean;
+  @Prop([Boolean]) readonly submenusRight!: boolean;
   navigationItems: Array<Vue> = [];
 
   closeAll () {

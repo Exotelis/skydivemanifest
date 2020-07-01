@@ -1,17 +1,22 @@
 <template>
-  <div id="default">
+  <div id="default" class="d-flex">
+    <portal-target class="main-navigation-submenu" name="main-navigation" multiple></portal-target>
     <aside>
-      <div class="wrapper">
-        <logo-license-status></logo-license-status>
-        <nav id="main-navigation">
-          <navigation-generator class="flex-column" ref="mainNavigation" :config="mainNavigationConfig">
-          </navigation-generator>
-        </nav>
-      </div>
+      <logo-license-status></logo-license-status>
+      <nav id="main-navigation">
+        <navigation-generator class="flex-column"
+                              only-one-submenu
+                              ref="mainNavigation"
+                              show-submenu-close
+                              show-submenu-title
+                              :config="mainNavigationConfig"
+                              :portal="'main-navigation'">
+        </navigation-generator>
+      </nav>
     </aside>
 
-    <div class="content" @click="closeMainnavigationSubmenus">
-      <header class="d-flex align-items-center">
+    <div id="content" class="flex-grow-1" @click="closeMainnavigationSubmenus">
+      <header class="align-items-center d-flex">
         <div class="container-fluid">
           <div class="row">
             <div class="col d-flex align-items-center">
@@ -30,7 +35,7 @@
           </div>
         </div>
       </main>
-      <footer>
+      <footer class="border-top py-4">
         <div class="container-fluid">
           <div class="row">
             <div class="col">

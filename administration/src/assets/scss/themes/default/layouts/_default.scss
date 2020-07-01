@@ -1,53 +1,26 @@
+// Layout
+
 #default {
-  @include flexbox();
-  @include align-items(stretch);
-  width:                 100%;
-  min-height:            100vh;
-  background-color:      $gray-200;
+  background-color: $gray-200;
+  min-height:       100vh;
 
   aside {
-    @include flex(0 $sidebar-width);
-    z-index: 1;
+    background-color: $secondary;
+    color:            $white;
+    min-width:        $sidebar-width;
+    width:            $sidebar-width;
+    z-index:          10;
+  }
 
-    // Todo We might want to remote this workaround when we can use portals in vue3
-    .wrapper {
-      position:         relative;
-      width:            $sidebar-width;
-      background-color: $secondary;
-      color:            $white;
-      padding:          $sidebar-padding-y $sidebar-padding-x;
-      min-height:       100vh;
+  #content {
+    header {
+      background-color: $white;
+      border-bottom:    $header-border-bottom;
+      height:           $header-height;
     }
-  }
 
-  & > div.content {
-    @include flex(1);
-    min-height: 100vh;
-  }
-
-  header {
-    height:           $header-height;
-    border-bottom:    $header-border-bottom;
-    background-color: $white;
-
-    .container-fluid {
-      padding: $header-padding-y $header-padding-x;
-    }
-  }
-
-  main {
-    background-color: $white;
-
-    .container-fluid {
-      padding: $main-padding-y $main-padding-x;
-    }
-  }
-
-  footer {
-    border-top: 1px solid $border-color;
-
-    .container-fluid {
-      padding: $footer-padding-y $footer-padding-x;
+    main {
+      background-color: $white;
     }
   }
 }
@@ -55,10 +28,149 @@
 @include media-breakpoint-down(lg) {
   #default {
     aside {
-      @include flex(0 $sidebar-width-small);
+      min-width: $sidebar-width-small;
+      width:     $sidebar-width-small;
+    }
+  }
+}
 
-      .wrapper {
-        width: $sidebar-width-small;
+// Main navigation
+
+#main-navigation {
+  .nav-link {
+    align-items: center;
+    color:       $white;
+    display:     flex;
+    font-size:   $mainnav-font-size;
+    font-weight: $mainnav-font-weight;
+    padding:     $mainnav-navlink-padding-y $mainnav-navlink-padding-x;
+
+    &.menu-subtitle {
+      color: $mainnav-menu-subtitle-color;
+
+      &:hover {
+        background-color: $mainnav-menu-subtitle-background;
+      }
+    }
+
+    &.mdi:before {
+      font-size:    $mainnav-navicon-size;
+      margin-right: 1.5rem;
+      top:          0;
+      transition:   $transition-font-size;
+    }
+
+    &:hover, &.active {
+      background-color: lighten($secondary, 5%);
+    }
+  }
+}
+
+.main-navigation-submenu .submenu {
+  background-color:    $mainnav-submenu-background;
+  border:              0;
+  box-shadow:          0 0 3px $black;
+  display:             block;
+  left:                $sidebar-width - $mainnav-submenu-width;
+  min-height:          $mainnav-submenu-height;
+  padding:             $mainnav-submenu-padding-y $mainnav-submenu-padding-x;
+  position:            absolute;
+  top:                 0;
+  transition:          .3s ease-in-out;
+  transition-property: left, visibility;
+  visibility:          hidden;
+  width:               $mainnav-submenu-width;
+  z-index:             5;
+
+  &.open {
+    left:       $sidebar-width;
+    visibility: visible;
+    z-index:    6;
+  }
+
+  .mdi-close {
+    font-size:  $mainnav-submenu-title-size;
+    padding:    $mainnav-navlink-padding-y $mainnav-submenu-padding-x;
+    position:   absolute;
+    right:      0 + $mainnav-submenu-padding-x;
+    top:        0 + $mainnav-submenu-padding-y;
+    transition: $transition-all-fast;
+
+    &:hover {
+      color: $white;
+    }
+  }
+
+  .submenu-title {
+    color:     $white;
+    font-size: $mainnav-submenu-title-size;
+    padding:   $mainnav-navlink-padding-y $mainnav-submenu-padding-x;
+  }
+
+  .nav-link {
+    border-radius: 2px;
+    color:         $white;
+    font-size:     $mainnav-font-size;
+    font-weight:   $mainnav-font-weight;
+    padding:       $mainnav-navlink-padding-y $mainnav-submenu-padding-x;
+
+    &.menu-subtitle {
+      color: $mainnav-menu-subtitle-color;
+      margin-top: 1.5rem;
+
+      &:hover {
+        background-color: $mainnav-menu-subtitle-background;
+      }
+    }
+
+    &:hover, &.active {
+      background-color: $secondary;
+    }
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  #main-navigation {
+    .nav-link {
+      flex-direction: column;
+      padding:        $mainnav-navlink-padding-y .25rem;
+      font-size:      $mainnav-font-size-small;
+
+      &.mdi:before {
+        font-size:    $mainnav-navicon-size * 1.5;
+        margin-right: 0;
+      }
+    }
+  }
+
+  .main-navigation-submenu .submenu {
+    left:  $sidebar-width-small - $mainnav-submenu-width-small;
+    width: $mainnav-submenu-width-small;
+
+    &.open {
+      left: $sidebar-width-small;
+    }
+
+    .submenu-title {
+      font-size: $mainnav-submenu-title-size-small;
+      padding:   $mainnav-navlink-padding-y ($mainnav-navlink-padding-x / 2);
+    }
+
+    .mdi-close {
+      font-size: $mainnav-submenu-title-size-small;
+      padding:   $mainnav-navlink-padding-y ($mainnav-navlink-padding-x / 2);
+    }
+
+    .nav-link {
+      padding: $mainnav-navlink-padding-y ($mainnav-navlink-padding-x / 2);
+
+      &.mdi:before {
+        font-size:    $mainnav-navicon-size;
+        margin-right: 1rem;
+      }
+
+      &.menu-subtitle {
+        margin-top: 1rem;
       }
     }
   }
