@@ -21,7 +21,7 @@ describe('ButtonWrapper.vue', () => {
     expect(component.isVueInstance()).toBeTruthy();
   });
 
-  it('check default values of the submit button', () => {
+  it('check default values of the button wrapper', () => {
     expect(component.props().block).toBeFalsy();
     expect(component.props().disabled).toBeFalsy();
     expect(component.props().form).toBe(null);
