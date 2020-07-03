@@ -36,6 +36,29 @@
 
 // Main navigation
 
+@mixin scrollbar-style {
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: -ms-autohiding-scrollbar;  /* IE and Edge */
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: $primary $mainnav-submenu-background;
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    width: .625rem;
+  }
+  &::-webkit-scrollbar-button {
+    width: .125rem;
+    height: .125rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba($primary, .5);
+    border: 2px solid $mainnav-submenu-background;
+    border-radius: .3125rem;
+  }
+}
+
 #main-navigation {
   .nav-link {
     align-items: center;
@@ -67,20 +90,26 @@
 }
 
 .main-navigation-submenu .submenu {
-  background-color:    $mainnav-submenu-background;
-  border:              0;
-  box-shadow:          0 0 3px $black;
-  display:             block;
-  left:                $sidebar-width - $mainnav-submenu-width;
-  min-height:          $mainnav-submenu-height;
-  padding:             $mainnav-submenu-padding-y $mainnav-submenu-padding-x;
-  position:            absolute;
-  top:                 0;
-  transition:          .3s ease-in-out;
-  transition-property: left, visibility;
-  visibility:          hidden;
-  width:               $mainnav-submenu-width;
-  z-index:             5;
+  -webkit-overflow-scrolling: touch;
+  background-color:           $mainnav-submenu-background;
+  border:                     0;
+  box-shadow:                 0 0 3px $black;
+  display:                    block;
+  left:                       $sidebar-width - $mainnav-submenu-width;
+  max-height:                 80vh;
+  min-height:                 $mainnav-submenu-height;
+  overflow-y:                 scroll;
+  padding:                    $mainnav-submenu-padding-y $mainnav-submenu-padding-x;
+  position:                   absolute;
+  top:                        0;
+  transition:                 .3s ease-in-out;
+  transition-property:        left, visibility;
+  visibility:                 hidden;
+  width:                      $mainnav-submenu-width;
+  z-index:                    5;
+
+  // Custom scrollbar
+  @include scrollbar-style;
 
   &.open {
     left:       $sidebar-width;
@@ -172,6 +201,23 @@
       &.menu-subtitle {
         margin-top: 1rem;
       }
+    }
+  }
+}
+
+@supports (position: sticky) or (position: -webkit-sticky) {
+  .main-navigation-submenu {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    z-index: 5;
+
+    .submenu {
+      -webkit-overflow-scrolling: touch;
+      max-height:                 80vh;
+      overflow-y:                 scroll;
+
+      @include scrollbar-style;
     }
   }
 }
