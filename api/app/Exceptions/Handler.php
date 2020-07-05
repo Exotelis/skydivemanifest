@@ -67,8 +67,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        if ($exception instanceof ValidationException) {
-            if ($request->ajax()) {
+        if ($request->ajax()) {
+            if ($exception instanceof MissingScopeException) {
+                return response()->json([
+                    'message' => __('error.access_denied'),
+                ], 403);
+            }
+
+            if ($exception instanceof ValidationException) {
                 return response()->json([
                     'message' => __('error.validation_error'),
                     'errors' => $exception->validator->getMessageBag()

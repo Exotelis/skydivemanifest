@@ -5,6 +5,7 @@ return [
     '401'                   => 'You are not signed in.',
     '403'                   => 'You don\'t have permissions.',
     '500'                   => 'An unexpected error has occurred.',
+    'access_denied'         => 'You don\'t have the required permissions to visit this page.',
     'account_disabled'      => 'Your account is disabled.',
     'change_password'       => 'You must set a new password!',
     'could_not_sign_out'    => 'Could not log the user out. Are you using a non user token?',

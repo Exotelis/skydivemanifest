@@ -5,6 +5,7 @@ return [
     '401'                   => 'Sie sind nicht angemeldet.',
     '403'                   => 'Sie haben keine Berechtigungen.',
     '500'                   => 'Ein unerwarteter Fehler ist aufgetreten.',
+    'access_denied'         => 'Sie haben nicht die erforderlichen Berechtigungen, um diese Seite zu besuchen.',
     'account_disabled'      => 'Ihr Benutzerkonto ist deaktiviert.',
     'change_password'       => 'Sie müssen ein neues Passwort vergeben!',
     'could_not_sign_out'    => 'Benutzer konnte nicht ausgeloggt werden. Benutzen Sie ein Token, welches nicht an Benutzer gebunden ist?',
