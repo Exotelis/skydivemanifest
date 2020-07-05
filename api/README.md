@@ -433,7 +433,7 @@ DatabaseSeeder class, which may be used to call other seed classes. However, you
 specific seeder class to run individually:
 ```
 php artisan db:seed
-php artisan db:seed --class=UsersTableSeeder
+php artisan db:seed --class=UserSeeder
 ```
 You may also seed your database using the `migrate:fresh` command, which will drop all tables and re-run all of your
 migrations. This command is useful for completely re-building your database:

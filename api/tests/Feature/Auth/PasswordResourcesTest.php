@@ -36,7 +36,7 @@ class PasswordResourcesTest extends TestCase
         $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
 
         // Forbidden - No password change required
-        $this->actingAs(factory(User::class)->create());
+        $this->actingAs(factory(User::class)->states('noPasswordChange')->create());
         $response = $this->postJson($resource, $json);
         $response->assertStatus(403)->assertJson(['message' => 'This action is unauthorized.']);
 
