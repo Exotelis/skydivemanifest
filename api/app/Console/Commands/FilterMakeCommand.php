@@ -2,41 +2,65 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
+use Illuminate\Console\GeneratorCommand;
 
-class FilterMakeCommand extends Command
+/**
+ * Class FilterMakeCommand
+ * @package App\Console\Commands
+ */
+class FilterMakeCommand extends GeneratorCommand
 {
     /**
-     * The name and signature of the console command.
+     * The console command name.
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $name = 'make:filter';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Create a new filter class';
 
     /**
-     * Create a new command instance.
+     * The type of class being generated.
      *
-     * @return void
+     * @var string
      */
-    public function __construct()
+    protected $type = 'Filters';
+
+    /**
+     * Determine if the class already exists.
+     *
+     * @param  string  $rawName
+     * @return bool
+     */
+    protected function alreadyExists($rawName)
     {
-        parent::__construct();
+        return class_exists($rawName) ||
+            $this->files->exists($this->getPath($this->qualifyClass($rawName)));
     }
 
     /**
-     * Execute the console command.
+     * Get the stub file for the generator.
      *
-     * @return int
+     * @return string
      */
-    public function handle()
+    protected function getStub()
     {
-        //
+        return __DIR__.'/stubs/filter.stub';
+    }
+
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param  string  $rootNamespace
+     * @return string
+     */
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace.'\Filters';
     }
 }
