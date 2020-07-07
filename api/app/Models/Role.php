@@ -58,6 +58,7 @@ class Role extends Model
      * @var array
      */
     protected $fillable = [
+        'color',
         'deletable',
         'editable',
         'name',
