@@ -9,6 +9,18 @@ export function checkPermissions (a: Array<string>, b: Array<string> = getUserPe
   return a.some((permission: string) => b.includes(permission));
 }
 
+export function colorYiq (color: string): string {
+  // This function is inspired by the bootstrap framework - Thank you for the great work :-)
+  let rgb = hexToRGB(color);
+  let yiq = ((rgb[0] * 299) + (rgb[1] * 587) + (rgb[2] * 114)) / 1000;
+
+  if (yiq >= 150) {
+    return '#212529';
+  }
+
+  return '#fff';
+}
+
 export function getCookie (name: string): string|undefined {
   return document.cookie
     .split(';')
@@ -54,10 +66,39 @@ export function getUserPermissions (): Array<string> {
   return decryptedPayload.scopes;
 }
 
+export function hexToRGB (hex: string): Array<number> {
+  let r: any = 0;
+  let g: any = 0;
+  let b: any = 0;
+
+  // 3 digit long hex (#fff)
+  if (hex.length === 4) {
+    r = '0x' + hex[1] + hex[1];
+    g = '0x' + hex[2] + hex[2];
+    b = '0x' + hex[3] + hex[3];
+
+    // 6 digit long hex (#ffffff)
+  } else if (hex.length === 7) {
+    r = '0x' + hex[1] + hex[2];
+    g = '0x' + hex[3] + hex[4];
+    b = '0x' + hex[5] + hex[6];
+  }
+
+  return [parseInt(r), parseInt(g), parseInt(b)];
+}
+
 export function htmlEntities (str: string): string {
   return String(str)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+export function uuidv4 (): string {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c: string) => {
+    let r: number = Math.random() * 16 | 0;
+    let v: any = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
 }

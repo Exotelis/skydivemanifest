@@ -13,6 +13,10 @@ import Vue from 'vue';
 import PortalVue from 'portal-vue';
 import { Component } from 'vue-property-decorator';
 
+import Popper from 'popper.js';
+// see: https://github.com/twbs/bootstrap/issues/23590
+Popper.Defaults.modifiers!.computeStyle!.gpuAcceleration = false;
+
 // Register Plugins
 // TODO: Remove as soon as we moved to vue 3
 Vue.use(PortalVue);

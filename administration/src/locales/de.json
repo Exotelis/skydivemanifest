@@ -1,5 +1,8 @@
 {
   "dateTimeFormats": {
+    "date": {
+      "year": "numeric", "month": "2-digit", "day": "2-digit"
+    },
     "datetime": {
       "year": "numeric", "month": "numeric", "day": "numeric", "hour": "numeric", "minute": "numeric"
     },
@@ -31,11 +34,75 @@
         "successMsg": "Ihre E-Mail-Adresse wurde erfolgreich bestätigt.",
         "title": "E-Mail Bestätigung"
       },
+      "datatable": {
+        "actions": "Aktionen",
+        "addItem": "Erstellen Sie Ihren ersten Datensatz.",
+        "clearFilters": "Filter löschen",
+        "couldNotLoadData": "Daten konnten nicht geladen werden",
+        "filterCombination": "Tut uns leid, diese Filterkombination liefert keine Ergebnisse.",
+        "loading": "Lädt Daten...",
+        "noRecordsFound": "Keine Datensätze gefunden"
+      },
+      "datatableActions": {
+        "selected": "%{selected} Datensätze ausgewählt"
+      },
+      "datatableColumnSelection": {
+        "description": "Ändern Sie die Darstellung der Tabelle, indem Sie bis zu {max} Spalten auswählen.",
+        "reset": "Zurücksetzen",
+        "title": "Spalten"
+      },
+      "datatableDensity": {
+        "description": "Ändern Sie die Höhe der Tabellenzeilen.",
+        "large": "Hoch",
+        "medium": "Normal",
+        "small": "Flach",
+        "title": "Zeilenhöhe"
+      },
+      "datatableFilters": {
+        "activeFilters": "Aktive Filter",
+        "applyFilters": "Filter anwenden",
+        "cancel": "@:(general.cancel)",
+        "clearFilters": "@:(component.datatable.clearFilters)",
+        "exact": "genau",
+        "filters": "Filter",
+        "from": "von",
+        "select": {
+          "is_active": {
+            "false": "@:(general.disabled)",
+            "true": "@:(general.enabled)"
+          },
+          "gender": {
+            "d": "@:(general.gender.d)",
+            "f": "@:(general.gender.f)",
+            "m": "@:(general.gender.m)",
+            "u": "@:(general.gender.u)"
+          }
+        },
+        "to": "bis"
+      },
+      "datatableRefresh": {
+        "refresh": "Aktualisieren"
+      },
+      "datatableRowsPerPage": {
+        "rowsPerPage": "Einträge pro Seite:"
+      },
+      "datatableSortMode": {
+        "description": "Ändern Sie den Sortiermodus, um nach nur einer oder mehreren Spalten zu sortieren.",
+        "multi": "Mehrfachsortierung",
+        "single": "Einzelsortierung",
+        "title": "Sortiermodus"
+      },
       "leavePageModal": {
         "cancelButton": "Auf Seite bleiben",
         "okButton": "Seite verlassen",
         "text": "Möchten Sie wirklich die Seite ohne zu speichern verlassen? Alle nicht gespeicherten Daten gehen verloren.",
         "title": "Seite ohne Speichern verlassen?"
+      },
+      "pagination": {
+        "ariaLabel": "Seitennavigation",
+        "of": "of %{last}",
+        "records": "Zeige Datensätze %{from} bis %{to} von %{total}",
+        "select": "Seite auswählen"
       },
       "signInModal": {
         "remainSignedIn": "Angemeldet bleiben",
@@ -101,7 +168,7 @@
         "password": "Passwort",
         "passwordConfirmation": "Passwort bestätigen",
         "securityToken": "Sicherheitstoken",
-        "username": "Benutzername",
+        "username": "@:(general.username)",
         "usernameEmail": "E-Mail / Benutzername"
       },
       "placeholder": {
@@ -123,20 +190,26 @@
     },
     "general": {
       "accountSettings": "Kontoeinstellungen (%{email})",
+      "active": "Aktiv",
       "allRightsReserved": "Alle Rechte vorbehalten",
       "backToSignIn": "Zurück zur Anmeldung.",
+      "cancel": "Abbrechen",
       "changePassword": "Passwort ändern",
       "close": "Schließen",
       "continue": "Fortsetzen",
       "continueUsing": "Weitermachen",
       "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
+      "disabled": "Deaktiviert",
+      "enabled": "Aktiviert",
       "forgotPassword": "Passwort vergessen?",
       "gender": {
-        "diverse": "divers",
-        "female": "weiblich",
-        "male": "männlich",
-        "unspecified": "unbekannt"
+        "d": "divers",
+        "f": "weiblich",
+        "m": "männlich",
+        "u": "unbekannt"
       },
+      "id": "ID",
+      "inactive": "Inaktiv",
       "loading": "Lädt...",
       "noPermissionsText": "Sie haben nicht die erforderlichen Berechtigungen die Seite '%{title}' zu besuchen.",
       "noPermissionsTitle": "Keine Berechtigungen",
@@ -152,7 +225,8 @@
       "signOut": "Abmelden",
       "signUp": "Registrieren",
       "system": "System",
-      "translations": "Übersetzungen"
+      "translations": "Übersetzungen",
+      "username": "Benutzername"
     },
     "page": {
       "login": {

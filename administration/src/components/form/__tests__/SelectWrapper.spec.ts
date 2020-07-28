@@ -1,4 +1,5 @@
 import { config, shallowMount } from '@vue/test-utils';
+import { FormFieldSize } from '@/enum/FormFieldSize';
 import SelectWrapper from '../SelectWrapper.vue';
 
 config.mocks!.$t = (key: any) => key;
@@ -31,16 +32,17 @@ describe('SelectWrapper.vue', () => {
   });
 
   it('check default values of the select wrapper', () => {
-    expect(component.props().autocomplete).toBe(null);
+    expect(component.props().autocomplete).toBeNull();
     expect(component.props().autofocus).toBeFalsy();
     expect(component.props().disabled).toBeFalsy();
-    expect(component.props().form).toBe(null);
-    expect(component.props().inputmode).toBe(null);
+    expect(component.props().fieldSize).toBeNull();
+    expect(component.props().form).toBeNull();
+    expect(component.props().inputmode).toBeNull();
     expect(component.props().multiple).toBeFalsy();
     expect(component.props().required).toBeFalsy();
     expect(component.props().size).toBe(0);
     expect(component.props().spellcheck).toBe('false');
-    expect(component.props().tabindex).toBe(null);
+    expect(component.props().tabindex).toBeNull();
     expect(component.props().value).toBe('');
   });
 
@@ -57,6 +59,11 @@ describe('SelectWrapper.vue', () => {
   it('check if the attribute disabled of the select field is true', () => {
     component.setProps({ disabled: true });
     expect(component.find('select').attributes().disabled).toBeTruthy();
+  });
+
+  it('check if the class \'form-control-sm\' does exist on select field', () => {
+    component.setProps({ fieldSize: FormFieldSize.sm });
+    expect(component.find('select').classes()).toContain('form-control-sm');
   });
 
   it('check if the attribute form of the select field is formId', () => {

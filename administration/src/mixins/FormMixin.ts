@@ -4,7 +4,9 @@ import { Route } from 'vue-router';
 import FormInterface from '@/interfaces/FormInterface';
 
 Component.registerHooks([
-  'beforeRouteLeave'
+  'beforeRouteEnter',
+  'beforeRouteLeave',
+  'beforeRouteUpdate'
 ]);
 @Component({})
 export default class FormMixin extends Vue implements FormInterface {

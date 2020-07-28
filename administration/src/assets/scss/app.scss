@@ -1,9 +1,11 @@
+// Import Bootstrap functions
+@import '../../../node_modules/bootstrap/scss/functions';
+
 // Import Skydivemanifest theme
 @import 'themes/default/variables';
 @import 'themes/default/mixins';
 
 // Import Bootstrap
-@import '../../../node_modules/bootstrap/scss/functions';
 @import '../../../node_modules/bootstrap/scss/variables';
 @import '../../../node_modules/bootstrap/scss/mixins';
 @import '../../../node_modules/bootstrap/scss/root';
@@ -12,20 +14,20 @@
 //@import '../../../node_modules/bootstrap/scss/images';
 //@import '../../../node_modules/bootstrap/scss/code';
 @import '../../../node_modules/bootstrap/scss/grid';
-//@import '../../../node_modules/bootstrap/scss/tables';
+@import '../../../node_modules/bootstrap/scss/tables';
 @import '../../../node_modules/bootstrap/scss/forms';
 @import '../../../node_modules/bootstrap/scss/buttons';
 @import '../../../node_modules/bootstrap/scss/transitions';
 @import '../../../node_modules/bootstrap/scss/dropdown';
-//@import '../../../node_modules/bootstrap/scss/button-group';
+@import '../../../node_modules/bootstrap/scss/button-group';
 @import '../../../node_modules/bootstrap/scss/input-group';
-//@import '../../../node_modules/bootstrap/scss/custom-forms';
+@import '../../../node_modules/bootstrap/scss/custom-forms';
 @import '../../../node_modules/bootstrap/scss/nav';
 //@import '../../../node_modules/bootstrap/scss/navbar';
 //@import '../../../node_modules/bootstrap/scss/card';
 //@import '../../../node_modules/bootstrap/scss/breadcrumb';
-//@import '../../../node_modules/bootstrap/scss/pagination';
-//@import '../../../node_modules/bootstrap/scss/badge';
+@import '../../../node_modules/bootstrap/scss/pagination';
+@import '../../../node_modules/bootstrap/scss/badge';
 //@import '../../../node_modules/bootstrap/scss/jumbotron';
 @import '../../../node_modules/bootstrap/scss/alert';
 //@import '../../../node_modules/bootstrap/scss/progress';
@@ -59,4 +61,7 @@
 @import 'themes/default/layouts/welcome';
 
 // Import components
+@import 'themes/default/components/datatable';
+@import 'themes/default/components/loadingbar';
 @import 'themes/default/components/logolicensestatus';
+@import 'themes/default/components/pagination';

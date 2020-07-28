@@ -1,7 +1,10 @@
 <template>
   <b-button :block="block"
-            :class="[rightAligned ? 'float-right ml-2': 'mr-2',
-                     loading ? 'mdi mdi-spin mdi-loading': icon ? 'mdi ' + icon : '']"
+            :class="[
+              buttonSize ? 'btn-' + buttonSize : '',
+              loading ? 'mdi mdi-spin mdi-loading': icon ? 'mdi ' + icon : '',
+              rightAligned ? 'float-right ml-2': 'mr-2'
+            ]"
             :disabled="loading ? true : disabled"
             :form="form"
             :id="id"

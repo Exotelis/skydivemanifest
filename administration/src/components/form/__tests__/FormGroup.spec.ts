@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+import { FormFieldSize } from '@/enum/FormFieldSize';
 import FormGroup from '../FormGroup.vue';
 
 const factory = () => {
@@ -21,20 +22,22 @@ describe('FormGroup.vue', () => {
   });
 
   it('check default values of the form group', () => {
-    expect(component.props().description).toBe(null);
+    expect(component.props().description).toBeNull();
     expect(component.props().hideLabel).toBeFalsy();
     expect(component.props().horizontal).toBeFalsy();
-    expect(component.props().invalidFeedback).toBe(null);
+    expect(component.props().invalidFeedback).toBeNull();
+    expect(component.props().labelColXxs).toBeNull();
     expect(component.props().labelColXs).toBe(2);
-    expect(component.props().labelColSm).toBe(null);
-    expect(component.props().labelColMd).toBe(null);
-    expect(component.props().labelColLg).toBe(null);
-    expect(component.props().labelColXl).toBe(null);
-    expect(component.props().labelColXxl).toBe(null);
-    expect(component.props().labelColXxxl).toBe(null);
-    expect(component.props().label).toBe(null);
-    expect(component.props().labelFor).toBe(null);
-    expect(component.props().validFeedback).toBe(null);
+    expect(component.props().labelColSm).toBeNull();
+    expect(component.props().labelColMd).toBeNull();
+    expect(component.props().labelColLg).toBeNull();
+    expect(component.props().labelColXl).toBeNull();
+    expect(component.props().labelColXxl).toBeNull();
+    expect(component.props().labelColXxxl).toBeNull();
+    expect(component.props().label).toBeNull();
+    expect(component.props().labelFor).toBeNull();
+    expect(component.props().labelSize).toBeNull();
+    expect(component.props().validFeedback).toBeNull();
   });
 
   it('check if class required is not set if the containing form element is not required', () => {
@@ -98,6 +101,21 @@ describe('FormGroup.vue', () => {
     expect(component.find('.col').exists()).toBeTruthy();
   });
 
+  it('check if class col-form-label-sm isn\'t set', () => {
+    component.setProps({ label: 'Test', labelSize: FormFieldSize.sm });
+    expect(component.find('label').classes()).not.toContain(' col-form-label-sm');
+  });
+
+  it('check if class col-form-label-sm isn\'t set if horizontal is false', () => {
+    component.setProps({ horizontal: false, label: 'Test', labelSize: FormFieldSize.sm });
+    expect(component.find('label').classes()).not.toContain(' col-form-label-sm');
+  });
+
+  it('check if class col-form-label-sm is set if horizontal is true', () => {
+    component.setProps({ horizontal: true, label: 'Test', fieldsilabelSize: FormFieldSize.sm });
+    expect(component.find('label').classes()).not.toContain(' col-form-label-sm');
+  });
+
   it('not render error message without invalidFeedback set', () => {
     expect(component.find('.invalid-feedback').exists()).toBeFalsy();
   });
@@ -156,6 +174,7 @@ describe('FormGroup.vue', () => {
     component.setProps({
       horizontal: true,
       label: 'Test',
+      labelColXxs: 6,
       labelColXs: 6,
       labelColSm: 6,
       labelColMd: 6,
@@ -164,6 +183,7 @@ describe('FormGroup.vue', () => {
       labelColXxl: 6,
       labelColXxxl: 6
     });
+    expect(component.find('label').classes()).toContain('col-6');
     expect(component.find('label').classes()).toContain('col-xs-6');
     expect(component.find('label').classes()).toContain('col-sm-6');
     expect(component.find('label').classes()).toContain('col-md-6');

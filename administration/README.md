@@ -11,6 +11,15 @@ development or to build the bundle, to use it in production.
   + [Lints and fixes files](#lints-and-fixes-files)
 - [Developers guide](#developers-guide)
   + [NavigationGenerator and NavigationItems](#navigationgenerator-and-navigationitems)
+  + [Datatable](#datatable)
+    * [Datatable actions](#datatable-actions)
+    * [Datatable column selection](#datatable-column-selection)
+    * [Datatable density](#datatable-density)
+    * [Datatable filters](#datatable-filters)
+    * [Datatable filters toggle](#datatable-filters-toggle)
+    * [Datatable refresh](#datatable-refresh)
+    * [Datatable rows per page selection](#datatable-rows-per-page-selection)
+    * [Datatable sort mode](#datatable-sort-mode)
   + [Form components](#form-components)
     * [form-group](#form-group)
     * [input-date](#input-date)
@@ -21,6 +30,7 @@ development or to build the bundle, to use it in production.
     * [select-wrapper](#select-wrapper)
     * [button-wrapper](#button-wrapper)
   + [Form validation](#form-validation)
+  + [Pagination](#pagination)
   + [Prevent from leaving route](#prevent-from-leaving-route)
   + [Layouts](#layouts)
   + [Permissions](#permissions)
@@ -147,6 +157,308 @@ Example usage:
 ```
 The ref is used to call the `closeAll` method of the `NavigationGenerator`, when the user clicks anywhere outside of the
 navigation menu.
+
+### Datatable
+The [Datatable](src/components/datatable/Datatable.vue) is a very powerful component and requires some configuration.
+So, let's go through the single options of the datatable.
+
+First of all you need to set a `service` that is being called every time new data must be pulled from the REST api. The
+service must be a callback function:
+```
+<datatable :service="service"></datatable>
+
+service: any = UserService.all;
+```
+
+Next, you need to define the different columns that should be displayed in the datatable. The `columns` must be an array
+of [DatatableColumnModel](src/models/datatable/DatatableColumnModel.ts) types. A definition could look like:
+```
+columns: Array<DatatableColumnModel> = [
+  { label: i18n.t('page.users.id') as string, prop: 'id', notHideable: true, sortable: true },
+  { label: i18n.t('page.users.lastname') as string, prop: 'lastname' },
+  { label: i18n.t('page.users.middlename') as string, prop: 'middlename', hide: true },
+  { label: i18n.t('page.users.email') as string, prop: 'email', classes: 'user-select-all' },
+  { label: i18n.t('page.users.dob') as string, prop: 'dob', alignBody: Position.right, alignHead: Position.right },
+  { label: i18n.t('page.users.role') as string, prop: 'role', sortable: true, sortKey: 'roleName' }
+]
+```
+Ok, these are a lot of settings. See the table below for the explanation:
+| setting     | required | description                                                                                                     | allowed values |
+| ----------- | -------- | --------------------------------------------------------------------------------------------------------------- | -------------- |
+| alignBody   |          | Aligns the content of the tbody cell                                                                            | Position.center , Position.left, Position.right |
+| alignHead   |          | Aligns the content of the thead cell                                                                            | Position.center , Position.left, Position.right |
+| classes     |          | Additional custom classes that will be set on the tbody cell                                                    | string |
+| hide        |          | Hides the column by default                                                                                     | boolean |
+| label       | *        | The lable that is being displayed in the thead cell                                                             | string |
+| notHideable |          | Column is not hideable                                                                                          | boolean |
+| prop        | *        | The key of the data returned by the api                                                                         | string |
+| propCustom  |          | Customizes the output. Can be used to conditionally display icons or convert booleans to some meaningful output | function |
+| sortable    |          | Makes the column sortable. By default the prop is used as sortKey                                               | boolean |
+| sortKey     |          | If the sortKey is a different than the prop                                                                     | string |
+
+The `propCustom` option might be the most powerful. Let's dive a bit more into detail. `propCustom` needs to be a
+function. This function gets called every time the column gets rendered. This setting can be used to conditionally
+display icons or convert booleans to some meaningful output. See the following examples to learn more:
+```
+propCustom: function (gender: string): string {
+  let genderString: string = i18n.t('general.gender.' + gender) as string;
+  if (gender === Gender.f) {
+    return '<span class="female mdi mdi-gender-female"></span> ' + genderString;
+  }
+
+  return '';
+}
+
+propCustom: function (locale: string): string {
+  return (locales as any)[locale].toLowerCase();
+}
+
+propCustom: function ({ name, color }: any): string {
+  let fontColor: string = colorYiq(`${color}`);
+  return `<span style="background-color: ${color};color: ` + fontColor + `" class="badge">${name}</span>`;
+}
+```
+The last example expects an object as parameter. This is the case when the returned value of the `prop` is an object as
+well. The `name` and `color` keys must exist on the returned object.
+
+The third and last required setting is the `tableId`. The `tableId` will be used to store some data in the users local
+storage to keep different settings even if the user leaves the page. For example, the visible columns or the sort mode
+will be stored.
+
+All other settings are optional but can add useful features to the datatable.
+
+actions:
+Actions can be performed on each record of the datatable. If `actions` are defined, a dropdown menu will be displayed in
+the last column of the datable. The `actions` must be an array of the
+[DatatableActionModel](src/models/datatable/DatatableActionModel.ts). Useful actions might be show, edit or delete:
+```
+actions: Array<DatatableActionModel> = [
+  { label: 'Show', eventId: 'show', icon: 'mdi-eye' },
+  { label: 'Edit', eventId: 'edit', icon: 'mdi-pencil' },
+  { label: 'Delete', eventId: 'delete', critical: true, icon: 'mdi-delete' }
+];
+```
+| setting  | required | description                                            | allowed values |
+| -------- | -------- | ------------------------------------------------------ | -------------- |
+| critical |          | Marks the action as critical                           | boolean        |
+| eventId  | *        | The name of the event that will be fired               | string         |
+| icon     |          | An icon that should be displayed in front of the label | string         |
+| label    | *        | The text that is being displayed                       | string         |
+
+When the user clicks an action an event will be fired that needs to be caught to perform the action. The base name of
+the event will be `datatable:action:` followed by the `eventId` as suffix `datatable:action:delete`. The emitted event
+consists of three parameters. The items, the critical state, and the event mode (single or bulk). You can listen in the
+parent component of the datatable for the events:
+```
+<datatable @datatable:action:delete="deleteUser"> </datatable>
+
+deleteUser (item: Array<object>|object, critical: boolean, mode: ActionMode): void {
+  // Perform action
+}
+```
+
+bulkActions:
+Will do the same as the actions but will only be available if the datatable is in the `selectable` mode.
+
+caption:
+The subtitle of the table. By default, it's empty.
+
+filterConfig:
+Please see the [datatable-filters](#datatable-filters) section to learn more about how to define the `filterConfig`.
+
+hideUtilityBarBottom / hideUtilityBarTop:
+Will hide the top or bottom utility bar.
+
+historyMode:
+By default, the history mode is disabled. If it's enabled, it will catch any state change of the datatable (filter
+updates, sort changes, etc.) and it's possible to use the back and forward buttons of the browser to navigate to the
+last state.
+
+perPage:
+An array of numbers that will be selectable in the "records per page" component. Default is [10, 25, 50, 100, 250].
+
+selectable:
+By default, it's false. Enabling the `selectable` setting will add checkboxes to the datatable to select rows. This
+feature is only useful when using bulk actions.
+
+utilityBarBottomClasses / utilityBarTopClasses:
+Adds the defined classes to the top or bottom utility bars.
+
+---
+Events:
+- datatable:beforeRefresh - Is fired before new data will be loaded
+- datatable:refreshed - Is fired after new data have been pulled
+- datatable:selection - When the selection changed (With the current selection as parameter)
+---
+One word to the response of the api. The response must be of the type
+[DatatableDataModel](src/models/datatable/DatatableDataModel.ts).  The REST api of the skydivemanifest will always have
+this format.
+
+#### Datatable actions
+In a lot of situations it makes sense to perform a specific action on a single or multiple datatable records. The
+[DatatableActions](src/components/datatable/DatatableActions.vue) component does exactly that. The datatable can run two
+different action modes `single` and `bulk`. The single action will be performed on a single table row, the bulk action
+on multiple selected rows. Therefore, it makes only sense to run the bulk mode with `selectable` enabled. The default
+mode is `single`. The `DatatableActions` module expects two required parameters. The `actions` must be an array of
+[DatatableActionModels](src/models/datatable/DatatableActionModel.ts) and the items must be an `object` or an array of `objects`.
+The component renders a dropdown menu with a list of the defined actions. When the user clicks any of those actions, an
+event will be emitted. Let's imagine having the following action config:
+```
+actions: Array<DatatableActionModel> = [
+    { label: 'Show', eventId: 'show', icon: 'mdi-eye' },
+    { label: 'Edit', eventId: 'edit', icon: 'mdi-pencil' },
+    { label: 'Delete', eventId: 'delete', critical: true, icon: 'mdi-delete' }
+];
+```
+As you can see you can define different options. The label will be the displayed action name. If critical is true, the
+user will be notified, that the he or she is about to perform some critical action. The icon will be placed in front of
+the label. The interesting part is indeed the `eventId`. This ID determines the full name of the emitted event. The
+basic name of the event is `datatable:action:`, the `eventId` is going to be the suffix. The name of the `delete` event
+would be `datatable:action:delete`. The parent component of the datatable should handle the event and perform the
+intended action.
+
+Note: The `DatatableActions` component can only be used in combination with the `Datatable` component.
+
+#### Datatable column selection
+The [DatatableColumnSelection](src/components/datatable/DatatableColumnSelection.vue) component makes it possible to
+toggle the visibility of columns. 
+You must pass the required attributes `columns` and `tableId`. Please see the section [Datatable](#datatable) to learn
+more about those attributes:
+```
+<datatable-column-selection table-id="users" :columns="columns"></datatable-column-selection>
+```
+It must be at least one column visible. By default, the maximum of visible columns is 10, but you can change this by
+defining the max attribute:
+```
+<datatable-column-selection table-id="users" :columns="columns" :max="20"></datatable-column-selection>
+```
+The attribute `visible` is a list of all visible columns. It must be an array including the property name of the column:
+```
+['id', 'firstname' ...]
+``` 
+To catch a selection change in the parent component, you have two options. The first is to sync the `visible` attribute:
+```
+<datatable-column-selection :visible.sync="visibleColumns"></datatable-column-selection>
+```
+or you could listen for the `datatable:columnToggle` event:
+```
+<datatable-column-selection @datatable:columnToggle="onColumnSelectionChange"></datatable-column-selection>
+```
+
+#### Datatable density
+The [DatatableDensity](src/components/datatable/DatatableDensity.vue) component sends an `datatable:densityChanged`
+event, when the density has been changed.
+To catch a density change in the parent component, you have two options. The first is to sync the `density` attribute:
+```
+<datatable-density :density.sync="sortMode"></datatable-density>
+```
+or you could listen for the `datatable:densityChanged` event:
+```
+<datatable-density @datatable:densityChanged="onDensityChange"></datatable-density>
+```
+
+#### Datatable filters
+With the [DatatableFilters](src/components/datatable/DatatableFilters.vue) component the user can filter the datatable
+records. The component has no required attributes, but it would make sense to set the `filters`, to configure the
+available filters. `Filters` must be an array of [DatatableBaseFilter](src/filters/DatatableBaseFilter.ts) types.
+Currently, two different filter types are available. Those two extend the `DatatableBaseFilter` class. The
+[DatatableExactFilter](src/filters/DatatableExactFilter.ts) can filter for specific values, let's say the exact age for
+example. The [DatatableFromToFilter](src/filters/DatatableFromToFilter.ts) can filter for the exact value, values
+greater than, lower than, or between to given values. The creation of a new filter could look like:
+```
+filters: Array<DatatableBaseFilter> = [
+  new DatatableExactFilter('ID', { inputType: FilterInputTypes.text, prop: 'id' })
+]
+```
+This would create a `Exact filter` with the legend `ID`. Each filter will be wrapped in a fieldset, and the legend will
+display the defined name of the filter. The second attribute of the `DatatableExactFilter` constructor must be one of
+the `DatatableFilterInputModel|DatatableFilterSelectModel` types. The definition can be found
+[here](src/models/datatable/DatatableFilterModels.ts). As you can see, those objects can have a label and a value. If
+you define the value, the datatable would filter for this value by default. The required field `prop` must be the name
+of the filter defined in the api. Please see the api documentation for more information. You also need to define an
+inputType. This setting defines the type of the rendered input field. The available types are:
+```
+FilterInputTypes.date
+FilterInputTypes.email
+FilterInputTypes.number
+FilterInputTypes.text
+FilterInputTypes.select
+```
+Note: The `select` type is only available for the `Exact filter` and not the `FromTo filter`. The
+`DatatableFilterSelectModel` requires also the `options` setting. Please see the [select-wrapper](#select-wrapper)
+section for more details.
+The definition of the `FromToFilter` could look like:
+```
+new DatatableFromToFilter(
+  'Age',
+  { inputType: FilterInputTypes.number, prop: 'age', label: 'Age' },
+  { inputType: FilterInputTypes.number, prop: 'age_eot', label: 'Older than' },
+  { inputType: FilterInputTypes.number, prop: 'age_eyt',  label: 'Younger than' }
+)
+```
+If you only want to use some of those fields you can replace the others with `undefined`:
+```
+new DatatableFromToFilter(
+ 'Age',
+ undefined,
+ { inputType: FilterInputTypes.number, prop: 'age_eot', label: 'Older than' }
+)
+```
+In this case the user could only filter for people older than a given age.
+
+#### Datatable filters toggle
+The [DatatableFiltersToggle](src/components/datatable/DatatableFiltersToggle.vue) component sends an
+`datatable:filtersToggle` event, when the user clicks the filters button. The toggle button should help to separate the
+button from the filters row to provide a good UX.
+To catch a filter visibility change in the parent component, you have two options. The first is to sync the `visible`
+attribute:
+```
+<datatable-filters-toggle :visible="filtersVisible"></datatable-filters-toggle>
+```
+or you could listen for the `datatable:filtersToggle` event:
+```
+<datatable-filters-toggle @datatable:filtersToggle="onFiltersToggle"></datatable-filters-toggle>
+```
+
+#### Datatable refresh
+The [DatatableRefresh](src/components/datatable/DatatableRefresh.vue) component sends an `datatable:refresh` event, when
+the refresh button has been clicked. The event can be used to refresh the data of the table:
+```
+<datatable-refresh @datatable:refresh="onRefresh"></datatable-refresh>
+
+onRefresh (): void {
+    // Reload data
+}
+```
+
+#### Datatable rows per page selection
+The [DatatableRowsPerPage](src/components/datatable/DatatableRowsPerPage.vue) component sends an
+`datatable:rowsPerPageChanged` event, when selection has been changed. With this component the user can define how many
+rows should be displayed on a single page. To catch a mode change in the parent component, you have two options.
+The first is to sync the `current` attribute:
+```
+<datatable-rows-per-page :current.sync="params.limit"></datatable-rows-per-page>
+```
+or you could listen for the `datatable:rowsPerPageChanged` event:
+```
+<datatable-rows-per-page @datatable:rowsPerPageChanged="onRowsPerPageChange"></datatable-rows-per-page>
+```
+The attribute `rows-per-page` can be set to define which numbers are allowed. It must be an array of numbers:
+```
+<datatable-rows-per-page :rows-per-page="[5, 10, 25, 50, 100]"></datatable-rows-per-page>
+```
+
+#### Datatable sort mode
+The [DatatableSortMode](src/components/datatable/DatatableSortMode.vue) component sends an `datatable:sortModeChanged`
+event, when the sort mode has been changed.
+To catch a mode change in the parent component, you have two options. The first is to sync the `mode` attribute:
+```
+<datatable-sort-mode :mode.sync="sortMode"></datatable-sort-mode>
+```
+or you could listen for the `datatable:sortModeChanged` event:
+```
+<datatable-sort-mode @datatable:sortModeChanged="onSortModeChange"></datatable-sort-mode>
+```
 
 ### Form components
 From components are more or less a wrapper for from elements such as input fields, select boxes and submit buttons. They
@@ -482,6 +794,47 @@ id="password_confirmation"
 ```
 
 Note: For a full support of the validation, please use the [from-group component](#form-group) as a wrapper.
+
+### Pagination
+When you want to implement a feature that should have multiple pages, you can use the
+[pagination component](src/components/ui/Pagination.vue). The datatable makes use of the pagination component for
+example. To use the pagination, you have to import the component.
+
+```
+import Pagination from '@/components/ui/Pagination.vue';
+
+@Component({
+  components: { Pagination }
+})
+```
+once this is done you can define the html element:
+```
+<pagination :current="params.page"
+            :from="response.from"
+            :last="response.last_page"
+            :to="response.to"
+            :total="response.total"
+            @pagination:changed="onPageChange"></pagination>
+```
+The attributes `current`, `from`, `last`, `to` and `total` are required. To hide the `record` text, you can set the
+`hideRecords` attribute:
+```
+<pagination hide-records></pagination>
+```
+To catch a page change in the parent component, you have two options. The first is to sync the `current` attribute:
+```
+<pagination :current.sync="params.page"></pagination>
+```
+or you could listen for the `pagination:changed` event:
+```
+<pagination @pagination:changed="onPageChange"></pagination>
+```
+in your typescript you can then handle the event:
+```
+onPageChange (page: number) {
+  // Do something
+}
+```
 
 ### Prevent from leaving route
 When a form has been manipulated, you can prevent the user from changing the route without saving the data. The only

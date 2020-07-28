@@ -1,6 +1,25 @@
+// Anchor
+
+a:not([href]) {
+  color:           $link-color;
+  cursor:          pointer;
+  text-decoration: $link-decoration;
+  transition:      $transition-color;
+
+  &:hover {
+    color:           $link-hover-color;
+    text-decoration: $link-hover-decoration;
+  }
+}
+
 // Buttons
 
 .btn.disabled, .btn:disabled {
+  cursor: not-allowed;
+}
+
+// Disabled
+*:disabled, .disabled {
   cursor: not-allowed;
 }
 
@@ -49,11 +68,11 @@ label {
   background-color: rgba($form-feedback-valid-color, .1);
 }
 
-.was-validated .input-group .form-control:invalid,
-.was-validated .input-group .form-control:valid,
-.input-group .form-control.is-invalid,
-.input-group .form-control.is-valid {
-  // background-position: right center;
+.was-validated .form-control.form-control-sm:invalid,
+.was-validated .form-control.form-control-sm:valid,
+.form-control.form-control-sm.is-invalid,
+.form-control.form-control-sm.is-valid {
+  background-size: $input-height-inner-third $input-height-inner-third;
 }
 
 .password-toggle {
@@ -84,6 +103,7 @@ a {
 }
 
 .dropdown-menu a {
+  outline: none;
   transition: none;
 }
 
@@ -111,4 +131,53 @@ a {
 
 .alert {
   font-size: $alert-font-size;
+}
+
+// Table
+
+.table {
+  .tfoot-dark, .thead-dark {
+    td {
+      color: $table-dark-color;
+      background-color: $table-dark-bg;
+      border-color: $table-dark-border-color;
+    }
+  }
+
+  .tfoot-light, .thead-light {
+    td {
+      color: $table-head-color;
+      background-color: $table-head-bg;
+      border-color: $table-border-color;
+    }
+  }
+}
+
+// Dropdown
+
+.dropdown, .btn-group {
+  .dropdown-menu {
+    label {
+      font-size: $dropdown-font-size;
+    }
+
+    .custom-control-label {
+      &::before {
+        top: ($dropdown-font-size * $line-height-base - $custom-control-indicator-size) / 2;
+      }
+
+      &::after {
+        top: ($dropdown-font-size * $line-height-base - $custom-control-indicator-size) / 2;
+      }
+    }
+  }
+
+  a.dropdown-item {
+    color: $dropdown-link-color;
+
+    &:hover {
+      background-color: $dropdown-link-hover-bg;
+      color:            $dropdown-link-hover-color;
+    }
+  }
 }

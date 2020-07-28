@@ -1,0 +1,29 @@
+.pagination {
+  margin-bottom: 0;
+
+  .page-link {
+    font-size: 1rem;
+  }
+
+  .selection {
+    background-color: $pagination-bg;
+    border:           $pagination-border-width solid $pagination-border-color; // $border-color:
+    border-radius:    $border-radius;
+    color:            $body-color;
+    height:           100%;
+    line-height:      $pagination-line-height;
+    padding:          0 $pagination-padding-x / 2;
+
+    &:hover {
+      border-color: darken($pagination-border-color, 15%);
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.pagination-records {
+  font-size: $label-font-size;
+}
