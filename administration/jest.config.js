@@ -6,5 +6,8 @@ module.exports = {
     'src/filters/Datatable*.ts',
     '!(src/main.js)',
     '!(src/registerServiceWorker.js)'],
-  'coverageReporters': ['html', 'text-summary']
+  'coverageReporters': ['html', 'text-summary'],
+  setupFilesAfterEnv: [
+    './jestSetupAfterEnv.ts'
+  ]
 };
