@@ -1,0 +1,238 @@
+.datatable {
+  font-size:     $datatable-font-size;
+
+  &.loading {
+    .table-hover tbody tr:hover {
+      background-color: transparent;
+    }
+  }
+
+  table {
+    margin-bottom: 0;
+  }
+
+  tbody {
+    tr.no-hover:hover {
+      background-color: transparent;
+    }
+
+    .mdi {
+      line-height: $font-size-base;
+    }
+  }
+
+  thead th, thead td {
+    color:               $datatable-font-color-head;
+    font-size:           $datatable-font-size-head;
+    border-bottom-width: $table-border-width * 2 - 1;
+  }
+
+  tr {
+    &.selected {
+      background-color: $table-hover-bg;
+    }
+  }
+
+  .badge {
+    font-size: $datatable-badge-font-size;
+  }
+
+  .btn-group, .dropdown {
+    position: inherit; // Fixes popper inside of overflow: auto/scroll
+  }
+
+  .datatable_btn-inline-action {
+    font-size:     $datatable-inline-action-font-size;
+    line-height:   $datatable-inline-action-line-height;
+    padding:       $datatable-inline-action-padding;
+    transition:    $transition-all-fast;
+
+    &:hover {
+      background-color: $gray-100;
+      border: 1px solid $table-border-color;
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .datatable_col-actions, .datatable_col-selectable {
+    width: 3rem;
+  }
+
+  .datatable_filters {
+    fieldset {
+      padding: 0 .75rem;
+      width:   calc(100% / 4);
+    }
+
+    legend {
+      font-size:   $datatable-font-size-head;
+      font-weight: $font-weight-bold;
+    }
+
+    .badge {
+      font-size: $datatable-badge-font-size-filters;
+    }
+
+    .form-group {
+      margin-bottom: .75rem;
+
+      .form-control {
+        border: $input-border-width solid $input-border-color;
+      }
+    }
+  }
+
+  .datatable_loadingPlaceholder {
+    height: $datatable-font-size * $line-height-base;
+
+    > div {
+      background-color: $table-head-bg;
+      border-radius:    $datatable-font-size * $line-height-base / 2;
+      height:           50%;
+      position:         relative;
+      top:              25%;
+    }
+  }
+
+  .datatable_no-results {
+    width: 300px;
+  }
+
+  .datatable_rowsPerPage {
+    background-color: $datatable-input-bg;
+    border:           $border-width solid $border-color;
+    border-radius:    $border-radius;
+    color:            $body-color;
+
+    &:hover {
+      border-color: darken($border-color, 15%);
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .datatable_selection {
+    cursor: pointer;
+
+    .custom-checkbox {
+      margin:     0 auto;
+      min-height: 0;
+      padding:    0;
+      width:      1rem;
+
+      .custom-control-input {
+        height: 1rem;
+        width:  1rem;
+      }
+
+      .custom-control-label {
+        cursor: pointer;
+        top:    1rem - $datatable-font-size;
+
+        &:after, &:before {
+          height: 1rem;
+          left:   0;
+          top:    0;
+          width:  1rem;
+        }
+      }
+    }
+  }
+
+  .datatable_sortableHeader {
+    &:hover {
+      .datatable_sort {
+        color: $body-color;
+      }
+    }
+
+    .datatable_sort {
+      color:      lighten($body-color, 15%);
+      font-size:  90%;
+      transition: $transition-color-fast;
+    }
+  }
+
+  .datatable_utility-bar-bottom, .datatable_utility-bar-top {
+    font-size: $datatable-font-size;
+    padding:   0;
+
+    .datatable_utility-component {
+      font-size: $datatable-font-size;
+      padding:   $datatable-utility-component-padding;
+
+      .btn.btn-datatable_utility {
+        border:      0;
+        color:       $body-color;
+        font-size:   $datatable-font-size;
+        font-weight: $font-weight-bold;
+        padding:     $datatable-utility-component-padding;
+
+        .mdi {
+          @include transition($btn-transition);
+          color:   $link-color;
+        }
+
+        &.custom-icon::after {
+          display: none;
+        }
+
+        &:hover .mdi {
+          color: $link-hover-color;
+        }
+      }
+
+      .dropdown {
+        .dropdown-menu {
+          margin-top: 0;
+          overflow:   hidden;
+          width:      270px;
+
+          form.limit-height {
+            max-height: 200px;
+            overflow:   auto;
+
+            // Custom scrollbar
+            @include scrollbar-style;
+          }
+        }
+      }
+    }
+  }
+
+  .table-md {
+    thead th, tbody th, tbody td {
+      padding: ($table-cell-padding-sm + (($table-cell-padding - $table-cell-padding-sm) / 2)) $table-cell-padding;
+    }
+  }
+
+  .table-sm {
+    thead th, tbody th, tbody td {
+      padding: $table-cell-padding-sm $table-cell-padding;
+    }
+  }
+
+  .thead-dark {
+    th {
+      color: $datatable-font-color-head;
+    }
+  }
+
+  .thead-light {
+    th {
+      color: $datatable-font-color-head;
+    }
+  }
+
+  .was-validated .form-control.form-control-sm:valid,
+  .form-control.form-control-sm.is-valid {
+    background-color: $input-bg;
+    background-image: none;
+    padding: $input-padding-y-sm $input-padding-x-sm;
+  }
+}

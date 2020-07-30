@@ -1,0 +1,24 @@
+@mixin scrollbar-style($background: $white) {
+  -webkit-overflow-scrolling: touch;
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: -ms-autohiding-scrollbar;  /* IE and Edge */
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: $primary $background;
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    width: .625rem;
+  }
+  &::-webkit-scrollbar-button {
+    width: .125rem;
+    height: .125rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba($primary, .5);
+    border: 2px solid $background;
+    border-radius: .3125rem;
+  }
+}

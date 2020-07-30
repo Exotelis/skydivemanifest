@@ -1,9 +1,9 @@
 <template>
-  <select class="form-control"
-          v-model="localValue"
+  <select v-model="localValue"
           @input="handleInput"
           :autocomplete="autocomplete"
           :autofocus="autofocus"
+          :class="['form-control', fieldSize ? 'form-control-' + fieldSize : '']"
           :disabled="disabled"
           :form="form"
           :id="id"
@@ -80,7 +80,7 @@ export default class SelectWrapper extends Mixins(MultipleMixin, RequiredMixin, 
   mounted () {
     // Check if an initial value is selected
     this.initialSelection = !(this.value === '' ||
-      (typeof this.value === 'object' && Object.keys(this.value).length < 1));
+      (this.value !== null && typeof this.value === 'object' && Object.keys(this.value).length < 1));
 
     // If no initial value is set,
     if (!this.initialSelection && !this.multiple) {

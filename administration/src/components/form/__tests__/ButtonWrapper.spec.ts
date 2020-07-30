@@ -1,4 +1,5 @@
 import { mount, config } from '@vue/test-utils';
+import { FormFieldSize } from '@/enum/FormFieldSize';
 import ButtonWrapper from '../ButtonWrapper.vue';
 
 config.mocks!.$t = (key: any) => key;
@@ -23,12 +24,13 @@ describe('ButtonWrapper.vue', () => {
 
   it('check default values of the button wrapper', () => {
     expect(component.props().block).toBeFalsy();
+    expect(component.props().buttonSize).toBeNull();
     expect(component.props().disabled).toBeFalsy();
-    expect(component.props().form).toBe(null);
-    expect(component.props().icon).toBe(null);
+    expect(component.props().form).toBeNull();
+    expect(component.props().icon).toBeNull();
     expect(component.props().loading).toBeFalsy();
     expect(component.props().rightAligned).toBeFalsy();
-    expect(component.props().tabindex).toBe(null);
+    expect(component.props().tabindex).toBeNull();
     expect(component.props().type).toBe('button');
     expect(component.props().variant).toBe('primary');
   });
@@ -40,6 +42,15 @@ describe('ButtonWrapper.vue', () => {
   it('check if the attribute class contains "btn-block" if block is true', () => {
     component.setProps({ block: true });
     expect(component.find('button').classes()).toContain('btn-block');
+  });
+
+  it('check if the attribute class contains "btn-sm"', () => {
+    component.setProps({ buttonSize: FormFieldSize.sm });
+    expect(component.find('button').classes()).toContain('btn-sm');
+  });
+
+  it('check if the attribute class doesn\'t contain "btn-sm"', () => {
+    expect(component.find('button').classes()).not.toContain('btn-sm');
   });
 
   it('check if the attribute class contains "mr-2" if button isn\'t right aligned', () => {

@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+import { FormFieldSize } from '@/enum/FormFieldSize';
 import InputDate from '../InputDate.vue';
 
 describe('InputDate.vue', () => {
@@ -17,21 +18,22 @@ describe('InputDate.vue', () => {
   });
 
   it('check default values of the date input', () => {
-    expect(component.props().autocomplete).toBe(null);
+    expect(component.props().autocomplete).toBeNull();
     expect(component.props().autofocus).toBeFalsy();
     expect(component.props().disabled).toBeFalsy();
-    expect(component.props().form).toBe(null);
-    expect(component.props().inputmode).toBe(null);
-    expect(component.props().list).toBe(null);
-    expect(component.props().max).toBe(null);
-    expect(component.props().min).toBe(null);
+    expect(component.props().fieldSize).toBeNull();
+    expect(component.props().form).toBeNull();
+    expect(component.props().inputmode).toBeNull();
+    expect(component.props().list).toBeNull();
+    expect(component.props().max).toBeNull();
+    expect(component.props().min).toBeNull();
     expect(component.props().plaintext).toBeFalsy();
     expect(component.props().readonly).toBeFalsy();
     expect(component.props().required).toBeFalsy();
     expect(component.props().spellcheck).toBe('false');
-    expect(component.props().step).toBe(null);
-    expect(component.props().tabindex).toBe(null);
-    expect(component.props().value).toBe(null);
+    expect(component.props().step).toBeNull();
+    expect(component.props().tabindex).toBeNull();
+    expect(component.props().value).toBeNull();
   });
 
   it('check if event is emitted when the input value changes', async () => {
@@ -53,6 +55,11 @@ describe('InputDate.vue', () => {
   it('check if the attribute disabled of the input field is true', () => {
     component.setProps({ disabled: true });
     expect(component.find('input').attributes().disabled).toBeTruthy();
+  });
+
+  it('check if the class \'form-control-sm\' does exist on input field', () => {
+    component.setProps({ fieldSize: FormFieldSize.sm });
+    expect(component.find('input').classes()).toContain('form-control-sm');
   });
 
   it('check if the attribute form of the input field is formId', () => {

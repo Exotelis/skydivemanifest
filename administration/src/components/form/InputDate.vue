@@ -3,7 +3,10 @@
          @input="$emit('input', $event.target.value)"
          :autocomplete="autocomplete"
          :autofocus="autofocus"
-         :class="[ readonly && plaintext ? 'form-control-plaintext' : 'form-control' ]"
+         :class="[
+           fieldSize ? 'form-control-' + fieldSize : '',
+           readonly && plaintext ? 'form-control-plaintext' : 'form-control'
+         ]"
          :disabled="disabled"
          :form="form"
          :id="id"

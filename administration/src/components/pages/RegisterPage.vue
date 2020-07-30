@@ -159,9 +159,9 @@ export default class RegisterPage extends Mixins(FormMixin, FormValidationMixin)
   mounted () {
     this.options = [
       { value: Gender.u, text: this.$t('form.placeholder.gender') as string, disabled: true },
-      { value: Gender.d, text: this.$t('general.gender.diverse') as string },
-      { value: Gender.f, text: this.$t('general.gender.female') as string },
-      { value: Gender.m, text: this.$t('general.gender.male') as string }
+      { value: Gender.d, text: this.$t('general.gender.d') as string },
+      { value: Gender.f, text: this.$t('general.gender.f') as string },
+      { value: Gender.m, text: this.$t('general.gender.m') as string }
     ];
 
     // Set default locale as initial language. Can be changed in user settings.

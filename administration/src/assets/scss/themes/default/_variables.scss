@@ -62,7 +62,10 @@ $grid-gutter-width: 2rem;
 
 $border-color: $gray-400;
 
-$border-radius: 0;
+$border-radius:    0;
+$border-radius-lg: $border-radius;
+$border-radius-sm: .2rem;
+$border-radius-alternative: .25rem;
 
 // Typography
 
@@ -77,12 +80,16 @@ $border-radius: 0;
 $font-family-sans-serif: "Raleway", "Work Sans", "Roboto", "Helvetica Neue", Arial, BlinkMacSystemFont, -apple-system, "Segoe UI", "Noto Sans", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
 $font-size-base: 1rem;
+$font-size-lg:   $font-size-base * 1.2;
+$font-size-sm:   $font-size-base * .85;
 
 $font-weight-lighter: lighter;
 $font-weight-light:   300;
 $font-weight-normal:  400;
 $font-weight-bold:    700;
 $font-weight-bolder:  bolder;
+
+$line-height-base:    1.5;
 
 $h1-font-size: $font-size-base * 2;
 $h2-font-size: $font-size-base * 1.75;
@@ -97,6 +104,17 @@ $headings-font-weight:   600;
 $small-font-size: 85%;
 
 $text-muted: lighten($body-color, 20%);
+
+// Tables
+
+$table-cell-padding:    .75rem;
+$table-cell-padding-sm: .3rem;
+
+$table-hover-bg:        rgba($primary, .075);
+
+// Buttons + Forms
+
+$input-btn-line-height: $line-height-base;
 
 // Buttons
 
@@ -118,6 +136,7 @@ $label-asterisk-margin-left: .25rem;
 $input-padding-y:            .75rem;
 $input-padding-x:            1rem;
 $input-font-size:            .75rem;
+$input-line-height:          $input-btn-line-height;
 
 $input-bg:                   rgba($body-color, .1); // When changing, see autofill section in _general
 
@@ -130,9 +149,22 @@ $input-focus-box-shadow:     none;
 
 $input-placeholder-color:    rgba($body-color, .7);
 
+$input-height-inner-third:   add($input-line-height * .25em, $input-padding-y);
+
 $form-group-margin-bottom:   1.25rem;
 
 $form-control-border-left:   .25rem solid $input-border-color;
+
+$custom-control-indicator-bg:             $white;
+
+$custom-control-indicator-border-color:   $border-color;
+$custom-control-indicator-border-width:   1px;
+
+$custom-control-label-color:              $body-color;
+
+$custom-control-label-disabled-color:     lighten($body-color, 20%);
+
+$custom-checkbox-indicator-border-radius: $border-radius-alternative / 2;
 
 // Form validation
 
@@ -156,6 +188,19 @@ $dropdown-header-color:            $body-color;
 $dropdown-link-color-danger:       $danger;
 $dropdown-link-hover-color-danger: $white;
 $dropdown-link-hover-bg-danger:    $danger;
+
+// Pagination
+
+$pagination-padding-y: .4rem;
+$pagination-padding-x: .65rem;
+
+$pagination-border-color: $border-color;
+
+// Badges
+
+$badge-font-size:           75%;
+$badge-font-size-datatable: 90%;
+$badge-border-radius:       $border-radius-alternative;
 
 // Modals
 
@@ -211,6 +256,28 @@ $license-circle-size:               .5rem;
 
 $header-height:        81px;
 $header-border-bottom: 2px solid $primary;
+
+// Datatable
+
+$datatable-font-size:       $font-size-sm;
+$datatable-font-color-head: darken($body-color, 10%);
+$datatable-font-size-head:  $font-size-sm; // alternative would be: $font-size-base
+
+$datatable-badge-font-size:             90%;
+$datatable-badge-font-size-filters:     100%;
+
+$datatable-input-bg:                    $white;
+
+$datatable-inline-action-border-radius: $border-radius-alternative;
+$datatable-inline-action-font-size:     $font-size-base * $line-height-base;
+$datatable-inline-action-line-height:   $font-size-base;
+$datatable-inline-action-padding-x:     .125rem;
+$datatable-inline-action-padding-y:     .125rem;
+$datatable-inline-action-padding:       $datatable-inline-action-padding-y $datatable-inline-action-padding-x;
+
+$datatable-utility-component-padding-x: $table-cell-padding;
+$datatable-utility-component-padding-y: ($table-cell-padding-sm + ($table-cell-padding - $table-cell-padding-sm) / 2);
+$datatable-utility-component-padding:   $datatable-utility-component-padding-y $datatable-utility-component-padding-x;
 
 // Mdi
 

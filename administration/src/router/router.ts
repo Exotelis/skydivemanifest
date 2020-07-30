@@ -32,6 +32,7 @@ router.beforeEach((to, from, next) => {
     // Permission handling
     if (checkPermissions(to.meta.permissions)) {
       // Success - User has permissions
+      updateTitle(to.meta.title);
       next();
     } else {
       if (from.name === null) {
@@ -45,8 +46,7 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     // Update title on route change
-    const title = process.env.VUE_APP_TITLE || 'Skydivemanifest Administration';
-    document.title = to.meta.title ? i18n.t(to.meta.title) + ' | ' + title : title;
+    updateTitle(to.meta.title);
     next();
   }
 });
@@ -64,6 +64,11 @@ function firePermissionsDeniedToast (title: string): void {
     variant: 'danger',
     solid: true
   });
+}
+
+function updateTitle (title: string): void {
+  const titleSuffix = process.env.VUE_APP_TITLE || 'Skydivemanifest Administration';
+  document.title = title ? i18n.t(title) + ' | ' + titleSuffix : titleSuffix;
 }
 
 export default router;

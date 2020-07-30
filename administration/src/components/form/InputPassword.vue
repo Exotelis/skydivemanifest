@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'input-group': isToggleable}">
+  <div :class="[{ 'input-group': isToggleable }, fieldSize ? 'input-group-' + fieldSize : '',]">
     <input class="form-control"
            @input="$emit('input', $event.target.value)"
            :autocomplete="autocomplete"

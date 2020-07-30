@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
+import { FormFieldSize } from '@/enum/FormFieldSize';
 import InputPassword from '../InputPassword.vue';
 
 describe('InputPassword.vue', () => {
@@ -17,21 +18,22 @@ describe('InputPassword.vue', () => {
   });
 
   it('check default values of the password input', () => {
-    expect(component.props().autocomplete).toBe(null);
+    expect(component.props().autocomplete).toBeNull();
     expect(component.props().autofocus).toBeFalsy();
     expect(component.props().disabled).toBeFalsy();
-    expect(component.props().form).toBe(null);
-    expect(component.props().inputmode).toBe(null);
+    expect(component.props().fieldSize).toBeNull();
+    expect(component.props().form).toBeNull();
+    expect(component.props().inputmode).toBeNull();
     expect(component.props().isToggleable).toBe(false);
-    expect(component.props().list).toBe(null);
-    expect(component.props().maxlength).toBe(null);
-    expect(component.props().minlength).toBe(null);
-    expect(component.props().pattern).toBe(null);
-    expect(component.props().placeholder).toBe(null);
+    expect(component.props().list).toBeNull();
+    expect(component.props().maxlength).toBeNull();
+    expect(component.props().minlength).toBeNull();
+    expect(component.props().pattern).toBeNull();
+    expect(component.props().placeholder).toBeNull();
     expect(component.props().readonly).toBeFalsy();
     expect(component.props().required).toBeFalsy();
-    expect(component.props().tabindex).toBe(null);
-    expect(component.props().value).toBe(null);
+    expect(component.props().tabindex).toBeNull();
+    expect(component.props().value).toBeNull();
   });
 
   it('check if password is invisible by default', () => {
@@ -75,6 +77,11 @@ describe('InputPassword.vue', () => {
   it('check if the attribute disabled of the input field is true', () => {
     component.setProps({ disabled: true });
     expect(component.find('input').attributes().disabled).toBeTruthy();
+  });
+
+  it('check if the class \'form-control-sm\' does exist on input group', () => {
+    component.setProps({ fieldSize: FormFieldSize.sm, isToggleable: true });
+    expect(component.find('.input-group').classes()).toContain('input-group-sm');
   });
 
   it('check if the attribute form of the input field is formId', () => {

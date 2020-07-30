@@ -1,5 +1,8 @@
 {
   "dateTimeFormats": {
+    "date": {
+      "year": "numeric", "month": "2-digit", "day": "2-digit"
+    },
     "datetime": {
       "year": "numeric", "month": "numeric", "day": "numeric", "hour": "numeric", "minute": "numeric"
     },
@@ -31,11 +34,75 @@
         "successMsg": "Your email address has been verified successfully.",
         "title": "Email confirmation"
       },
+      "datatable": {
+        "actions": "Actions",
+        "addItem": "Create your first record",
+        "clearFilters": "Clear filters",
+        "couldNotLoadData": "Could not load data",
+        "filterCombination": "Sorry, that filter combination has no results.",
+        "loading": "Loading data...",
+        "noRecordsFound": "No records found"
+      },
+      "datatableActions": {
+        "selected": "%{selected} records selected"
+      },
+      "datatableColumnSelection": {
+        "description": "Alter the display of the table by selecting up to {max} columns.",
+        "reset": "Reset",
+        "title": "Columns"
+      },
+      "datatableDensity": {
+        "description": "Alter the density of the table rows.",
+        "large": "Large",
+        "medium": "Medium",
+        "small": "Small",
+        "title": "Row size"
+      },
+      "datatableFilters": {
+        "activeFilters": "Active filters",
+        "applyFilters": "Apply filters",
+        "cancel": "@:(general.cancel)",
+        "clearFilters": "@:(component.datatable.clearFilters)",
+        "exact": "exact",
+        "filters": "Filters",
+        "from": "from",
+        "select": {
+          "is_active": {
+            "false": "@:(general.disabled)",
+            "true": "@:(general.enabled)"
+          },
+          "gender": {
+            "d": "@:(general.gender.d)",
+            "f": "@:(general.gender.f)",
+            "m": "@:(general.gender.m)",
+            "u": "@:(general.gender.u)"
+          }
+        },
+        "to": "to"
+      },
+      "datatableRefresh": {
+        "refresh": "Refresh"
+      },
+      "datatableRowsPerPage": {
+        "rowsPerPage": "Rows per page:"
+      },
+      "datatableSortMode": {
+        "description": "Alter the sort mode to arrange items by a single or multiple columns.",
+        "multi": "Multi",
+        "single": "Single",
+        "title": "Sort mode"
+      },
       "leavePageModal": {
         "cancelButton": "Stay",
         "okButton": "Leave",
         "text": "Do you really want to leave this page without saving? Any unsaved information will be lost.",
         "title": "Leave page without saving?"
+      },
+      "pagination": {
+        "ariaLabel": "Pagination",
+        "of": "of %{last}",
+        "records": "Showing records %{from} to %{to} of %{total}",
+        "select": "Select page"
       },
       "signInModal": {
         "remainSignedIn": "Remain signed in",
@@ -101,7 +168,7 @@
         "password": "Password",
         "passwordConfirmation": "Confirm password",
         "securityToken": "Security token",
-        "username": "Username",
+        "username": "@:(general.username)",
         "usernameEmail": "Email / Username"
       },
       "placeholder": {
@@ -123,20 +190,26 @@
     },
     "general": {
       "accountSettings": "Account settings (%{email})",
+      "active": "Active",
       "allRightsReserved": "All rights reserved",
       "backToSignIn": "Back to sign in.",
+      "cancel": "Cancel",
       "changePassword": "Change password",
       "close": "Close",
       "continue": "Continue",
       "continueUsing": "Continue using",
       "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
+      "disabled": "Disabled",
+      "enabled": "Enabled",
       "forgotPassword": "Forgot password?",
       "gender": {
-        "diverse": "Diverse",
-        "female": "Female",
-        "male": "Male",
-        "unspecified": "Unspecified"
+        "d": "diverse",
+        "f": "female",
+        "m": "male",
+        "u": "unspecified"
       },
+      "id": "ID",
+      "inactive": "Inactive",
       "loading": "Loading...",
       "noPermissionsText": "You don't have the permissions to visit the '%{title}' page.",
       "noPermissionsTitle": "No permissions",
@@ -152,7 +225,8 @@
       "signOut": "Sign Out",
       "signUp": "Sign Up",
       "system": "System",
-      "translations": "Translations"
+      "translations": "Translations",
+      "username": "Username"
     },
     "page": {
       "login": {

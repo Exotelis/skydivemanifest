@@ -3,14 +3,17 @@
     <slot v-if="label" name="label">
       <label :for="labelFor ? labelFor : null"
              :class="[horizontal ? [
+               'col-form-label',
+               labelColXxs ? 'col-' + labelColXxs : '',
                labelColXs ? 'col-xs-' + labelColXs : '',
                labelColSm ? 'col-sm-' + labelColSm : '',
                labelColMd ? 'col-md-' + labelColMd : '',
                labelColLg ? 'col-lg-' + labelColLg : '',
                labelColXl ? 'col-xl-' + labelColXl : '',
                labelColXxl ? 'col-xxl-' + labelColXxl : '',
-               labelColXxxl ? 'col-xxxl-' + labelColXxxl : ''
-               ] : '', { 'col-form-label': horizontal, 'sr-only': hideLabel }]">{{ label }}</label>
+               labelColXxxl ? 'col-xxxl-' + labelColXxxl : '',
+               labelSize ? 'col-form-label-' + labelSize : '',
+               ] : '', { 'sr-only': hideLabel }]">{{ label }}</label>
     </slot>
 
     <template v-if="horizontal">
@@ -48,6 +51,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
+import { FormFieldSize } from '@/enum/FormFieldSize';
 
 @Component({})
 export default class FormGroup extends Vue {
@@ -57,6 +61,7 @@ export default class FormGroup extends Vue {
   @Prop({ default: null }) readonly invalidFeedback!: string;
   @Prop({ default: null }) readonly label!: string;
   @Prop({ default: null }) readonly labelFor!: string;
+  @Prop({ default: null }) readonly labelColXxs!: number;
   @Prop({ default: 2 }) readonly labelColXs!: number;
   @Prop({ default: null }) readonly labelColSm!: number;
   @Prop({ default: null }) readonly labelColMd!: number;
@@ -64,6 +69,7 @@ export default class FormGroup extends Vue {
   @Prop({ default: null }) readonly labelColXl!: number;
   @Prop({ default: null }) readonly labelColXxl!: number;
   @Prop({ default: null }) readonly labelColXxxl!: number;
+  @Prop({ default: null }) readonly labelSize!: FormFieldSize;
   @Prop({ default: null }) readonly validFeedback!: string;
 
   required: boolean = false;
