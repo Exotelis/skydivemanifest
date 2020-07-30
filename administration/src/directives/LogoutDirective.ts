@@ -1,5 +1,8 @@
 import Vue, { DirectiveOptions } from 'vue';
+import { ToastPlugin } from 'bootstrap-vue';
 import AuthService from '@/services/AuthService';
+
+Vue.use(ToastPlugin);
 
 const directive: DirectiveOptions = {
   inserted (el, binding, vnode) {
