@@ -63,7 +63,7 @@ class AuthResourcesTest extends TestCase
         $response = $this->postJson($resource, ['password' => 'secret'], ['X-Requested-With' => 'XMLHttpRequest']);
         $response->assertStatus(422)
             ->assertJsonStructure(['message', 'errors'])
-            ->assertJsonFragment(['message' => 'The validation of your data has been failed. Errors have been highlighted in the form below.']);
+            ->assertJsonFragment(['message' => 'The validation of the submitted data has been failed.']);
 
         // Invalid user
         $response = $this->postJson($resource, ['username' => 'unknownuser', 'password' => 'secret']);
