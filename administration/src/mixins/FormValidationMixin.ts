@@ -48,7 +48,13 @@ export default class FormValidationMixin extends Vue {
     });
   }
 
-  validateResponse (response: AxiosResponse): void {
+  validateResponse (e: any): void {
+    const response: AxiosResponse|undefined = e.response;
+
+    if (response === undefined) {
+      return;
+    }
+
     if (response.status !== 422) {
       return;
     }

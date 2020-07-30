@@ -128,7 +128,7 @@ export default class PasswordResetPage extends Mixins(FormMixin, FormValidationM
       this.successMessage = response.data.message;
       this.dirty = false;
     } catch (e) {
-      this.validateResponse(e.response);
+      this.validateResponse(e);
       this.successMessage = null;
       this.error = e.response.data.message;
     }

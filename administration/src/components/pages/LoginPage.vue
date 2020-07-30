@@ -87,7 +87,7 @@ export default class LoginPage extends Mixins(FormMixin, FormValidationMixin) {
       }
     } catch (e) {
       this.error = e.response.data.message;
-      this.validateResponse(e.response);
+      this.validateResponse(e);
     }
 
     this.loading = false;
