@@ -62,5 +62,97 @@ export default {
       };
       reject(e);
     });
+  },
+
+  bulkDelete (ids: Array<number>): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      if (ids[0] !== 999) {
+        resolve({
+          data: {
+            count: ids.length,
+            message: ids.length === 1 ? 'One user has been deleted.' : ids.length + ' users have been deleted.'
+          },
+          status: 200,
+          statusText: 'OK',
+          headers: {},
+          config: {}
+        });
+      }
+
+      const e = new Error('Something went wrong') as AxiosError;
+      e.response = {
+        data: {
+          message: 'Users could not be deleted.'
+        },
+        status: 422,
+        statusText: 'Unprocessable Entity',
+        headers: {},
+        config: {}
+      };
+      reject(e);
+    });
+  },
+
+  deletePermanently (ids: Array<number>): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      if (ids[0] !== 999) {
+        resolve({
+          data: {
+            count: ids.length,
+            message: ids.length === 1
+              ? 'One user has been deleted permanently.'
+              : ids.length + ' users have been deleted permanently.'
+          },
+          status: 200,
+          statusText: 'OK',
+          headers: {},
+          config: {}
+        });
+      }
+
+      const e = new Error('Something went wrong') as AxiosError;
+      e.response = {
+        data: {
+          message: 'Users could not be deleted.'
+        },
+        status: 422,
+        statusText: 'Unprocessable Entity',
+        headers: {},
+        config: {}
+      };
+      reject(e);
+    });
+  },
+
+  restore (ids: Array<number>): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      if (ids[0] !== 999) {
+        resolve({
+          data: {
+            count: ids.length,
+            message: ids.length === 1 ? 'One user has been restored.' : ids.length + ' users have been restored.'
+          },
+          status: 200,
+          statusText: 'OK',
+          headers: {},
+          config: {}
+        });
+      }
+
+      const e = new Error('Something went wrong') as AxiosError;
+      e.response = {
+        data: {
+          message: 'The given data was invalid.',
+          errors: {
+            'ids.0': [ 'Is the current user.' ]
+          }
+        },
+        status: 422,
+        statusText: 'Unprocessable Entity',
+        headers: {},
+        config: {}
+      };
+      reject(e);
+    });
   }
 };

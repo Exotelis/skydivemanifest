@@ -29,7 +29,7 @@
       <main>
         <div class="container-fluid">
           <div class="row">
-            <div class="col">
+            <div class="col my-3">
               <slot><router-view></router-view></slot>
             </div>
           </div>
@@ -93,6 +93,7 @@ export default class DefaultLayout extends Vue {
           type: NavigationType.Title,
           children: [
             { path: '/users', type: NavigationType.Path },
+            { path: '/users/trashed', type: NavigationType.Path },
             { path: '/userroles', type: NavigationType.Path }
           ]
         },

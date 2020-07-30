@@ -95,6 +95,10 @@ export function htmlEntities (str: string): string {
     .replace(/"/g, '&quot;');
 }
 
+export function insertAt (array: Array<any>, index: number, ...elements: any): void {
+  array.splice(index, 0, ...elements);
+}
+
 export function uuidv4 (): string {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c: string) => {
     let r: number = Math.random() * 16 | 0;

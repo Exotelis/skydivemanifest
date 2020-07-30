@@ -140,6 +140,7 @@ const routes = [
   {
     path: '/users',
     name: 'users',
+    component: () => import(/* webpackChunkName: "users" */ '@/components/pages/UsersPage.vue'),
     meta: {
       title: 'page.title.users',
       permissions: ['users:delete', 'users:read', 'users:write'],
@@ -152,6 +153,16 @@ const routes = [
     meta: {
       title: 'page.title.userroles',
       permissions: ['roles:delete', 'roles:read', 'roles:write'],
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/users/trashed',
+    name: 'users-trashed',
+    component: () => import(/* webpackChunkName: "users" */ '@/components/pages/UsersPage.vue'),
+    meta: {
+      title: 'page.title.usersTrashed',
+      permissions: ['users:delete', 'users:read', 'users:write'],
       requiresAuth: true
     }
   }

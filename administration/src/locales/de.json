@@ -67,6 +67,10 @@
         "filters": "Filter",
         "from": "von",
         "select": {
+          "email_verified": {
+            "false": "@:(general.no)",
+            "true": "@:(general.yes)"
+          },
           "is_active": {
             "false": "@:(general.disabled)",
             "true": "@:(general.enabled)"
@@ -191,6 +195,7 @@
     "general": {
       "accountSettings": "Kontoeinstellungen (%{email})",
       "active": "Aktiv",
+      "age": "Alter",
       "allRightsReserved": "Alle Rechte vorbehalten",
       "back": "Zurück",
       "backToSignIn": "Zurück zur Anmeldung.",
@@ -200,8 +205,11 @@
       "continue": "Fortsetzen",
       "continueUsing": "Weitermachen",
       "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
+      "delete": "Löschen",
+      "deletePermanently": "Endgültig @.lower:(general.delete)",
       "disabled": "Deaktiviert",
       "enabled": "Aktiviert",
+      "edit": "Bearbeiten",
       "forgotPassword": "Passwort vergessen?",
       "gender": {
         "d": "divers",
@@ -212,6 +220,7 @@
       "id": "ID",
       "inactive": "Inaktiv",
       "loading": "Lädt...",
+      "no": "Nein",
       "noPermissionsText": "Sie haben nicht die erforderlichen Berechtigungen die Seite '%{title}' zu besuchen.",
       "noPermissionsTitle": "Keine Berechtigungen",
       "othersettings": "Andere Einstellungen",
@@ -219,6 +228,7 @@
       "permissions": "Berechtigungen",
       "reportBug": "Ein Problem melden",
       "resetPassword": "Passwort zurücksetzen",
+      "restore": "Wiederherstellen",
       "signIn": "Anmelden",
       "signInAgain": "Bitte melden Sie sich erneut an, damit die Änderungen wirksam werden.",
       "signInNow": "Jetzt anmelden",
@@ -227,7 +237,12 @@
       "signUp": "Registrieren",
       "system": "System",
       "translations": "Übersetzungen",
-      "username": "Benutzername"
+      "username": "Benutzername",
+      "yes": "Ja"
+    },
+    "languages": {
+      "de": "deutsch",
+      "en": "englisch"
     },
     "page": {
       "login": {
@@ -270,8 +285,39 @@
         "skydiver": "Springer",
         "staff": "Mitarbeiter",
         "tickets": "Tickets",
-        "users": "Alle Benutzer",
-        "userroles": "Benutzerrollen"
+        "userroles": "Benutzerrollen",
+        "users": "Benutzer",
+        "usersTrashed": "Gelöschte Benutzer"
+      },
+      "users": {
+        "age": "@:(general.age)",
+        "deletedError": "Der Benutzer konnte nicht gelöscht werden. @:(page.users.deleteForbidden) | Die Benutzer konnten nicht gelöscht werden. @:(page.users.deleteForbidden)",
+        "deletedTitle": "Benutzer erfolgreich gelöscht | Benutzer erfolgreich gelöscht",
+        "deletedTitleError": "Benutzer konnte nicht gelöscht werden | Benutzer konnten nicht gelöscht werden",
+        "deleteForbidden": "Benutzerkonten mit Administratorenrechten und das eigene Benutzerkonto sind geschützt und können nicht entfernt werden.",
+        "deleteModalOk": "Benutzer @.lower:(general.delete) | Benutzer @.lower:(general.delete)",
+        "deleteModalOkPermanently": "Benutzer endgültig @.lower:(general.delete) | Benutzer endgültig @.lower:(general.delete)",
+        "deleteModalText": "Sind Sie sicher, dass Sie diesen Benutzer löschen möchten? | Sind Sie sicher, dass Sie {count} Benutzer löschen möchten?",
+        "deleteModalTextPermanently": "Sind Sie sicher, dass Sie diesen Benutzer endgültig löschen möchten? | Sind Sie sicher, dass Sie {count} Benutzer endgültig löschen möchten?",
+        "deleteModalTitle": "Benutzer @.lower:(general.delete) | Benutzer @.lower:(general.delete)",
+        "deleteModalTitlePermanently": "Benutzer endgültig @.lower:(general.delete) | Benutzer endgültig @.lower:(general.delete)",
+        "dob": "Geburtsdatum",
+        "email": "E-Mail",
+        "emailVerified": "E-Mail verifiziert",
+        "firstname": "Vorname",
+        "gender": "Geschlecht",
+        "id": "@:(general.id)",
+        "isActive": "Kontostatus",
+        "language": "Sprache",
+        "lastname": "Nachname",
+        "middlename": "Zweitname",
+        "mobile": "Mobil",
+        "phone": "Telefon",
+        "restoredTitle": "Benutzer wiederhergestellt | Benutzer wiederhergestellt",
+        "restoredTitleError": "Benutzer konnte nicht wiederhergestellt werden | Benutzer konnten nicht wiederhergestellt werden",
+        "role": "Rolle",
+        "timezone": "Zeitzone",
+        "username": "@:(general.username)"
       }
     }
   }
