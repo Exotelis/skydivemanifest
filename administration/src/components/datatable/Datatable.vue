@@ -102,7 +102,7 @@
                 : $event.preventDefault"
               :class="[
                 'text-nowrap',
-                column.alignBody ? 'text-' + column.alignBody : '',
+                column.alignHead ? 'text-' + column.alignHead : '',
                 column.sortable ? 'datatable_sortableHeader pointer' : '',
                 !loading ? '' : 'user-select-none'
               ]"
@@ -229,6 +229,7 @@ import { DatatableColumnModel } from '@/models/datatable/DatatableColumnModel';
 import { DatatableDataModel } from '@/models/datatable/DatatableDataModel';
 import { DatatableServiceModel } from '@/models/datatable/DatatableServiceModel';
 import { Density } from '@/enum/Density';
+import { EventBus } from '@/event-bus';
 import { SortMode } from '@/enum/SortMode';
 
 import DatatableActions from '@/components/datatable/DatatableActions.vue';
@@ -302,6 +303,8 @@ export default class Datatable extends Vue {
   visibleColumns: Array<string> = this.columns.filter(column => !column.hide).map(column => column.prop);
 
   created (): void {
+    EventBus.$on('datatable:refresh', this.onRefresh);
+
     // Apply filter config
     this.filters = _.cloneDeep(this.filterConfig);
 
