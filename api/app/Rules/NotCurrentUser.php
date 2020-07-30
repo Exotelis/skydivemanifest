@@ -3,6 +3,7 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class NotCurrentUser implements Rule
 {
@@ -25,7 +26,7 @@ class NotCurrentUser implements Rule
      */
     public function passes($attribute, $value)
     {
-        //
+        return Auth::user()->id !== (int) $value;
     }
 
     /**
@@ -35,6 +36,6 @@ class NotCurrentUser implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return __('validation.not_current_user');
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\User;
 
+use App\Rules\NotAdmin;
+use App\Rules\NotCurrentUser;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BulkDeleteRequest extends FormRequest
@@ -13,7 +15,7 @@ class BulkDeleteRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +26,8 @@ class BulkDeleteRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'ids'   => 'required|array',
+            'ids.*' => ['bail', 'integer', new NotCurrentUser, new NotAdmin],
         ];
     }
 }

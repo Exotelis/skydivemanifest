@@ -24,15 +24,18 @@ abstract class TestCase extends BaseTestCase
      * Authenticate the user.
      *
      * @param \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param array|null $scopes
      * @param string|null $driver
      * @return $this
      */
-    public function actingAs(\Illuminate\Contracts\Auth\Authenticatable $user, $driver = null)
+    public function actingAs(\Illuminate\Contracts\Auth\Authenticatable $user, $scopes = null, $driver = null)
     {
+        $permissions = is_null($scopes) ? $user->role->permissions->pluck('slug')->toArray() : $scopes;
+
         /** @var $user \App\Models\User */
         Passport::actingAs(
             $user,
-            $user->role->permissions->pluck('slug')->toArray()
+            $permissions
         );
 
         return $this;

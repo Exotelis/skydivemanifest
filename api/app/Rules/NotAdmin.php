@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use App\Models\User;
 use Illuminate\Contracts\Validation\Rule;
 
 class NotAdmin implements Rule
@@ -25,7 +26,13 @@ class NotAdmin implements Rule
      */
     public function passes($attribute, $value)
     {
-        //
+        $user = User::find($value);
+
+        if (is_null($user)) {
+            return true;
+        }
+
+        return $user->role_id !== adminRole();
     }
 
     /**
@@ -35,6 +42,6 @@ class NotAdmin implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return __('validation.not_admin');
     }
 }

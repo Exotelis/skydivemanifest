@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\RefreshToken;
@@ -176,7 +177,6 @@ class User extends Model implements
      */
     protected $hidden = [
         'failed_logins',
-        'name',
         'role_id',
         'password',
     ];
@@ -195,7 +195,11 @@ class User extends Model implements
      */
     public function getNameAttribute()
     {
-        return "{$this->firstname} {$this->lastname}";
+        if (! is_null($this->middlename)) {
+            return "{$this->lastname}, {$this->firstname} {$this->middlename}";
+        }
+
+        return "{$this->lastname}, {$this->firstname}";
     }
 
     /**
@@ -231,6 +235,27 @@ class User extends Model implements
     }
 
     /**
+     * Get the default_invoice address of the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function defaultInvoice()
+    {
+        return $this->belongsTo('App\Models\Address', 'default_invoice');
+    }
+
+    /**
+     * Get the default_shipping address of the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function defaultShipping()
+    {
+        return $this->belongsTo('App\Models\Address', 'default_shipping');
+    }
+
+
+    /**
      * Get the role that owns the user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -238,6 +263,71 @@ class User extends Model implements
     public function role()
     {
         return $this->belongsTo('App\Models\Role');
+    }
+
+    /**
+     * Scope a query to filter for the born after date
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  string $dob
+     * @return \Illuminate\Database\Eloquent\Builder|User
+     */
+    public function scopeBornAfter($query, $dob)
+    {
+        return $query->where('dob', '>=', Carbon::parse($dob));
+    }
+
+    /**
+     * Scope a query to filter for the age
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  string $age
+     * @return \Illuminate\Database\Eloquent\Builder|User
+     */
+    public function scopeAge($query, $age)
+    {
+        return $query->where('dob', '<=', Carbon::now()->subYears($age))
+            ->where('dob', '>', Carbon::now()->subYears($age)->subYear());
+    }
+
+    /**
+     * Scope a query to filter for the born before date
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  string $dob
+     * @return \Illuminate\Database\Eloquent\Builder|User
+     */
+    public function scopeBornBefore($query, $dob)
+    {
+        return $query->where('dob', '<=', Carbon::parse($dob));
+    }
+
+    /**
+     * Scope a query to filter for the dob
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  string $dob
+     * @return \Illuminate\Database\Eloquent\Builder|User
+     */
+    public function scopeDob($query, $dob)
+    {
+        return $query->where('dob', '=', Carbon::make($dob)->toDateString());
+    }
+
+    /**
+     * Scope a query to filter verified accounts
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  string $verified
+     * @return \Illuminate\Database\Eloquent\Builder|User
+     */
+    public function scopeEmailVerified($query, $verified)
+    {
+        if ($verified === '1' || $verified === 'true' || $verified === true) {
+            return $query->where('email_verified_at', '<>', null);
+        }
+
+        return $query->where('email_verified_at', '=', null);
     }
 
     /**
@@ -250,6 +340,49 @@ class User extends Model implements
     public function scopeFindByAuthname($query, $identifier)
     {
         return $query->where('email', $identifier)->orWhere('username', $identifier)->first();
+    }
+
+    /**
+     * Scope a query to filter for the full name
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  string $name
+     * @return \Illuminate\Database\Eloquent\Builder|User
+     */
+    public function scopeFullName($query, $name)
+    {
+        return $query->where(DB::raw('CONCAT(firstname," ",lastname)'), 'LIKE', '%'.$name.'%')
+            ->orWhere(
+                DB::raw('CONCAT(firstname," ",middlename," ",lastname)'),'LIKE', '%'.$name.'%'
+            )
+            ->orWhere(DB::raw('CONCAT(lastname," ",firstname)'), 'LIKE', '%'.$name.'%')
+            ->orWhere(
+                DB::raw('CONCAT(lastname," ",firstname," ",middlename)'), 'LIKE', '%'.$name.'%'
+            );
+    }
+
+    /**
+     * Scope a query to filter users older than
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  string $age
+     * @return \Illuminate\Database\Eloquent\Builder|User
+     */
+    public function scopeOlderThan($query, $age)
+    {
+        return $query->where('dob', '<=', Carbon::now()->subYears($age));
+    }
+
+    /**
+     * Scope a query to filter users younger than
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  string $age
+     * @return \Illuminate\Database\Eloquent\Builder|User
+     */
+    public function scopeYoungerThan($query, $age)
+    {
+        return $query->where('dob', '>', Carbon::now()->subYears($age)->subYear());
     }
 
     /**
