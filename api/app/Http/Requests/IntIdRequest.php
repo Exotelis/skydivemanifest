@@ -4,6 +4,10 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class IntIdRequest
+ * @package App\Http\Requests
+ */
 class IntIdRequest extends FormRequest
 {
     /**
