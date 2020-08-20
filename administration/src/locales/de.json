@@ -44,7 +44,7 @@
         "noRecordsFound": "Keine Datensätze gefunden"
       },
       "datatableActions": {
-        "selected": "%{selected} Datensätze ausgewählt"
+        "selected": "0 Datensätze ausgewählt | 1 Datensatz ausgewählt | %{count} Datensätze ausgewählt"
       },
       "datatableColumnSelection": {
         "description": "Ändern Sie die Darstellung der Tabelle, indem Sie bis zu {max} Spalten auswählen.",

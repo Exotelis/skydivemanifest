@@ -44,7 +44,7 @@
         "noRecordsFound": "No records found"
       },
       "datatableActions": {
-        "selected": "%{selected} records selected"
+        "selected": "0 records selected | 1 record selected | %{count} records selected"
       },
       "datatableColumnSelection": {
         "description": "Alter the display of the table by selecting up to {max} columns.",
