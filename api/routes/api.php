@@ -51,6 +51,13 @@ Route::prefix('auth')->group(function() {
 });
 
 /**
+ * Permissions
+ */
+Route::middleware(['auth:api', 'scopes:permissions:read', 'verified'])->prefix('permissions')->group(function () {
+    Route::get('/', 'PermissionController@all')->name('api.get-permissions');
+});
+
+/**
  * Personal
  */
 Route::middleware(['auth:api', 'verified'])->prefix('me')->group(function () {

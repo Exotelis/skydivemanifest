@@ -28,8 +28,8 @@ class CreatePermissionsTable extends Migration
 
         // Add default permissions
         Permission::insert([
-            ['slug' => 'permissions:read', 'name' => 'Read permissions',],
-            ['slug' => 'personal',         'name' => 'Access to personal information'],
+            ['slug' => 'permissions:read', 'name' => 'Read permissions',               'is_default' => false],
+            ['slug' => 'personal',         'name' => 'Access to personal information', 'is_default' => true,],
         ]);
     }
 
