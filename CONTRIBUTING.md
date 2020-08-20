@@ -47,7 +47,7 @@ When you have to move a file use `git mv <sourcepath> <targetpath>`. The commit 
 ```
 admin: move file
 ```
-If you move more then one file use `move files` instead.
+If you move more than one file use `move files` instead.
 
 ### Commit message
 In the body of your commit message, be as specific as possible. If the commit message title was too
