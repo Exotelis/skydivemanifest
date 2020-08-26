@@ -19,7 +19,10 @@ class RoleFilters
     public static function filters()
     {
         return [
-            //
+            AllowedFilter::exact('deletable'),
+            AllowedFilter::exact('editable'),
+            AllowedFilter::exact('id'),
+            AllowedFilter::partial('name'),
         ];
     }
 
@@ -31,7 +34,10 @@ class RoleFilters
     public static function sorting()
     {
         return [
-            //
+            'deletable',
+            'editable',
+            'id',
+            'name',
         ];
     }
 }

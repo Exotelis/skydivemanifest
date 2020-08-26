@@ -4,6 +4,10 @@ namespace App\Http\Requests\Role;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class CreateRequest
+ * @package App\Http\Requests\Role
+ */
 class CreateRequest extends FormRequest
 {
     /**
@@ -13,7 +17,19 @@ class CreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name.unique' => __('validation.custom.role.unique'),
+        ];
     }
 
     /**
@@ -24,7 +40,12 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'color'         => 'sometimes|required|regex:/^#([a-f0-9]{3}){1,2}$/i',
+            'deletable'     => 'sometimes|required|boolean',
+            'editable'      => 'sometimes|required|boolean',
+            'name'          => 'required|unique:roles|string|max:255',
+            'permissions'   => 'sometimes|required|array',
+            'permissions.*' => 'exists:permissions,slug',
         ];
     }
 }

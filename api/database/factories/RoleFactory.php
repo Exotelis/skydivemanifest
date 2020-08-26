@@ -7,6 +7,17 @@ use Faker\Generator as Faker;
 
 $factory->define(Role::class, function (Faker $faker) {
     return [
-        'name' => $faker->word,
+        'color'     => $faker->hexColor,
+        'deletable' => true,
+        'editable'  => true,
+        'name'      => $faker->unique()->word,
     ];
 });
+
+$factory->state(Role::class, 'notDeletable', [
+    'deletable' => false,
+]);
+
+$factory->state(Role::class, 'notEditable', [
+    'editable' => false,
+]);

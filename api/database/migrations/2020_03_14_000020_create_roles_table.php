@@ -22,8 +22,8 @@ class CreateRolesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('color', 7)->default('#6c757d');
-            $table->boolean('deletable')->default(true);
-            $table->boolean('editable')->default(true);
+            $table->boolean('deletable')->default(true)->comment('Determines if role is deletable');
+            $table->boolean('editable')->default(true)->comment('Determines if permissions are editable');
             $table->string('name')->unique();
             $table->timestamp('created_at', 0)->useCurrent();
             $table->timestamp('updated_at', 0)->useCurrent();

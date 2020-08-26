@@ -3,7 +3,12 @@
 namespace App\Http\Requests\Role;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
+/**
+ * Class UpdateRequest
+ * @package App\Http\Requests\Role
+ */
 class UpdateRequest extends FormRequest
 {
     /**
@@ -13,7 +18,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +29,16 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'color'         => 'sometimes|required|regex:/^#([a-f0-9]{3}){1,2}$/i',
+            'name'          => [
+                'sometimes',
+                'required',
+                Rule::unique('roles')->ignore($this->route()->id),
+                'string',
+                'max:255',
+            ],
+            'permissions'   => 'sometimes|required|array',
+            'permissions.*' => 'exists:permissions,slug',
         ];
     }
 }

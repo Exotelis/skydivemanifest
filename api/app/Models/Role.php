@@ -12,6 +12,7 @@ use Illuminate\Support\Carbon;
  * @package App\Models
  *
  * @property int $id
+ * @property string $color
  * @property bool $deletable
  * @property bool $editable
  * @property string $name
@@ -19,6 +20,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon $updated_at
  * @property-read Collection|Permission[] $permissions
  * @property-read int|null $permissions_count
+ * @property-read Collection|User[] $users
  * @method static Builder|Role newModelQuery()
  * @method static Builder|Role newQuery()
  * @method static Builder|Role query()
@@ -84,5 +86,13 @@ class Role extends Model
             null,
             'slug'
         );
+    }
+
+    /**
+     * The users assigned to this role.
+     */
+    public function users()
+    {
+        return $this->hasMany('App\Models\User');
     }
 }

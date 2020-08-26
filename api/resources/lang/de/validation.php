@@ -147,6 +147,9 @@ return [
         'locale' => [
             'in' => 'Die :attribute muss eine der folgenden sein: :values',
         ],
+        'role' => [
+            'unique' => 'Eine Rolle mit diesem Namen existiert bereits.'
+        ],
         'username' => [
             'unique' => 'Ein Benutzerkonto mit diesem Benutzernamen existiert bereits.',
         ],

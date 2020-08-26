@@ -67,6 +67,29 @@ Route::middleware(['auth:api', 'verified'])->prefix('me')->group(function () {
 });
 
 /**
+ * Roles
+ */
+Route::middleware(['auth:api', 'scopes:roles:read', 'verified'])->prefix('roles')->group(function () {
+    Route::get('/', 'RoleController@all')->name('api.get-roles');
+    Route::post('/', 'RoleController@create')->middleware('scopes:roles:write')
+        ->name('api.create-role');
+    Route::delete('/', 'RoleController@deleteBulk')->middleware('scopes:roles:delete')
+        ->name('api.delete-roles');
+
+    /**
+     * Single role
+     */
+    Route::prefix('{id}')->where(['id' => '[0-9]+'])->group(function() {
+        Route::get('/', 'RoleController@role')->name('api.get-role');
+        Route::put('/', 'RoleController@update')->middleware('scopes:roles:write')
+            ->name('api.update-role');
+        Route::delete('/', 'RoleController@delete')->middleware('scopes:roles:delete')
+            ->name('api.delete-role');
+        // TODO - add/{id}/users to get a list of users or add/remove them from the role
+    });
+});
+
+/**
  * Roles names
  */
 Route::middleware(['auth:api', 'scope:roles:read,users:read', 'verified'])->get('roles/names', function() {
@@ -83,7 +106,7 @@ Route::get('timezones', function() {
 /**
  * Users
  */
-Route::middleware(['auth:api', 'scopes:users:read'])->prefix('users')->group(function() {
+Route::middleware(['auth:api', 'scopes:users:read', 'verified'])->prefix('users')->group(function() {
     Route::get('/', 'UserController@all')->name('api.get-users');
     Route::post('/', 'UserController@create')->middleware('scopes:users:write')
         ->name('api.create-user');
