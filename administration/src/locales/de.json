@@ -63,33 +63,11 @@
         "applyFilters": "Filter anwenden",
         "cancel": "@:(general.cancel)",
         "clearFilters": "@:(component.datatable.clearFilters)",
+        "couldNotLoad": "Filter konnten nicht geladen werden.",
+        "couldNotLoadMessage": "Verbindung zur Anwendungsschnittstelle fehlgeschlagen, es konnten nicht alle Filter geladen werden.",
         "exact": "genau",
         "filters": "Filter",
         "from": "von",
-        "select": {
-          "deletable": {
-            "false": "@:(general.protected)",
-            "true": "@:(general.notProtected)"
-          },
-          "editable": {
-            "false": "@:(general.protected)",
-            "true": "@:(general.notProtected)"
-          },
-          "email_verified": {
-            "false": "@:(general.no)",
-            "true": "@:(general.yes)"
-          },
-          "is_active": {
-            "false": "@:(general.disabled)",
-            "true": "@:(general.enabled)"
-          },
-          "gender": {
-            "d": "@:(general.gender.d)",
-            "f": "@:(general.gender.f)",
-            "m": "@:(general.gender.m)",
-            "u": "@:(general.gender.u)"
-          }
-        },
         "to": "bis"
       },
       "datatableRefresh": {

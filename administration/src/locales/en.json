@@ -63,33 +63,11 @@
         "applyFilters": "Apply filters",
         "cancel": "@:(general.cancel)",
         "clearFilters": "@:(component.datatable.clearFilters)",
+        "couldNotLoad": "Could not load filter",
+        "couldNotLoadMessage": "Failed to connect to the API, not all filter configurations could be loaded.",
         "exact": "exact",
         "filters": "Filters",
         "from": "from",
-        "select": {
-          "deletable": {
-            "false": "@:(general.protected)",
-            "true": "@:(general.notProtected)"
-          },
-          "editable": {
-            "false": "@:(general.protected)",
-            "true": "@:(general.notProtected)"
-          },
-          "email_verified": {
-            "false": "@:(general.no)",
-            "true": "@:(general.yes)"
-          },
-          "is_active": {
-            "false": "@:(general.disabled)",
-            "true": "@:(general.enabled)"
-          },
-          "gender": {
-            "d": "@:(general.gender.d)",
-            "f": "@:(general.gender.f)",
-            "m": "@:(general.gender.m)",
-            "u": "@:(general.gender.u)"
-          }
-        },
         "to": "to"
       },
       "datatableRefresh": {

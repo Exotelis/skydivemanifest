@@ -23,10 +23,11 @@
             <div :class="utilityBarTopClasses ? utilityBarTopClasses: ''">
               <slot name="utility-bar-top">
                 <div class="d-flex">
-                  <datatable-refresh class="border-right datatable_utility-component mr-3 p-0"
+                  <datatable-refresh class="border-right datatable_utility-component mr-auto p-0"
                                      @datatable:refresh="onRefresh">
                   </datatable-refresh>
-                  <datatable-filters-toggle class="border-left datatable_utility-component ml-auto p-0"
+                  <datatable-filters-toggle class="border-left datatable_utility-component p-0"
+                                            v-if="filterConfig.length > 0"
                                             :visible="filtersVisible"
                                             @datatable:filtersToggle="onFiltersToggle">
                   </datatable-filters-toggle>
@@ -47,9 +48,11 @@
                                      @datatable:densityChanged="onDensityChange">
                   </datatable-density>
                 </div>
-                <div class="border-top d-flex" v-if="filtersVisible || hasActiveFilter()">
+                <div v-show="filtersVisible || hasActiveFilter()"
+                     :class="['d-flex', filtersVisible || hasActiveFilter() ? 'border-top ' : '']">
                   <datatable-filters class="datatable_utility-component"
                                      :filters="filters"
+                                     :filters-lazy-loading="filtersLazyLoading"
                                      :filters-visible.sync="filtersVisible"
                                      @datatable:filtersChanged="onFiltersChanged">
                   </datatable-filters>
@@ -266,6 +269,7 @@ export default class Datatable extends Vue {
   @Prop({ default: '' }) readonly caption!: string;
   @Prop({ required: true }) readonly columns!: Array<DatatableColumnModel>;
   @Prop({ default: () => [], type: Array }) readonly filterConfig!: Array<DatatableBaseFilter>;
+  @Prop([Boolean]) readonly filtersLazyLoading!: boolean;
   @Prop([Boolean]) readonly hideUtilityBarBottom!: boolean;
   @Prop([Boolean]) readonly hideUtilityBarTop!: boolean;
   @Prop([Boolean]) readonly historyMode!: boolean;
@@ -593,6 +597,16 @@ export default class Datatable extends Vue {
   queryChange (query: any): void {
     this.deserializeFilters();
     this.params = this.fixQueryTypes(query);
+  }
+
+  @Watch('filterConfig', { deep: true })
+  onFilterConfigChange (filters: Array<DatatableBaseFilter>) {
+    // Update filter config
+    this.filters = _.cloneDeep(filters);
+
+    if (this.historyMode) {
+      this.deserializeFilters();
+    }
   }
 
   @Watch('params', { deep: true })

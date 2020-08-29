@@ -655,6 +655,45 @@ describe('Datatable.vue', () => {
     spy.mockRestore();
   });
 
+  it('check if watcher \'onFilterConfigChange\' update filters', () => {
+    const wrapper: any = factory({ columns: columns, service: service, tableId: tableId });
+    const spy = jest.spyOn(wrapper.vm, 'deserializeFilters');
+
+    const filters: Array<DatatableBaseFilter> = [
+      new DatatableExactFilter(
+        'TestNew',
+        { inputType: FilterInputTypes.text, prop: 'testProp', value: 'testValue' })
+    ];
+
+    wrapper.vm.onFilterConfigChange(filters);
+
+    expect(spy).not.toHaveBeenCalled();
+    expect(wrapper.vm.filters).toEqual(filters);
+
+    spy.mockRestore();
+  });
+
+  it('check if watcher \'onFilterConfigChange\' will call \'deserializeFilters\' in history mode', () => {
+    const wrapper: any = factory(
+      { columns: columns, historyMode: true, service: service, tableId: tableId },
+      { 'filter[testProp]': 'testValue' }
+    );
+    const spy = jest.spyOn(wrapper.vm, 'deserializeFilters');
+
+    const filters: Array<DatatableBaseFilter> = [
+      new DatatableExactFilter(
+        'TestNew',
+        { inputType: FilterInputTypes.text, prop: 'testProp', value: 'testValue' })
+    ];
+
+    wrapper.vm.onFilterConfigChange(filters);
+
+    expect(spy).toHaveBeenCalled();
+    expect(wrapper.vm.filters).toEqual(filters);
+
+    spy.mockRestore();
+  });
+
   it('push to user to another page when history mode is enabled, the params are not default and the params' +
     'have been changed', () => {
     const wrapper: any = factory({ columns: columns, historyMode: true, service: service, tableId: tableId });

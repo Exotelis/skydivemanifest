@@ -263,21 +263,25 @@ $datatable-font-size:       $font-size-sm;
 $datatable-font-color-head: darken($body-color, 10%);
 $datatable-font-size-head:  $font-size-sm; // alternative would be: $font-size-base
 
-$datatable-badge-font-size:             90%;
-$datatable-badge-font-size-filters:     100%;
+$datatable-badge-font-size:                 90%;
+$datatable-badge-font-size-filters:         100%;
 
-$datatable-input-bg:                    $white;
+$datatable-input-bg:                        $white;
 
-$datatable-inline-action-border-radius: $border-radius-alternative;
-$datatable-inline-action-font-size:     $font-size-base * $line-height-base;
-$datatable-inline-action-line-height:   $font-size-base;
-$datatable-inline-action-padding-x:     .125rem;
-$datatable-inline-action-padding-y:     .125rem;
-$datatable-inline-action-padding:       $datatable-inline-action-padding-y $datatable-inline-action-padding-x;
+$datatable-filter-loading-backdrop-bg:      $black;
+$datatable-filter-loading-backdrop-opacity: .3;
+$datatable-filter-loading-backdrop-z-index: 1000;
 
-$datatable-utility-component-padding-x: $table-cell-padding;
-$datatable-utility-component-padding-y: ($table-cell-padding-sm + ($table-cell-padding - $table-cell-padding-sm) / 2);
-$datatable-utility-component-padding:   $datatable-utility-component-padding-y $datatable-utility-component-padding-x;
+$datatable-inline-action-border-radius:     $border-radius-alternative;
+$datatable-inline-action-font-size:         $font-size-base * $line-height-base;
+$datatable-inline-action-line-height:       $font-size-base;
+$datatable-inline-action-padding-x:         .125rem;
+$datatable-inline-action-padding-y:         .125rem;
+$datatable-inline-action-padding:           $datatable-inline-action-padding-y $datatable-inline-action-padding-x;
+
+$datatable-utility-component-padding-x:     $table-cell-padding;
+$datatable-utility-component-padding-y:     ($table-cell-padding-sm + ($table-cell-padding - $table-cell-padding-sm) / 2);
+$datatable-utility-component-padding:       $datatable-utility-component-padding-y $datatable-utility-component-padding-x;
 
 // Mdi
 
