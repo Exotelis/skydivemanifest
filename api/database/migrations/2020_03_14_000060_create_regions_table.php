@@ -32,9 +32,9 @@ class CreateRegionsTable extends Migration
 
         // Add region permissions
         Permission::insert([
-            ['slug' => 'regions:delete', 'name' => 'Delete regions',],
-            ['slug' => 'regions:read',   'name' => 'Read regions',],
-            ['slug' => 'regions:write',  'name' => 'Add/Edit regions',],
+            ['slug' => 'regions:delete', 'name' => 'Delete regions',   'is_default' => false,],
+            ['slug' => 'regions:read',   'name' => 'Read regions',     'is_default' => true,],
+            ['slug' => 'regions:write',  'name' => 'Add/Edit regions', 'is_default' => false,],
         ]);
 
         // Add region permissions to admin group

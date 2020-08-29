@@ -29,9 +29,9 @@ class CreateCountriesTable extends Migration
 
         // Add country permissions
         Permission::insert([
-            ['slug' => 'countries:delete', 'name' => 'Delete countries',],
-            ['slug' => 'countries:read',   'name' => 'Read countries',],
-            ['slug' => 'countries:write',  'name' => 'Add/Edit countries',],
+            ['slug' => 'countries:delete', 'name' => 'Delete countries',   'is_default' => false,],
+            ['slug' => 'countries:read',   'name' => 'Read countries',     'is_default' => true,],
+            ['slug' => 'countries:write',  'name' => 'Add/Edit countries', 'is_default' => false,],
         ]);
 
         // Add country permissions to admin group
