@@ -227,9 +227,9 @@ import { BaseFilterInputModel } from '@/models/datatable/DatatableFilterModels';
 import { DatatableActionModel } from '@/models/datatable/DatatableActionModel';
 import { DatatableColumnModel } from '@/models/datatable/DatatableColumnModel';
 import { DatatableDataModel } from '@/models/datatable/DatatableDataModel';
-import { DatatableServiceModel } from '@/models/datatable/DatatableServiceModel';
 import { Density } from '@/enum/Density';
 import { EventBus } from '@/event-bus';
+import { ServiceModel } from '@/models/ServiceModel';
 import { SortMode } from '@/enum/SortMode';
 
 import DatatableActions from '@/components/datatable/DatatableActions.vue';
@@ -271,7 +271,7 @@ export default class Datatable extends Vue {
   @Prop([Boolean]) readonly historyMode!: boolean;
   @Prop({ default: () => [10, 25, 50, 100, 250], type: Array }) readonly perPage!: Array<number>;
   @Prop([Boolean]) readonly selectable!: boolean;
-  @Prop({ required: true }) readonly service!: DatatableServiceModel;
+  @Prop({ required: true }) readonly service!: ServiceModel;
   @Prop({ required: true, type: String }) readonly tableId!: string;
   @Prop({ default: 'd-flex', type: String }) readonly utilityBarBottomClasses!: string;
   @Prop({ default: 'd-flex flex-column bg-white', type: String }) readonly utilityBarTopClasses!: string;
