@@ -22,6 +22,8 @@ development or to build the bundle, to use it in production.
     * [Datatable sort mode](#datatable-sort-mode)
   + [Form components](#form-components)
     * [form-group](#form-group)
+    * [input-checkbox](#input-checkbox)
+    * [input-color](#input-color)
     * [input-date](#input-date)
     * [input-email](#input-email)
     * [input-hidden](#input-hidden)
@@ -520,6 +522,30 @@ for what width which identifier stands for, see the
             :horizontal="true">
 <!-- your form element wrapper goes here -->
 </form-group>
+```
+
+#### input-checkbox
+Creates a checkbox. This component doesn't need a model, but the name attribute must be an array reference. The defined
+value will be pushed to this array, or stripped if the user unchecks it. The label of the checkbox can be set by adding
+text between the opening and closing tag. If you don't want to set a label, consider setting the ariaLabel attribute.
+
+A full list of available attributes you can find in the
+[InputCheckbox.vue component](src/components/form/InputCheckbox.vue).
+
+Example:
+```
+<input-checkbox aria-label="label attr" id="test" value="testVal" :name="arrayRef">Label text</input-checkbox>
+```
+
+#### input-color
+Creates an input element with type color.
+
+A full list of available attributes you can find in the
+[InputColor.vue component](src/components/form/InputColor.vue).
+
+Example:
+```
+<input-color id="color" v-model.trim="form.color"></input-color>
 ```
 
 #### input-date
