@@ -67,6 +67,14 @@
         "filters": "Filters",
         "from": "from",
         "select": {
+          "deletable": {
+            "false": "@:(general.protected)",
+            "true": "@:(general.notProtected)"
+          },
+          "editable": {
+            "false": "@:(general.protected)",
+            "true": "@:(general.notProtected)"
+          },
           "email_verified": {
             "false": "@:(general.no)",
             "true": "@:(general.yes)"
@@ -223,9 +231,11 @@
       "no": "No",
       "noPermissionsText": "You don't have the permissions to visit the '%{title}' page.",
       "noPermissionsTitle": "No permissions",
+      "notProtected": "Not protected",
       "othersettings": "Other settings",
       "passwordExpired": "Your password expired. Please choose a new one.",
       "permissions": "Permissions",
+      "protected": "Protected",
       "reportBug": "Report a bug",
       "resetPassword": "Reset password",
       "restore": "Restore",
@@ -285,7 +295,10 @@
         "skydiver": "Skydiver",
         "staff": "Staff",
         "tickets": "Tickets",
-        "userroles": "User roles",
+        "userAdd": "Add user",
+        "userRole": "User role",
+        "userRoleAdd": "Add user role",
+        "userRoles": "User roles",
         "users": "Users",
         "usersTrashed": "Deleted users"
       },
@@ -315,9 +328,24 @@
         "phone": "Phone",
         "restoredTitle": "User restored | Users restored",
         "restoredTitleError": "Could not restore user | Could not restore users",
-        "role": "Role",
+        "role": "User role",
         "timezone": "Timezone",
         "username": "@:(general.username)"
+      },
+      "userRoles": {
+        "add": "Add user role",
+        "color": "Color",
+        "deletable": "Deletion protection",
+        "deletedTitle": "User role deleted successfully | User roles deleted successfully",
+        "deletedTitleError": "Could not delete user role | Could not delete user roles",
+        "deleteModalOk": "@:(general.delete) user role | @:(general.delete) user roles",
+        "deleteModalText": "Are you sure you want to delete this user role? | Are you sure you want to delete {count} user roles?",
+        "deleteModalTitle": "@:(general.delete) user role | @:(general.delete) user roles",
+        "editable": "Editing protection",
+        "id": "@:(general.id)",
+        "name": "Role name",
+        "notProtected": "@:(general.notProtected)",
+        "protected": "@:(general.protected)"
       }
     }
   }

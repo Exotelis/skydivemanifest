@@ -67,6 +67,14 @@
         "filters": "Filter",
         "from": "von",
         "select": {
+          "deletable": {
+            "false": "@:(general.protected)",
+            "true": "@:(general.notProtected)"
+          },
+          "editable": {
+            "false": "@:(general.protected)",
+            "true": "@:(general.notProtected)"
+          },
           "email_verified": {
             "false": "@:(general.no)",
             "true": "@:(general.yes)"
@@ -223,9 +231,11 @@
       "no": "Nein",
       "noPermissionsText": "Sie haben nicht die erforderlichen Berechtigungen die Seite '%{title}' zu besuchen.",
       "noPermissionsTitle": "Keine Berechtigungen",
+      "notProtected": "Nicht geschützt",
       "othersettings": "Andere Einstellungen",
       "passwordExpired": "Ihr Passwort ist abgelaufen, bitte wählen Sie ein neues.",
       "permissions": "Berechtigungen",
+      "protected": "Geschützt",
       "reportBug": "Ein Problem melden",
       "resetPassword": "Passwort zurücksetzen",
       "restore": "Wiederherstellen",
@@ -285,7 +295,10 @@
         "skydiver": "Springer",
         "staff": "Mitarbeiter",
         "tickets": "Tickets",
-        "userroles": "Benutzerrollen",
+        "userAdd": "Benutzer hinzufügen",
+        "userRole": "Benutzerrolle",
+        "userRoleAdd": "Benutzerrolle hinzufügen",
+        "userRoles": "Benutzerrollen",
         "users": "Benutzer",
         "usersTrashed": "Gelöschte Benutzer"
       },
@@ -315,9 +328,24 @@
         "phone": "Telefon",
         "restoredTitle": "Benutzer wiederhergestellt | Benutzer wiederhergestellt",
         "restoredTitleError": "Benutzer konnte nicht wiederhergestellt werden | Benutzer konnten nicht wiederhergestellt werden",
-        "role": "Rolle",
+        "role": "Benutzerolle",
         "timezone": "Zeitzone",
         "username": "@:(general.username)"
+      },
+      "userRoles": {
+        "add": "Benutzerrolle hinzufügen",
+        "color": "Farbe",
+        "deletable": "Löschschutz",
+        "deletedTitle": "Benutzerrolle erfolgreich gelöscht | Benutzerrollen erfolgreich gelöscht",
+        "deletedTitleError": "Benutzerrolle konnte nicht gelöscht werden | Benutzerrollen konnten nicht gelöscht werden",
+        "deleteModalOk": "Benutzerrolle @.lower:(general.delete) | Benutzerrollen @.lower:(general.delete)",
+        "deleteModalText": "Sind Sie sicher, dass Sie diese Benutzerrolle löschen möchten? | Sind Sie sicher, dass Sie {count} Benutzerrollen löschen möchten?",
+        "deleteModalTitle": "Benutzerrolle @.lower:(general.delete) | Benutzerrollen @.lower:(general.delete)",
+        "editable": "Bearbeitungsschutz",
+        "id": "@:(general.id)",
+        "name": "Benutzerrollenname",
+        "notProtected": "@:(general.notProtected)",
+        "protected": "@:(general.protected)"
       }
     }
   }

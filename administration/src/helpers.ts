@@ -1,12 +1,25 @@
 import jwtDecode from 'jwt-decode';
 import UserShortModel from '@/models/UserShortModel';
+import Vue, { VNode } from 'vue';
+
+export function apiErrorsToList (errors: object): VNode {
+  const vue: Vue = new Vue();
+  const li: Array<VNode> = [];
+  const errorArray: Array<string> = flattenApiErrors(errors);
+
+  for (let key in errorArray) {
+    li.push(vue.$createElement('li', errorArray[key]));
+  }
+
+  return vue.$createElement('ul', { class: ['mb-0', 'mt-1'] }, li);
+}
 
 export function capitalize (s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
 export function checkPermissions (a: Array<string>, b: Array<string> = getUserPermissions()): boolean {
-  return a.some((permission: string) => b.includes(permission));
+  return a.every((permission: string) => b.includes(permission));
 }
 
 export function colorYiq (color: string): string {
@@ -19,6 +32,10 @@ export function colorYiq (color: string): string {
   }
 
   return '#fff';
+}
+
+export function flattenApiErrors (errors: object): Array<string> {
+  return Object.values(errors).flat();
 }
 
 export function getCookie (name: string): string|undefined {
