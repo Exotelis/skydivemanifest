@@ -1,7 +1,7 @@
 <template>
   <div>
     <action-panel>
-      <router-link class="btn btn-secondary" role="button" to="user-roles/add">
+      <router-link class="btn btn-secondary" role="button" to="/user-roles/add">
         {{ $t('page.title.userRoleAdd') }}
       </router-link>
     </action-panel>
@@ -21,29 +21,28 @@
 </template>
 
 <script lang="ts">
-import Vue, { VNode } from 'vue';
+import { VNode } from 'vue';
 import { AxiosResponse } from 'axios';
 import { Component, Mixins } from 'vue-property-decorator';
-import { ModalPlugin, ToastPlugin } from 'bootstrap-vue';
 
 import { ActionMode } from '@/enum/ActionMode';
-import { checkPermissions, apiErrorsToList } from '@/helpers';
+import { apiErrorsToList, checkPermissions } from '@/helpers';
 import { DatatableActionModel } from '@/models/datatable/DatatableActionModel';
 import { EventBus } from '@/event-bus';
+import { ToastVariant } from '@/enum/ToastVariant';
 
 import ActionPanel from '@/components/ui/ActionPanel.vue';
 import Datatable from '@/components/datatable/Datatable.vue';
+import DeleteModalMixin from '@/mixins/DeleteModalMixin';
 import RoleModel from '@/models/RoleModel';
+import ToastMixin from '@/mixins/ToastMixin';
 import UserRoleMixin from '@/mixins/configs/UserRoleMixin';
 import UserRoleService from '@/services/UserRoleService';
-
-Vue.use(ModalPlugin);
-Vue.use(ToastPlugin);
 
 @Component({
   components: { ActionPanel, Datatable }
 })
-export default class UsersPage extends Mixins(UserRoleMixin) {
+export default class UsersPage extends Mixins(DeleteModalMixin, ToastMixin, UserRoleMixin) {
   actions: Array<DatatableActionModel> = [];
   bulkActions: Array<DatatableActionModel> = [];
   service: any = UserRoleService.all;
@@ -78,15 +77,10 @@ export default class UsersPage extends Mixins(UserRoleMixin) {
       ? [((item as RoleModel).id as number)]
       : (item as Array<RoleModel>).map((item): number => (item.id as number));
 
-    let modal: any = await this.$bvModal.msgBoxConfirm(this.$tc('page.userRoles.deleteModalText', ids.length),
-      {
-        cancelTitle: this.$t('general.cancel') as string,
-        centered: true,
-        footerClass: 'p-2',
-        okTitle: this.$tc('page.userRoles.deleteModalOk', ids.length),
-        okVariant: 'danger',
-        title: this.$tc('page.userRoles.deleteModalTitle', ids.length)
-      }
+    let modal: any = await this.deleteModal(
+      this.$tc('page.userRoles.deleteModalTitle', ids.length),
+      this.$tc('page.userRoles.deleteModalText', ids.length),
+      this.$tc('page.userRoles.deleteModalOk', ids.length)
     );
 
     if (!modal) {
@@ -97,13 +91,11 @@ export default class UsersPage extends Mixins(UserRoleMixin) {
       let response: AxiosResponse = await UserRoleService.bulkDelete(ids);
 
       EventBus.$emit('datatable:refresh');
-      this.$bvToast.toast(response.data.message, {
-        title: this.$tc('page.userRoles.deletedTitle', response.data.count),
-        autoHideDelay: 5000,
-        appendToast: false,
-        variant: 'success',
-        solid: true
-      });
+      this.toast(
+        this.$tc('page.userRoles.deletedTitle', response.data.count),
+        response.data.message,
+        ToastVariant.success
+      );
     } catch (e) {
       let errors: VNode|null = null;
 
@@ -111,13 +103,11 @@ export default class UsersPage extends Mixins(UserRoleMixin) {
         errors = apiErrorsToList(e.response.data.errors);
       }
 
-      this.$bvToast.toast(this.$createElement('div', { staticClass: e.response.status }, [e.response.data.message, errors]), {
-        title: this.$tc('page.userRoles.deletedTitleError', ids.length),
-        autoHideDelay: 5000,
-        appendToast: false,
-        variant: 'danger',
-        solid: true
-      });
+      this.toast(
+        this.$tc('page.userRoles.deletedTitleError', ids.length),
+        this.$createElement('div', { staticClass: e.response.status }, [e.response.data.message, errors]),
+        ToastVariant.danger
+      );
     }
   }
 

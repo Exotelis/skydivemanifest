@@ -1,6 +1,5 @@
 import { config, shallowMount } from '@vue/test-utils';
 import { ActionMode } from '@/enum/ActionMode';
-import { EventBus } from '@/event-bus';
 import { Gender } from '@/enum/Gender';
 import * as helpers from '@/helpers';
 import UserModel from '@/models/UserModel';
@@ -96,7 +95,7 @@ describe('UsersPage.vue', () => {
     await wrapper.vm.deleteUsers(users[0], true, ActionMode.single);
 
     expect(spyDelete).toHaveBeenCalled();
-    expect(spyToast).toHaveBeenCalledWith('page.users.deletedTitle', 'One user has been deleted.');
+    expect(spyToast).toHaveBeenCalledWith('page.users.deletedTitle', 'One user has been deleted.', 'success');
 
     spy.mockRestore();
     spyDelete.mockRestore();
@@ -112,7 +111,8 @@ describe('UsersPage.vue', () => {
     await wrapper.vm.deleteUsers(users, true, ActionMode.bulk);
 
     expect(spyDelete).toHaveBeenCalled();
-    expect(spyToast).toHaveBeenCalledWith('page.users.deletedTitle', users.length + ' users have been deleted.');
+    expect(spyToast)
+      .toHaveBeenCalledWith('page.users.deletedTitle', users.length + ' users have been deleted.', 'success');
 
     spy.mockRestore();
     spyDelete.mockRestore();
@@ -129,7 +129,7 @@ describe('UsersPage.vue', () => {
     await wrapper.vm.deleteUsers(users[0], true, ActionMode.single);
 
     expect(spyDelete).toHaveBeenCalled();
-    expect(spyToast).toHaveBeenCalledWith('page.users.deletedTitleError', 'page.users.deletedError', false);
+    expect(spyToast).toHaveBeenCalledWith('page.users.deletedTitleError', 'page.users.deletedError', 'danger');
 
     spy.mockRestore();
     spyDelete.mockRestore();
@@ -166,7 +166,8 @@ describe('UsersPage.vue', () => {
     await wrapper.vm.deleteUsers(users[0], true, ActionMode.single);
 
     expect(spyDelete).toHaveBeenCalled();
-    expect(spyToast).toHaveBeenCalledWith('page.users.deletedTitle', 'One user has been deleted permanently.');
+    expect(spyToast)
+      .toHaveBeenCalledWith('page.users.deletedTitle', 'One user has been deleted permanently.', 'success');
 
     spy.mockRestore();
     spyDelete.mockRestore();
@@ -182,8 +183,11 @@ describe('UsersPage.vue', () => {
     await wrapper.vm.deleteUsers(users, true, ActionMode.bulk);
 
     expect(spyDelete).toHaveBeenCalled();
-    expect(spyToast)
-      .toHaveBeenCalledWith('page.users.deletedTitle', users.length + ' users have been deleted permanently.');
+    expect(spyToast).toHaveBeenCalledWith(
+      'page.users.deletedTitle',
+      users.length + ' users have been deleted permanently.',
+      'success'
+    );
 
     spy.mockRestore();
     spyDelete.mockRestore();
@@ -200,7 +204,7 @@ describe('UsersPage.vue', () => {
     await wrapper.vm.deleteUsers(users[0], true, ActionMode.single);
 
     expect(spyDelete).toHaveBeenCalled();
-    expect(spyToast).toHaveBeenCalledWith('page.users.deletedTitleError', 'page.users.deletedError', false);
+    expect(spyToast).toHaveBeenCalledWith('page.users.deletedTitleError', 'page.users.deletedError', 'danger');
 
     spy.mockRestore();
     spyDelete.mockRestore();
@@ -215,7 +219,7 @@ describe('UsersPage.vue', () => {
     await wrapper.vm.restoreUsers(users[0], false, ActionMode.single);
 
     expect(spy).toHaveBeenCalled();
-    expect(spyToast).toHaveBeenCalledWith('page.users.restoredTitle', 'One user has been restored.');
+    expect(spyToast).toHaveBeenCalledWith('page.users.restoredTitle', 'One user has been restored.', 'success');
 
     spy.mockRestore();
     spyToast.mockRestore();
@@ -229,7 +233,8 @@ describe('UsersPage.vue', () => {
     await wrapper.vm.restoreUsers(users, false, ActionMode.bulk);
 
     expect(spy).toHaveBeenCalled();
-    expect(spyToast).toHaveBeenCalledWith('page.users.restoredTitle', users.length + ' users have been restored.');
+    expect(spyToast)
+      .toHaveBeenCalledWith('page.users.restoredTitle', users.length + ' users have been restored.', 'success');
 
     spy.mockRestore();
     spyToast.mockRestore();
@@ -244,33 +249,8 @@ describe('UsersPage.vue', () => {
     await wrapper.vm.restoreUsers(users, false, ActionMode.bulk);
 
     expect(spy).toHaveBeenCalled();
-    expect(spyToast).toHaveBeenCalledWith('page.users.restoredTitleError', 'The given data was invalid.', false);
-
-    spy.mockRestore();
-    spyToast.mockRestore();
-  });
-
-  it('show a success toast', () => {
-    const wrapper: any = factory();
-    const spy = jest.spyOn(EventBus, '$emit');
-    const spyToast = jest.spyOn(wrapper.vm.$bvToast, 'toast');
-
-    wrapper.vm.toast('Title', 'Message');
-    expect(spy).toHaveBeenCalledWith('datatable:refresh');
-    expect(spyToast).toHaveBeenCalled();
-
-    spy.mockRestore();
-    spyToast.mockRestore();
-  });
-
-  it('show a danger toast', () => {
-    const wrapper: any = factory();
-    const spy = jest.spyOn(EventBus, '$emit');
-    const spyToast = jest.spyOn(wrapper.vm.$bvToast, 'toast');
-
-    wrapper.vm.toast('Title', 'Message', false);
-    expect(spy).not.toHaveBeenCalledWith('datatable:refresh');
-    expect(spyToast).toHaveBeenCalled();
+    expect(spyToast)
+      .toHaveBeenCalledWith('page.users.restoredTitleError', 'The given data was invalid.', 'danger');
 
     spy.mockRestore();
     spyToast.mockRestore();

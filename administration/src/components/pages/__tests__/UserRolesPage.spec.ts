@@ -59,17 +59,17 @@ describe('UserRolesPage.vue', () => {
 
   it('show delete modal dialog', async () => {
     const wrapper: any = factory();
-    const spy = jest.spyOn(wrapper.vm.$bvModal, 'msgBoxConfirm').mockImplementation(() => false);
+    const spy = jest.spyOn(wrapper.vm, 'deleteModal').mockImplementation(() => false);
     const spyDelete = jest.spyOn(UserRoleService, 'bulkDelete');
     const spyToast = jest.spyOn(wrapper.vm.$bvToast, 'toast');
 
     await wrapper.vm.deleteRoles(roles[0], true, ActionMode.single);
 
-    expect(spy).toHaveBeenCalledWith('page.userRoles.deleteModalText', expect.objectContaining({
-      cancelTitle: 'general.cancel',
-      okTitle: 'page.userRoles.deleteModalOk',
-      title: 'page.userRoles.deleteModalTitle'
-    }));
+    expect(spy).toHaveBeenCalledWith(
+      'page.userRoles.deleteModalTitle',
+      'page.userRoles.deleteModalText',
+      'page.userRoles.deleteModalOk'
+    );
     expect(spyDelete).not.toHaveBeenCalled();
     expect(spyToast).not.toHaveBeenCalled();
 
@@ -80,18 +80,20 @@ describe('UserRolesPage.vue', () => {
 
   it('delete a single user role', async () => {
     const wrapper: any = factory();
-    const spy = jest.spyOn(wrapper.vm.$bvModal, 'msgBoxConfirm').mockImplementation(() => true);
+    const spy = jest.spyOn(wrapper.vm, 'deleteModal').mockImplementation(() => true);
     const spyDelete = jest.spyOn(UserRoleService, 'bulkDelete');
     const spyEvent = jest.spyOn(EventBus, '$emit');
-    const spyToast = jest.spyOn(wrapper.vm.$bvToast, 'toast');
+    const spyToast = jest.spyOn(wrapper.vm, 'toast');
 
     await wrapper.vm.deleteRoles(roles[0], true, ActionMode.single);
 
     expect(spyDelete).toHaveBeenCalled();
     expect(spyEvent).toHaveBeenCalledWith('datatable:refresh');
-    expect(spyToast).toHaveBeenCalledWith('The user role has been deleted.', expect.objectContaining({
-      title: 'page.userRoles.deletedTitle'
-    }));
+    expect(spyToast).toHaveBeenCalledWith(
+      'page.userRoles.deletedTitle',
+      'The user role has been deleted.',
+      'success'
+    );
 
     spy.mockRestore();
     spyDelete.mockRestore();
@@ -101,20 +103,19 @@ describe('UserRolesPage.vue', () => {
 
   it('delete multiple user roles', async () => {
     const wrapper: any = factory();
-    const spy = jest.spyOn(wrapper.vm.$bvModal, 'msgBoxConfirm').mockImplementation(() => true);
+    const spy = jest.spyOn(wrapper.vm, 'deleteModal').mockImplementation(() => true);
     const spyDelete = jest.spyOn(UserRoleService, 'bulkDelete');
     const spyEvent = jest.spyOn(EventBus, '$emit');
-    const spyToast = jest.spyOn(wrapper.vm.$bvToast, 'toast');
+    const spyToast = jest.spyOn(wrapper.vm, 'toast');
 
     await wrapper.vm.deleteRoles(roles, true, ActionMode.bulk);
 
     expect(spyDelete).toHaveBeenCalled();
     expect(spyEvent).toHaveBeenCalledWith('datatable:refresh');
     expect(spyToast).toHaveBeenCalledWith(
+      'page.userRoles.deletedTitle',
       roles.length + ' user roles have been deleted.',
-      expect.objectContaining({
-        title: 'page.userRoles.deletedTitle'
-      })
+      'success'
     );
     spy.mockRestore();
     spyDelete.mockRestore();
@@ -124,7 +125,7 @@ describe('UserRolesPage.vue', () => {
 
   it('fail to delete a user role', async () => {
     const wrapper: any = factory();
-    const spy = jest.spyOn(wrapper.vm.$bvModal, 'msgBoxConfirm').mockImplementation(() => true);
+    const spy = jest.spyOn(wrapper.vm, 'deleteModal').mockImplementation(() => true);
     const spyDelete = jest.spyOn(UserRoleService, 'bulkDelete');
     const spyToast = jest.spyOn(wrapper.vm.$bvToast, 'toast');
 

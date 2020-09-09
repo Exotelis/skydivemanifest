@@ -32,29 +32,27 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import { AxiosResponse } from 'axios';
 import { Component, Mixins } from 'vue-property-decorator';
-import { ModalPlugin, ToastPlugin } from 'bootstrap-vue';
 
 import { ActionMode } from '@/enum/ActionMode';
 import { checkPermissions } from '@/helpers';
 import { DatatableActionModel } from '@/models/datatable/DatatableActionModel';
 import { EventBus } from '@/event-bus';
+import { ToastVariant } from '@/enum/ToastVariant';
 
 import ActionPanel from '@/components/ui/ActionPanel.vue';
 import Datatable from '@/components/datatable/Datatable.vue';
+import DeleteModalMixin from '@/mixins/DeleteModalMixin';
+import ToastMixin from '@/mixins/ToastMixin';
 import UserMixin from '@/mixins/configs/UserMixin';
 import UserModel from '@/models/UserModel';
 import UserService from '@/services/UserService';
 
-Vue.use(ModalPlugin);
-Vue.use(ToastPlugin);
-
 @Component({
   components: { ActionPanel, Datatable }
 })
-export default class UsersPage extends Mixins(UserMixin) {
+export default class UsersPage extends Mixins(DeleteModalMixin, ToastMixin, UserMixin) {
   actions: Array<DatatableActionModel> = [];
   bulkActions: Array<DatatableActionModel> = [];
   service: any = UserService.all;
@@ -125,15 +123,10 @@ export default class UsersPage extends Mixins(UserMixin) {
     const modalTitle: string = this.trashed
       ? this.$tc('page.users.deleteModalTitlePermanently', ids.length)
       : this.$tc('page.users.deleteModalTitle', ids.length);
-    let modal: any = await this.$bvModal.msgBoxConfirm(modalText,
-      {
-        cancelTitle: this.$t('general.cancel') as string,
-        centered: true,
-        footerClass: 'p-2',
-        okTitle: modalOk,
-        okVariant: 'danger',
-        title: modalTitle
-      }
+    let modal: any = await this.deleteModal(
+      modalTitle,
+      modalText,
+      modalOk
     );
 
     if (!modal) {
@@ -150,10 +143,14 @@ export default class UsersPage extends Mixins(UserMixin) {
         response = await UserService.bulkDelete(ids);
       }
 
-      this.toast(this.$tc('page.users.deletedTitle', response.data.count), response.data.message);
+      EventBus.$emit('datatable:refresh');
+      this.toast(this.$tc('page.users.deletedTitle', response.data.count), response.data.message, ToastVariant.success);
     } catch (e) {
-      this.toast(this.$tc('page.users.deletedTitleError', ids.length), this.$tc('page.users.deletedError', ids.length),
-        false);
+      this.toast(
+        this.$tc('page.users.deletedTitleError', ids.length),
+        this.$tc('page.users.deletedError', ids.length),
+        ToastVariant.danger
+      );
     }
   }
 
@@ -164,24 +161,15 @@ export default class UsersPage extends Mixins(UserMixin) {
 
     try {
       let response: AxiosResponse = await UserService.restore(ids);
-      this.toast(this.$tc('page.users.restoredTitle', response.data.count), response.data.message);
-    } catch (e) {
-      this.toast(this.$tc('page.users.restoredTitleError', ids.length), e.response.data.message, false);
-    }
-  }
-
-  toast (title: string, message: string, success: boolean = true): void {
-    if (success) {
       EventBus.$emit('datatable:refresh');
+      this.toast(
+        this.$tc('page.users.restoredTitle', response.data.count),
+        response.data.message,
+        ToastVariant.success
+      );
+    } catch (e) {
+      this.toast(this.$tc('page.users.restoredTitleError', ids.length), e.response.data.message, ToastVariant.danger);
     }
-
-    this.$bvToast.toast(message, {
-      title: title,
-      autoHideDelay: 5000,
-      appendToast: false,
-      variant: success ? 'success' : 'danger',
-      solid: true
-    });
   }
 }
 </script>
