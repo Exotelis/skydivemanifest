@@ -1,3 +1,3 @@
 export interface ServiceModel {
-  (params?: object): Promise<any>;
+  (id?: any, data?: any, params?: object): Promise<any>;
 }

@@ -50,6 +50,10 @@ export function getCookie (name: string): string|undefined {
     })[0] || undefined;
 }
 
+export function getErrorMessage (e: any): string {
+  return e.response ? e.response.data.message : e.message;
+}
+
 export function getUser (): UserShortModel {
   const cookie: string|undefined = getCookie('XSRF-TOKEN');
 

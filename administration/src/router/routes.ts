@@ -150,6 +150,7 @@ const routes = [
   {
     path: '/user-roles/:id(\\d+)',
     name: 'user-roles-id',
+    component: () => import(/* webpackChunkName: "usersRoles" */ '@/components/pages/UserRolesEditPage.vue'),
     meta: {
       title: 'page.title.userRole',
       permissions: ['roles:read', 'roles:write'],
@@ -159,6 +160,7 @@ const routes = [
   {
     path: '/user-roles/add',
     name: 'user-roles-add',
+    component: () => import(/* webpackChunkName: "usersRoles" */ '@/components/pages/UserRolesAddPage.vue'),
     meta: {
       title: 'page.title.userRoleAdd',
       permissions: ['roles:read', 'roles:write'],

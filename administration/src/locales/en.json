@@ -147,6 +147,7 @@
     },
     "form": {
       "label": {
+        "color": "Color",
         "dob": "Date of birth",
         "email": "Email address",
         "firstName": "First name",
@@ -159,9 +160,11 @@
         "passwordConfirmation": "Confirm password",
         "securityToken": "Security token",
         "username": "@:(general.username)",
-        "usernameEmail": "Email / Username"
+        "usernameEmail": "Email / Username",
+        "userRoleName": "User role name"
       },
       "placeholder": {
+        "color": "#6c757d",
         "dob": "Enter your date of birth...",
         "email": "Enter your email address...",
         "firstName": "Enter your first name...",
@@ -175,7 +178,8 @@
         "securityToken": "Enter the security token...",
         "select": "-- Please select an option --",
         "username": "Enter your username...",
-        "usernameEmail": "Enter your email address or username..."
+        "usernameEmail": "Enter your email address or username...",
+        "userRoleName": "Enter the name of the user role..."
       }
     },
     "general": {
@@ -191,6 +195,7 @@
       "continue": "Continue",
       "continueUsing": "Continue using",
       "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
+      "couldNotSave": "Could not save data",
       "delete": "Delete",
       "deletePermanently": "@:(general.delete) permanently",
       "disabled": "Disabled",
@@ -214,6 +219,7 @@
       "passwordExpired": "Your password expired. Please choose a new one.",
       "permissions": "Permissions",
       "protected": "Protected",
+      "read": "Read",
       "reportBug": "Report a bug",
       "resetPassword": "Reset password",
       "restore": "Restore",
@@ -226,6 +232,7 @@
       "system": "System",
       "translations": "Translations",
       "username": "Username",
+      "write": "Write",
       "yes": "Yes"
     },
     "languages": {
@@ -313,18 +320,37 @@
       "userRoles": {
         "add": "Add user role",
         "color": "Color",
+        "couldNotLoadPermissions": "Could not load permissions",
+        "couldNotLoadRole": "Could not load user role",
+        "create": "Create user role",
+        "createdMessage": "The user role has been created successfully.",
+        "createdTitle": "Created user role",
         "deletable": "Deletion protection",
+        "delete": "@:(general.delete) user role",
         "deletedTitle": "User role deleted successfully | User roles deleted successfully",
         "deletedTitleError": "Could not delete user role | Could not delete user roles",
-        "deleteModalOk": "@:(general.delete) user role | @:(general.delete) user roles",
+        "deleteModalOk": "@:(page.userRoles.delete) | @:(general.delete) user roles",
         "deleteModalText": "Are you sure you want to delete this user role? | Are you sure you want to delete {count} user roles?",
-        "deleteModalTitle": "@:(general.delete) user role | @:(general.delete) user roles",
+        "deleteModalTitle": "@:(page.userRoles.delete) | @:(general.delete) user roles",
+        "edit": "Update user role",
         "editable": "Editing protection",
         "id": "@:(general.id)",
         "name": "Role name",
         "notProtected": "@:(general.notProtected)",
-        "protected": "@:(general.protected)"
+        "protected": "@:(general.protected)",
+        "updatedMessage": "The user role has been updated successfully.",
+        "updatedTitle": "Updated user role"
       }
+    },
+    "permissions": {
+      "addresses": "Addresses",
+      "countries": "Countries",
+      "currencies": "Currencies",
+      "permissions": "Permissions",
+      "personal": "Personal information",
+      "regions": "Regions",
+      "roles": "User roles",
+      "users": "Users"
     }
   }
 }

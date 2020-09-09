@@ -28,6 +28,10 @@ a:not([href]) {
 label {
   font-size:   $label-font-size;
   font-weight: $label-font-weight;
+
+  &.custom-control-label {
+    padding-top: $custom-control-indicator-size - $label-font-size;
+  }
 }
 
 .form-group {
@@ -55,6 +59,26 @@ label {
 .form-control-plaintext {
   &:focus {
     outline: solid 2px rgba($primary, .25);
+  }
+}
+
+.custom-control-input {
+  &[disabled],
+  &:disabled {
+    ~ .custom-control-label {
+      cursor: not-allowed;
+    }
+  }
+}
+
+.text-center .custom-control-label {
+  &::before {
+    left: -($custom-control-gutter + $custom-control-indicator-size - .25rem);
+  }
+
+  // Foreground (icon)
+  &::after {
+    left: -($custom-control-gutter + $custom-control-indicator-size - .25rem);
   }
 }
 
