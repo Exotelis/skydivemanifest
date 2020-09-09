@@ -192,11 +192,22 @@ Ok, these are a lot of settings. See the table below for the explanation:
 | classes     |          | Additional custom classes that will be set on the tbody cell                                                    | string |
 | hide        |          | Hides the column by default                                                                                     | boolean |
 | label       | *        | The lable that is being displayed in the thead cell                                                             | string |
+| linkPath    |          | Creates a hyperlink in this cell, which can redirect to user to the details page for example                    | string |
 | notHideable |          | Column is not hideable                                                                                          | boolean |
 | prop        | *        | The key of the data returned by the api                                                                         | string |
 | propCustom  |          | Customizes the output. Can be used to conditionally display icons or convert booleans to some meaningful output | function |
 | sortable    |          | Makes the column sortable. By default the prop is used as sortKey                                               | boolean |
 | sortKey     |          | If the sortKey is a different than the prop                                                                     | string |
+
+The `linkPath` option is very useful to link the content of the column to another page. Let's imagine the user visits
+the users page. In the datatable, the role of each user will be displayed. By adding the `linkPath` to the `role` column
+the user could navigate to the roles details page, without going to the roles page first. In the `linkPath` you can
+access any `prop` that is available on this model:
+```
+linkPath: '/user-roles/{role.id}'
+```
+The `{role.id}` will be parsed and replaced by the actual id of the role. Please note that `{role.id}` must exist,
+otherwise the redirect will not work as expected.
 
 The `propCustom` option might be the most powerful. Let's dive a bit more into detail. `propCustom` needs to be a
 function. This function gets called every time the column gets rendered. This setting can be used to conditionally

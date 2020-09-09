@@ -279,6 +279,24 @@ describe('Datatable.vue', () => {
     expect(wrapper.vm.getVisibleColumns().length).toBe(6);
   });
 
+  it('resolve link path', () => {
+    const wrapper: any = factory({ columns: columns, service: service, tableId: tableId });
+    const obj: any = {
+      id: 10,
+      name: 'John Doe',
+      role: {
+        id: 1,
+        name: 'admin',
+        permissions: {
+          runTests: true
+        }
+      }
+    };
+
+    expect(wrapper.vm.resolveLinkPath('/users/{id}', obj)).toBe('/users/10');
+    expect(wrapper.vm.resolveLinkPath('/user-roles/{role.id}', obj)).toBe('/user-roles/1');
+  });
+
   it('resolve path', () => {
     const wrapper: any = factory({ columns: columns, service: service, tableId: tableId });
     const obj: any = {

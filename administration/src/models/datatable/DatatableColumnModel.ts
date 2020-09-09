@@ -6,6 +6,7 @@ export interface DatatableColumnModel {
   classes?: string,
   hide?: boolean
   label: string
+  linkPath?: string
   notHideable?: boolean
   prop: string
   propCustom?: (params: any) => {}

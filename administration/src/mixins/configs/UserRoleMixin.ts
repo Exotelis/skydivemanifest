@@ -21,6 +21,7 @@ export default class UserRoleMixin extends Vue {
     {
       label: i18n.t('page.userRoles.name') as string,
       prop: 'name',
+      linkPath: '/user-roles/{id}',
       sortable: true
     },
     {

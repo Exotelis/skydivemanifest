@@ -197,9 +197,18 @@
                 :class="[column.alignBody ? 'text-' + column.alignBody : '', column.classes]"
                 :key="column.prop">
               <template v-if="!loading">
-                <div v-if="column.propCustom" v-html="column.propCustom(resolvePath(column.prop, row))"></div>
+                <router-link v-if="column.linkPath" :to="{ path: resolveLinkPath(column.linkPath, row) }">
+                  <div v-if="column.propCustom" v-html="column.propCustom(resolvePath(column.prop, row))"></div>
+                  <template v-else>
+                    {{ resolvePath(column.prop, row) }}
+                  </template>
+                </router-link>
+
                 <template v-else>
-                  {{ resolvePath(column.prop, row) }}
+                  <div v-if="column.propCustom" v-html="column.propCustom(resolvePath(column.prop, row))"></div>
+                  <template v-else>
+                    {{ resolvePath(column.prop, row) }}
+                  </template>
                 </template>
               </template>
 
@@ -370,6 +379,12 @@ export default class Datatable extends Vue {
 
   getVisibleColumns (): Array<DatatableColumnModel> {
     return this.columns.filter(column => this.visibleColumns.includes(column.prop));
+  }
+
+  resolveLinkPath (linkPath: string, row: any): string {
+    return linkPath.replace(/{(.*)}/, (match: string, prop: string) => {
+      return this.resolvePath(prop, row);
+    });
   }
 
   resolvePath (keyPath: string, row: any): any {
