@@ -14,8 +14,10 @@
             :class="[config.icon ? 'mdi ' + config.icon : '']">
         {{ $t(config.title) }}
       </span>
-      <navigation-item v-for="(c, key) in config.children" v-on="$listeners" :key="key" :config="c">
-      </navigation-item>
+      <ul class="nav flex-column">
+        <navigation-item v-for="(c, key) in config.children" v-on="$listeners" :key="key" :config="c">
+        </navigation-item>
+      </ul>
     </template>
 
     <template v-if="config.type === 'submenuhandler'">

@@ -86,8 +86,8 @@ export default class LoginPage extends Mixins(FormMixin, FormValidationMixin) {
         await this.$router.push('/');
       }
     } catch (e) {
-      this.validateResponse(e.response);
       this.error = e.response.data.message;
+      this.validateResponse(e);
     }
 
     this.loading = false;

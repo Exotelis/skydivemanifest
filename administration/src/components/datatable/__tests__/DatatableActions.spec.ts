@@ -4,6 +4,7 @@ import { DatatableActionModel } from '@/models/datatable/DatatableActionModel';
 import DatatableActions from '@/components/datatable/DatatableActions.vue';
 
 config.mocks!.$t = (key: any) => key;
+config.mocks!.$tc = (key: any) => key;
 
 const factory = (props = {}) => {
   return shallowMount(DatatableActions, {

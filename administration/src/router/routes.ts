@@ -138,20 +138,61 @@ const routes = [
     }
   },
   {
-    path: '/users',
-    name: 'users',
+    path: '/user-roles',
+    name: 'user-roles',
+    component: () => import(/* webpackChunkName: "usersRoles" */ '@/components/pages/UserRolesPage.vue'),
     meta: {
-      title: 'page.title.users',
-      permissions: ['users:delete', 'users:read', 'users:write'],
+      title: 'page.title.userRoles',
+      permissions: ['roles:read'],
       requiresAuth: true
     }
   },
   {
-    path: '/userroles',
-    name: 'userroles',
+    path: '/user-roles/:id(\\d+)',
+    name: 'user-roles-id',
+    component: () => import(/* webpackChunkName: "usersRoles" */ '@/components/pages/UserRolesEditPage.vue'),
     meta: {
-      title: 'page.title.userroles',
-      permissions: ['roles:delete', 'roles:read', 'roles:write'],
+      title: 'page.title.userRole',
+      permissions: ['roles:read', 'roles:write'],
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/user-roles/add',
+    name: 'user-roles-add',
+    component: () => import(/* webpackChunkName: "usersRoles" */ '@/components/pages/UserRolesAddPage.vue'),
+    meta: {
+      title: 'page.title.userRoleAdd',
+      permissions: ['roles:read', 'roles:write'],
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/users',
+    name: 'users',
+    component: () => import(/* webpackChunkName: "users" */ '@/components/pages/UsersPage.vue'),
+    meta: {
+      title: 'page.title.users',
+      permissions: ['users:read'],
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/users/add',
+    name: 'user-add',
+    meta: {
+      title: 'page.title.userAdd',
+      permissions: ['users:read', 'users:write'],
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/users/trashed',
+    name: 'users-trashed',
+    component: () => import(/* webpackChunkName: "users" */ '@/components/pages/UsersPage.vue'),
+    meta: {
+      title: 'page.title.usersTrashed',
+      permissions: ['users:delete', 'users:read'],
       requiresAuth: true
     }
   }

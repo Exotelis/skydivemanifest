@@ -30,9 +30,9 @@ class CreateCurrenciesTable extends Migration
 
         // Add currency permissions
         Permission::insert([
-            ['slug' => 'currencies:delete', 'name' => 'Delete currencies',],
-            ['slug' => 'currencies:read',   'name' => 'Read currencies',],
-            ['slug' => 'currencies:write',  'name' => 'Add/Edit currencies',],
+            ['slug' => 'currencies:delete', 'name' => 'Delete currencies',   'is_default' => false,],
+            ['slug' => 'currencies:read',   'name' => 'Read currencies',     'is_default' => true,],
+            ['slug' => 'currencies:write',  'name' => 'Add/Edit currencies', 'is_default' => false,],
         ]);
 
         // Add currency permissions to admin group

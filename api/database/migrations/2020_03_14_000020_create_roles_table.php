@@ -21,8 +21,9 @@ class CreateRolesTable extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->boolean('deletable')->default(true);
-            $table->boolean('editable')->default(true);
+            $table->string('color', 7)->default('#6c757d');
+            $table->boolean('deletable')->default(true)->comment('Determines if role is deletable');
+            $table->boolean('editable')->default(true)->comment('Determines if permissions are editable');
             $table->string('name')->unique();
             $table->timestamp('created_at', 0)->useCurrent();
             $table->timestamp('updated_at', 0)->useCurrent();
@@ -30,8 +31,20 @@ class CreateRolesTable extends Migration
 
         // Add default roles
         Role::insert([
-            ['id' => adminRole(), 'deletable' => false, 'editable' => false, 'name' => 'Administrator'],
-            ['id' => defaultRole(), 'deletable' => false, 'editable' => false, 'name' => 'User'],
+            [
+                'id' => adminRole(),
+                'color' => '#1d2530',
+                'deletable' => false,
+                'editable' => false,
+                'name' => 'Administrator'
+            ],
+            [
+                'id' => defaultRole(),
+                'color' => '#ed7c3b',
+                'deletable' => false,
+                'editable' => false,
+                'name' => 'User'
+            ],
         ]);
 
         // Add permissions

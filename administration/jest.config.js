@@ -4,7 +4,11 @@ module.exports = {
   'collectCoverageFrom': [
     'src/**/*.{js,vue}',
     'src/filters/Datatable*.ts',
+    'src/mixins/configs/*Mixin.ts',
     '!(src/main.js)',
     '!(src/registerServiceWorker.js)'],
-  'coverageReporters': ['html', 'text-summary']
+  'coverageReporters': ['html', 'text-summary'],
+  setupFilesAfterEnv: [
+    './jestSetupAfterEnv.ts'
+  ]
 };

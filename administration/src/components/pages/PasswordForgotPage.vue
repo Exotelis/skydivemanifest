@@ -78,7 +78,7 @@ export default class PasswordForgotPage extends Mixins(FormMixin, FormValidation
       this.error = null;
       this.successMessage = response.data.message;
     } catch (e) {
-      this.validateResponse(e.response);
+      this.validateResponse(e);
       this.successMessage = null;
       this.error = e.response.data.message;
     }

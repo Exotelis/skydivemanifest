@@ -90,6 +90,8 @@ return [
         'string'  => 'Das Feld :attribute muss mindestens :min Zeichen lang sein.',
         'array'   => 'Das Feld :attribute muss mindestens :min Einträge haben.',
     ],
+    'not_admin'            => 'Ist ein Administrator.',
+    'not_current_user'     => 'Ist der aktuelle Benutzer.',
     'not_in'               => 'Ausgewählte(s) :attribute ist inkorrekt.',
     'not_regex'            => 'Das :attribute-Format ist inkorrekt.',
     'numeric'              => 'Das Feld :attribute muss eine Zahl sein.',
@@ -144,6 +146,9 @@ return [
         ],
         'locale' => [
             'in' => 'Die :attribute muss eine der folgenden sein: :values',
+        ],
+        'role' => [
+            'unique' => 'Eine Rolle mit diesem Namen existiert bereits.'
         ],
         'username' => [
             'unique' => 'Ein Benutzerkonto mit diesem Benutzernamen existiert bereits.',

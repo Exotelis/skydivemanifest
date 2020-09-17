@@ -83,6 +83,11 @@
         border: $input-border-width solid $input-border-color;
       }
     }
+
+    .loading-filters {
+      background-color: rgba($datatable-filter-loading-backdrop-bg, $datatable-filter-loading-backdrop-opacity);
+      z-index: $datatable-filter-loading-backdrop-z-index;
+    }
   }
 
   .datatable_loadingPlaceholder {

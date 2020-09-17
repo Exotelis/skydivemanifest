@@ -14,6 +14,21 @@ use Illuminate\Support\Facades\Redirect;
 class EnsureEmailIsVerified extends EnsureEmailIsVerifiedIlluminate
 {
     /**
+     * Routes that should skip handle.
+     *
+     * @var array
+     */
+    protected $except = [
+        'api.change-password',
+        'api.confirm-email',
+        'api.delete-email-request',
+        'api.resend-email-request',
+        'api.login',
+        'api.logout',
+        'api.timezones',
+    ];
+
+    /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -33,5 +48,26 @@ class EnsureEmailIsVerified extends EnsureEmailIsVerifiedIlluminate
         }
 
         return $next($request);
+    }
+
+    /**
+     * Determine if the request has a URI that should pass through email verified verification.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    protected function inExceptArray($request)
+    {
+        foreach ($this->except as $except) {
+            if ($except !== '/') {
+                $except = trim($except, '/');
+            }
+
+            if ($request->fullUrlIs($except) || $request->is($except) || $request->routeIs($except)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

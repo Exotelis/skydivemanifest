@@ -11,7 +11,7 @@ use Tests\TestCase;
 class TimezoneResourceTest extends TestCase
 {
     /**
-     * Test tiezones resource.
+     * Test timezones resource.
      *
      * @return void
      */

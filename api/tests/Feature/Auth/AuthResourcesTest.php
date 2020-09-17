@@ -63,7 +63,7 @@ class AuthResourcesTest extends TestCase
         $response = $this->postJson($resource, ['password' => 'secret'], ['X-Requested-With' => 'XMLHttpRequest']);
         $response->assertStatus(422)
             ->assertJsonStructure(['message', 'errors'])
-            ->assertJsonFragment(['message' => 'The validation of your data has been failed. Errors have been highlighted in the form below.']);
+            ->assertJsonFragment(['message' => 'The validation of the submitted data has been failed.']);
 
         // Invalid user
         $response = $this->postJson($resource, ['username' => 'unknownuser', 'password' => 'secret']);
@@ -116,11 +116,12 @@ class AuthResourcesTest extends TestCase
     {
         $resource = self::API_URL . 'auth/logout';
         $resourceLogin = self::API_URL . 'auth';
-        $user = factory(User::class)->state('allPermissions')->create();
+        $user = factory(User::class)->states(['allPermissions'])->create();
         $this->actingAs($user);
 
         // Get token
         $response = $this->postJson($resourceLogin, ['username' => $user->email, 'password' => 'secret']);
+        $response->assertStatus(200)->assertJsonStructure(['expires_in', 'access_token', 'refresh_token']);
         $token = $response->json('access_token');
         $this->assertDatabaseHas('oauth_access_tokens', ['user_id' => $user->id, 'revoked' => 0]);
 

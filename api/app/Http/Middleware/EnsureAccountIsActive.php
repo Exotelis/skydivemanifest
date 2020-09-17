@@ -19,6 +19,8 @@ class EnsureAccountIsActive
      * @var array
      */
     protected $except = [
+        'api.change-password',
+        'api.login',
         'api.logout',
         'api.timezones',
     ];

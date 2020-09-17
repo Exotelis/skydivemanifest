@@ -22,6 +22,8 @@ development or to build the bundle, to use it in production.
     * [Datatable sort mode](#datatable-sort-mode)
   + [Form components](#form-components)
     * [form-group](#form-group)
+    * [input-checkbox](#input-checkbox)
+    * [input-color](#input-color)
     * [input-date](#input-date)
     * [input-email](#input-email)
     * [input-hidden](#input-hidden)
@@ -190,11 +192,22 @@ Ok, these are a lot of settings. See the table below for the explanation:
 | classes     |          | Additional custom classes that will be set on the tbody cell                                                    | string |
 | hide        |          | Hides the column by default                                                                                     | boolean |
 | label       | *        | The lable that is being displayed in the thead cell                                                             | string |
+| linkPath    |          | Creates a hyperlink in this cell, which can redirect to user to the details page for example                    | string |
 | notHideable |          | Column is not hideable                                                                                          | boolean |
 | prop        | *        | The key of the data returned by the api                                                                         | string |
 | propCustom  |          | Customizes the output. Can be used to conditionally display icons or convert booleans to some meaningful output | function |
 | sortable    |          | Makes the column sortable. By default the prop is used as sortKey                                               | boolean |
 | sortKey     |          | If the sortKey is a different than the prop                                                                     | string |
+
+The `linkPath` option is very useful to link the content of the column to another page. Let's imagine the user visits
+the users page. In the datatable, the role of each user will be displayed. By adding the `linkPath` to the `role` column
+the user could navigate to the roles details page, without going to the roles page first. In the `linkPath` you can
+access any `prop` that is available on this model:
+```
+linkPath: '/user-roles/{role.id}'
+```
+The `{role.id}` will be parsed and replaced by the actual id of the role. Please note that `{role.id}` must exist,
+otherwise the redirect will not work as expected.
 
 The `propCustom` option might be the most powerful. Let's dive a bit more into detail. `propCustom` needs to be a
 function. This function gets called every time the column gets rendered. This setting can be used to conditionally
@@ -520,6 +533,30 @@ for what width which identifier stands for, see the
             :horizontal="true">
 <!-- your form element wrapper goes here -->
 </form-group>
+```
+
+#### input-checkbox
+Creates a checkbox. This component doesn't need a model, but the name attribute must be an array reference. The defined
+value will be pushed to this array, or stripped if the user unchecks it. The label of the checkbox can be set by adding
+text between the opening and closing tag. If you don't want to set a label, consider setting the ariaLabel attribute.
+
+A full list of available attributes you can find in the
+[InputCheckbox.vue component](src/components/form/InputCheckbox.vue).
+
+Example:
+```
+<input-checkbox aria-label="label attr" id="test" value="testVal" :name="arrayRef">Label text</input-checkbox>
+```
+
+#### input-color
+Creates an input element with type color.
+
+A full list of available attributes you can find in the
+[InputColor.vue component](src/components/form/InputColor.vue).
+
+Example:
+```
+<input-color id="color" v-model.trim="form.color"></input-color>
 ```
 
 #### input-date

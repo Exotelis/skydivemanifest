@@ -12,7 +12,8 @@ describe('DefaultLayout.vue', () => {
         $route: {
           meta: {
             title: 'TestTitle'
-          }
+          },
+          params: {}
         }
       },
       stubs: ['router-view', 'portal-target']

@@ -1,0 +1,12 @@
+.action-panel {
+  background-color: $gray-200;
+
+  .btn {
+    margin: .25rem 0 .25rem .5rem !important;
+    white-space: nowrap;
+
+    &:first-child {
+      margin: .25rem 0;
+    }
+  }
+}

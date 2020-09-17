@@ -1,10 +1,15 @@
 <template>
-  <div class="d-flex datatable_filters flex-column p-0 w-100">
+  <div class="d-flex datatable_filters flex-column p-0 position-relative w-100">
+    <i class="align-items-center d-flex h-100 justify-content-center loading-filters mdi mdi-36px mdi-loading mdi-spin
+              position-absolute text-primary w-100"
+       v-if="filtersLazyLoading && (syncFiltersVisible || hasActiveFilter())">
+    </i>
+
     <!-- Filter form -->
-    <form class="datatable_utility-component"
-          novalidate
+    <form novalidate
           v-if="syncFiltersVisible"
           v-validate
+          :class="['datatable_utility-component', filtersLazyLoading ? 'blur-content' : '']"
           @submit.prevent="applyFilters()">
       <div class="d-flex flex-wrap">
         <fieldset class="flex-shrink-1" v-for="(filter, key) in filterModel" :key="key">
@@ -18,10 +23,11 @@
                         :label="filter.getLabel()"
                         :label-for="'datatable_filters-exact-' + filter.getExactProp() + '-' + uuid">
               <template v-if="filter.exact.inputType === filterInputTypes.select">
-                <select-wrapper :field-size="formFieldSize.sm"
-                                v-model="filter.exact.value"
+                <select-wrapper v-model="filter.exact.value"
+                                :field-size="formFieldSize.sm"
                                 :id="'datatable_filters-exact-' + filter.getExactProp() + '-' + uuid"
-                                :options="filter.exact.options"></select-wrapper>
+                                :options="filter.exact.options">
+                </select-wrapper>
               </template>
               <template v-else>
                 <component v-model.trim="filter.exact.value"
@@ -105,7 +111,9 @@
     </form>
 
     <!-- Active filters-->
-    <div :class="['align-items-center d-flex datatable_utility-component', syncFiltersVisible ? 'border-top' : '']"
+    <div :class="['align-items-center d-flex datatable_utility-component',
+                  syncFiltersVisible ? 'border-top' : '',
+                  filtersLazyLoading ? 'blur-content' : '']"
          v-if="hasActiveFilter()">
       <span class="mr-3 text-nowrap">{{ $t('component.datatableFilters.activeFilters') }}:</span>
       <div>
@@ -117,7 +125,7 @@
             {{ filter.label }}:
             <template v-if="filter.hasExactValue()">
               <template v-if="filter.exact.inputType === filterInputTypes.select">
-                {{ $t('component.datatableFilters.select.' + filter.getExactProp() + '.' + filter.getExactValue()) }}
+                {{ (filter.exact.options.find(opt => String(opt.value) === String(filter.getExactValue()))).text }}
               </template>
               <template v-else>
               {{ filter.getExactValue() }}
@@ -166,6 +174,7 @@ import UuidMixin from '../../mixins/UuidMixin';
 })
 export default class DatatableFilters extends Mixins(FormValidationMixin, UuidMixin) {
   @Prop({ default: () => [], type: Array }) filters!: Array<DatatableBaseFilter>;
+  @Prop([Boolean]) readonly filtersLazyLoading!: boolean;
   @PropSync('filtersVisible', { default: false, type: Boolean }) syncFiltersVisible!: boolean;
 
   filterModel!: Array<DatatableBaseFilter>;
@@ -205,7 +214,7 @@ export default class DatatableFilters extends Mixins(FormValidationMixin, UuidMi
     this.emitEvent();
   }
 
-  created () {
+  created (): void {
     // Create clone for filter model
     this.filterModel = _.cloneDeep(this.filters);
   }

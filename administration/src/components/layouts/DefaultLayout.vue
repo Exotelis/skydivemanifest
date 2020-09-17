@@ -20,7 +20,10 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col d-flex align-items-center">
-              <h1 class="h2 m-0 font-weight-normal">{{ $t( $route.meta.title ) }}</h1>
+              <h1 class="h2 m-0 font-weight-normal">
+                {{ $t( $route.meta.title ) }}
+                <span v-if="$route.params.id">#{{ $route.params.id }}</span>
+              </h1>
             </div>
             <user-menu></user-menu>
           </div>
@@ -29,7 +32,7 @@
       <main>
         <div class="container-fluid">
           <div class="row">
-            <div class="col">
+            <div class="col my-3">
               <slot><router-view></router-view></slot>
             </div>
           </div>
@@ -93,7 +96,8 @@ export default class DefaultLayout extends Vue {
           type: NavigationType.Title,
           children: [
             { path: '/users', type: NavigationType.Path },
-            { path: '/userroles', type: NavigationType.Path }
+            { path: '/users/trashed', type: NavigationType.Path },
+            { path: '/user-roles', type: NavigationType.Path }
           ]
         },
         {

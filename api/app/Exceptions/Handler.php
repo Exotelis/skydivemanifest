@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Validation\ValidationException;
 use Laravel\Passport\Exceptions\MissingScopeException;
 use Laravel\Passport\Exceptions\OAuthServerException;
@@ -67,13 +68,23 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        if ($exception instanceof ValidationException) {
-            if ($request->ajax()) {
+        if ($request->ajax()) {
+            if ($exception instanceof MissingScopeException) {
+                return response()->json([
+                    'message' => __('error.access_denied'),
+                ], 403);
+            }
+
+            if ($exception instanceof ValidationException) {
                 return response()->json([
                     'message' => __('error.validation_error'),
                     'errors' => $exception->validator->getMessageBag()
                 ], 422);
             }
+        }
+
+        if ($exception instanceof ThrottleRequestsException) {
+            $exception = new ThrottleRequestsException(__('error.too_many_attempts'), $exception);
         }
 
         return parent::render($request, $exception);

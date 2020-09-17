@@ -23,10 +23,11 @@
             <div :class="utilityBarTopClasses ? utilityBarTopClasses: ''">
               <slot name="utility-bar-top">
                 <div class="d-flex">
-                  <datatable-refresh class="border-right datatable_utility-component mr-3 p-0"
+                  <datatable-refresh class="border-right datatable_utility-component mr-auto p-0"
                                      @datatable:refresh="onRefresh">
                   </datatable-refresh>
-                  <datatable-filters-toggle class="border-left datatable_utility-component ml-auto p-0"
+                  <datatable-filters-toggle class="border-left datatable_utility-component p-0"
+                                            v-if="filterConfig.length > 0"
                                             :visible="filtersVisible"
                                             @datatable:filtersToggle="onFiltersToggle">
                   </datatable-filters-toggle>
@@ -47,9 +48,11 @@
                                      @datatable:densityChanged="onDensityChange">
                   </datatable-density>
                 </div>
-                <div class="border-top d-flex" v-if="filtersVisible || hasActiveFilter()">
+                <div v-show="filtersVisible || hasActiveFilter()"
+                     :class="['d-flex', filtersVisible || hasActiveFilter() ? 'border-top ' : '']">
                   <datatable-filters class="datatable_utility-component"
                                      :filters="filters"
+                                     :filters-lazy-loading="filtersLazyLoading"
                                      :filters-visible.sync="filtersVisible"
                                      @datatable:filtersChanged="onFiltersChanged">
                   </datatable-filters>
@@ -102,7 +105,7 @@
                 : $event.preventDefault"
               :class="[
                 'text-nowrap',
-                column.alignBody ? 'text-' + column.alignBody : '',
+                column.alignHead ? 'text-' + column.alignHead : '',
                 column.sortable ? 'datatable_sortableHeader pointer' : '',
                 !loading ? '' : 'user-select-none'
               ]"
@@ -194,9 +197,18 @@
                 :class="[column.alignBody ? 'text-' + column.alignBody : '', column.classes]"
                 :key="column.prop">
               <template v-if="!loading">
-                <div v-if="column.propCustom" v-html="column.propCustom(resolvePath(column.prop, row))"></div>
+                <router-link v-if="column.linkPath" :to="{ path: resolveLinkPath(column.linkPath, row) }">
+                  <div v-if="column.propCustom" v-html="column.propCustom(resolvePath(column.prop, row))"></div>
+                  <template v-else>
+                    {{ resolvePath(column.prop, row) }}
+                  </template>
+                </router-link>
+
                 <template v-else>
-                  {{ resolvePath(column.prop, row) }}
+                  <div v-if="column.propCustom" v-html="column.propCustom(resolvePath(column.prop, row))"></div>
+                  <template v-else>
+                    {{ resolvePath(column.prop, row) }}
+                  </template>
                 </template>
               </template>
 
@@ -227,8 +239,9 @@ import { BaseFilterInputModel } from '@/models/datatable/DatatableFilterModels';
 import { DatatableActionModel } from '@/models/datatable/DatatableActionModel';
 import { DatatableColumnModel } from '@/models/datatable/DatatableColumnModel';
 import { DatatableDataModel } from '@/models/datatable/DatatableDataModel';
-import { DatatableServiceModel } from '@/models/datatable/DatatableServiceModel';
 import { Density } from '@/enum/Density';
+import { EventBus } from '@/event-bus';
+import { ServiceModel } from '@/models/ServiceModel';
 import { SortMode } from '@/enum/SortMode';
 
 import DatatableActions from '@/components/datatable/DatatableActions.vue';
@@ -265,12 +278,13 @@ export default class Datatable extends Vue {
   @Prop({ default: '' }) readonly caption!: string;
   @Prop({ required: true }) readonly columns!: Array<DatatableColumnModel>;
   @Prop({ default: () => [], type: Array }) readonly filterConfig!: Array<DatatableBaseFilter>;
+  @Prop([Boolean]) readonly filtersLazyLoading!: boolean;
   @Prop([Boolean]) readonly hideUtilityBarBottom!: boolean;
   @Prop([Boolean]) readonly hideUtilityBarTop!: boolean;
   @Prop([Boolean]) readonly historyMode!: boolean;
   @Prop({ default: () => [10, 25, 50, 100, 250], type: Array }) readonly perPage!: Array<number>;
   @Prop([Boolean]) readonly selectable!: boolean;
-  @Prop({ required: true }) readonly service!: DatatableServiceModel;
+  @Prop({ required: true }) readonly service!: ServiceModel;
   @Prop({ required: true, type: String }) readonly tableId!: string;
   @Prop({ default: 'd-flex', type: String }) readonly utilityBarBottomClasses!: string;
   @Prop({ default: 'd-flex flex-column bg-white', type: String }) readonly utilityBarTopClasses!: string;
@@ -302,6 +316,8 @@ export default class Datatable extends Vue {
   visibleColumns: Array<string> = this.columns.filter(column => !column.hide).map(column => column.prop);
 
   created (): void {
+    EventBus.$on('datatable:refresh', this.onRefresh);
+
     // Apply filter config
     this.filters = _.cloneDeep(this.filterConfig);
 
@@ -363,6 +379,12 @@ export default class Datatable extends Vue {
 
   getVisibleColumns (): Array<DatatableColumnModel> {
     return this.columns.filter(column => this.visibleColumns.includes(column.prop));
+  }
+
+  resolveLinkPath (linkPath: string, row: any): string {
+    return linkPath.replace(/{(.*)}/, (match: string, prop: string) => {
+      return this.resolvePath(prop, row);
+    });
   }
 
   resolvePath (keyPath: string, row: any): any {
@@ -590,6 +612,16 @@ export default class Datatable extends Vue {
   queryChange (query: any): void {
     this.deserializeFilters();
     this.params = this.fixQueryTypes(query);
+  }
+
+  @Watch('filterConfig', { deep: true })
+  onFilterConfigChange (filters: Array<DatatableBaseFilter>) {
+    // Update filter config
+    this.filters = _.cloneDeep(filters);
+
+    if (this.historyMode) {
+      this.deserializeFilters();
+    }
   }
 
   @Watch('params', { deep: true })

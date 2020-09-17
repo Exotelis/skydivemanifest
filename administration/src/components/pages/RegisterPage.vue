@@ -184,7 +184,7 @@ export default class RegisterPage extends Mixins(FormMixin, FormValidationMixin)
       this.error = null;
       this.dirty = false;
     } catch (e) {
-      this.validateResponse(e.response);
+      this.validateResponse(e);
       this.error = e.response.data.message;
     }
     this.loading = false;

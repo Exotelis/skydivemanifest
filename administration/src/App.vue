@@ -1,6 +1,6 @@
 <template>
   <component :is="getLayout">
-    <router-view></router-view>
+    <router-view :key="$route.fullPath"></router-view>
 
     <!-- Modal components -->
     <confirm-email-modal></confirm-email-modal>

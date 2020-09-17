@@ -4,6 +4,10 @@ body {
 
 // New styles
 
+.blur-content {
+  filter: blur(2px);
+}
+
 .default-font-size {
   font-size: $font-size-base;
 }
@@ -20,6 +24,11 @@ a.dropdown-item.menu-item-danger, a.menu-item-danger, .menu-item-danger {
 
 .pointer {
   cursor: pointer;
+}
+
+.tbody-light th {
+  color: $gray-700;
+  background-color: $gray-200;
 }
 
 .text-link {

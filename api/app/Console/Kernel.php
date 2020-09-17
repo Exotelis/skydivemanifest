@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\CreateAdminUserCommand;
+use App\Console\Commands\FilterMakeCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -19,6 +20,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         CreateAdminUserCommand::class,
+        FilterMakeCommand::class,
     ];
 
     /**

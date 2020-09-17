@@ -44,7 +44,7 @@
         "noRecordsFound": "Keine Datensätze gefunden"
       },
       "datatableActions": {
-        "selected": "%{selected} Datensätze ausgewählt"
+        "selected": "0 Datensätze ausgewählt | 1 Datensatz ausgewählt | %{count} Datensätze ausgewählt"
       },
       "datatableColumnSelection": {
         "description": "Ändern Sie die Darstellung der Tabelle, indem Sie bis zu {max} Spalten auswählen.",
@@ -63,21 +63,11 @@
         "applyFilters": "Filter anwenden",
         "cancel": "@:(general.cancel)",
         "clearFilters": "@:(component.datatable.clearFilters)",
+        "couldNotLoad": "Filter konnten nicht geladen werden.",
+        "couldNotLoadMessage": "Verbindung zur Anwendungsschnittstelle fehlgeschlagen, es konnten nicht alle Filter geladen werden.",
         "exact": "genau",
         "filters": "Filter",
         "from": "von",
-        "select": {
-          "is_active": {
-            "false": "@:(general.disabled)",
-            "true": "@:(general.enabled)"
-          },
-          "gender": {
-            "d": "@:(general.gender.d)",
-            "f": "@:(general.gender.f)",
-            "m": "@:(general.gender.m)",
-            "u": "@:(general.gender.u)"
-          }
-        },
         "to": "bis"
       },
       "datatableRefresh": {
@@ -157,6 +147,7 @@
     },
     "form": {
       "label": {
+        "color": "Farbe",
         "dob": "Geburtsdatum",
         "email": "E-Mail-Adresse",
         "firstName": "Vorname",
@@ -169,9 +160,11 @@
         "passwordConfirmation": "Passwort bestätigen",
         "securityToken": "Sicherheitstoken",
         "username": "@:(general.username)",
-        "usernameEmail": "E-Mail / Benutzername"
+        "usernameEmail": "E-Mail / Benutzername",
+        "userRoleName": "Benutzerrollenname"
       },
       "placeholder": {
+        "color": "#6c757d",
         "dob": "Geben Sie Ihr Geburtsdatum ein...",
         "email": "Geben Sie Ihre E-Mail-Adresse ein...",
         "firstName": "Geben Sie Ihren Vornamen ein...",
@@ -185,13 +178,16 @@
         "securityToken": "Geben Sie das Sicherheitstoken ein...",
         "select": "-- Bitte wählen Sie eine Option --",
         "username": "Geben Sie Ihren Benutzernamen ein...",
-        "usernameEmail": "Geben Sie Ihre E-Mail-Adresse oder Ihren Benutzernamen ein..."
+        "usernameEmail": "Geben Sie Ihre E-Mail-Adresse oder Ihren Benutzernamen ein...",
+        "userRoleName": "Geben Sie den Namen der Benutzerrolle ein..."
       }
     },
     "general": {
       "accountSettings": "Kontoeinstellungen (%{email})",
       "active": "Aktiv",
+      "age": "Alter",
       "allRightsReserved": "Alle Rechte vorbehalten",
+      "back": "Zurück",
       "backToSignIn": "Zurück zur Anmeldung.",
       "cancel": "Abbrechen",
       "changePassword": "Passwort ändern",
@@ -199,8 +195,12 @@
       "continue": "Fortsetzen",
       "continueUsing": "Weitermachen",
       "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
+      "couldNotSave": "Konnte Daten nicht speichern",
+      "delete": "Löschen",
+      "deletePermanently": "Endgültig @.lower:(general.delete)",
       "disabled": "Deaktiviert",
       "enabled": "Aktiviert",
+      "edit": "Bearbeiten",
       "forgotPassword": "Passwort vergessen?",
       "gender": {
         "d": "divers",
@@ -211,13 +211,18 @@
       "id": "ID",
       "inactive": "Inaktiv",
       "loading": "Lädt...",
+      "no": "Nein",
       "noPermissionsText": "Sie haben nicht die erforderlichen Berechtigungen die Seite '%{title}' zu besuchen.",
       "noPermissionsTitle": "Keine Berechtigungen",
+      "notProtected": "Nicht geschützt",
       "othersettings": "Andere Einstellungen",
       "passwordExpired": "Ihr Passwort ist abgelaufen, bitte wählen Sie ein neues.",
       "permissions": "Berechtigungen",
+      "protected": "Geschützt",
+      "read": "Lesen",
       "reportBug": "Ein Problem melden",
       "resetPassword": "Passwort zurücksetzen",
+      "restore": "Wiederherstellen",
       "signIn": "Anmelden",
       "signInAgain": "Bitte melden Sie sich erneut an, damit die Änderungen wirksam werden.",
       "signInNow": "Jetzt anmelden",
@@ -226,7 +231,13 @@
       "signUp": "Registrieren",
       "system": "System",
       "translations": "Übersetzungen",
-      "username": "Benutzername"
+      "username": "Benutzername",
+      "write": "Schreiben",
+      "yes": "Ja"
+    },
+    "languages": {
+      "de": "deutsch",
+      "en": "englisch"
     },
     "page": {
       "login": {
@@ -269,9 +280,77 @@
         "skydiver": "Springer",
         "staff": "Mitarbeiter",
         "tickets": "Tickets",
-        "users": "Alle Benutzer",
-        "userroles": "Benutzerrollen"
+        "userAdd": "Benutzer hinzufügen",
+        "userRole": "Benutzerrolle",
+        "userRoleAdd": "Benutzerrolle hinzufügen",
+        "userRoles": "Benutzerrollen",
+        "users": "Benutzer",
+        "usersTrashed": "Gelöschte Benutzer"
+      },
+      "users": {
+        "age": "@:(general.age)",
+        "deletedError": "Der Benutzer konnte nicht gelöscht werden. @:(page.users.deleteForbidden) | Die Benutzer konnten nicht gelöscht werden. @:(page.users.deleteForbidden)",
+        "deletedTitle": "Benutzer erfolgreich gelöscht | Benutzer erfolgreich gelöscht",
+        "deletedTitleError": "Benutzer konnte nicht gelöscht werden | Benutzer konnten nicht gelöscht werden",
+        "deleteForbidden": "Benutzerkonten mit Administratorenrechten und das eigene Benutzerkonto sind geschützt und können nicht entfernt werden.",
+        "deleteModalOk": "Benutzer @.lower:(general.delete) | Benutzer @.lower:(general.delete)",
+        "deleteModalOkPermanently": "Benutzer endgültig @.lower:(general.delete) | Benutzer endgültig @.lower:(general.delete)",
+        "deleteModalText": "Sind Sie sicher, dass Sie diesen Benutzer löschen möchten? | Sind Sie sicher, dass Sie {count} Benutzer löschen möchten?",
+        "deleteModalTextPermanently": "Sind Sie sicher, dass Sie diesen Benutzer endgültig löschen möchten? | Sind Sie sicher, dass Sie {count} Benutzer endgültig löschen möchten?",
+        "deleteModalTitle": "Benutzer @.lower:(general.delete) | Benutzer @.lower:(general.delete)",
+        "deleteModalTitlePermanently": "Benutzer endgültig @.lower:(general.delete) | Benutzer endgültig @.lower:(general.delete)",
+        "dob": "Geburtsdatum",
+        "email": "E-Mail",
+        "emailVerified": "E-Mail verifiziert",
+        "firstname": "Vorname",
+        "gender": "Geschlecht",
+        "id": "@:(general.id)",
+        "isActive": "Kontostatus",
+        "language": "Sprache",
+        "lastname": "Nachname",
+        "middlename": "Zweitname",
+        "mobile": "Mobil",
+        "phone": "Telefon",
+        "restoredTitle": "Benutzer wiederhergestellt | Benutzer wiederhergestellt",
+        "restoredTitleError": "Benutzer konnte nicht wiederhergestellt werden | Benutzer konnten nicht wiederhergestellt werden",
+        "role": "Benutzerolle",
+        "timezone": "Zeitzone",
+        "username": "@:(general.username)"
+      },
+      "userRoles": {
+        "add": "Benutzerrolle hinzufügen",
+        "color": "Farbe",
+        "couldNotLoadPermissions": "Berechtigungen konnten nicht geladen werden",
+        "couldNotLoadRole": "Konnte Benutzerrolle nicht laden",
+        "create": "Benutzerrolle erstellen",
+        "createdMessage": "Die Benutzerrolle wurde erfolgreich erstellt.",
+        "createdTitle": "Benutzerrolle erstellt",
+        "deletable": "Löschschutz",
+        "delete": "Benutzerrolle @.lower:(general.delete)",
+        "deletedTitle": "Benutzerrolle erfolgreich gelöscht | Benutzerrollen erfolgreich gelöscht",
+        "deletedTitleError": "Benutzerrolle konnte nicht gelöscht werden | Benutzerrollen konnten nicht gelöscht werden",
+        "deleteModalOk": "@:(page.userRoles.delete) | Benutzerrollen @.lower:(general.delete)",
+        "deleteModalText": "Sind Sie sicher, dass Sie diese Benutzerrolle löschen möchten? | Sind Sie sicher, dass Sie {count} Benutzerrollen löschen möchten?",
+        "deleteModalTitle": "@:(page.userRoles.delete) | Benutzerrollen @.lower:(general.delete)",
+        "edit": "Benutzerrolle aktualisieren",
+        "editable": "Bearbeitungsschutz",
+        "id": "@:(general.id)",
+        "name": "Benutzerrollenname",
+        "notProtected": "@:(general.notProtected)",
+        "protected": "@:(general.protected)",
+        "updatedMessage": "Die Benutzerrolle wurde erfolgreich aktualisiert.",
+        "updatedTitle": "Benutzerrolle aktualisiert"
       }
+    },
+    "permissions": {
+      "addresses": "Adressen",
+      "countries": "Länder",
+      "currencies": "Währungen",
+      "permissions": "Berechtigungen",
+      "personal": "Persönliche Informationen",
+      "regions": "Regionen",
+      "roles": "Benutzerrollen",
+      "users": "Benutzer"
     }
   }
 }

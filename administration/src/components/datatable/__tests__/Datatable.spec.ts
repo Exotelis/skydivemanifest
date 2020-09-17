@@ -2,10 +2,10 @@ import { config, shallowMount } from '@vue/test-utils';
 import { colorYiq } from '@/helpers';
 import { DatatableActionModel } from '@/models/datatable/DatatableActionModel';
 import { DatatableColumnModel } from '@/models/datatable/DatatableColumnModel';
-import { DatatableServiceModel } from '@/models/datatable/DatatableServiceModel';
 import { FilterInputTypes } from '@/enum/FilterInputTypes';
 import { Density } from '@/enum/Density';
 import { Position } from '@/enum/Position';
+import { ServiceModel } from '@/models/ServiceModel';
 import { SortMode } from '@/enum/SortMode';
 import Datatable from '@/components/datatable/Datatable.vue';
 import DatatableBaseFilter from '@/filters/DatatableBaseFilter';
@@ -47,7 +47,7 @@ const factory = (props = {}, query = {}, methods = {}) => {
 describe('Datatable.vue', () => {
   let columns!: Array<DatatableColumnModel>;
   let filterConfig!: Array<DatatableBaseFilter>;
-  let service!: DatatableServiceModel;
+  let service!: ServiceModel;
   let tableId!: string;
   let rolePropCustom = function ({ name, color }: any): string {
     let fontColor: string = colorYiq(`${color}`);
@@ -277,6 +277,24 @@ describe('Datatable.vue', () => {
     const wrapper: any = factory({ columns: columns, service: service, tableId: tableId });
 
     expect(wrapper.vm.getVisibleColumns().length).toBe(6);
+  });
+
+  it('resolve link path', () => {
+    const wrapper: any = factory({ columns: columns, service: service, tableId: tableId });
+    const obj: any = {
+      id: 10,
+      name: 'John Doe',
+      role: {
+        id: 1,
+        name: 'admin',
+        permissions: {
+          runTests: true
+        }
+      }
+    };
+
+    expect(wrapper.vm.resolveLinkPath('/users/{id}', obj)).toBe('/users/10');
+    expect(wrapper.vm.resolveLinkPath('/user-roles/{role.id}', obj)).toBe('/user-roles/1');
   });
 
   it('resolve path', () => {
@@ -651,6 +669,45 @@ describe('Datatable.vue', () => {
 
     expect(spy).toHaveBeenCalled();
     expect(wrapper.vm.params).toEqual({ limit: 10, page: 5, sort: '' });
+
+    spy.mockRestore();
+  });
+
+  it('check if watcher \'onFilterConfigChange\' update filters', () => {
+    const wrapper: any = factory({ columns: columns, service: service, tableId: tableId });
+    const spy = jest.spyOn(wrapper.vm, 'deserializeFilters');
+
+    const filters: Array<DatatableBaseFilter> = [
+      new DatatableExactFilter(
+        'TestNew',
+        { inputType: FilterInputTypes.text, prop: 'testProp', value: 'testValue' })
+    ];
+
+    wrapper.vm.onFilterConfigChange(filters);
+
+    expect(spy).not.toHaveBeenCalled();
+    expect(wrapper.vm.filters).toEqual(filters);
+
+    spy.mockRestore();
+  });
+
+  it('check if watcher \'onFilterConfigChange\' will call \'deserializeFilters\' in history mode', () => {
+    const wrapper: any = factory(
+      { columns: columns, historyMode: true, service: service, tableId: tableId },
+      { 'filter[testProp]': 'testValue' }
+    );
+    const spy = jest.spyOn(wrapper.vm, 'deserializeFilters');
+
+    const filters: Array<DatatableBaseFilter> = [
+      new DatatableExactFilter(
+        'TestNew',
+        { inputType: FilterInputTypes.text, prop: 'testProp', value: 'testValue' })
+    ];
+
+    wrapper.vm.onFilterConfigChange(filters);
+
+    expect(spy).toHaveBeenCalled();
+    expect(wrapper.vm.filters).toEqual(filters);
 
     spy.mockRestore();
   });

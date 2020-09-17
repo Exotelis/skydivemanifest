@@ -18,6 +18,7 @@ class ChangePassword
      */
     protected $except = [
         'api.change-password',
+        'api.login',
         'api.logout',
         'api.timezones',
     ];
