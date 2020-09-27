@@ -178,8 +178,8 @@ return [
     | deleted. It also defines, after how many days after the user has been
     | created, not verified accounts should be deleted.
     |
-    | 'delete_inactive_after' is the time in months after inactive users should
-    | be deleted.
+    | 'delete_inactive_after' is the time in months after inactive/not updated
+    | users should be deleted. (Beginning at the end of the year)
     | 'delete_unverified_after' is the time in days, after a user with an un-
     | verified email should be deleted.
     |

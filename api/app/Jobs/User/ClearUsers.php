@@ -28,20 +28,13 @@ class ClearUsers implements ShouldQueue
     {
         // TODO - Should not be deleted if pending billings etc. probably it would fail anyway because of the
         //        constraints -> Take care of this when implementing this feature!
+        // Delete users that haven't been update for x months, beginning at the end of the year
         $configInactive = config('app.users.delete_inactive_after');
         $inactiveUsers = $users
             ->withTrashed()
             ->where('role_id', '!=', adminRole())
-            ->where(function($query) use ($configInactive) {
-                $query->where(function ($q) use ($configInactive) {
-                    $q->where('last_logged_in', '!=', null)
-                        ->where('last_logged_in', '<', Carbon::now()->subMonths($configInactive));
-                });
-                $query->orWhere(function ($q) use ($configInactive) {
-                    $q->where('last_logged_in', '=', null)
-                        ->where('updated_at', '<', Carbon::now()->subMonths($configInactive));
-                });
-            })->forceDelete();
+            ->where('updated_at', '<', Carbon::now()->subMonths($configInactive)->startOfYear())
+            ->forceDelete();
 
         if ($inactiveUsers) {
             Log::info("Deleted '{$inactiveUsers}' inactive users.");
