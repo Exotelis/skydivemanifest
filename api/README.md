@@ -163,10 +163,10 @@ php artisan passport:install
 As already said, this command will create the encryption keys and print the client ids and secret keys on the console.
 You must copy this information to your `.env` file. This is an example, please replace the ids and keys:
 ```
-OAUTH_PERSONAL_CLIENT_ID=90881e95-e53c-4284-90db-4d1086e4dfa4
-OAUTH_PERSONAL_CLIENT_SECRET=8Bti7LdqRMexGZxEAgJvqKSb0Zi4tGbWp1NGQofo
-OAUTH_PASSWORD_CLIENT_ID=90881e95-f052-48f0-b2b4-5efb5f5b0984
-OAUTH_PASSWORD_CLIENT_SECRET=cXedZFpn3Ara6BGVijlFaOWo5Fbjo0amPC795rhL
+PASSPORT_PERSONAL_ACCESS_CLIENT_ID=90881e95-e53c-4284-90db-4d1086e4dfa4
+PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET=8Bti7LdqRMexGZxEAgJvqKSb0Zi4tGbWp1NGQofo
+PASSPORT_PASSWORD_CLIENT_ID=90881e95-f052-48f0-b2b4-5efb5f5b0984
+PASSPORT_PASSWORD_CLIENT_SECRET=cXedZFpn3Ara6BGVijlFaOWo5Fbjo0amPC795rhL
 ```
 ___
 When you run into the error `There are no commands defined in the "passport" namespace.` when trying to run the
@@ -308,6 +308,11 @@ php artisan tinker
 phpinfo();
 ```
 Copy and paste the output of `phpinfo()` to the [xdebug wizard](https://xdebug.org/wizard) and follow the instructions.
+
+To create the coverage report, execute the test command like:
+```
+php artisan test --coverage-html report/
+```
 
 ### API documentation
 TODO

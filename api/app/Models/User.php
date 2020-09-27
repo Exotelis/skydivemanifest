@@ -14,6 +14,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -102,7 +103,8 @@ class User extends Model implements
     MustChangePasswordContract,
     MustVerifyEmailContract
 {
-    use Authenticatable, CanBeLocked, CanResetPassword, HasApiTokens, MustVerifyEmail, Notifiable, SoftDeletes;
+    use Authenticatable, CanBeLocked, CanResetPassword, HasApiTokens, HasFactory, MustVerifyEmail, Notifiable,
+        SoftDeletes;
 
     /**
      * The accessors to append to the model's array form.

@@ -56,7 +56,7 @@ if (! function_exists('allowMultipleTokens')) {
      */
     function allowMultipleTokens()
     {
-        return config('auth.oauth.allow_multiple_tokens');
+        return config('passport.allow_multiple_tokens');
     }
 }
 

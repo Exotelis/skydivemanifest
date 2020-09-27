@@ -1,5 +1,9 @@
 <?php
 
+namespace Database\Seeders;
+
+use App\Models\Address;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -21,9 +25,8 @@ class UserSeeder extends Seeder
             (new RegionSeeder())->run();
         }
 
-        factory(App\Models\User::class, 80)->create()->each(function ($user) {
-            // Generate 0 to 4 addresses per user
-            $addresses = factory(App\Models\Address::class, rand(0,4))->create(['user_id' => $user->id]);
+        User::factory()->count(50)->create()->each(function ($user) {
+            $addresses = Address::factory()->count(rand(0,4))->create(['user_id' => $user->id]);
             $addresses = $addresses->toArray();
 
             // Select default invoice and default shipping address

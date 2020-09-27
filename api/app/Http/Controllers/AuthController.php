@@ -110,8 +110,8 @@ class AuthController extends Controller
 
         $data = [
             'grant_type' => 'refresh_token',
-            'client_id' => config('auth.oauth.password_client.id'),
-            'client_secret' => config('auth.oauth.password_client.secret'),
+            'client_id' => config('passport.password_client.id'),
+            'client_secret' => config('passport.password_client.secret'),
             'refresh_token' => $request->token,
         ];
 
@@ -186,8 +186,8 @@ class AuthController extends Controller
 
         $data = [
             'grant_type' => 'password',
-            'client_id' => config('auth.oauth.password_client.id'),
-            'client_secret' => config('auth.oauth.password_client.secret'),
+            'client_id' => config('passport.password_client.id'),
+            'client_secret' => config('passport.password_client.secret'),
             'username' => $username,
             'password' => $password,
             'scope' => $this->user->role->permissions->pluck('slug')->toArray(),

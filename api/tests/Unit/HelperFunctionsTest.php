@@ -65,7 +65,7 @@ class HelperFunctionsTest extends TestCase
      */
     public function testAllowMultipleTokens()
     {
-        $this->assertEquals(config('auth.oauth.allow_multiple_tokens'), allowMultipleTokens());
+        $this->assertEquals(config('passport.allow_multiple_tokens'), allowMultipleTokens());
         $this->assertIsBool(allowMultipleTokens());
     }
 
@@ -114,8 +114,8 @@ class HelperFunctionsTest extends TestCase
     public function testRegexStrongPassword()
     {
         $this->assertIsString(regexStrongPassword());
-        $this->assertRegExp(regexStrongPassword(), 'Secret1!');
-        $this->assertNotRegExp(regexStrongPassword(), 'weakPassword');
+        $this->assertMatchesRegularExpression(regexStrongPassword(), 'Secret1!');
+        $this->assertDoesNotMatchRegularExpression(regexStrongPassword(), 'weakPassword');
     }
 
     /**
@@ -127,8 +127,8 @@ class HelperFunctionsTest extends TestCase
     public function testRegexMediumPassword()
     {
         $this->assertIsString(regexMediumPassword());
-        $this->assertRegExp(regexMediumPassword(), 'Secret1');
-        $this->assertNotRegExp(regexMediumPassword(), 'weakPassword');
+        $this->assertMatchesRegularExpression(regexMediumPassword(), 'Secret1');
+        $this->assertDoesNotMatchRegularExpression(regexMediumPassword(), 'weakPassword');
     }
 
     /**
@@ -140,8 +140,8 @@ class HelperFunctionsTest extends TestCase
     public function testRegexWeakPassword()
     {
         $this->assertIsString(regexWeakPassword());
-        $this->assertRegExp(regexWeakPassword(), 'longer');
-        $this->assertNotRegExp(regexWeakPassword(), 'short');
+        $this->assertMatchesRegularExpression(regexWeakPassword(), 'longer');
+        $this->assertDoesNotMatchRegularExpression(regexWeakPassword(), 'short');
     }
 
     /**
@@ -165,8 +165,8 @@ class HelperFunctionsTest extends TestCase
     public function testPasswordStrength()
     {
         $this->assertIsString(passwordStrength());
-        $this->assertRegExp(passwordStrength(), 'Secret1!');
-        $this->assertNotRegExp(passwordStrength(), 'weak');
+        $this->assertMatchesRegularExpression(passwordStrength(), 'Secret1!');
+        $this->assertDoesNotMatchRegularExpression(passwordStrength(), 'weak');
     }
 
     /**

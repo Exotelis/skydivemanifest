@@ -36,12 +36,12 @@ class PasswordResourcesTest extends TestCase
         $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
 
         // Forbidden - No password change required
-        $this->actingAs(factory(User::class)->states('noPasswordChange')->create());
+        $this->actingAs(User::factory()->noPasswordChange()->create());
         $response = $this->postJson($resource, $json);
         $response->assertStatus(403)->assertJson(['message' => 'This action is unauthorized.']);
 
         // Invalid request
-        $this->actingAs(factory(User::class)->states(['passwordChange'])->create());
+        $this->actingAs(User::factory()->passwordChange()->create());
         $response = $this->postJson($resource, ['password' => 'notvalid']);
         $response
             ->assertStatus(422)->assertJsonStructure(['message', 'errors'])
@@ -62,7 +62,7 @@ class PasswordResourcesTest extends TestCase
     public function testForgotPassword()
     {
         $resource = self::API_URL . 'auth/password/forgot';
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         Notification::fake();
 
@@ -104,7 +104,7 @@ class PasswordResourcesTest extends TestCase
     public function testResetPassword()
     {
         $resource = self::API_URL . 'auth/password/reset';
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $token = Password::broker()->createToken($user);
 
         $json = [

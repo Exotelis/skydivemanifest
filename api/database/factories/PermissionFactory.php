@@ -1,23 +1,59 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Models\Permission;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Permission::class, function (Faker $faker) {
-    return [
-        'is_default' => false,
-        'name'       => $faker->word,
-        'slug'       => $faker->slug,
-    ];
-});
+/**
+ * Class PermissionFactory
+ * @package Database\Factories
+ */
+class PermissionFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Permission::class;
 
-$factory->state(Permission::class, 'all', [
-    'name' => 'All',
-    'slug' => '*',
-]);
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'is_default' => false,
+            'name'       => $this->faker->word,
+            'slug'       => $this->faker->slug,
+        ];
+    }
 
-$factory->state(Permission::class, 'default', [
-    'is_default' => true,
-]);
+    /**
+     * Indicate that all permissions are assigned
+     *
+     * @return Factory
+     */
+    public function all()
+    {
+        return $this->state([
+            'name' => 'All',
+            'slug' => '*',
+        ]);
+    }
+
+    /**
+     * Indicate that the permission is default
+     *
+     * @return Factory
+     */
+    public function default()
+    {
+        return $this->state([
+            'is_default' => true,
+        ]);
+    }
+}
