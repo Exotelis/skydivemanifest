@@ -1,85 +1,160 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Models\User;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(User::class, function (Faker $faker) {
-    return [
-        'default_invoice'   => null,
-        'default_shipping'  => null,
-        'dob'               => $faker->date($format = 'Y-m-d', $max = 'now'),
-        'email'             => $faker->unique()->safeEmail,
-        'email_verified_at' => $faker->optional(80)->dateTime($max = 'now', $timezone = 'UTC'),
-        'failed_logins'     => 0,
-        'firstname'         => $faker->firstName,
-        'gender'            => $faker->randomElement(validGender()),
-        'is_active'         => $faker->boolean(80),
-        'last_logged_in'    => $faker->dateTimeBetween($startDate = '-10 years', $endDate = 'now', $timezone = 'UTC'),
-        'lastname'          => $faker->lastName,
-        'locale'            => 'en',
-        'lock_expires'      => null,
-        'middlename'        => $faker->optional(25)->firstName,
-        'mobile'            => $faker->optional()->phoneNumber,
-        'password'          => 'secret',
-        'password_change'   => $faker->boolean(20),
-        'phone'             => $faker->optional()->e164PhoneNumber,
-        'role_id'           => $faker->randomElement([adminRole(), defaultRole()]),
-        'username'          => $faker->unique()->userName,
-        'timezone'          => $faker->timezone,
-    ];
-});
+/**
+ * Class UserFactory
+ * @package Database\Factories
+ */
+class UserFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = User::class;
 
-$factory->state(User::class, 'allPermissions', [
-    'role_id' => adminRole(),
-]);
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'default_invoice'   => null,
+            'default_shipping'  => null,
+            'dob'               => $this->faker->date($format = 'Y-m-d', $max = 'now'),
+            'email'             => $this->faker->unique()->safeEmail,
+            'email_verified_at' => $this->faker->optional(80)->dateTime($max = 'now', $timezone = 'UTC'),
+            'failed_logins'     => 0,
+            'firstname'         => $this->faker->firstName,
+            'gender'            => $this->faker->randomElement(validGender()),
+            'is_active'         => $this->faker->boolean(80),
+            'last_logged_in'    => $this->faker->dateTimeBetween($startDate = '-10 years', $endDate = 'now', $timezone = 'UTC'),
+            'lastname'          => $this->faker->lastName,
+            'locale'            => 'en',
+            'lock_expires'      => null,
+            'middlename'        => $this->faker->optional(25)->firstName,
+            'mobile'            => $this->faker->optional()->phoneNumber,
+            'password'          => 'secret',
+            'password_change'   => $this->faker->boolean(20),
+            'phone'             => $this->faker->optional()->e164PhoneNumber,
+            'role_id'           => $this->faker->randomElement([adminRole(), defaultRole()]),
+            'username'          => $this->faker->unique()->userName,
+            'timezone'          => $this->faker->timezone,
+        ];
+    }
 
-$factory->state(User::class, 'isActive', [
-    'is_active' => true,
-]);
+    /**
+     * Indicate that the user is active
+     *
+     * @return Factory
+     */
+    public function isActive()
+    {
+        return $this->state([
+            'is_active' => true,
+        ]);
+    }
 
-$factory->state(User::class, 'isAdmin', [
-    'role_id' => adminRole(),
-]);
+    /**
+     * Indicate that the user is admin and got all permissions
+     *
+     * @return Factory
+     */
+    public function isAdmin()
+    {
+        return $this->state([
+            'role_id' => adminRole(),
+        ]);
+    }
 
-$factory->state(User::class, 'isInactive', [
-    'is_active' => false,
-]);
+    /**
+     * Indicate that the user is inactive
+     *
+     * @return Factory
+     */
+    public function isInactive()
+    {
+        return $this->state([
+            'is_active' => false,
+        ]);
+    }
 
-$factory->state(User::class, 'isLocked', [
-    'lock_expires' => now()->addMinutes(10),
-]);
+    /**
+     * Indicate that the user account is locked
+     *
+     * @return Factory
+     */
+    public function isLocked()
+    {
+        return $this->state([
+            'lock_expires' => now()->addMinutes(10),
+        ]);
+    }
 
-$factory->state(User::class, 'isNotVerified', [
-    'email_verified_at' => null,
-]);
+    /**
+     * Indicate that the users email address is not yet verified
+     *
+     * @return Factory
+     */
+    public function isNotVerified()
+    {
+        return $this->state([
+            'email_verified_at' => null,
+        ]);
+    }
 
-$factory->state(User::class, 'isUser', [
-    'role_id' => defaultRole(),
-]);
+    /**
+     * Indicate that the user has only the default permissions
+     *
+     * @return Factory
+     */
+    public function isUser()
+    {
+        return $this->state([
+            'role_id' => defaultRole(),
+        ]);
+    }
 
-$factory->state(User::class, 'isVerified', [
-    'email_verified_at' => '1970-01-01 12:00:00',
-]);
+    /**
+     * Indicate that the users email address is verified
+     *
+     * @return Factory
+     */
+    public function isVerified()
+    {
+        return $this->state([
+            'email_verified_at' => '1970-01-01 12:00:00',
+        ]);
+    }
 
-$factory->state(User::class, 'noPasswordChange', [
-    'password_change' => false,
-]);
+    /**
+     * Indicate that the user don't need to change the password
+     *
+     * @return Factory
+     */
+    public function noPasswordChange()
+    {
+        return $this->state([
+            'password_change' => false,
+        ]);
+    }
 
-$factory->state(User::class, 'noPermissions', [
-    'role_id' => defaultRole(),
-]);
-
-$factory->state(User::class, 'passwordChange', [
-    'password_change' => true,
-]);
-
-$factory->afterCreatingState(User::class, 'allPermissions', function ($user) {
-    $user->role->permissions()->detach();
-    $user->role->permissions()->attach(factory(\App\Models\Permission::class)->state('all')->create());
-});
-
-$factory->afterCreatingState(User::class, 'noPermissions', function ($user) {
-    $user->role->permissions()->detach();
-});
+    /**
+     * Indicate that the user need to change the password
+     *
+     * @return Factory
+     */
+    public function passwordChange()
+    {
+        return $this->state([
+            'password_change' => true,
+        ]);
+    }
+}

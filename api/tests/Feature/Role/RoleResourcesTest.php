@@ -22,7 +22,7 @@ class RoleResourcesTest extends TestCase
         parent::setUp();
 
         // Create roles
-        $this->roles = factory(Role::class, 5)->create();
+        $this->roles = Role::factory()->count(5)->create();
     }
 
     /**
@@ -127,14 +127,14 @@ class RoleResourcesTest extends TestCase
         $response->assertStatus(404)->assertJson(['message' => 'The requested resource was not found.']);
 
         // Protected
-        $this->roles->push(factory(Role::class)->state('notDeletable')->create());
+        $this->roles->push(Role::factory()->notDeletable()->create());
         $response = $this->deleteJson($resourceRoles . $this->roles->last()->id);
         $response->assertStatus(400)
             ->assertJson(['message' => 'The user role is protected and cannot be deleted.']);
 
         // Not deletable - Assign user to group
-        $this->roles->push(factory(Role::class)->create());
-        $user = factory(User::class)->create();
+        $this->roles->push(Role::factory()->create());
+        $user = User::factory()->create();
         $user->role_id = $this->roles->last()->id;
         $user->save();
         $response = $this->deleteJson($resourceRoles . $this->roles->last()->id);
@@ -165,11 +165,11 @@ class RoleResourcesTest extends TestCase
         $this->actingAs($this->admin, ['roles:read','roles:delete']);
 
         // Invalid input
-        $this->roles[0] = factory(Role::class)->state('notDeletable')->create();
-        $this->roles[1] = factory(Role::class)->create();
+        $this->roles[0] = Role::factory()->notDeletable()->create();
+        $this->roles[1] = Role::factory()->create();
 
         // Assign user to group
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->role_id = $this->roles[1]->id;
         $user->save();
 
@@ -179,7 +179,7 @@ class RoleResourcesTest extends TestCase
         ]);
 
         // Success
-        $this->roles = factory(Role::class, 5)->create();
+        $this->roles = Role::factory()->count(5)->create();
         $response = $this->deleteJson($resource, ['ids' => $this->roles->pluck('id')->toArray()]);
         $response->assertStatus(200)->assertJson(['message' => '5 users roles have been deleted successfully.']);
         foreach ($this->roles as $role) {
@@ -239,12 +239,12 @@ class RoleResourcesTest extends TestCase
         $response->assertStatus(404)->assertJson(['message' => 'The requested resource was not found.']);
 
         // Not editable
-        $notEditable = factory(Role::class)->state('notEditable')->create();
+        $notEditable = Role::factory()->notEditable()->create();
         $response = $this->putJson($resourceRoles . $notEditable->id, ['permissions' => ['users:read']]);
         $response->assertStatus(400)->assertJson(['message' => 'The user role is protected. The permissions of this user role cannot be changed.']);
 
         // Should set default permissions
-        $defaultPermission = factory(Role::class)->create();
+        $defaultPermission = Role::factory()->create();
         $response = $this->putJson($resourceRoles . $defaultPermission->id, ['permissions' => ['users:read']]);
         $response->assertStatus(200)
             ->assertJsonFragment(['permission_slug' => 'personal']);

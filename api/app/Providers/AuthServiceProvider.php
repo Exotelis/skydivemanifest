@@ -32,6 +32,7 @@ class AuthServiceProvider extends ServiceProvider
         Passport::tokensExpireIn(now()->addHours(2));
         Passport::refreshTokensExpireIn(now()->addDays(2));
         Passport::personalAccessTokensExpireIn(now()->addYears(10));
+        Passport::hashClientSecrets();
 
         $this->defineScopes();
     }

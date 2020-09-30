@@ -27,7 +27,7 @@ class EmailResourcesTest extends TestCase
     public function testConfirm()
     {
         $resource = self::API_URL . 'auth/email/confirm';
-        $user = factory(User::class)->state('isVerified')->create();
+        $user = User::factory()->isVerified()->create();
         $newEmail = 'newemail@example.com';
 
         Event::fake();
@@ -68,7 +68,7 @@ class EmailResourcesTest extends TestCase
     public function testDelete()
     {
         $resource = self::API_URL . 'auth/email/delete';
-        $user = factory(User::class)->states('isActive', 'noPasswordChange')->create();
+        $user = User::factory()->isActive()->noPasswordChange()->create();
         $newEmail = 'newemail@example.com';
 
         // Not signed in
@@ -99,7 +99,7 @@ class EmailResourcesTest extends TestCase
     public function testResend()
     {
         $resource = self::API_URL . 'auth/email/resend';
-        $user = factory(User::class)->states('isActive', 'noPasswordChange')->create();
+        $user = User::factory()->isActive()->noPasswordChange()->create();
         $newEmail = 'newemail@example.com';
 
         Notification::fake();

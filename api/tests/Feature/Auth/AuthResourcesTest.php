@@ -2,11 +2,13 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 /**
@@ -26,17 +28,27 @@ class AuthResourcesTest extends TestCase
         $password = $clientRepository->createPasswordGrantClient(
             null, 'Test Password Access Client', 'http://localhost'
         );
-        $this->app['config']->set(['auth.oauth.password_client' => [
+        $this->app['config']->set(['passport.password_client' => [
             'id'     => $password->id,
-            'secret' => $password->secret,
+            'secret' => $password->getPlainSecretAttribute(),
         ]]);
         $personal = $clientRepository->createPersonalAccessClient(
             null, 'Test Personal Access Client', 'http://localhost'
         );
-        $this->app['config']->set(['auth.oauth.personal_client' => [
+        $this->app['config']->set(['passport.personal_access_client' => [
             'id'     => $personal->id,
-            'secret' => $personal->secret,
+            'secret' => $personal->getPlainSecretAttribute(),
         ]]);
+
+        // Define scopes
+        try {
+            $validScopes = Permission::all()->pluck('name', 'slug')->all();
+        } catch (\Exception $exception) {
+            $validScopes = [];
+        }
+        $defaultScopes = [];
+        Passport::tokensCan($validScopes);
+        Passport::setDefaultScope($defaultScopes);
     }
 
     /**
@@ -48,7 +60,7 @@ class AuthResourcesTest extends TestCase
     public function testLogin()
     {
         $resource = self::API_URL . 'auth';
-        $user = factory(User::class)->state('allPermissions')->create();
+        $user = User::factory()->isAdmin()->create();
 
         Event::fake();
         Notification::fake();
@@ -116,7 +128,7 @@ class AuthResourcesTest extends TestCase
     {
         $resource = self::API_URL . 'auth/logout';
         $resourceLogin = self::API_URL . 'auth';
-        $user = factory(User::class)->states(['allPermissions'])->create();
+        $user = User::factory()->isAdmin()->create();
         $this->actingAs($user);
 
         // Get token
@@ -141,7 +153,7 @@ class AuthResourcesTest extends TestCase
     {
         $resource = self::API_URL . 'auth/refresh';
         $loginResource = self::API_URL . 'auth';
-        $user = factory(User::class)->state('allPermissions')->create();
+        $user = User::factory()->isAdmin()->create();
 
         // Sign in
         $response = $this->postJson($loginResource, ['username' => $user->email, 'password' => 'secret']);
@@ -174,7 +186,7 @@ class AuthResourcesTest extends TestCase
         $resource = self::API_URL . 'auth/register';
         $json = [
             'dob'                   => $this->faker->date($format = 'Y-m-d', $max = 'now'),
-            'email'                 => $this->faker->unique()->safeEmail,
+            'email'                 => 'exotelis@mailbox.org',
             'firstname'             => $this->faker->firstName,
             'gender'                => $this->faker->randomElement(validGender()),
             'lastname'              => $this->faker->lastName,
@@ -192,11 +204,11 @@ class AuthResourcesTest extends TestCase
 
         // Success
         $response = $this->postJson($resource, $json);
+        $response->assertStatus(201)->assertJson(['message' => 'The user has been created successfully.']);
         unset($json['password'], $json['password_confirmation']);
         $json['is_active'] = true;
         $this->assertDatabaseHas('users', $json);
         $json['role']['id'] = defaultRole();
-        $response->assertStatus(201)->assertJson(['message' => 'The user has been created successfully.']);
         Event::assertDispatched(\Illuminate\Auth\Events\Registered::class);
     }
 }

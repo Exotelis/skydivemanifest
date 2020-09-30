@@ -1,25 +1,45 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Models\Address;
 use App\Models\Country;
 use App\Models\Region;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Address::class, function (Faker $faker) {
-    $countryId = array_rand(array_flip(Country::all()->getQueueableIds()));
-    $regionId = array_rand(array_flip(Region::where('country_id', $countryId)->get()->getQueueableIds()));
+/**
+ * Class AddressFactory
+ * @package Database\Factories
+ */
+class AddressFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Address::class;
 
-    return [
-        'city'       => $faker->city,
-        'company'    => $faker->optional(25)->company,
-        'country_id' => $countryId,
-        'firstname'  => $faker->firstName,
-        'lastname'   => $faker->lastName,
-        'middlename' => $faker->optional(25)->firstName,
-        'postal'     => $faker->postcode,
-        'region_id'  => $regionId,
-        'street'     => $faker->streetAddress,
-    ];
-});
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $countryId = array_rand(array_flip(Country::all()->getQueueableIds()));
+        $regionId = array_rand(array_flip(Region::where('country_id', $countryId)->get()->getQueueableIds()));
+
+        return [
+            'city'       => $this->faker->city,
+            'company'    => $this->faker->optional(25)->company,
+            'country_id' => $countryId,
+            'firstname'  => $this->faker->firstName,
+            'lastname'   => $this->faker->lastName,
+            'middlename' => $this->faker->optional(25)->firstName,
+            'postal'     => $this->faker->postcode,
+            'region_id'  => $regionId,
+            'street'     => $this->faker->streetAddress,
+        ];
+    }
+}

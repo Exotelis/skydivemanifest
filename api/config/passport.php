@@ -30,4 +30,62 @@ return [
 
     'client_uuids' => true,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Personal Access Client
+    |--------------------------------------------------------------------------
+    |
+    | If you enable client hashing, you should set the personal access client
+    | ID and unhashed secret within your environment file. The values will
+    | get used while issuing fresh personal access tokens to your users.
+    |
+    */
+
+    'personal_access_client' => [
+        'id' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_ID'),
+        'secret' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Password Client
+    |--------------------------------------------------------------------------
+    |
+    | Define the client id and the secret of the passport password client.
+    |
+    */
+
+    'password_client' => [
+        'id' => env('PASSPORT_PASSWORD_CLIENT_ID'),
+        'secret' => env('PASSPORT_PASSWORD_CLIENT_SECRET'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Multiple tokens
+    |--------------------------------------------------------------------------
+    |
+    | Define if a user can have more than one active token at the sime time.
+    |
+    */
+
+    'allow_multiple_tokens' => (bool) env('PASSPORT_MULTIPLE_TOKENS', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Passport Storage Driver
+    |--------------------------------------------------------------------------
+    |
+    | This configuration value allows you to customize the storage options
+    | for Passport, such as the database connection that should be used
+    | by Passport's internal database models which store tokens, etc.
+    |
+    */
+
+    'storage' => [
+        'database' => [
+            'connection' => env('DB_CONNECTION', 'mysql'),
+        ],
+    ],
+
 ];

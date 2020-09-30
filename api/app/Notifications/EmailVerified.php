@@ -27,14 +27,7 @@ class EmailVerified extends Notification implements ShouldQueue
      *
      * @var int
      */
-    public $retryAfter = 90;
-
-    /**
-     * Stop child process after x seconds.
-     *
-     * @var int
-     */
-    public $timeout = 75;
+    public $backoff = 90;
 
     /**
      * Get the notification's delivery channels.

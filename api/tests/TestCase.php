@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -34,9 +35,7 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         // Create admin
-        $this->admin = factory(User::class)
-            ->states('isActive', 'isAdmin', 'isVerified', 'noPasswordChange')
-            ->create();
+        $this->admin = User::factory()->isActive()->isAdmin()->isVerified()->noPasswordChange()->create();
     }
 
     /**
@@ -68,9 +67,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function checkForbidden($resource, $action = 'get')
     {
-        $user = factory(User::class)
-            ->states( 'isActive', 'isVerified', 'noPasswordChange', 'noPermissions')
-            ->create();
+        $user= User::factory()->isActive()->isUser()->isVerified()->noPasswordChange()->create();
         $this->actingAs($user);
 
         $response = $this->getResponse($resource, $action);

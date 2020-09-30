@@ -164,29 +164,4 @@ return [
 
     'password_strength' => 'regexMediumPassword',
 
-    /*
-    |--------------------------------------------------------------------------
-    | OAuth settings
-    |--------------------------------------------------------------------------
-    |
-    | This key defines the default oauth clients that should be used by your
-    | application. By default passport will create a personal and password
-    | client. Those clients we will store here.
-    | It also defines if user allowed to have multiple tokens. If not, all old
-    | tokens will be revoked when a new one is requested.
-    |
-    */
-
-    'oauth' => [
-        'password_client' => [
-            'id'     => env('OAUTH_PASSWORD_CLIENT_ID', null),
-            'secret' => env('OAUTH_PASSWORD_CLIENT_SECRET', null),
-        ],
-        'personal_client' => [
-            'id'     => env('OAUTH_PERSONAL_CLIENT_ID', null),
-            'secret' => env('OAUTH_PERSONAL_CLIENT_SECRET', null),
-        ],
-        'allow_multiple_tokens' => (bool) env('OAUTH_MULTIPLE_TOKENS', false),
-    ],
-
 ];

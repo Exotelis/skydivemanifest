@@ -13,28 +13,21 @@ class UserResourcesTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $admin;
     protected $users;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        // Create admin
-        $this->admin = factory(User::class)
-            ->states('isActive', 'isVerified', 'noPasswordChange')
-            ->create();
-
         // Create countries and regions
-        factory(Country::class, 3)->create()->each(function ($country) {
-            factory(Region::class, 2)->create(['country_id' => $country->id]);
+        Country::factory()->count(3)->create()->each(function ($country) {
+            Region::factory()->count(2)->create(['country_id' => $country->id]);
         });
 
         // Create users
-        $this->users = factory(User::class, 8)->states('noPermissions')->create()
-            ->each(function ($user) {
+        $this->users = User::factory()->count(8)->isUser()->create()->each(function ($user) {
             // Generate 0 to 4 addresses per user
-            $addresses = factory(Address::class, rand(0,4))->create(['user_id' => $user->id]);
+            $addresses = Address::factory()->count(rand(0, 4))->create(['user_id' => $user->id]);
             $addresses = $addresses->toArray();
 
             // Select default invoice and default shipping address
@@ -60,9 +53,7 @@ class UserResourcesTest extends TestCase
         $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
 
         // Forbidden
-        $user = factory(User::class)
-            ->states( 'isActive', 'isVerified', 'noPasswordChange', 'noPermissions')
-            ->create();
+        $user = User::factory()->isActive()->isUser()->isVerified()->noPasswordChange()->create();
         $this->actingAs($user);
         $response = $this->getJson($resource);
         $response->assertStatus(403)->assertJson(['message' => 'Invalid scope(s) provided.']);
@@ -109,9 +100,7 @@ class UserResourcesTest extends TestCase
         $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
 
         // Forbidden
-        $user = factory(User::class)
-            ->states( 'isActive', 'isVerified', 'noPasswordChange', 'noPermissions')
-            ->create();
+        $user = User::factory()->isActive()->isUser()->isVerified()->noPasswordChange()->create();
         $this->actingAs($user);
         $response = $this->deleteJson($resource);
         $response->assertStatus(403)->assertJson(['message' => 'Invalid scope(s) provided.']);
@@ -152,9 +141,7 @@ class UserResourcesTest extends TestCase
         $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
 
         // Forbidden
-        $user = factory(User::class)
-            ->states( 'isActive', 'isVerified', 'noPasswordChange', 'noPermissions')
-            ->create();
+        $user = User::factory()->isActive()->isUser()->isVerified()->noPasswordChange()->create();
         $this->actingAs($user);
         $response = $this->deleteJson($resource);
         $response->assertStatus(403)->assertJson(['message' => 'Invalid scope(s) provided.']);
@@ -214,9 +201,7 @@ class UserResourcesTest extends TestCase
         $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
 
         // Forbidden
-        $user = factory(User::class)
-            ->states( 'isActive', 'isVerified', 'noPasswordChange', 'noPermissions')
-            ->create();
+        $user = User::factory()->isActive()->isUser()->isVerified()->noPasswordChange()->create();
         $this->actingAs($user);
         $response = $this->putJson($resource);
         $response->assertStatus(403)->assertJson(['message' => 'Invalid scope(s) provided.']);
@@ -269,9 +254,7 @@ class UserResourcesTest extends TestCase
         $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
 
         // Forbidden
-        $user = factory(User::class)
-            ->states( 'isActive', 'isVerified', 'noPasswordChange', 'noPermissions')
-            ->create();
+        $user = User::factory()->isActive()->isUser()->isVerified()->noPasswordChange()->create();
         $this->actingAs($user);
         $response = $this->getJson($resource);
         $response->assertStatus(403)->assertJson(['message' => 'Invalid scope(s) provided.']);

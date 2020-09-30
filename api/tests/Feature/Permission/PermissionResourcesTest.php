@@ -15,18 +15,6 @@ class PermissionResourcesTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $admin;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        // Create admin
-        $this->admin = factory(User::class)
-            ->states('isActive', 'isVerified', 'noPasswordChange')
-            ->create();
-    }
-
     /**
      * Test [GET] permissions resource.
      *
@@ -41,9 +29,7 @@ class PermissionResourcesTest extends TestCase
         $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
 
         // Forbidden
-        $user = factory(User::class)
-            ->states( 'isActive', 'isVerified', 'noPasswordChange', 'noPermissions')
-            ->create();
+        $user = User::factory()->isActive()->isUser()->isVerified()->noPasswordChange()->create();
         $this->actingAs($user);
         $response = $this->getJson($resource);
         $response->assertStatus(403)->assertJson(['message' => 'Invalid scope(s) provided.']);
