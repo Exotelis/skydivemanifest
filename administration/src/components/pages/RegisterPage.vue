@@ -19,8 +19,7 @@
         <form-group label-for="email"
                     :invalid-feedback="errors.email"
                     :label="$t('form.label.email')">
-          <input-email autofocus
-                       id="email"
+          <input-email id="email"
                        required
                        v-model.trim="form.email"
                        :placeholder="$t('form.placeholder.email')"></input-email>
@@ -97,6 +96,12 @@
           </div>
         </div>
 
+        <input-checkbox class="mb-3" id="tos" required :invalidFeedback="errors.tos" :name="tos" :value="true">
+          <i18n path="page.register.tos">
+            <template v-slot:tos><a @click.prevent="showTos()">{{ $t('general.tos') }}</a></template>
+          </i18n>
+        </input-checkbox>
+
         <button-wrapper block
                         class="mb-4"
                         icon="mdi-account-plus"
@@ -125,6 +130,7 @@ import ButtonWrapper from '@/components/form/ButtonWrapper.vue';
 import FormGroup from '@/components/form/FormGroup.vue';
 import FormMixin from '@/mixins/FormMixin';
 import FormValidationMixin from '@/mixins/FormValidationMixin';
+import InputCheckbox from '@/components/form/InputCheckbox.vue';
 import InputDate from '@/components/form/InputDate.vue';
 import InputEmail from '@/components/form/InputEmail.vue';
 import InputPassword from '@/components/form/InputPassword.vue';
@@ -136,6 +142,7 @@ import SelectWrapper from '@/components/form/SelectWrapper.vue';
   components: {
     ButtonWrapper,
     FormGroup,
+    InputCheckbox,
     InputDate,
     InputEmail,
     InputPassword,
@@ -152,9 +159,11 @@ export default class RegisterPage extends Mixins(FormMixin, FormValidationMixin)
     gender: Gender.u,
     lastname: '',
     password: '',
-    password_confirmation: ''
+    password_confirmation: '',
+    tos: false
   };
   options: Options = [];
+  tos: Array<boolean> = [];
 
   mounted () {
     this.options = [
@@ -190,11 +199,20 @@ export default class RegisterPage extends Mixins(FormMixin, FormValidationMixin)
     this.loading = false;
   }
 
+  showTos () {
+    // TODO open modal and show tos - query tos from backend first!!!
+  }
+
   @Watch('form', { deep: true })
   onFormChange (form: RegisterModel): void {
     this.dirty = true;
     this.disabledSubmit = !(form.dob.length > 0 && form.email.length > 0 && form.firstname.length > 0 &&
-      form.lastname.length > 0 && form.password.length > 0 && form.password_confirmation.length > 0);
+      form.lastname.length > 0 && form.password.length > 0 && form.password_confirmation.length > 0 && form.tos);
+  }
+
+  @Watch('tos', { deep: true })
+  onTosChange (tos: Array<boolean>): void {
+    this.form.tos = tos.length === 1 && tos[0];
   }
 }
 </script>

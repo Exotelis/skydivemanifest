@@ -12,4 +12,5 @@ export default interface RegisterModel {
   password_confirmation: string
   timezone?: string
   username?: string
+  tos: boolean
 }

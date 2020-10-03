@@ -230,6 +230,7 @@
       "signOut": "Abmelden",
       "signUp": "Registrieren",
       "system": "System",
+      "tos": "Nutzungsbedingungen",
       "translations": "Übersetzungen",
       "username": "Benutzername",
       "write": "Schreiben",
@@ -263,7 +264,8 @@
         "confirmation": "Prüfen Sie die Bestätigungs-Email unter <strong>{email}</strong>",
         "contactUs": "Können Sie dennoch keine E-Mail von uns finden, nehmen Sie bitte Kontakt zu uns auf.",
         "note": "Sollten Sie keine E-Mail erhalten haben, prüfen Sie zunächst Ihren Spam-Ordner und vergewissern Sie sich, dass Sie die E-Mail-Adresse korrekt eingegeben haben.",
-        "successTitle": "Vielen Dank für Ihre Registrierung!"
+        "successTitle": "Vielen Dank für Ihre Registrierung!",
+        "tos": "Ich stimme den {tos} zu"
       },
       "title": {
         "aircrafts": "Flugzeuge",

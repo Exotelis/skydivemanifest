@@ -230,6 +230,7 @@
       "signOut": "Sign Out",
       "signUp": "Sign Up",
       "system": "System",
+      "tos": "Terms of Service",
       "translations": "Translations",
       "username": "Username",
       "write": "Write",
@@ -263,7 +264,8 @@
         "confirmation": "Check the confirmation email at <strong>{email}</strong>",
         "contactUs": "If you still cannot find an email, please contact us.",
         "note": "Note: If you do not receive the email in few minutes, please check your spam folder and verify if you typed your email correctly.",
-        "successTitle": "Thank You for Signing Up!"
+        "successTitle": "Thank You for Signing Up!",
+        "tos": "I agree to the {tos}"
       },
       "title": {
         "aircrafts": "Aircrafts",
