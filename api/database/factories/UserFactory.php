@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'default_invoice'   => null,
             'default_shipping'  => null,
             'dob'               => $this->faker->date($format = 'Y-m-d', $max = 'now'),
-            'email'             => $this->faker->unique()->safeEmail,
+            'email'             => $this->faker->unique()->freeEmail,
             'email_verified_at' => $this->faker->optional(80)->dateTime($max = 'now', $timezone = 'UTC'),
             'failed_logins'     => 0,
             'firstname'         => $this->faker->firstName,
@@ -45,7 +45,7 @@ class UserFactory extends Factory
             'password_change'   => $this->faker->boolean(20),
             'phone'             => $this->faker->optional()->e164PhoneNumber,
             'role_id'           => $this->faker->randomElement([adminRole(), defaultRole()]),
-            'username'          => $this->faker->unique()->userName,
+            'username'          => $this->faker->unique()->regexify('[A-Za-z0-9]{5,20}'),
             'timezone'          => $this->faker->timezone,
             'tos'               => $this->faker->boolean(90),
         ];
