@@ -83,7 +83,7 @@ class RoleController extends Controller
      * Delete a single role.
      *
      * @param Request $request
-     * @param $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function delete(Request $request, $id)
@@ -129,6 +129,8 @@ class RoleController extends Controller
     }
 
     /**
+     * Return a single role.
+     *
      * @param Request $request
      * @param int $id
      * @return \Illuminate\Http\JsonResponse

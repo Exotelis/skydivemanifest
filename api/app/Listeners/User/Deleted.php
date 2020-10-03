@@ -2,29 +2,38 @@
 
 namespace App\Listeners\User;
 
+use App\Events\User\Delete as Event;
+use App\Mail\DeleteUser as Mailable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
-class Deleted
+/**
+ * Class Deleted
+ * @package App\Listeners\User
+ */
+class Deleted implements ShouldQueue
 {
     /**
-     * Create the event listener.
+     * The name of the queue the job should be sent to.
      *
-     * @return void
+     * @var string|null
      */
-    public function __construct()
-    {
-        //
-    }
+    public $queue = 'listeners';
 
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param  Event $event
      * @return void
      */
-    public function handle($event)
+    public function handle(Event $event)
     {
-        //
+        $db = $event->deletedBy;
+
+        $mail = (new Mailable($event->email, $event->firstname, $event->locale))->onQueue('mail');
+        Mail::to($event->email)->send($mail);
+
+        Log::info("User: '{$event->id}|{$event->email}' has been deleted by: '{$db->id}|{$db->email}'");
     }
 }

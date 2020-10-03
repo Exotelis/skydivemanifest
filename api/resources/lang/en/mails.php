@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'blue_skies'             => 'Blue skies.',
     'button_confirm_mail'    => 'Confirm my email',
     'button_fallback'        => 'If you’re having trouble clicking the ":button" button, copy and paste the URL below into your web browser: :url',
     'button_forgot_password' => 'Request new password',
@@ -12,6 +13,8 @@ return [
     'create_user_3'          => 'Once this is done, you can sign in to your account, start booking your slots and much more.',
     'create_user_4'          => 'If you are having trouble receiving the confirmation email, please contact us personally.',
     'create_user_password'   => 'To sign in to your account, please use the following password:',
+    'delete_user_1'          => 'This message confirms that your user account (:email) has been deleted permanently.',
+    'delete_user_2'          => 'We are sorry to lose you as one of our team members. Feel free to join our team again whenever you want.',
     'email_verified'         => 'Your email address has been verified successfully.',
     'greeting'               => 'Blue skies, :Appname team',
     'hello'                  => 'Hello',
@@ -21,6 +24,7 @@ return [
     'not_me'                 => 'If you didn\'t request this, please ignore this email.',
     'password_reset_request' => 'We received a request to reset your password. Use the link below to set a new password for your account.',
     'subject_create_user'    => 'Where to skydive next?',
+    'subject_delete_user'    => 'Your account has been deleted',
     'subject_email_verified' => 'Your email address has been verified',
     'subject_lock_account'   => 'Your account has been locked',
     'subject_reset_password' => 'Your Password Reset Link',

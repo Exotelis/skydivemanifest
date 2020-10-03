@@ -12,4 +12,6 @@ return [
     'role_created'              => 'The user role has been created successfully.',
     'role_created_failed'       => 'Could not create user role.',
     'signed_out'                => 'Logged out successfully.',
+    'user_created'              => 'The user has been created successfully.',
+    'user_created_failed'       => 'Could not create user.',
 ];

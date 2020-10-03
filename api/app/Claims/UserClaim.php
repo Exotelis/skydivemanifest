@@ -21,7 +21,9 @@ class UserClaim
             'locale'          => $user->locale,
             'password_change' => $user->password_change,
             'timezone'        => $user->timezone,
+            'tos'             => $user->tos,
         ]);
+
         return $next($token);
     }
 }

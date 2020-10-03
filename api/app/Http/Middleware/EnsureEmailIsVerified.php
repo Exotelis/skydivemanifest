@@ -19,12 +19,17 @@ class EnsureEmailIsVerified extends EnsureEmailIsVerifiedIlluminate
      * @var array
      */
     protected $except = [
+        'api.accept-tos',
         'api.change-password',
         'api.confirm-email',
         'api.delete-email-request',
-        'api.resend-email-request',
+        'api.forgot-password',
         'api.login',
         'api.logout',
+        'api.refresh',
+        'api.register',
+        'api.resend-email-request',
+        'api.reset-password',
         'api.timezones',
     ];
 
@@ -39,8 +44,12 @@ class EnsureEmailIsVerified extends EnsureEmailIsVerifiedIlluminate
      */
     public function handle($request, Closure $next, $redirectToRoute = null)
     {
-        if (! $request->user() ||
-            ($request->user() instanceof MustVerifyEmail && ! $request->user()->hasVerifiedEmail())
+        $user = $request->user();
+
+        if (! \is_null($user) &&
+            $user instanceof MustVerifyEmail &&
+            ! $user->hasVerifiedEmail() &&
+            ! $this->inExceptArray($request)
         ) {
             return $request->expectsJson()
                 ? abort(403, __('error.email_not_verified'))

@@ -364,6 +364,12 @@ password.
 ```
 https://<path-to-your-frontend>/password-change
 ```
+The fourth route is the `accept-tos` route, where a user that was created by an admin has to accept the terms of
+service. After the user signed in, the payload of the access token can be decrypted. If the `tos` value is false, the
+user must accept the terms of service.
+```
+https://<path-to-your-frontend>/accept-tos
+```
 Without having those routes, you cannot make use of those features.
 
 Apart from those routes, you also have to check if the parameter `email-token` was submitted. If it was submitted you

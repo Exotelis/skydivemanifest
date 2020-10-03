@@ -37,12 +37,12 @@ class CreateUsersTable extends Migration
             $table->string('middlename')->nullable();
             $table->string('mobile')->nullable();
             $table->string('password')->nullable();
-            $table->boolean('password_change')
-                ->default(false)->comment('Force password change');
+            $table->boolean('password_change')->default(false)->comment('Force password change');
             $table->string('phone')->nullable();
             $table->unsignedInteger('role_id')->nullable();
             $table->string('username')->nullable()->unique();
             $table->string('timezone')->nullable();
+            $table->boolean('tos')->default(false)->comment('Terms of Service accepted');
             $table->timestamp('created_at', 0)->useCurrent();
             $table->timestamp('updated_at', 0)->useCurrent();
             $table->softDeletes();

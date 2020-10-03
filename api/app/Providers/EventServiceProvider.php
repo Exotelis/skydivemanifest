@@ -41,6 +41,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Auth\PasswordReset' => [
             'App\Listeners\Auth\LogPasswordReset',
         ],
+        'App\Events\User\Create' => [
+            'App\Listeners\User\Created',
+        ],
+        'App\Events\User\Delete' => [
+            'App\Listeners\User\Deleted',
+        ],
 
     ];
 

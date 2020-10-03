@@ -52,6 +52,39 @@ class AuthResourcesTest extends TestCase
     }
 
     /**
+     * Test accept terms of service resource
+     *
+     * @covers \App\Http\Controllers\AuthController
+     * @return void
+     */
+    public function testAcceptTos()
+    {
+        $resource = self::API_URL . 'auth/tos';
+        $user = User::factory()->isUser()->tosNotAccepted()->create();
+
+        // Unauthorized
+        $response = $this->postJson($resource, ['tos' => true]);
+        $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
+
+        $this->actingAs($user);
+
+        // Unprocessable Entity
+        $this->checkInvalidInput(
+            $resource,
+            'post',
+            ['tos' => false],
+            [
+                'tos' => ['You have to agree to the terms of service.']
+            ]
+        );
+
+        // Success
+        $response = $this->postJson($resource, ['tos' => true]);
+        $response->assertStatus(200)->assertJson(['message' => 'The Terms of Service have been accepted.']);
+        $this->assertDatabaseHas('users', ['id' => $user->id, 'tos' => 1]);
+    }
+
+    /**
      * Test login resource.
      *
      * @covers \App\Http\Controllers\AuthController
@@ -192,6 +225,7 @@ class AuthResourcesTest extends TestCase
             'lastname'              => $this->faker->lastName,
             'password'              => 'Secret1!',
             'password_confirmation' => 'Secret1!',
+            'tos'                   => 1
         ];
 
         Event::fake();
@@ -205,7 +239,7 @@ class AuthResourcesTest extends TestCase
         // Success
         $response = $this->postJson($resource, $json);
         $response->assertStatus(201)->assertJson(['message' => 'The user has been created successfully.']);
-        unset($json['password'], $json['password_confirmation']);
+        unset($json['password'], $json['password_confirmation'], $json['tos']);
         $json['is_active'] = true;
         $this->assertDatabaseHas('users', $json);
         $json['role']['id'] = defaultRole();

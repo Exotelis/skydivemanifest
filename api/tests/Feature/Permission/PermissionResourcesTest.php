@@ -29,10 +29,7 @@ class PermissionResourcesTest extends TestCase
         $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
 
         // Forbidden
-        $user = User::factory()->isActive()->isUser()->isVerified()->noPasswordChange()->create();
-        $this->actingAs($user);
-        $response = $this->getJson($resource);
-        $response->assertStatus(403)->assertJson(['message' => 'Invalid scope(s) provided.']);
+        $this->checkForbidden($resource);
 
         // Sign in as admin
         $this->actingAs($this->admin, ['permissions:read']);

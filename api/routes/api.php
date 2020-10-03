@@ -51,28 +51,35 @@ Route::prefix('auth')->group(function() {
         Route::post('reset', [App\Http\Controllers\ResetPasswordController::class, 'postReset'])
             ->name('api.reset-password');
     });
+
+    /**
+     * Tos
+     */
+    Route::post('tos', [App\Http\Controllers\AuthController::class, 'acceptTos'])
+        ->middleware('auth:api')
+        ->name('api.accept-tos');
+});
+
+/**
+ * Me/Personal
+ */
+Route::middleware(['auth:api'])->prefix('me')->group(function () {
+    Route::get('/', [App\Http\Controllers\UserController::class, 'meUser']);
+    Route::put('/', [App\Http\Controllers\UserController::class, 'meUpdate']);
+    Route::delete('/', [App\Http\Controllers\UserController::class, 'meDelete']);
 });
 
 /**
  * Permissions
  */
-Route::middleware(['auth:api', 'scopes:permissions:read', 'verified'])->prefix('permissions')->group(function () {
+Route::middleware(['auth:api', 'scopes:permissions:read'])->prefix('permissions')->group(function () {
     Route::get('/', [App\Http\Controllers\PermissionController::class, 'all'])->name('api.get-permissions');
-});
-
-/**
- * Personal
- */
-Route::middleware(['auth:api', 'verified'])->prefix('me')->group(function () {
-    Route::get('/', function (Request $request) {
-        return $request->user();
-    });
 });
 
 /**
  * Roles
  */
-Route::middleware(['auth:api', 'scopes:roles:read', 'verified'])->prefix('roles')->group(function () {
+Route::middleware(['auth:api', 'scopes:roles:read'])->prefix('roles')->group(function () {
     Route::get('/', [App\Http\Controllers\RoleController::class, 'all'])->name('api.get-roles');
     Route::post('/', [App\Http\Controllers\RoleController::class, 'create'])
         ->middleware('scopes:roles:write')
@@ -99,9 +106,16 @@ Route::middleware(['auth:api', 'scopes:roles:read', 'verified'])->prefix('roles'
 /**
  * Roles names
  */
-Route::middleware(['auth:api', 'scope:roles:read,users:read', 'verified'])->get('roles/names', function() {
+Route::middleware(['auth:api', 'scope:roles:read,users:read'])->get('roles/names', function() {
     return \App\Models\Role::all()->pluck('name')->toArray();
 })->name('api.get-roles-names');
+
+/**
+ * Roles valid
+ */
+Route::middleware(['auth:api', 'scope:roles:read,users:read'])->get('roles/valid', function() {
+    return validRoles(auth()->user());
+})->name('api.get-roles-valid');
 
 /**
  * Timezones
@@ -113,7 +127,7 @@ Route::get('timezones', function() {
 /**
  * Users
  */
-Route::middleware(['auth:api', 'scopes:users:read', 'verified'])->prefix('users')->group(function() {
+Route::middleware(['auth:api', 'scopes:users:read'])->prefix('users')->group(function() {
     Route::get('/', [App\Http\Controllers\UserController::class, 'all'])->name('api.get-users');
     Route::post('/', [App\Http\Controllers\UserController::class, 'create'])
         ->middleware('scopes:users:write')
@@ -126,9 +140,13 @@ Route::middleware(['auth:api', 'scopes:users:read', 'verified'])->prefix('users'
      * Single user
      */
     Route::prefix('{id}')->where(['id' => '[0-9]+'])->group(function() {
+        Route::get('/', [App\Http\Controllers\UserController::class, 'user'])->name('api.get-user');
+        Route::put('/', [App\Http\Controllers\UserController::class, 'update'])
+            ->middleware('scopes:users:write')
+            ->name('api.update-user');
         Route::delete('/', [App\Http\Controllers\UserController::class, 'delete'])
             ->middleware('scopes:users:delete')
-            ->name('api.delete-user')->where('id', '[0-9]+');
+            ->name('api.delete-user');
     });
 
     /**

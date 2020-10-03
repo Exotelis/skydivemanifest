@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'blue_skies'             => 'Blue skies.',
     'button_confirm_mail'    => 'Meine E-Mail-Adresse bestätigen',
     'button_fallback'        => 'Solltest Du Probleme beim Anklicken des Buttons ":button" haben, kopiere die unten stehende Webadresse in Deinen Browser: :url',
     'button_forgot_password' => 'Password zurücksetzen',
@@ -12,6 +13,8 @@ return [
     'create_user_3'          => 'Danach kannst Du Dich mit Deinem neuen Benutzerkonto anmelden, Deine Slots buchen und vieles mehr.',
     'create_user_4'          => 'Solltest Du keine Bestätigungsmail erhalten, kontaktiere uns bitte persönlich.',
     'create_user_password'   => 'Um Dich mit Deinem Benutzerkonto anzumelden, benutze das folgende Passwort:',
+    'delete_user_1'          => 'Diese E-Mail bestätigt, dass Dein Benutzerkonto (:email) dauerhaft gelöscht wurde.',
+    'delete_user_2'          => 'Wir sind traurig Dich als Teammitglied zu verlieren. Du bist jederzeit wieder herzlich bei uns willkommen.',
     'email_verified'         => 'Ihre E-Mail-Adresse wurde erfolgreich bestätigt.',
     'greeting'               => 'Blue skies, :Appname team',
     'hello'                  => 'Hallo',
@@ -21,9 +24,10 @@ return [
     'not_me'                 => 'Wenn Du nichts von dieser Anfrage weißt, ignoriere diese E-Mail einfach.',
     'password_reset_request' => 'Wir haben eine Anfrage zum Zurücksetzen Deines Passworts erhalten. Klicke auf den unten stehenden Link, um ein neues Passwort für Dein Benutzerkonto zu vergeben.',
     'subject_create_user'    => 'Where to skydive next?',
+    'subject_delete_user'    => 'Ihr Benutzerkonto wurde gelöscht',
     'subject_email_verified' => 'Ihre E-Mail-Adresse wurde bestätigt',
     'subject_lock_account'   => 'Ihr Benutzerkonto wurde gesperrt',
-    'subject_reset_password' => 'Kennwort vergessen',
+    'subject_reset_password' => 'Kennwort zurücksetzen',
     'subject_verify_email'   => 'Bitte bestätigen Sie Ihre E-Mail-Adresse',
     'verify_email_1'         => 'Bitte bestätige Deine E-Mail-Adresse durch Anklicken des Links.',
     'welcome'                => 'Willkommen',

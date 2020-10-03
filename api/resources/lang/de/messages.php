@@ -12,4 +12,6 @@ return [
     'role_created'              => 'Die Benutzerrolle wurde erfolgreich erstellt.',
     'role_created_failed'       => 'Die Benutzerrolle konnte nicht erstellt werden.',
     'signed_out'                => 'Erfolgreich abgemeldet.',
+    'user_created'              => 'Der Benutzer wurde erfolgreich erstellt.',
+    'user_created_failed'       => 'Der Benutzer konnte nicht erstellt werden.',
 ];
