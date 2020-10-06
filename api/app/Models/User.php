@@ -467,8 +467,17 @@ class User extends Model implements
     public function signOut()
     {
         foreach($this->tokens as $token) {
+            // Do not sign out personal access client tokens
+            if ($token->client_id === config('passport.personal_access_client.id')) {
+                continue;
+            }
+
+            // Revoke token and refresh tokens, if some exist!
             $revoked = $token->revoke();
-            RefreshToken::firstWhere('access_token_id', $token->id)->revoke();
+            $refreshToken = RefreshToken::firstWhere('access_token_id', $token->id);
+            if (!\is_null($refreshToken)) {
+                $refreshToken->revoke();
+            }
             if (! $revoked) {
                 abort(500, __('auth.oauth_revoke'));
             }
