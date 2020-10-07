@@ -15,6 +15,16 @@ const routes = [
     }
   },
   {
+    path: '/accept-tos',
+    name: 'accept-tos',
+    component: () => import(/* webpackChunkName: "acceptTos" */ '@/components/pages/AcceptTosPage.vue'),
+    meta: {
+      title: 'page.title.acceptTos',
+      layout: 'Welcome',
+      requiresAuth: true
+    }
+  },
+  {
     path: '/aircrafts',
     name: 'aircrafts',
     meta: {

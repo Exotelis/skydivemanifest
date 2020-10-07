@@ -200,7 +200,7 @@ export default class RegisterPage extends Mixins(FormMixin, FormValidationMixin)
   }
 
   showTos () {
-    // TODO open modal and show tos - query tos from backend first!!!
+    // TODO open modal and show tos - query tos from backend - resolve this when upgrading or refactoring
   }
 
   @Watch('form', { deep: true })

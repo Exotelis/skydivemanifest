@@ -54,7 +54,7 @@ describe('router', () => {
 
   it('redirect to "/notitle" when the user has sufficient permissions', async () => {
     const spy = jest.spyOn(AuthService, 'checkAuth').mockImplementation(() => true);
-    document.cookie = 'XSRF-TOKEN=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZXMiOlsicGVybWlzc2lvbnM6cmVhZCJdLCJ1c2VyIjp7fX0';
+    document.cookie = 'XSRF-TOKEN=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZXMiOlsicGVybWlzc2lvbnM6cmVhZCJdLCJ1c2VyIjp7InRvcyI6dHJ1ZX19';
     router.addRoutes([{
       path: '/permissions',
       name: 'permissions',
