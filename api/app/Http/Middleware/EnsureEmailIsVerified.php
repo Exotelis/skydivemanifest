@@ -31,6 +31,7 @@ class EnsureEmailIsVerified extends EnsureEmailIsVerifiedIlluminate
         'api.resend-email-request',
         'api.reset-password',
         'api.timezones',
+        'api.tos',
     ];
 
     /**

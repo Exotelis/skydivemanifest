@@ -31,6 +31,7 @@ class EnsureAccountIsActive
         'api.resend-email-request',
         'api.reset-password',
         'api.timezones',
+        'api.tos',
     ];
 
     /**

@@ -121,8 +121,15 @@ Route::middleware(['auth:api', 'scope:roles:read,users:read'])->get('roles/valid
  * Timezones
  */
 Route::get('timezones', function() {
-   return \Carbon\CarbonTimeZone::listIdentifiers();
+    return \Carbon\CarbonTimeZone::listIdentifiers();
 })->name('api.timezones');
+
+/**
+ * Tos - Terms of Service
+ */
+Route::get('tos', function() {
+    return __('tos');
+})->name('api.tos');
 
 /**
  * Users

@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Tos;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
+/**
+ * Class TosResourceTest
+ * @package Tests\Feature\Tos
+ */
 class TosResourceTest extends TestCase
 {
     /**
@@ -13,10 +15,11 @@ class TosResourceTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
+    public function testTos()
     {
-        $response = $this->get('/');
+        $resource = self::API_URL . 'tos';
 
-        $response->assertStatus(200);
+        $response = $this->getJson($resource);
+        $response->assertExactJson(__('tos'));
     }
 }
