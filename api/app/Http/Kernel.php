@@ -52,6 +52,8 @@ class Kernel extends HttpKernel
             'security.headers',
             'server.headers',
             'throttle:60,1',
+            'tos.accepted',
+            'verified',
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
@@ -82,6 +84,7 @@ class Kernel extends HttpKernel
         'server.headers'   => \App\Http\Middleware\ServerHeader::class,
         'signed'           => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle'         => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'tos.accepted'     => \App\Http\Middleware\EnsureTosAreAccepted::class,
         'verified'         => \App\Http\Middleware\EnsureEmailIsVerified::class,
     ];
 
@@ -99,6 +102,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\Authenticate::class,
         \App\Http\Middleware\EnsureEmailIsVerified::class,
         \App\Http\Middleware\EnsureAccountIsActive::class,
+        \App\Http\Middleware\EnsureTosAreAccepted::class,
         \App\Http\Middleware\ChangePassword::class,
         \App\Http\Middleware\SecurityHeaders::class,
         \App\Http\Middleware\ServerHeader::class,

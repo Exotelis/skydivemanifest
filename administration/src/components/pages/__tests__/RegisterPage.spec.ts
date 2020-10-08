@@ -17,7 +17,7 @@ describe('RegisterPage.vue', () => {
           push: () => { component.vm.$emit('changeRoute'); return Promise.resolve(); }
         }
       },
-      stubs: ['router-link']
+      stubs: ['i18n', 'router-link']
     });
   });
 
@@ -42,7 +42,7 @@ describe('RegisterPage.vue', () => {
     const getTimezoneOffset = Date.prototype.getTimezoneOffset;
     Date.prototype.getTimezoneOffset = jest.fn(() => -200); // eslint-disable-line no-extend-native
 
-    const wrapper: any = mount(RegisterPage, { stubs: ['router-link'] });
+    const wrapper: any = mount(RegisterPage, { stubs: ['i18n', 'router-link'] });
     expect(wrapper.vm.form.timezone).toBe('200');
 
     // Restore defaults
@@ -58,6 +58,7 @@ describe('RegisterPage.vue', () => {
     component.find('#lastname').setValue('Doe');
     component.find('#password').setValue('secret');
     component.find('#password_confirmation').setValue(' ');
+    component.find('#tos').trigger('click');
     expect(component.find('button').attributes().disabled).toBe('disabled');
     component.find('#password_confirmation').setValue('secret');
     expect(component.find('button').attributes().disabled).toBeUndefined();
@@ -96,7 +97,8 @@ describe('RegisterPage.vue', () => {
       gender: Gender.u,
       lastname: 'Doe',
       password: 'secret',
-      password_confirmation: 'secret'
+      password_confirmation: 'secret',
+      tos: true
     };
 
     expect(component.find('h3').text()).toBe('general.signUp');

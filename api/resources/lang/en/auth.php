@@ -19,5 +19,7 @@ return [
     'oauth_could_not_revoke'  => 'Could not revoke access token.',
     'registration_successful' => 'The user has been created successfully.',
     'throttle'                => 'Too many login attempts. Please try again in :seconds seconds.',
+    'tos_accepted'            => 'The Terms of Service have been accepted.',
+    'tos_accepted_already'    => 'The Terms of Service have been accepted already.',
 
 ];

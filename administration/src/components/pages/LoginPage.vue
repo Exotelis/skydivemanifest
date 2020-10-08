@@ -80,7 +80,10 @@ export default class LoginPage extends Mixins(FormMixin, FormValidationMixin) {
 
     try {
       await AuthService.login(credentials);
-      if (AuthService.passwordChangeRequired()) {
+
+      if (AuthService.mustAcceptTos()) {
+        await this.$router.push('/accept-tos');
+      } else if (AuthService.passwordChangeRequired()) {
         await this.$router.push('/password-change');
       } else {
         await this.$router.push('/');

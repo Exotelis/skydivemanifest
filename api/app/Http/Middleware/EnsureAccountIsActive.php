@@ -19,10 +19,19 @@ class EnsureAccountIsActive
      * @var array
      */
     protected $except = [
+        'api.accept-tos',
         'api.change-password',
+        'api.confirm-email',
+        'api.delete-email-request',
+        'api.forgot-password',
         'api.login',
         'api.logout',
+        'api.refresh',
+        'api.register',
+        'api.resend-email-request',
+        'api.reset-password',
         'api.timezones',
+        'api.tos',
     ];
 
     /**

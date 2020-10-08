@@ -193,6 +193,7 @@
       "changePassword": "Change password",
       "close": "Close",
       "continue": "Continue",
+      "continueLink": "Please click the link below to continue.",
       "continueUsing": "Continue using",
       "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
       "couldNotSave": "Could not save data",
@@ -211,6 +212,7 @@
       "id": "ID",
       "inactive": "Inactive",
       "loading": "Loading...",
+      "nextPage": "Go to the next page.",
       "no": "No",
       "noPermissionsText": "You don't have the permissions to visit the '%{title}' page.",
       "noPermissionsTitle": "No permissions",
@@ -230,6 +232,7 @@
       "signOut": "Sign Out",
       "signUp": "Sign Up",
       "system": "System",
+      "tos": "Terms of Service",
       "translations": "Translations",
       "username": "Username",
       "write": "Write",
@@ -240,6 +243,10 @@
       "en": "english"
     },
     "page": {
+      "acceptTos": {
+        "button": "Agree to Terms of Service",
+        "description": "You haven't agreed to the @:(general.tos) yet. To continue, you have to accept them, otherwise you can sign out from your account."
+      },
       "login": {
         "title": {
           "morning": "Good morning,",
@@ -263,9 +270,11 @@
         "confirmation": "Check the confirmation email at <strong>{email}</strong>",
         "contactUs": "If you still cannot find an email, please contact us.",
         "note": "Note: If you do not receive the email in few minutes, please check your spam folder and verify if you typed your email correctly.",
-        "successTitle": "Thank You for Signing Up!"
+        "successTitle": "Thank You for Signing Up!",
+        "tos": "I agree to the {tos}"
       },
       "title": {
+        "acceptTos": "Terms of Service",
         "aircrafts": "Aircrafts",
         "bookings": "Bookings",
         "dashboard": "Dashboard",

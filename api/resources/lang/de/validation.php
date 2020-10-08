@@ -148,7 +148,12 @@ return [
             'in' => 'Die :attribute muss eine der folgenden sein: :values',
         ],
         'role' => [
-            'unique' => 'Eine Rolle mit diesem Namen existiert bereits.'
+            'exists' => 'Die ausgewählte Rolle existiert nicht.',
+            'in'     => 'Sie können dem Benutzer diese Rolle nicht zuweisen. Gültige Rollen sind: :values',
+            'unique' => 'Eine Rolle mit diesem Namen existiert bereits.',
+        ],
+        'tos' => [
+            'accepted' => 'Sie müssen den Nutzungsbedingungen zustimmen.',
         ],
         'username' => [
             'unique' => 'Ein Benutzerkonto mit diesem Benutzernamen existiert bereits.',

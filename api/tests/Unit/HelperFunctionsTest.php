@@ -254,6 +254,24 @@ class HelperFunctionsTest extends TestCase
     }
 
     /**
+     * Test if the correct valid roles are returned.
+     *
+     * @covers ::validRoles
+     * @return void
+     */
+    public function testValidRoles()
+    {
+        $this->assertEquals(0, validRoles()->count());
+
+        $roles = validRoles($this->admin)->pluck('id')->toArray();
+        $this->assertEquals([1, 2], $roles);
+
+        $user = \App\Models\User::factory()->isUser()->create();
+        $roles = validRoles($user)->pluck('id')->toArray();
+        $this->assertEquals([2], $roles);
+    }
+
+    /**
      * Test if the correct bool is returned.
      *
      * @covers ::isDigit

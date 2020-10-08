@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RefreshRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\TosRequest;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,6 +27,30 @@ class AuthController extends Controller
      * @var \Illuminate\Database\Eloquent\Builder|User
      */
     protected $user;
+
+    /**
+     * Accept the terms of service
+     *
+     * @param TosRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function acceptTos(TosRequest $request)
+    {
+        $user = $request->user();
+
+        if (! ($user instanceof User)) {
+            abort(400, __('error.400'));
+        }
+
+        if ($user->tosAccepted()) {
+            return response()->json(['message' => __('auth.tos_accepted_already')]);
+        }
+
+        $user->tos = true;
+        $user->save();
+
+        return response()->json(['message' => __('auth.tos_accepted')]);
+    }
 
     /**
      * Sign the user in.
@@ -89,7 +114,7 @@ class AuthController extends Controller
         // Check if a user is authenticated, if not it could be a client credential token.
         $user = Auth::user();
 
-        if (! is_null($user) && $user instanceof User) {
+        if (! \is_null($user) && $user instanceof User) {
             $user->signOut();
 
             return response()->json(['message' => __('messages.signed_out')]);
@@ -152,6 +177,7 @@ class AuthController extends Controller
             'password',
             'username',
             'timezone',
+            'tos',
         ]);
         $newUser = null;
 

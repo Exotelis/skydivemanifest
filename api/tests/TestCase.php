@@ -35,7 +35,13 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         // Create admin
-        $this->admin = User::factory()->isActive()->isAdmin()->isVerified()->noPasswordChange()->create();
+        $this->admin = User::factory()
+            ->isActive()
+            ->isAdmin()
+            ->isVerified()
+            ->noPasswordChange()
+            ->tosAccepted()
+            ->create();
     }
 
     /**
@@ -67,7 +73,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function checkForbidden($resource, $action = 'get')
     {
-        $user= User::factory()->isActive()->isUser()->isVerified()->noPasswordChange()->create();
+        $user= User::factory()->isActive()->isUser()->isVerified()->noPasswordChange()->tosAccepted()->create();
         $this->actingAs($user);
 
         $response = $this->getResponse($resource, $action);

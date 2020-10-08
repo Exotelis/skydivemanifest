@@ -52,6 +52,7 @@ use Laravel\Passport\RefreshToken;
  * @property int|null $role_id
  * @property string|null $username
  * @property string|null $timezone
+ * @property boolean $tos Terms of Service accepted
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|Address[] $addresses
@@ -92,6 +93,7 @@ use Laravel\Passport\RefreshToken;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereTimezone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereTos($value)
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class User extends Model implements
@@ -139,6 +141,7 @@ class User extends Model implements
         'role_id'           => 2,
         'username'          => null,
         'timezone'          => null,
+        'tos'               => false,
     ];
 
     /**
@@ -151,6 +154,7 @@ class User extends Model implements
         'failed_logins'   => 'integer',
         'is_active'       => 'boolean',
         'password_change' => 'boolean',
+        'tos'             => 'boolean',
     ];
 
     /**
@@ -440,7 +444,7 @@ class User extends Model implements
     }
 
     /**
-     * Determine if the user is disabled.
+     * Update the last login time.
      *
      * @return bool
      */
@@ -463,8 +467,17 @@ class User extends Model implements
     public function signOut()
     {
         foreach($this->tokens as $token) {
+            // Do not sign out personal access client tokens
+            if ($token->client_id === config('passport.personal_access_client.id')) {
+                continue;
+            }
+
+            // Revoke token and refresh tokens, if some exist!
             $revoked = $token->revoke();
-            RefreshToken::firstWhere('access_token_id', $token->id)->revoke();
+            $refreshToken = RefreshToken::firstWhere('access_token_id', $token->id);
+            if (!\is_null($refreshToken)) {
+                $refreshToken->revoke();
+            }
             if (! $revoked) {
                 abort(500, __('auth.oauth_revoke'));
             }
@@ -480,5 +493,15 @@ class User extends Model implements
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    /**
+     * Determine if terms of service have been accepted.
+     *
+     * @return bool
+     */
+    public function tosAccepted()
+    {
+        return $this->tos;
     }
 }

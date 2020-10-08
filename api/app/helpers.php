@@ -250,6 +250,27 @@ if (! function_exists('validGender')) {
     }
 }
 
+if (! function_exists('validRoles')) {
+    /**
+     * A list of the valid roles.
+     *
+     * @param  \App\Models\User $user
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    function validRoles($user = null)
+    {
+        if (is_null($user)) {
+            return new \Illuminate\Database\Eloquent\Collection();
+        }
+
+        if ($user->role_id === adminRole()) {
+            return \App\Models\Role::all();
+        }
+
+        return \App\Models\Role::find(array_unique([defaultRole(), $user->role_id]));
+    }
+}
+
 if (! function_exists('isDigit')) {
     /**
      * Determine if the given subject is a digit.

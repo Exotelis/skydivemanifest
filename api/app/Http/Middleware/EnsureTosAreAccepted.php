@@ -2,16 +2,14 @@
 
 namespace App\Http\Middleware;
 
-use App\Contracts\User\MustVerifyEmail;
 use Closure;
-use Illuminate\Auth\Middleware\EnsureEmailIsVerified as EnsureEmailIsVerifiedIlluminate;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Auth\Access\AuthorizationException;
 
 /**
- * Class EnsureEmailIsVerified
+ * Class EnsureTosAreAccepted
  * @package App\Http\Middleware
  */
-class EnsureEmailIsVerified extends EnsureEmailIsVerifiedIlluminate
+class EnsureTosAreAccepted
 {
     /**
      * Routes that should skip handle.
@@ -37,31 +35,27 @@ class EnsureEmailIsVerified extends EnsureEmailIsVerifiedIlluminate
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string|null  $redirectToRoute
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse|void
-     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     * @param \Illuminate\Http\Request $request
+     * @param Closure $next
+     * @return mixed
      */
-    public function handle($request, Closure $next, $redirectToRoute = null)
+    public function handle($request, Closure $next)
     {
         $user = $request->user();
 
         if (! \is_null($user) &&
-            $user instanceof MustVerifyEmail &&
-            ! $user->hasVerifiedEmail() &&
+            $user instanceof \App\Models\User &&
+            ! $user->tosAccepted() &&
             ! $this->inExceptArray($request)
         ) {
-            return $request->expectsJson()
-                ? abort(403, __('error.email_not_verified'))
-                : Redirect::route($redirectToRoute ?: 'verification.notice');
+            abort(403, __('error.tos_not_accepted'));
         }
 
         return $next($request);
     }
 
     /**
-     * Determine if the request has a URI that should pass through email verified verification.
+     * Determine if the request has a URI that should pass through tos accepted verification.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return bool

@@ -193,6 +193,7 @@
       "changePassword": "Passwort ändern",
       "close": "Schließen",
       "continue": "Fortsetzen",
+      "continueLink": "Bitte klicken Sie auf den unten stehenden Link, um fortzufahren.",
       "continueUsing": "Weitermachen",
       "copyright": "Copyright © {year} {author}. @:(general.allRightsReserved).",
       "couldNotSave": "Konnte Daten nicht speichern",
@@ -211,6 +212,7 @@
       "id": "ID",
       "inactive": "Inaktiv",
       "loading": "Lädt...",
+      "nextPage": "Zur nächsten Seite.",
       "no": "Nein",
       "noPermissionsText": "Sie haben nicht die erforderlichen Berechtigungen die Seite '%{title}' zu besuchen.",
       "noPermissionsTitle": "Keine Berechtigungen",
@@ -230,6 +232,7 @@
       "signOut": "Abmelden",
       "signUp": "Registrieren",
       "system": "System",
+      "tos": "Nutzungsbedingungen",
       "translations": "Übersetzungen",
       "username": "Benutzername",
       "write": "Schreiben",
@@ -240,6 +243,10 @@
       "en": "englisch"
     },
     "page": {
+      "acceptTos": {
+        "button": "Nutzungsbedingungen akzeptieren",
+        "description": "Sie haben die @:(general.tos) noch nicht akzeptiert. Um fortfahren zu können, müssen Sie diese akzeptieren. Andernfalls können Sie sich auch wieder abmelden."
+      },
       "login": {
         "title": {
           "morning": "Guten Morgen,",
@@ -263,9 +270,11 @@
         "confirmation": "Prüfen Sie die Bestätigungs-Email unter <strong>{email}</strong>",
         "contactUs": "Können Sie dennoch keine E-Mail von uns finden, nehmen Sie bitte Kontakt zu uns auf.",
         "note": "Sollten Sie keine E-Mail erhalten haben, prüfen Sie zunächst Ihren Spam-Ordner und vergewissern Sie sich, dass Sie die E-Mail-Adresse korrekt eingegeben haben.",
-        "successTitle": "Vielen Dank für Ihre Registrierung!"
+        "successTitle": "Vielen Dank für Ihre Registrierung!",
+        "tos": "Ich stimme den {tos} zu"
       },
       "title": {
+        "acceptTos": "Nutzungsbedingungen",
         "aircrafts": "Flugzeuge",
         "bookings": "Buchungen",
         "dashboard": "Dashboard",

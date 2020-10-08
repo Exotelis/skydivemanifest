@@ -11,5 +11,6 @@ export default interface UserShortModel {
   password_change: boolean
   permissions: string[]
   timezone?: string
+  tos: boolean
   username?: string
 }

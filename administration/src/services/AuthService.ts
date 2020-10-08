@@ -13,6 +13,10 @@ export default {
   expires: 0,
   refreshToken: null,
 
+  async acceptTos (tos: boolean): Promise<any> {
+    return axios.post('/auth/tos', { tos: tos });
+  },
+
   async changePassword (passwords: ChangePasswordModel): Promise<any> {
     return axios.post('/auth/password/change', passwords);
   },
@@ -102,6 +106,18 @@ export default {
 
     // Check login status
     return decryptedPayload.exp >= Date.now();
+  },
+
+  mustAcceptTos (): boolean {
+    const cookie: string|undefined = getCookie('XSRF-TOKEN');
+
+    if (cookie === undefined) {
+      return false;
+    }
+
+    const decryptedPayload: any = jwtDecode(cookie);
+    let user: UserShortModel = decryptedPayload.user;
+    return !user.tos;
   },
 
   passwordChangeRequired (): boolean {

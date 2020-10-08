@@ -3,11 +3,11 @@
     <h3>{{ $t('page.title.passwordChange') }}</h3>
 
     <template v-if="error === null && successMessage != null">
-      <p>{{ successMessage }} {{ $t('general.signInAgain') }}</p>
+      <p>{{ successMessage }} {{ $t('general.continueLink') }}</p>
 
-      <router-link to="/login">
+      <router-link to="/">
         <small>
-          <strong>{{ $t('general.backToSignIn') }}</strong>
+          <strong>{{ $t('general.nextPage') }}</strong>
         </small>
       </router-link>
     </template>
@@ -91,7 +91,15 @@ export default class PasswordChangePage extends Mixins(FormMixin, FormValidation
 
     try {
       let response: AxiosResponse = await AuthService.changePassword(this.form);
-      await AuthService.logout();
+
+      // After request is sent, try to get new token with updated value
+      let refreshToken: null|string = AuthService.refreshToken;
+      if (refreshToken !== null) {
+        await AuthService.refresh(refreshToken);
+      } else {
+        await AuthService.logout();
+      }
+
       this.error = null;
       this.successMessage = response.data.message;
     } catch (e) {

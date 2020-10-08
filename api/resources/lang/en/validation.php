@@ -148,7 +148,12 @@ return [
             'in' => 'The :attribute must be one of the following: :values',
         ],
         'role' => [
-            'unique' => 'A role with this name already exists.'
+            'exists' => 'This role does not exist.',
+            'in'     => 'You cannot assign this role to the user. Valid roles are: :values',
+            'unique' => 'A role with this name already exists.',
+        ],
+        'tos' => [
+            'accepted' => 'You have to agree to the terms of service.',
         ],
         'username' => [
             'unique' => 'An account with this :attribute already exists.',

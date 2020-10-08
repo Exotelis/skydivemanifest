@@ -19,5 +19,7 @@ return [
     'oauth_could_not_revoke'  => 'Ein Zugriffstoken konnte nicht widerrufen werden.',
     'registration_successful' => 'Das Benutzerkonto wurde erfolgreich erstellt.',
     'throttle'                => 'Zu viele Anmeldeversuche. Bitte versuchen Sie es in :seconds Sekunden erneut.',
+    'tos_accepted'            => 'Die Nutzungsbedingungen wurden akzeptiert.',
+    'tos_accepted_already'    => 'Die Nutzungsbedingungen wurden bereits akzeptiert.',
 
 ];

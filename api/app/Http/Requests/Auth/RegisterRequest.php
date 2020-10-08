@@ -30,7 +30,8 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'password.regex' => __('validation.' . defaultPasswordStrength())
+            'password.regex' => __('validation.' . defaultPasswordStrength()),
+            'tos.accepted' => __('validation.custom.tos.accepted'),
         ];
     }
 
@@ -73,7 +74,8 @@ class RegisterRequest extends FormRequest
             'locale'    => 'sometimes|required|string|in:' . implode(',', validLocales()),
             'password'  => 'required|regex:'. passwordStrength() . '|confirmed',
             'username'  => 'sometimes|required|alpha_num|unique:users|max:255|nullable',
-            'timezone'  => 'sometimes|required|string|in:' . implode(',', CarbonTimeZone::listIdentifiers()),
+            'timezone'  => 'sometimes|required|string|timezone',
+            'tos'       => 'accepted',
         ];
     }
 }

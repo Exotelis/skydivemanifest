@@ -19,7 +19,10 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   let auth: boolean = AuthService.checkAuth();
 
-  if (AuthService.passwordChangeRequired() && to.path !== '/password-change') {
+  if (AuthService.mustAcceptTos() && to.path !== '/accept-tos') {
+    // If user need to accept the terms of service
+    next({ path: '/accept-tos', query: to.query });
+  } else if (AuthService.passwordChangeRequired() && !AuthService.mustAcceptTos() && to.path !== '/password-change') {
     // If user need to change the password
     next({ path: '/password-change', query: to.query });
   } else if (!to.meta.requiresAuth && auth) {

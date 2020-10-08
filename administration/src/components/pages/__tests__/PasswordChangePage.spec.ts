@@ -1,4 +1,5 @@
 import { config, mount } from '@vue/test-utils';
+import AuthService from '@/services/AuthService';
 import PasswordChangePage from '../PasswordChangePage.vue';
 
 jest.mock('@/services/AuthService');
@@ -50,7 +51,9 @@ describe('PasswordChangePage.vue', () => {
     expect(component.vm.error).toBeNull();
   });
 
-  it('check if password change was successful', async () => {
+  it('check if password change was successful and the token could be refreshed', async () => {
+    const spy = jest.spyOn(AuthService, 'refresh');
+
     component.vm.form = {
       password: 'secret',
       new_password: 'newsecret',
@@ -58,8 +61,31 @@ describe('PasswordChangePage.vue', () => {
     };
 
     await component.vm.handleSubmit();
+    expect(spy).toHaveBeenCalled();
     expect(component.vm.error).toBeNull();
     expect(component.vm.successMessage).toBe('Your password has been changed successfully.');
+
+    spy.mockRestore();
+  });
+
+  it('check if password change was successful and the user has been logged out', async () => {
+    Object.defineProperty(AuthService, 'refreshToken', {
+      value: null
+    });
+    const spy = jest.spyOn(AuthService, 'logout');
+
+    component.vm.form = {
+      password: 'secret',
+      new_password: 'newsecret',
+      new_password_confirmation: 'newsecret'
+    };
+
+    await component.vm.handleSubmit();
+    expect(spy).toHaveBeenCalled();
+    expect(component.vm.error).toBeNull();
+    expect(component.vm.successMessage).toBe('Your password has been changed successfully.');
+
+    spy.mockRestore();
   });
 
   it('check if password change failed', async () => {

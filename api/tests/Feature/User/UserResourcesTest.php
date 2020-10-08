@@ -7,11 +7,18 @@ use App\Models\Country;
 use App\Models\Region;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
+/**
+ * Class UserResourcesTest
+ * @package Tests\Feature\User
+ */
 class UserResourcesTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, WithFaker;
 
     protected $users;
 
@@ -53,10 +60,7 @@ class UserResourcesTest extends TestCase
         $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
 
         // Forbidden
-        $user = User::factory()->isActive()->isUser()->isVerified()->noPasswordChange()->create();
-        $this->actingAs($user);
-        $response = $this->getJson($resource);
-        $response->assertStatus(403)->assertJson(['message' => 'Invalid scope(s) provided.']);
+        $this->checkForbidden($resource);
 
         // Sign in as admin
         $this->actingAs($this->admin, ['users:read']);
@@ -87,6 +91,50 @@ class UserResourcesTest extends TestCase
     }
 
     /**
+     * Test [POST] users resource.
+     *
+     * @return void
+     */
+    public function testCreate()
+    {
+        $resource = self::API_URL . 'users';
+        $json = [
+            'dob' => '1970-01-01',
+            'email' => 'exotelis@mailbox.org',
+            'firstname' => 'John',
+            'gender' => 'm',
+            'lastname' => 'Doe',
+            'locale' => 'en',
+            'middlename' => null,
+            'mobile' => '0049 176 12 34 56 789',
+            'password_change' => true,
+            'phone' => '0049 661 12345',
+            'username' => 'Exotelis',
+            'timezone' => 'Europe/Berlin',
+        ];
+
+        Event::fake();
+
+        // Unauthorized
+        $this->checkUnauthorized($resource, 'post');
+
+        // Forbidden
+        $this->checkForbidden($resource, 'post');
+
+        // Sign in as admin
+        $this->actingAs($this->admin);
+
+        // Invalid input
+        $this->checkInvalidInput($resource, 'post', ['email' => 'exotelis@mailbox.org']);
+
+        // Success
+        $response = $this->postJson($resource, $json);
+        $response->assertStatus(201)->assertJson(['message' => 'The user has been created successfully.']);
+        $this->assertDatabaseHas('users', $json);
+        Event::assertDispatched(\App\Events\User\Create::class);
+    }
+
+    /**
      * Test [DELETE] users resource.
      *
      * @return void
@@ -100,10 +148,7 @@ class UserResourcesTest extends TestCase
         $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
 
         // Forbidden
-        $user = User::factory()->isActive()->isUser()->isVerified()->noPasswordChange()->create();
-        $this->actingAs($user);
-        $response = $this->deleteJson($resource);
-        $response->assertStatus(403)->assertJson(['message' => 'Invalid scope(s) provided.']);
+        $this->checkForbidden($resource);
 
         // Sign in as admin
         $this->actingAs($this->admin, ['users:read', 'users:delete']);
@@ -127,6 +172,43 @@ class UserResourcesTest extends TestCase
     }
 
     /**
+     * Test [DELETE] users/{id} resource.
+     *
+     * @return void
+     */
+    public function testDelete()
+    {
+        $resource = self::API_URL . 'users/' . $this->users->first()->id;
+        $resourceUsers = self::API_URL . 'users/';
+
+        Event::fake();
+
+        // Unauthorized
+        $this->checkUnauthorized($resource, 'delete');
+
+        // Forbidden
+        $this->checkForbidden($resource, 'delete');
+
+        // Sign in as admin
+        $this->actingAs($this->admin);
+
+        // Not found
+        $response = $this->deleteJson($resourceUsers . '999');
+        $response->assertStatus(404)->assertJson(['message' => 'The requested resource was not found.']);
+
+        // Can be deleted because it's the last admin
+        $response = $this->deleteJson($resourceUsers . $this->admin->id);
+        $response->assertStatus(400)
+            ->assertJson(['message' => 'The last user with administrator permissions cannot be deleted.']);
+
+        // Success
+        $response = $this->deleteJson($resource);
+        $response->assertStatus(200)->assertJson(['message' => 'The user has been deleted permanently.']);
+        $this->assertDeleted($this->users->first());
+        Event::assertDispatched(\App\Events\User\Delete::class);
+    }
+
+    /**
      * Test [DELETE] users/trashed resource.
      *
      * @return void
@@ -141,10 +223,7 @@ class UserResourcesTest extends TestCase
         $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
 
         // Forbidden
-        $user = User::factory()->isActive()->isUser()->isVerified()->noPasswordChange()->create();
-        $this->actingAs($user);
-        $response = $this->deleteJson($resource);
-        $response->assertStatus(403)->assertJson(['message' => 'Invalid scope(s) provided.']);
+        $this->checkForbidden($resource);
 
         // Sign in as admin
         $this->actingAs($this->admin, ['users:read', 'users:delete']);
@@ -201,10 +280,7 @@ class UserResourcesTest extends TestCase
         $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
 
         // Forbidden
-        $user = User::factory()->isActive()->isUser()->isVerified()->noPasswordChange()->create();
-        $this->actingAs($user);
-        $response = $this->putJson($resource);
-        $response->assertStatus(403)->assertJson(['message' => 'Invalid scope(s) provided.']);
+        $this->checkForbidden($resource);
 
         // Sign in as admin
         $this->actingAs($this->admin, ['users:read', 'users:delete']);
@@ -254,10 +330,7 @@ class UserResourcesTest extends TestCase
         $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
 
         // Forbidden
-        $user = User::factory()->isActive()->isUser()->isVerified()->noPasswordChange()->create();
-        $this->actingAs($user);
-        $response = $this->getJson($resource);
-        $response->assertStatus(403)->assertJson(['message' => 'Invalid scope(s) provided.']);
+        $this->checkForbidden($resource);
 
         // Sign in as admin
         $this->actingAs($this->admin, ['users:read', 'users:delete']);
@@ -298,5 +371,107 @@ class UserResourcesTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJsonFragment(['total' => $count]);
+    }
+
+    /**
+     * Test [PUT] users/:id resource.
+     *
+     * @return void
+     */
+    public function testUpdate()
+    {
+        $resource = self::API_URL . 'users/' . $this->users->first()->id;
+        $resourceUsers = self::API_URL . 'users/';
+        $json = [
+            'dob'               => $this->faker->date($format = 'Y-m-d', $max = 'now'),
+            'firstname'         => $this->faker->firstName,
+            'gender'            => $this->faker->randomElement(validGender()),
+            'is_active'         => $this->faker->boolean(80),
+            'lastname'          => $this->faker->lastName,
+            'locale'            => 'de',
+            'middlename'        => $this->faker->optional(25)->firstName,
+            'mobile'            => $this->faker->optional()->phoneNumber,
+            'password_change'   => $this->faker->boolean(20),
+            'phone'             => $this->faker->optional()->e164PhoneNumber,
+            'username'          => $this->faker->unique()->regexify('[A-Za-z0-9]{5,20}'),
+            'timezone'          => $this->faker->timezone,
+        ];
+
+        Notification::fake();
+
+        // Unauthorized
+        $this->checkUnauthorized($resource, 'put');
+
+        // Forbidden
+        $this->checkForbidden($resource, 'put');
+
+        // Sign in as admin
+        $this->actingAs($this->admin);
+
+        // Not found
+        $response = $this->getJson($resourceUsers . '999');
+        $response->assertStatus(404)->assertJson(['message' => 'The requested resource was not found.']);
+
+        // Invalid input
+        $this->checkInvalidInput(
+            $resourceUsers . $this->admin->id,
+            'put',
+            ['is_active' => 0, 'role' => 2],
+            [
+                'is_active' => ['You cannot disable your own user account.'],
+                'role' => ['You cannot change your own user role.']
+            ]
+        );
+
+        // Success
+        $response = $this->putJson($resource, $json);
+        $response->assertJsonFragment($json);
+        $this->assertDatabaseHas('users', $json);
+
+        // Success role change
+        $response = $this->putJson($resource, ['role' => 1]);
+        $response->assertStatus(200)->assertJsonFragment(['id' => 1, 'name' => 'Administrator']);
+        $this->assertDatabaseHas('users', ['role_id' => 1]);
+
+        // Success with email change
+        $newEmail = $this->faker->unique()->freeEmail;
+        $response = $this->putJson($resource, ['email' => $newEmail]);
+        $response->assertStatus(200)->assertJsonFragment(['email' => $this->users->first()->email]);
+        Notification::assertSentTo(
+            [$this->users->first()],
+            \App\Notifications\VerifyEmail::class
+        );
+        $this->assertDatabaseHas(
+            'email_changes',
+            ['email' => $this->users->first()->email, 'new_email' => $newEmail]
+        );
+    }
+
+    /**
+     * Test [GET] users/:id resource.
+     *
+     * @return void
+     */
+    public function testUser()
+    {
+        $resource = self::API_URL . 'users/' . $this->users->first()->id;
+        $resourceUsers = self::API_URL . 'users/';
+
+        // Unauthorized
+        $this->checkUnauthorized($resource);
+
+        // Forbidden
+        $this->checkForbidden($resource);
+
+        // Sign in as admin
+        $this->actingAs($this->admin);
+
+        // Not found
+        $response = $this->getJson($resourceUsers . '999');
+        $response->assertStatus(404)->assertJson(['message' => 'The requested resource was not found.']);
+
+        // Success
+        $response = $this->getJson($resource);
+        $response->assertStatus(200)->assertJson($this->users->first()->toArray());
     }
 }

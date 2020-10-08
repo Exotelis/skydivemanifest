@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'default_invoice'   => null,
             'default_shipping'  => null,
             'dob'               => $this->faker->date($format = 'Y-m-d', $max = 'now'),
-            'email'             => $this->faker->unique()->safeEmail,
+            'email'             => $this->faker->unique()->freeEmail,
             'email_verified_at' => $this->faker->optional(80)->dateTime($max = 'now', $timezone = 'UTC'),
             'failed_logins'     => 0,
             'firstname'         => $this->faker->firstName,
@@ -45,13 +45,14 @@ class UserFactory extends Factory
             'password_change'   => $this->faker->boolean(20),
             'phone'             => $this->faker->optional()->e164PhoneNumber,
             'role_id'           => $this->faker->randomElement([adminRole(), defaultRole()]),
-            'username'          => $this->faker->unique()->userName,
+            'username'          => $this->faker->unique()->regexify('[A-Za-z0-9]{5,20}'),
             'timezone'          => $this->faker->timezone,
+            'tos'               => $this->faker->boolean(90),
         ];
     }
 
     /**
-     * Indicate that the user is active
+     * Indicate that the user is active.
      *
      * @return Factory
      */
@@ -63,7 +64,7 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the user is admin and got all permissions
+     * Indicate that the user is admin and got all permissions.
      *
      * @return Factory
      */
@@ -75,7 +76,7 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the user is inactive
+     * Indicate that the user is inactive.
      *
      * @return Factory
      */
@@ -87,7 +88,7 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the user account is locked
+     * Indicate that the user account is locked.
      *
      * @return Factory
      */
@@ -99,7 +100,7 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the users email address is not yet verified
+     * Indicate that the users email address is not yet verified.
      *
      * @return Factory
      */
@@ -111,7 +112,7 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the user has only the default permissions
+     * Indicate that the user has only the default permissions.
      *
      * @return Factory
      */
@@ -123,7 +124,7 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the users email address is verified
+     * Indicate that the users email address is verified.
      *
      * @return Factory
      */
@@ -135,7 +136,7 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the user don't need to change the password
+     * Indicate that the user don't need to change the password.
      *
      * @return Factory
      */
@@ -147,7 +148,7 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the user need to change the password
+     * Indicate that the user need to change the password.
      *
      * @return Factory
      */
@@ -155,6 +156,30 @@ class UserFactory extends Factory
     {
         return $this->state([
             'password_change' => true,
+        ]);
+    }
+
+    /**
+     * Indicate that the user accepted the terms of service.
+     *
+     * @return Factory
+     */
+    public function tosAccepted()
+    {
+        return $this->state([
+            'tos' => true,
+        ]);
+    }
+
+    /**
+     * Indicate that the user hasn't accepted the terms of service.
+     *
+     * @return Factory
+     */
+    public function tosNotAccepted()
+    {
+        return $this->state([
+            'tos' => false,
         ]);
     }
 }

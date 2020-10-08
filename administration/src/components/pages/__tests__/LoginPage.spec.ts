@@ -1,6 +1,7 @@
 import { mount, config } from '@vue/test-utils';
 import LoginPage from '../LoginPage.vue';
 import flushPromises from 'flush-promises';
+import AuthService from '@/services/AuthService';
 
 jest.mock('@/services/AuthService');
 
@@ -42,8 +43,10 @@ describe('LoginPage.vue', () => {
     expect(component.find('.invalid-feedback').text()).toBe('error.form.required.text');
   });
 
-  it('check if the correct redirect is called', async () => {
-    const spy = jest.spyOn(component.vm.$router, 'push');
+  it('redirect user to accept-tos route', async () => {
+    const spy = jest.spyOn(AuthService, 'mustAcceptTos').mockImplementation(() => true);
+    const spyRouter = jest.spyOn(component.vm.$router, 'push');
+
     component.vm.form = {
       username: 'admin',
       password: 'admin'
@@ -51,11 +54,43 @@ describe('LoginPage.vue', () => {
 
     component.vm.handleSubmit();
     await component.vm.$nextTick();
-    expect(spy).toHaveBeenCalledWith('/password-change');
+    expect(spyRouter).toHaveBeenCalledWith('/accept-tos');
+
+    spy.mockRestore();
+    spyRouter.mockRestore();
+  });
+
+  it('redirect user to password-change route', async () => {
+    const spy = jest.spyOn(AuthService, 'passwordChangeRequired').mockImplementation(() => true);
+    const spyRouter = jest.spyOn(component.vm.$router, 'push');
+
+    component.vm.form = {
+      username: 'admin',
+      password: 'admin'
+    };
+
+    component.vm.handleSubmit();
+    await component.vm.$nextTick();
+    expect(spyRouter).toHaveBeenCalledWith('/password-change');
+
+    spy.mockRestore();
+    spyRouter.mockRestore();
+  });
+
+  it('redirect user to dashboard route', async () => {
+    const spy = jest.spyOn(component.vm.$router, 'push');
+
+    component.vm.form = {
+      username: 'admin',
+      password: 'admin'
+    };
 
     component.vm.handleSubmit();
     await component.vm.$nextTick();
     expect(spy).toHaveBeenCalledWith('/');
+
+    spy.mockRestore();
+    spy.mockRestore();
   });
 
   it('sign the user in', async () => {
