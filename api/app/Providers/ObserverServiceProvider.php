@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class ObserverServiceProvider
+ * @package App\Providers
+ */
 class ObserverServiceProvider extends ServiceProvider
 {
     /**
@@ -11,10 +15,7 @@ class ObserverServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
-    {
-        //
-    }
+    public function register() {}
 
     /**
      * Bootstrap services.
@@ -23,6 +24,7 @@ class ObserverServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \App\Models\Role::observe(\App\Observers\RoleObserver::class);
+        \App\Models\User::observe(\App\Observers\UserObserver::class);
     }
 }

@@ -17,6 +17,7 @@ return [
     'email_token_invalid'            => 'Das Token zum Bestätigen der E-Mail-Adresse ist ungültig.',
     'email_token_not_found'          => 'Sie haben keine Änderung Ihrer E-Mail-Adresse angefordert.',
     'email_token_throttled'          => 'Bitte warten Sie, bevor Sie es erneut versuchen. Sie können nur einmal pro :time eine neue Bestätigungsmail anfordern.',
+    'recover_token_invalid'          => 'Das Token zum Wiederherstellen Ihres Benutzerkontos ist nicht gültig.',
     'role_in_use'                    => 'Die Benutzerrolle kann nicht gelöscht werden, da mindestens ein Benutzer dieser Benutzerrolle zugewiesen ist. Entfernen Sie zuerst alle Benutzer aus der Benutzerrolle, um diese löschen zu können.',
     'roles_in_use'                   => 'Der Benutzerrolle mit der ID :id ist mindestens ein Benutzer zugewiesen. Entfernen Sie zuerst alle Benutzer aus der Benutzerrolle, um diese löschen zu können.',
     'role_not_deletable'             => 'Die Benutzerrolle ist schreibgeschützt und kann nicht gelöscht werden.',
@@ -26,5 +27,6 @@ return [
     'too_many_attempts'              => 'Zu viele Anfragen. Bitte warten Sie, bevor Sie eine neue Anfrage absenden.',
     'tos_not_accepted'               => 'Sie haben die Nutzungsbedingungen noch nicht akzeptiert.',
     'user_not_deletable_last_admin'  => 'Der einzige Benutzer mit Administratorrechten kann nicht gelöscht werden.',
+    'user_not_deleted'               => 'Der Benutzer ist nicht gelöscht.',
     'validation_error'               => 'Die Überprüfung der gesendeten Daten ist fehlgeschlagen.',
 ];

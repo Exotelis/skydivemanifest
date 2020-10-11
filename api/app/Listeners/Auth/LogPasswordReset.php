@@ -19,6 +19,7 @@ class LogPasswordReset
      */
     public function handle(PasswordReset $event)
     {
-        Log::info("Password of user '{$event->user->id}|{$event->user->email}' has been reset.");
+        $user = "{$event->user->id}|{$event->user->email}";
+        Log::info("[User] Password of user '{$user}' has been reset.");
     }
 }

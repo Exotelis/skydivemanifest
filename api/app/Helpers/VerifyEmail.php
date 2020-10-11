@@ -26,7 +26,7 @@ class VerifyEmail
      */
     public function config($config = null)
     {
-        if (! is_null($config)) {
+        if (! \is_null($config)) {
             $this->config = $config;
         }
 
@@ -112,7 +112,7 @@ class VerifyEmail
     {
         $config = $this->getConfiguration();
 
-        if (!is_null($user) && is_null($user->email_verified_at)) {
+        if (! \is_null($user) && \is_null($user->email_verified_at)) {
             return config('app.users.delete_unverified_after') * 24 * 60;
         }
 
@@ -145,7 +145,7 @@ class VerifyEmail
             }
         }
 
-        if (is_null($userEmail)) {
+        if (\is_null($userEmail)) {
             abort(400, __('error.email_token_invalid'));
         }
 
@@ -177,7 +177,7 @@ class VerifyEmail
     {
         $config = config('auth.email_changes.' . $this->config);
 
-        if(is_null($config)) {
+        if (\is_null($config)) {
             abort(500, "Email address changer [{$this->config}] is not defined.");
         }
 
@@ -195,7 +195,7 @@ class VerifyEmail
         $config = $this->getConfiguration();
         $provider = config('auth.providers.' . $config['provider']);
 
-        if(is_null($provider)) {
+        if (\is_null($provider)) {
             abort(500, "Provider [{$config['provider']}] is not defined.");
         }
 
@@ -252,9 +252,9 @@ class VerifyEmail
      */
     public function verify($token, $user = null)
     {
-        $user = is_null($user) ? $this->findUser($token) : $user;
+        $user = \is_null($user) ? $this->findUser($token) : $user;
 
-        if (is_null($user)) {
+        if (\is_null($user)) {
             return false;
         }
 

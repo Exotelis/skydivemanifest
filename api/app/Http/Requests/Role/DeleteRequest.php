@@ -47,7 +47,7 @@ class DeleteRequest extends FormRequest
                 'integer',
                 function ($attribute, $value, $fail) {
                     $role = Role::find($value);
-                    if (!is_null($role) && !$role->deletable) {
+                    if (! \is_null($role) && !$role->deletable) {
                         $fail(__('error.role_not_deletable_id', ['id' => $value]));
                     }
                 },

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Contracts\Auth\CanBeDisabled;
+use App\Traits\ExceptRoute;
 use Closure;
 use Illuminate\Auth\Access\AuthorizationException;
 
@@ -13,26 +14,7 @@ use Illuminate\Auth\Access\AuthorizationException;
  */
 class EnsureAccountIsActive
 {
-    /**
-     * Routes that should skip handle.
-     *
-     * @var array
-     */
-    protected $except = [
-        'api.accept-tos',
-        'api.change-password',
-        'api.confirm-email',
-        'api.delete-email-request',
-        'api.forgot-password',
-        'api.login',
-        'api.logout',
-        'api.refresh',
-        'api.register',
-        'api.resend-email-request',
-        'api.reset-password',
-        'api.timezones',
-        'api.tos',
-    ];
+    use ExceptRoute;
 
     /**
      * Handle an incoming request.
@@ -46,7 +28,7 @@ class EnsureAccountIsActive
     {
         $user = $request->user();
 
-        if (! is_null($user) &&
+        if (! \is_null($user) &&
             $user instanceof CanBeDisabled &&
             $user->isDisabled() &&
             ! $this->inExceptArray($request)
@@ -55,26 +37,5 @@ class EnsureAccountIsActive
         }
 
         return $next($request);
-    }
-
-    /**
-     * Determine if the request has a URI that should pass through disabled verification.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return bool
-     */
-    protected function inExceptArray($request)
-    {
-        foreach ($this->except as $except) {
-            if ($except !== '/') {
-                $except = trim($except, '/');
-            }
-
-            if ($request->fullUrlIs($except) || $request->is($except) || $request->routeIs($except)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

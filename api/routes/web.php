@@ -16,3 +16,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome'); // TODO replace by api doc
 });
+
+// Render Mail
+/*
+Route::get('/mail', function () {
+    $user = \App\Models\User::find(1);
+    $locale = 'de';
+
+    $parameter1 = 'qq09tq30rgoiq';
+
+    return (new App\Mail\SoftDeleteUser($user, $parameter1))->locale($locale);
+});
+*/

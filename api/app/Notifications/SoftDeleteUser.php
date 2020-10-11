@@ -2,23 +2,49 @@
 
 namespace App\Notifications;
 
+use App\Mail\SoftDeleteUser as Mailable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class SoftDeleteUser extends Notification
+/**
+ * Class SoftDeleteUser
+ * @package App\Notifications
+ */
+class SoftDeleteUser extends Notification implements ShouldQueue
 {
     use Queueable;
 
     /**
+     * Number of attempts.
+     *
+     * @var int
+     */
+    public $tries = 3;
+
+    /**
+     * Retry after x seconds.
+     *
+     * @var int
+     */
+    public $backoff = 90;
+
+    /**
+     * Restore users token.
+     *
+     * @var string
+     */
+    protected $token;
+
+    /**
      * Create a new notification instance.
      *
+     * @param  string $token
      * @return void
      */
-    public function __construct()
+    public function __construct($token)
     {
-        //
+        $this->token = $token;
     }
 
     /**
@@ -33,29 +59,25 @@ class SoftDeleteUser extends Notification
     }
 
     /**
-     * Get the mail representation of the notification.
+     * Determine which queues should be used for each notification channel.
      *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return array
      */
-    public function toMail($notifiable)
+    public function viaQueues()
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+        return [
+            'mail' => 'mail'
+        ];
     }
 
     /**
-     * Get the array representation of the notification.
+     * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
+     * @return Mailable
      */
-    public function toArray($notifiable)
+    public function toMail($notifiable)
     {
-        return [
-            //
-        ];
+        return (new Mailable($notifiable, $this->token))->to($notifiable);
     }
 }

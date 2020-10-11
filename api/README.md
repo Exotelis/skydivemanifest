@@ -30,17 +30,17 @@ use it in production.
 
 ## Project setup
 Requirements:
-- PHP 7.2.5 or higher
+- PHP 7.3 or higher
 - PHP extensions:
   - OpenSSL
   - PDO
   - Mbstring
   - Tokenizer
   - Intl
-- Database management system
+- Database management system (MySQl etc.)
 - Hypertext Transfer Protocol Secure (https)
-- Cronjobs (optional - for queues and task scheduling)
-- Supervisor (optional - for queues)
+- Cronjobs (optional/highly recommended - for queues and task scheduling)
+- Supervisor (optional/recommended - for queues)
 
 ### Install the dependencies
 Install the dependencies for the api bundle by running:
@@ -75,13 +75,13 @@ ___
 The `APP_URL_FRONTEND` setting is important for redirects (in particular in mails). Please add the url to your frontend.
 ___
 The `APP_DELETE_INACTIVE_USERS` setting determines after how many months of inactivity a user will be deleted. Only non
-admin users can be automatically deleted. Decisively is the date of the last log in, or the date where the account has
-been modified last. This setting might be important to match different legal specifications, for example how long you
-are allowed to store personal information of your users or how long you must store invoices. However, latter will store
-the necessary data anyway. The default value is 10 years.
+admin users can be automatically deleted. Decisively is the date when the user was updated the last. This setting might
+be important to match different legal specifications, for example how long you are allowed to store personal information
+of your users or how long you must store invoices. However, latter will store the necessary data anyway. The default
+value is 3 years.
 ___
 The `APP_DELETE_UNVERIFIED_USERS` setting is pretty similar to the previous. It will delete unverified user accounts
-after the given number in days. This guarantees that a user entered a valid email address. The default value is 1 week.
+after the given number in days. This guarantees that a user entered a valid email address. The default value is 10 days.
 ___
 You may want to define a mail for support requests, then just update the `MAIL_SUPPORT_ADDRESS=` setting. This email
 address will be attached to every email that is being sent by your application.
@@ -94,7 +94,7 @@ There are more options than saving the jobs on the database, but you have to con
 
 Once you enabled queuing, you have to make sure that `php artisan queue:work` is running. The best way would be, to
 install and configure a process monitor like Supervisor on your system. To learn more about Supervisor, please see the
-[Supervisor Configuration](https://laravel.com/docs/7.x/queues#supervisor-configuration). If you don't have root access
+[Supervisor Configuration](https://laravel.com/docs/8.x/queues#supervisor-configuration). If you don't have root access
 on your platform, you could also run the `queue:work` command as a cron job. Since the `queue:work` listen for new jobs,
 it will not stop after processing the queue. That's why you have to add the `--stop-when-empty` option, when running
 the command as a cron job:
@@ -150,7 +150,7 @@ php artisan db:seed
 ```
 Note: In production you need to add the option `--force`.
 
-For more information see [Database: Migrations](https://laravel.com/docs/7.x/migrations).
+For more information see [Database: Migrations](https://laravel.com/docs/8.x/migrations).
 
 ### Setting up OAuth 2.0
 In this project we are using OAuth 2.0 for authorization. On the one hand we use it to provide access tokens for the
@@ -372,9 +372,10 @@ https://<path-to-your-frontend>/accept-tos
 ```
 Without having those routes, you cannot make use of those features.
 
-Apart from those routes, you also have to check if the parameter `email-token` was submitted. If it was submitted you
-should handle it and call the `/auth/email/confirm` resource. This does not require a separate route. A better UX would
-be to give the user feedback by displaying a modal dialog.
+Apart from those routes, you also have to check if the parameter `email-token` or `recover-token` was submitted. If it
+was submitted you should handle it and call the `/auth/email/confirm` or the `/auth/recover` resource. For those actions
+no separate routes need to be registered within your frontend. For a better UX, you should check if those parameters
+have been submitted and handle those in a modal dialog or similar.
 
 ### Permissions
 When adding new tables and models to the project, you might want to specify permissions to restrict or grant access to
@@ -427,7 +428,7 @@ php artisan make:migration create_users_table
 This will add a new migration file in the [database/migrations](database/migrations) directory.
 
 For a list of available column types, please see
-[Creating Columns](https://laravel.com/docs/7.x/migrations#creating-columns).
+[Creating Columns](https://laravel.com/docs/8.x/migrations#creating-columns).
 
 ### Create a seeder
 To create a seeder, just run:
@@ -451,4 +452,4 @@ migrations. This command is useful for completely re-building your database:
 ```
 php artisan migrate:fresh --seed
 ```
-To learn more about seeder, please see [Database: Seeding](https://laravel.com/docs/7.x/seeding).
+To learn more about seeder, please see [Database: Seeding](https://laravel.com/docs/8.x/seeding).

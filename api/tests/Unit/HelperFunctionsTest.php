@@ -94,6 +94,18 @@ class HelperFunctionsTest extends TestCase
     }
 
     /**
+     * Test if the correct value for 'recoverUsers' is returned.
+     *
+     * @covers ::recoverUsers
+     * @return void
+     */
+    public function testRecoverUsers()
+    {
+        $this->assertEquals(config('app.users.recover'), recoverUsers());
+        $this->assertIsInt(recoverUsers());
+    }
+
+    /**
      * Test if the correct frontend url is returned.
      *
      * @covers ::frontendUrl
@@ -282,5 +294,53 @@ class HelperFunctionsTest extends TestCase
         $this->assertEquals(false, isDigit('10.5'));
         $this->assertEquals(true, isDigit('10'));
         $this->assertIsBool(isDigit('10'));
+    }
+
+    /**
+     * Test if the correct app name is returned.
+     *
+     * @covers ::appName
+     * @return void
+     */
+    public function testGetModelDiff()
+    {
+        $role = \App\Models\Role::create(['color' => '#000000', 'name' => 'test']);
+
+        $role->name = 'New name';
+        $role->color = '#ffffff';
+
+        // As array
+        $this->assertEquals(
+            [
+                'name' => [
+                    'old' => 'test',
+                    'new' => 'New name',
+                ],
+                'color' => [
+                    'old' => '#000000',
+                    'new' => '#ffffff',
+                ],
+            ],
+            getModelDiff($role)
+        );
+        $this->assertEquals(
+            [
+                'name' => [
+                    'old' => 'test',
+                    'new' => 'New name',
+                ],
+            ],
+            getModelDiff($role, ['color'])
+        );
+
+        // As String
+        $this->assertEquals(
+            'color:[-]#000000[+]#ffffff|name:[-]test[+]New name',
+            getModelDiff($role, [], true)
+        );
+        $this->assertEquals(
+            'name:[-]test[+]New name',
+            getModelDiff($role, ['color'], true)
+        );
     }
 }

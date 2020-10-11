@@ -39,7 +39,10 @@ class ResetPasswordController extends Controller
         /** @var \App\Models\User $user */
         $user->password = $input['new_password'];
         $user->password_change = false;
-        $user->saveOrFail();
+
+        if (! $user->save()) {
+            abort(500, __('error.500'));
+        }
 
         return response()->json(['message' => __('messages.password_changed')]);
     }

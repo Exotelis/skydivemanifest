@@ -201,7 +201,7 @@ class User extends Model implements
      */
     public function getNameAttribute()
     {
-        if (! is_null($this->middlename)) {
+        if (! \is_null($this->middlename)) {
             return "{$this->lastname}, {$this->firstname} {$this->middlename}";
         }
 
@@ -334,18 +334,6 @@ class User extends Model implements
         }
 
         return $query->where('email_verified_at', '=', null);
-    }
-
-    /**
-     * Scope a query to only include the user with the matching username or email address
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  string $identifier Username or email address
-     * @return \Illuminate\Database\Eloquent\Builder|User
-     */
-    public function scopeFindByAuthname($query, $identifier)
-    {
-        return $query->where('email', $identifier)->orWhere('username', $identifier)->first();
     }
 
     /**

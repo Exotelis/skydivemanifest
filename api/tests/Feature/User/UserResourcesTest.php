@@ -8,7 +8,6 @@ use App\Models\Region;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
@@ -49,6 +48,7 @@ class UserResourcesTest extends TestCase
     /**
      * Test [GET] users resource.
      *
+     * @covers \App\Http\Controllers\UserController
      * @return void
      */
     public function testAll()
@@ -93,6 +93,7 @@ class UserResourcesTest extends TestCase
     /**
      * Test [POST] users resource.
      *
+     * @covers \App\Http\Controllers\UserController
      * @return void
      */
     public function testCreate()
@@ -113,7 +114,7 @@ class UserResourcesTest extends TestCase
             'timezone' => 'Europe/Berlin',
         ];
 
-        Event::fake();
+        Notification::fake();
 
         // Unauthorized
         $this->checkUnauthorized($resource, 'post');
@@ -129,19 +130,26 @@ class UserResourcesTest extends TestCase
 
         // Success
         $response = $this->postJson($resource, $json);
+        $user = User::find($response['data']['id']);
         $response->assertStatus(201)->assertJson(['message' => 'The user has been created successfully.']);
         $this->assertDatabaseHas('users', $json);
-        Event::assertDispatched(\App\Events\User\Create::class);
+        Notification::assertSentTo(
+            [$user],
+            \App\Notifications\CreateUser::class
+        );
     }
 
     /**
      * Test [DELETE] users resource.
      *
+     * @covers \App\Http\Controllers\UserController
      * @return void
      */
     public function testBulkDelete()
     {
         $resource = self::API_URL . 'users';
+
+        Notification::fake();
 
         // Unauthorized
         $response = $this->deleteJson($resource, ['ids' => [1]]);
@@ -168,12 +176,17 @@ class UserResourcesTest extends TestCase
             ->assertJsonFragment(['message' => '8 users have been deleted successfully.']);
         $this->users->each(function($user) {
             $this->assertSoftDeleted($user);
+            Notification::assertSentTo(
+                [$user],
+                \App\Notifications\SoftDeleteUser::class
+            );
         });
     }
 
     /**
      * Test [DELETE] users/{id} resource.
      *
+     * @covers \App\Http\Controllers\UserController
      * @return void
      */
     public function testDelete()
@@ -181,7 +194,7 @@ class UserResourcesTest extends TestCase
         $resource = self::API_URL . 'users/' . $this->users->first()->id;
         $resourceUsers = self::API_URL . 'users/';
 
-        Event::fake();
+        Notification::fake();
 
         // Unauthorized
         $this->checkUnauthorized($resource, 'delete');
@@ -203,14 +216,17 @@ class UserResourcesTest extends TestCase
 
         // Success
         $response = $this->deleteJson($resource);
-        $response->assertStatus(200)->assertJson(['message' => 'The user has been deleted permanently.']);
-        $this->assertDeleted($this->users->first());
-        Event::assertDispatched(\App\Events\User\Delete::class);
+        $response->assertStatus(200)->assertJson(['message' => 'The user has been deleted successfully.']);
+        Notification::assertSentTo(
+            [$this->users->first()],
+            \App\Notifications\SoftDeleteUser::class
+        );
     }
 
     /**
      * Test [DELETE] users/trashed resource.
      *
+     * @covers \App\Http\Controllers\UserController
      * @return void
      */
     public function testDeletePermanently()
@@ -266,14 +282,61 @@ class UserResourcesTest extends TestCase
     }
 
     /**
-     * Test [PUT] users/trashed resource.
+     * Test [Post] users/:id/restore resource.
      *
+     * @covers \App\Http\Controllers\UserController
      * @return void
      */
     public function testRestore()
     {
+        $resource = self::API_URL . 'users/' . $this->users->first()->id . '/restore';
+        $resourceUsers = self::API_URL . 'users/';
+
+            Notification::fake();
+
+        // Unauthorized
+        $response = $this->postJson($resource);
+        $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
+
+        // Forbidden
+        $this->checkForbidden($resource, 'post');
+
+        // Sign in as admin
+        $this->actingAs($this->admin);
+
+        // Not found
+        $response = $this->postJson($resourceUsers . '9999/restore');
+        $response->assertStatus(404)->assertJson(['message' => 'The requested resource was not found.']);
+
+        // User not deleted
+        $response = $this->postJson($resource);
+        $response->assertStatus(400)->assertJson(['message' => 'The user is not deleted.']);
+
+        // Soft delete user first
+        $this->users->first()->delete();
+        $this->assertSoftDeleted($this->users->first());
+
+        // Success
+        $response = $this->postJson($resource,);
+        $response->assertStatus(200)->assertJson(['message' => 'The user has been restored.']);
+        Notification::assertSentTo(
+            [$this->users->first()],
+            \App\Notifications\RestoreUser::class
+        );
+    }
+
+    /**
+     * Test [PUT] users/trashed resource.
+     *
+     * @covers \App\Http\Controllers\UserController
+     * @return void
+     */
+    public function testRestoreBulk()
+    {
         $resource = self::API_URL . 'users/trashed';
         $usersResource = self::API_URL . 'users';
+
+        Notification::fake();
 
         // Unauthorized
         $response = $this->putJson($resource, ['ids' => [1]]);
@@ -312,12 +375,17 @@ class UserResourcesTest extends TestCase
             ->assertJsonFragment(['message' => '8 users have been restored.']);
         $this->users->each(function($user) {
             $this->assertDatabaseHas('users', ['id' => $user->id, 'deleted_at' => null]);
+            Notification::assertSentTo(
+                [$user],
+                \App\Notifications\RestoreUser::class
+            );
         });
     }
 
     /**
      * Test [GET] users/trashed resource.
      *
+     * @covers \App\Http\Controllers\UserController
      * @return void
      */
     public function testTrashed()
@@ -376,6 +444,7 @@ class UserResourcesTest extends TestCase
     /**
      * Test [PUT] users/:id resource.
      *
+     * @covers \App\Http\Controllers\UserController
      * @return void
      */
     public function testUpdate()
@@ -450,6 +519,7 @@ class UserResourcesTest extends TestCase
     /**
      * Test [GET] users/:id resource.
      *
+     * @covers \App\Http\Controllers\UserController
      * @return void
      */
     public function testUser()

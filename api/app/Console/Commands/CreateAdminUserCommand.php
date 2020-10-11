@@ -70,7 +70,7 @@ class CreateAdminUserCommand extends Command
                 $dob = $date->toDateString();
                 $valid = true;
 
-                if($date->isFuture()) {
+                if ($date->isFuture()) {
                     $valid = false;
                 }
             } catch (Exception $exception) {

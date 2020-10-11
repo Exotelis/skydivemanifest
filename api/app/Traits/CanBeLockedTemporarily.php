@@ -43,7 +43,7 @@ trait CanBeLockedTemporarily
      */
     public function isLocked()
     {
-        return ! is_null($this->lock_expires) && Carbon::parse($this->lock_expires)->isFuture();
+        return ! \is_null($this->lock_expires) && Carbon::parse($this->lock_expires)->isFuture();
     }
 
     /**

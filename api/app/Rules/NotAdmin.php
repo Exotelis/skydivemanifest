@@ -22,7 +22,7 @@ class NotAdmin implements Rule
     {
         $user = User::find($value);
 
-        if (is_null($user)) {
+        if (\is_null($user)) {
             return true;
         }
 

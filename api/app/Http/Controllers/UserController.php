@@ -11,7 +11,6 @@ use App\Models\User;
 use App\Traits\Paginate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -44,22 +43,6 @@ class UserController extends Controller
     }
 
     /**
-     * Delete one or more users.
-     *
-     * @param BulkDeleteRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function bulkDelete(BulkDeleteRequest $request)
-    {
-        $input = $request->only(['ids']);
-        $count = User::destroy($input['ids']);
-        return response()->json([
-            'count'   => $count,
-            'message' => trans_choice('messages.deleted_users', $count)
-        ]);
-    }
-
-    /**
      * Create a new user.
      *
      * @param CreateRequest $request
@@ -87,12 +70,9 @@ class UserController extends Controller
         try {
             DB::beginTransaction();
 
-            $input['password'] = Str::random(12); // Create random password that is being sent via email
             $user = User::create($input);
             $role = Role::findOrFail($request->input('role') ?? defaultRole());
             $user->role()->associate($role)->save();
-
-            event(new \App\Events\User\Create($user, $input['password'], $request->user()));
 
             DB::commit();
         } catch (\Exception $exception) {
@@ -104,7 +84,7 @@ class UserController extends Controller
 
 
     /**
-     * Delete a single user.
+     * Mark a single user as deleted.
      *
      * @param Request $request
      * @param int $id
@@ -114,7 +94,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        if (is_null($user)) {
+        if (\is_null($user)) {
             abort(404, __('error.404'));
         }
 
@@ -125,13 +105,29 @@ class UserController extends Controller
         }
 
         try {
-            event(new \App\Events\User\Delete($user, $request->user()));
-            $user->forceDelete();
+            $user->delete();
         } catch (\Exception $e) {
             abort(500, __('error.500'));
         }
 
-        return response()->json(['message' => trans_choice('messages.deleted_users_permanently', 1)]);
+        return response()->json(['message' => trans_choice('messages.deleted_users', 1)]);
+    }
+
+    /**
+     * Delete one or more users.
+     *
+     * @param BulkDeleteRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteBulk(BulkDeleteRequest $request)
+    {
+        $input = $request->only(['ids']);
+
+        $count = User::destroy($input['ids']);;
+        return response()->json([
+            'count'   => $count,
+            'message' => trans_choice('messages.deleted_users', $count)
+        ]);
     }
 
     /**
@@ -148,13 +144,13 @@ class UserController extends Controller
         foreach ($input['ids'] as $id) {
             $user = User::onlyTrashed()->find((int) $id);
 
-            if( is_null($user)) {
+            if (\is_null($user)) {
                 continue;
             }
 
-            event(new \App\Events\User\Delete($user, $request->user()));
-            $user->forceDelete();
-            $count++;
+            if ($user->forceDelete()) {
+                $count++;
+            }
         }
 
         return response()->json([
@@ -164,12 +160,38 @@ class UserController extends Controller
     }
 
     /**
-     * Restore soft deleted user.
+     * Restore a deleted user.
+     *
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function restore(Request $request, $id)
+    {
+        $user = User::withTrashed()->find($id);
+
+        if (\is_null($user)) {
+            abort(404, __('error.404'));
+        }
+
+        if (! $user->trashed()) {
+            abort(400, __('error.user_not_deleted'));
+        }
+
+        if(! $user->restore()) {
+            abort(500, __('error.500'));
+        }
+
+        return response()->json(['message' => trans_choice('messages.deleted_users_restored', 1)]);
+    }
+
+    /**
+     * Restore soft deleted users.
      *
      * @param IntIdRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function restore(IntIdRequest $request)
+    public function restoreBulk(IntIdRequest $request)
     {
         $input = $request->only(['ids']);
         $count = 0;
@@ -177,12 +199,13 @@ class UserController extends Controller
         foreach ($input['ids'] as $id) {
             $user = User::onlyTrashed()->find((int) $id);
 
-            if( is_null($user)) {
+            if (\is_null($user)) {
                 continue;
             }
 
-            $user->restore();
-            $count++;
+            if ($user->restore()) {
+                $count++;
+            }
         }
 
         return response()->json([
@@ -213,6 +236,13 @@ class UserController extends Controller
         return response()->json($users);
     }
 
+    /**
+     * Update a user.
+     *
+     * @param UpdateRequest $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(UpdateRequest $request, $id)
     {
         $input = $request->only([
@@ -234,7 +264,7 @@ class UserController extends Controller
         $user = User::with('role')->find($id);
         $role = Role::find($request->input('role'));
 
-        if (is_null($user)) {
+        if (\is_null($user)) {
             abort(404, __('error.404'));
         }
 
@@ -247,10 +277,12 @@ class UserController extends Controller
                 unset($input['email']);
             }
 
-            $user->update($input);
+            if (! $user->update($input)) {
+                throw new \Exception();
+            }
 
             // Update role if was changed
-            if (!\is_null($role)) {
+            if (! \is_null($role)) {
                 $user->role()->associate($role)->save();
             }
 
@@ -273,7 +305,7 @@ class UserController extends Controller
     {
         $user = User::with('role')->find($id);
 
-        if (is_null($user)) {
+        if (\is_null($user)) {
             abort(404, __('error.404'));
         }
 
