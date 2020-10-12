@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class DeleteUser
@@ -61,6 +62,8 @@ class DeleteUser extends Mailable implements ShouldQueue
     {
         $lang = $this->locale ?? App::getLocale();
         $subject = __('mails.subject_delete_user');
+
+        Log::info("[Mail] 'App\Mail\DeleteUser' has been sent to '{$this->email}'");
 
         return $this->view('mails.user.delete')
             ->text('mails.user.delete_plain')

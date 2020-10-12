@@ -26,30 +26,15 @@ class ClearUsers implements ShouldQueue
      */
     public function handle(\App\Models\User $users)
     {
-        // TODO - Should not be deleted if pending billings etc. probably it would fail anyway because of the
-        //        constraints -> Take care of this when implementing this feature!
-        // Delete users that haven't been update for x months, beginning at the end of the year
-        $configInactive = config('app.users.delete_inactive_after');
-        $inactiveUsers = $users
-            ->withTrashed()
+        // Delete users that have been soft deleted but not recovered their accounts in time
+        $users = $users->onlyTrashed()
             ->where('role_id', '!=', adminRole())
-            ->where('updated_at', '<', Carbon::now()->subMonths($configInactive)->startOfYear())
-            ->forceDelete();
+            ->where('deleted_at', '<', Carbon::now()->subDays(recoverUsers()))
+            ->get();
 
-        if ($inactiveUsers) {
-            Log::info("Deleted '{$inactiveUsers}' inactive users.");
+        // Must iterate over users to call delete event which will send the notification.
+        foreach ($users as $user) {
+            $user->forceDelete();
         }
-
-        $configUnverified = config('app.users.delete_unverified_after');
-        $unverifiedUsers = $users
-            ->withTrashed()
-            ->where('email_verified_at', '=', null)
-            ->where('created_at', '<', Carbon::now()->subDays($configUnverified))
-            ->forceDelete();
-
-        if ($unverifiedUsers) {
-            Log::info("Deleted '{$unverifiedUsers}' unverified users.");
-        }
-
     }
 }
