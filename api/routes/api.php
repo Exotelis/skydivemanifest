@@ -53,6 +53,12 @@ Route::prefix('auth')->group(function() {
     });
 
     /**
+     * Recover
+     */
+    Route::post('recover', [App\Http\Controllers\AuthController::class, 'recover'])
+        ->name('api.recover-user-with-token');
+
+    /**
      * Tos
      */
     Route::post('tos', [App\Http\Controllers\AuthController::class, 'acceptTos'])
@@ -139,7 +145,7 @@ Route::middleware(['auth:api', 'scopes:users:read'])->prefix('users')->group(fun
     Route::post('/', [App\Http\Controllers\UserController::class, 'create'])
         ->middleware('scopes:users:write')
         ->name('api.create-user');
-    Route::delete('/', [App\Http\Controllers\UserController::class, 'bulkDelete'])
+    Route::delete('/', [App\Http\Controllers\UserController::class, 'deleteBulk'])
         ->middleware('scopes:users:delete')
         ->name('api.delete-users');
 
@@ -154,6 +160,9 @@ Route::middleware(['auth:api', 'scopes:users:read'])->prefix('users')->group(fun
         Route::delete('/', [App\Http\Controllers\UserController::class, 'delete'])
             ->middleware('scopes:users:delete')
             ->name('api.delete-user');
+        Route::post('restore', [App\Http\Controllers\UserController::class, 'restore'])
+            ->middleware('scopes:users:delete')
+            ->name('api.restore-trashed-user');
     });
 
     /**
@@ -162,7 +171,7 @@ Route::middleware(['auth:api', 'scopes:users:read'])->prefix('users')->group(fun
     Route::middleware('scopes:users:delete')->prefix('trashed')->group(function() {
         Route::get('/', [App\Http\Controllers\UserController::class, 'trashed'])
             ->name('api.get-trashed-users');
-        Route::put('/', [App\Http\Controllers\UserController::class, 'restore'])
+        Route::put('/', [App\Http\Controllers\UserController::class, 'restoreBulk'])
             ->name('api.restore-trashed-users');
         Route::delete('/', [App\Http\Controllers\UserController::class, 'deletePermanently'])
             ->name('api.delete-trashed-users');

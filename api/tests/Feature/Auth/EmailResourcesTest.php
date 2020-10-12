@@ -68,12 +68,19 @@ class EmailResourcesTest extends TestCase
     public function testDelete()
     {
         $resource = self::API_URL . 'auth/email/delete';
-        $user = User::factory()->isActive()->noPasswordChange()->create();
+        $unverifiedUser = User::factory()->isActive()->isNotVerified()->noPasswordChange()->create();
+        $user = User::factory()->isActive()->isVerified()->noPasswordChange()->create();
         $newEmail = 'newemail@example.com';
 
         // Not signed in
         $response = $this->postJson($resource);
         $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
+
+        // No verified email so far
+        $this->actingAs($unverifiedUser);
+        $response = $this->postJson($resource);
+        $response->assertStatus(403)
+            ->assertJson(['message' => 'Your email address is not verified.']);
 
         // No valid token / No email address change requested
         $this->actingAs($user);
@@ -99,7 +106,7 @@ class EmailResourcesTest extends TestCase
     public function testResend()
     {
         $resource = self::API_URL . 'auth/email/resend';
-        $user = User::factory()->isActive()->noPasswordChange()->create();
+        $user = User::factory()->isActive()->isVerified()->noPasswordChange()->create();
         $newEmail = 'newemail@example.com';
 
         Notification::fake();

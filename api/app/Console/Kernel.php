@@ -40,6 +40,8 @@ class Kernel extends ConsoleKernel
             ->daily();
         $schedule->job((new \App\Jobs\Auth\ClearPasswordResets())->onConnection('sync')->onQueue('job'))
             ->daily();
+        $schedule->job((new \App\Jobs\Auth\ClearRestoreUsers())->onConnection('sync')->onQueue('job'))
+            ->daily();
         $schedule->job((new \App\Jobs\User\ClearUsers())->onConnection('sync')->onQueue('job'))
             ->daily();
 

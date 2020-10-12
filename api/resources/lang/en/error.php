@@ -17,6 +17,7 @@ return [
     'email_token_invalid'            => 'The email confirm token is invalid.',
     'email_token_not_found'          => 'You haven\'t requested an email address change.',
     'email_token_throttled'          => 'Please wait before retrying. You can resend the verification email once every :time.',
+    'recover_token_invalid'          => 'The token to recover your account is invalid.',
     'role_in_use'                    => 'At least one user is still assigned to this user role, remove all users from this role to proceed.',
     'roles_in_use'                   => 'At least one user is still assigned to the user role with id :id, remove all users from this role to proceed.',
     'role_not_deletable'             => 'The user role is protected and cannot be deleted.',
@@ -26,5 +27,6 @@ return [
     'too_many_attempts'              => 'Too many attempts. Please wait before sending a new request.',
     'tos_not_accepted'               => 'You haven\'t accepted the Terms of Service.',
     'user_not_deletable_last_admin'  => 'The last user with administrator permissions cannot be deleted.',
+    'user_not_deleted'               => 'The user is not deleted.',
     'validation_error'               => 'The validation of the submitted data has been failed.',
 ];

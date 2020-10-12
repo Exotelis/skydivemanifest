@@ -19,6 +19,7 @@ class LogEmailVerified
      */
     public function handle(EmailVerified $event)
     {
-        Log::info("Email address of user '{$event->user->id}|{$event->user->email}' has been verified.");
+        $user = "{$event->user->id}|{$event->user->email}";
+        Log::info("[User] Email address of user '{$user}' has been verified.");
     }
 }

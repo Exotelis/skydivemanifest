@@ -56,7 +56,7 @@ class LogRequests
             $status = $status . ' - ' . $content['message'] ?? $status;
         }
 
-        $log = "'{$user}'({$ips}): [{$status}] {$method}@{$url} - Agent: {$agent})";
+        $log = "[Request] [{$status}] {$method}@{$url}: '{$user}'({$ips}) - Agent: {$agent})";
 
         Log::info($log);
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Contracts\User\MustVerifyEmail;
+use App\Traits\ExceptRoute;
 use Closure;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified as EnsureEmailIsVerifiedIlluminate;
 use Illuminate\Support\Facades\Redirect;
@@ -13,26 +14,19 @@ use Illuminate\Support\Facades\Redirect;
  */
 class EnsureEmailIsVerified extends EnsureEmailIsVerifiedIlluminate
 {
+    use ExceptRoute;
+
     /**
-     * Routes that should skip handle.
-     *
-     * @var array
+     * Create a new EnsureEmailIsVerified instance.
      */
-    protected $except = [
-        'api.accept-tos',
-        'api.change-password',
-        'api.confirm-email',
-        'api.delete-email-request',
-        'api.forgot-password',
-        'api.login',
-        'api.logout',
-        'api.refresh',
-        'api.register',
-        'api.resend-email-request',
-        'api.reset-password',
-        'api.timezones',
-        'api.tos',
-    ];
+    public function __construct()
+    {
+        // Remove route from expect
+        $pos = \array_search('api.delete-email-request', $this->except);
+        if ($pos !== false) {
+            unset($this->except[$pos]);
+        }
+    }
 
     /**
      * Handle an incoming request.
@@ -58,26 +52,5 @@ class EnsureEmailIsVerified extends EnsureEmailIsVerifiedIlluminate
         }
 
         return $next($request);
-    }
-
-    /**
-     * Determine if the request has a URI that should pass through email verified verification.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return bool
-     */
-    protected function inExceptArray($request)
-    {
-        foreach ($this->except as $except) {
-            if ($except !== '/') {
-                $except = trim($except, '/');
-            }
-
-            if ($request->fullUrlIs($except) || $request->is($except) || $request->routeIs($except)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

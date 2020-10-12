@@ -14,4 +14,5 @@ return [
     'signed_out'                => 'Logged out successfully.',
     'user_created'              => 'The user has been created successfully.',
     'user_created_failed'       => 'Could not create user.',
+    'user_recovered'            => 'Your account has been recovered successfully.',
 ];

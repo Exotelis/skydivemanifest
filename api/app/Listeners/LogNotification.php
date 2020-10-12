@@ -22,6 +22,6 @@ class LogNotification
         $notification = get_class($event->notification);
         $user = $event->notifiable;
 
-        Log::info("'{$notification}' notification has been sent to user '{$user->id}|{$user->email}'");
+        Log::info("[Notification] '{$notification}' has been sent to user '{$user->id}|{$user->email}'");
     }
 }

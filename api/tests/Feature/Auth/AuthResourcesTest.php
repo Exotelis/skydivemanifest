@@ -6,7 +6,9 @@ use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
@@ -228,7 +230,7 @@ class AuthResourcesTest extends TestCase
             'tos'                   => 1
         ];
 
-        Event::fake();
+        Notification::fake();
 
         // Invalid request
         $response = $this->postJson($resource, ['username' => $this->faker->unique()->userName]);
@@ -239,10 +241,50 @@ class AuthResourcesTest extends TestCase
         // Success
         $response = $this->postJson($resource, $json);
         $response->assertStatus(201)->assertJson(['message' => 'The user has been created successfully.']);
+        $user = User::find($response['data']['id']);
         unset($json['password'], $json['password_confirmation'], $json['tos']);
         $json['is_active'] = true;
         $this->assertDatabaseHas('users', $json);
         $json['role']['id'] = defaultRole();
-        Event::assertDispatched(\Illuminate\Auth\Events\Registered::class);
+        Notification::assertSentTo(
+            [$user],
+            \App\Notifications\CreateUser::class
+        );
+    }
+
+    /**
+     * Test restore resource.
+     *
+     * @covers \App\Http\Controllers\AuthController
+     * @return void
+     */
+    public function testRecover()
+    {
+        $resource = self::API_URL . 'auth/recover';
+        $user = User::factory()->isUser()->create();
+
+        Notification::fake();
+
+        // Bad request
+        $response = $this->postJson($resource, ['token' => '0123456789']);
+        $response->assertStatus(400)->assertJson(['message' => 'The token to recover your account is invalid.']);
+
+        // Invalid input
+        $this->checkInvalidInput($resource, 'post');
+
+        // Delete user and get token to prepare the restore process
+        $user->delete();
+        $token = 'myMockedToken';
+        $result = DB::table('restore_users')
+            ->where('user_id', '=', $user->id)
+            ->update(['token' => Hash::make($token)]);
+
+        // Restore user
+        $response = $this->postJson($resource, ['token' => $token]);
+        $response->assertStatus(200)->assertJson(['message' => 'Your account has been recovered successfully.']);
+        Notification::assertSentTo(
+            [$user],
+            \App\Notifications\RestoreUser::class
+        );
     }
 }

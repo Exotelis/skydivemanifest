@@ -19,6 +19,7 @@ class LogLockAccount
      */
     public function handle(LockAccount $event)
     {
-        Log::info("Account of user '{$event->user->id}|{$event->user->email}' has been locked temporarily.");
+        $user = "{$event->user->id}|{$event->user->email}";
+        Log::info("[User] Account of user '{$user}' has been locked temporarily.");
     }
 }

@@ -42,7 +42,7 @@ class RegisterRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        if (! is_null($this->timezone)) {
+        if (! \is_null($this->timezone)) {
             // Try to guess the timezone, when an integer was submitted
             $timezone = isDigit($this->timezone) ?
                 CarbonTimeZone::createFromMinuteOffset((int) $this->timezone)->toRegionName() :

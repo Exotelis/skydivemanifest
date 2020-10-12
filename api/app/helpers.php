@@ -84,6 +84,18 @@ if (! function_exists('deleteUnverifiedUsers')) {
     }
 }
 
+if (! function_exists('recoverUsers')) {
+    /**
+     * Determine how long users can recover their accounts.
+     *
+     * @return int
+     */
+    function recoverUsers()
+    {
+        return config('app.users.recover');
+    }
+}
+
 if (! function_exists('frontendUrl')) {
     /**
      * Return the api prefix.
@@ -259,7 +271,7 @@ if (! function_exists('validRoles')) {
      */
     function validRoles($user = null)
     {
-        if (is_null($user)) {
+        if (\is_null($user)) {
             return new \Illuminate\Database\Eloquent\Collection();
         }
 
@@ -281,5 +293,40 @@ if (! function_exists('isDigit')) {
     function isDigit($subject)
     {
         return (bool) preg_match('/^-?\d+$/', $subject);
+    }
+}
+
+if (! function_exists('getModelDiff')) {
+    /**
+     * Get the diff of model on update
+     *
+     * @param  Illuminate\Database\Eloquent\Model $model
+     * @param  array $except
+     * @param  boolean $asString Determines if the diff should be returned as string
+     * @return array|string
+     */
+    function getModelDiff($model, $except = [], $asString = false)
+    {
+        $dirty = Illuminate\Support\Arr::except($model->getDirty(), $except);
+        $diff = $asString ? '' : [];
+
+        foreach ($dirty as $key => $value) {
+            $original = $model->getOriginal($key);
+
+            if ($asString) {
+                $diff .= "{$key}:[-]{$original}[+]{$value}|";
+            } else {
+                $diff[$key] = [
+                    'old' => $original,
+                    'new' => $value,
+                ];
+            }
+        }
+
+        if (is_string($diff)) {
+            $diff = Illuminate\Support\Str::of($diff)->rtrim('|');
+        }
+
+        return $diff;
     }
 }

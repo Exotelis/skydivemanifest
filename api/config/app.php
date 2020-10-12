@@ -176,18 +176,22 @@ return [
     |
     | This key defines after how many months of inactivity a user should be
     | deleted. It also defines, after how many days after the user has been
-    | created, not verified accounts should be deleted.
+    | created, not verified accounts should be deleted. Once a user account
+    | is marked as deleted, it can be recovered.
     |
     | 'delete_inactive_after' is the time in months after inactive/not updated
     | users should be deleted. (Beginning at the end of the year)
     | 'delete_unverified_after' is the time in days, after a user with an un-
     | verified email should be deleted.
+    | 'recover' is the time in days, how long a user can recover
+    | the account.
     |
     */
 
     'users' => [
-        'delete_inactive_after'   => (int) env('APP_DELETE_INACTIVE_USERS', 120),
+        'delete_inactive_after'   => (int) env('APP_DELETE_INACTIVE_USERS', 36),
         'delete_unverified_after' => (int) env('APP_DELETE_UNVERIFIED_USERS', 10),
+        'recover'                 => (int) env('APP_RECOVER_DELETED_USERS', 10),
     ],
 
     /*
@@ -240,6 +244,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\ObserverServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\VerifyEmailProvider::class,
 

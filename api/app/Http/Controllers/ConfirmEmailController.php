@@ -24,7 +24,7 @@ class ConfirmEmailController extends Controller
 
         $user = VerifyEmail::findUser($input['token']);
 
-        if (is_null($user)) {
+        if (\is_null($user)) {
             abort(400, __('error.email_token_invalid'));
         }
 

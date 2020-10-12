@@ -90,11 +90,11 @@ class RoleController extends Controller
     {
         $role = Role::find($id);
 
-        if (is_null($role)) {
+        if (\is_null($role)) {
             abort(404, __('error.404'));
         }
 
-        if (!$role->deletable) {
+        if (! $role->deletable) {
             abort(400, __('error.role_not_deletable'));
         }
 
@@ -139,7 +139,7 @@ class RoleController extends Controller
     {
         $role = Role::with('permissions')->find($id);
 
-        if (is_null($role)) {
+        if (\is_null($role)) {
             abort(404, __('error.404'));
         }
 
@@ -163,7 +163,7 @@ class RoleController extends Controller
 
         $role = Role::with('permissions')->find($id);
 
-        if (is_null($role)) {
+        if (\is_null($role)) {
             abort(404, __('error.404'));
         }
 

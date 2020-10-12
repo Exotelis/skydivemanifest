@@ -14,4 +14,5 @@ return [
     'signed_out'                => 'Erfolgreich abgemeldet.',
     'user_created'              => 'Der Benutzer wurde erfolgreich erstellt.',
     'user_created_failed'       => 'Der Benutzer konnte nicht erstellt werden.',
+    'user_recovered'            => 'Ihr Benutzerkonto wurde erfolgreich wiederhergestellt.',
 ];

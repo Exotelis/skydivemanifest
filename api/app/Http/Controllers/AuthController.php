@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RefreshRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\RestoreRequest;
 use App\Http\Requests\Auth\TosRequest;
 use App\Models\Role;
 use App\Models\User;
@@ -47,7 +48,10 @@ class AuthController extends Controller
         }
 
         $user->tos = true;
-        $user->save();
+
+        if (! $user->save()) {
+            abort(500, __('error.500'));
+        }
 
         return response()->json(['message' => __('auth.tos_accepted')]);
     }
@@ -64,10 +68,10 @@ class AuthController extends Controller
         $input = $request->only(['username', 'password']);
 
         // Find user
-        $this->user = User::findByAuthname($input['username']);
+        $this->user = (new User)->findForPassport($input['username']);
 
         // Check if user exists
-        if (is_null($this->user) || ! $this->user instanceof User) {
+        if (\is_null($this->user)) {
             abort(401, __('auth.failed'));
         }
 
@@ -121,6 +125,39 @@ class AuthController extends Controller
         }
 
         abort(400, __('error.could_not_sign_out'));
+    }
+
+    /**
+     * Recover a soft deleted account.
+     *
+     * @param  RestoreRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function recover(RestoreRequest $request)
+    {
+        $input = $request->only([
+            'token',
+        ]);
+
+        $result = DB::table('restore_users')->select(['token', 'user_id'])->get();
+        $user = null;
+
+        foreach ($result as $entry) {
+            if (Hash::check($input['token'], $entry->token)) {
+                $user = User::withTrashed()->find($entry->user_id);
+                break;
+            }
+        }
+
+        if (\is_null($user)) {
+            abort(400, __('error.recover_token_invalid'));
+        }
+
+        if (! $user->restore()) {
+            abort(500, __('error.500'));
+        }
+
+        return response()->json(['message' => __('messages.user_recovered')], 200);
     }
 
     /**
@@ -188,8 +225,6 @@ class AuthController extends Controller
             $role = Role::findOrFail(defaultRole());
             $newUser->role()->associate($role);
 
-            event(new \Illuminate\Auth\Events\Registered($newUser));
-
             DB::commit();
         } catch (\Exception $exception) {
             abort(500, __('auth.failed_registration'));
@@ -224,6 +259,7 @@ class AuthController extends Controller
         $tokenContent = [];
 
         if ($tokenResponse instanceof \Illuminate\Http\Response) {
+
             if (! $tokenResponse->isSuccessful()) {
                 abort(401, __('auth.failed'));
             }

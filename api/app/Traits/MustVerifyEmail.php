@@ -39,7 +39,7 @@ trait MustVerifyEmail
      */
     public function hasVerifiedEmail()
     {
-        return ! is_null($this->email_verified_at);
+        return ! \is_null($this->email_verified_at);
     }
 
     /**
@@ -68,7 +68,7 @@ trait MustVerifyEmail
     {
         $request = VerifyEmail::get($this->email);
 
-        if (is_null($request)) {
+        if (\is_null($request)) {
             abort('400', __('error.email_token_not_found'));
         }
 
