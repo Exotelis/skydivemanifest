@@ -32,18 +32,31 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 
-        // Artisan commands
+        /**
+         * Artisan commands
+         */
+
         $schedule->command('passport:purge')->daily();
 
-        // Jobs
+        /**
+         * Jobs
+         */
+
+        // Auth
         $schedule->job((new \App\Jobs\Auth\ClearEmailChanges())->onConnection('sync')->onQueue('job'))
             ->daily();
         $schedule->job((new \App\Jobs\Auth\ClearPasswordResets())->onConnection('sync')->onQueue('job'))
             ->daily();
         $schedule->job((new \App\Jobs\Auth\ClearRestoreUsers())->onConnection('sync')->onQueue('job'))
             ->daily();
+
+        // User
         $schedule->job((new \App\Jobs\User\ClearUsers())->onConnection('sync')->onQueue('job'))
             ->daily();
+        $schedule->job((new \App\Jobs\User\DeleteInactiveUsers())->onConnection('sync')->onQueue('job'))
+            ->daily();
+        $schedule->job((new \App\Jobs\User\DeleteUnverifiedUsers())->onConnection('sync')
+            ->onQueue('job'))->daily();
 
     }
 

@@ -8,13 +8,12 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Log;
 
 /**
- * Class ClearUsers
+ * Class DeleteInactiveUsers
  * @package App\Jobs\User
  */
-class ClearUsers implements ShouldQueue
+class DeleteInactiveUsers implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -26,15 +25,17 @@ class ClearUsers implements ShouldQueue
      */
     public function handle(\App\Models\User $users)
     {
-        // Delete users that have been soft deleted but not recovered their accounts in time
-        $users = $users->onlyTrashed()
-            ->where('role_id', '!=', adminRole())
-            ->where('deleted_at', '<', Carbon::now()->subDays(recoverUsers()))
+        // TODO Should not soft deleted users that have valid tickets or invoices assigned.
+
+        // Soft delete users that haven't been updated (inactive) for x months, beginning at the end of the year.
+        // Admin users will be ignored and not soft deleted automatically.
+        $users = $users->where('role_id', '!=', adminRole())
+            ->where('updated_at', '<', Carbon::now()->subMonths(deleteInactiveUsers())->startOfYear())
             ->get();
 
         // Must iterate over users to call delete event which will send the notification.
         foreach ($users as $user) {
-            $user->forceDelete();
+            $user->delete();
         }
     }
 }
