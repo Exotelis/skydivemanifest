@@ -160,6 +160,32 @@ class UserController extends Controller
     }
 
     /**
+     * Return a single user.
+     *
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function get(Request $request, $id)
+    {
+        $user = User::with([
+            'defaultInvoice',
+            'defaultInvoice.country',
+            'defaultInvoice.region',
+            'defaultShipping',
+            'defaultShipping.country',
+            'defaultShipping.region',
+            'role'
+        ])->find($id);
+
+        if (\is_null($user)) {
+            abort(404, __('error.404'));
+        }
+
+        return response()->json($user);
+    }
+
+    /**
      * Restore a deleted user.
      *
      * @param Request $request
@@ -295,24 +321,6 @@ class UserController extends Controller
     }
 
     /**
-     * Return a single user.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function user(Request $request, $id)
-    {
-        $user = User::with('role')->find($id);
-
-        if (\is_null($user)) {
-            abort(404, __('error.404'));
-        }
-
-        return response()->json($user);
-    }
-
-    /**
      *
      * Me / Personal methods
      *
@@ -335,9 +343,9 @@ class UserController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function meUser(Request $request)
+    public function meGet(Request $request)
     {
-        return $this->user($request, $request->user()->id);
+        return $this->get($request, $request->user()->id);
     }
 
     /**

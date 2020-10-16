@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'address_created'           => 'The address has been created successfully.',
+    'address_created_failed'    => 'Could not create the address.',
+    'deleted_addresses'         => '{0} No addresses have been deleted.|{1} The address has been deleted successfully.|[2,*] :count addresses have been deleted successfully.',
     'deleted_roles'             => '{0} No user roles have been deleted.|{1} The user role has been deleted successfully.|[2,*] :count users roles have been deleted successfully.',
     'deleted_users'             => '{0} No user has been deleted.|{1} The user has been deleted successfully.|[2,*] :count users have been deleted successfully.',
     'deleted_users_permanently' => '{0} No user has been deleted permanently.|{1} The user has been deleted permanently.|[2,*] :count users have been deleted permanently.',
@@ -10,9 +13,9 @@ return [
     'email_verified'            => 'Email address has been verified successfully.',
     'password_changed'          => 'Your password has been changed successfully.',
     'role_created'              => 'The user role has been created successfully.',
-    'role_created_failed'       => 'Could not create user role.',
+    'role_created_failed'       => 'Could not create the user role.',
     'signed_out'                => 'Logged out successfully.',
     'user_created'              => 'The user has been created successfully.',
-    'user_created_failed'       => 'Could not create user.',
+    'user_created_failed'       => 'Could not create the user.',
     'user_recovered'            => 'Your account has been recovered successfully.',
 ];

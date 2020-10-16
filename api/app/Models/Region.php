@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
  * @property int $country_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property-read Country $country
  * @method static Builder|Region newModelQuery()
  * @method static Builder|Region newQuery()
  * @method static Builder|Region query()
@@ -46,4 +47,12 @@ class Region extends Model
      * @var int
      */
     protected $perPage = 50;
+
+    /**
+     * Get the country of the region.
+     */
+    public function country()
+    {
+        return $this->belongsTo('App\Models\Country');
+    }
 }

@@ -59,6 +59,8 @@ use Laravel\Passport\RefreshToken;
  * @property-read int|null $addresses_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
  * @property-read int|null $clients_count
+ * @property-read Address $defaultInvoice
+ * @property-read Address $defaultShipping
  * @property-read string $name
  * @property-read Role|null $role
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
@@ -182,6 +184,8 @@ class User extends Model implements
      * @var array
      */
     protected $hidden = [
+        'default_invoice',
+        'default_shipping',
         'failed_logins',
         'role_id',
         'password',
@@ -231,13 +235,24 @@ class User extends Model implements
     }
 
     /**
-     * Get the addresses of the user
+     * Get the addresses of the user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function addresses()
     {
         return $this->hasMany('App\Models\Address');
+    }
+
+    /**
+     * Determine if the user has a given address.
+     *
+     * @param  Address $address
+     * @return boolean
+     */
+    public function hasAddress(Address $address)
+    {
+        return $this->addresses->contains($address);
     }
 
     /**
@@ -251,6 +266,17 @@ class User extends Model implements
     }
 
     /**
+     * Determine if the given address is the default invoice address
+     *
+     * @param  Address $address
+     * @return boolean
+     */
+    public function isDefaultInvoice(Address $address)
+    {
+        return $this->default_invoice === $address->getKey();
+    }
+
+    /**
      * Get the default_shipping address of the user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -260,6 +286,16 @@ class User extends Model implements
         return $this->belongsTo('App\Models\Address', 'default_shipping');
     }
 
+    /**
+     * Determine if the given address is the default shipping address
+     *
+     * @param  Address $address
+     * @return boolean
+     */
+    public function isDefaultShipping(Address $address)
+    {
+        return $this->default_shipping === $address->getKey();
+    }
 
     /**
      * Get the role that owns the user.

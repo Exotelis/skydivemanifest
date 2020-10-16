@@ -102,6 +102,19 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
+     * Check if the resource was not found.
+     *
+     * @param string $resource
+     * @param string $action
+     * @param array $data
+     */
+    protected function checkNotFound($resource, $action = 'get', $data = [])
+    {
+        $response = $this->getResponse($resource, $action, $data);
+        $response->assertStatus(404)->assertJson(['message' => 'The requested resource was not found.']);
+    }
+
+    /**
      * Check if the user is unauthorized
      *
      * @param string $resource

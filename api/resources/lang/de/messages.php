@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'address_created'           => 'Die Adresse wurde erfolgreich erstellt.',
+    'address_created_failed'    => 'Die Adresse konnte nicht erstellt werden.',
+    'deleted_addresses'         => '{0} Es wurde keine Adresse gelöscht.|{1} Die Adresse wurde erfolgreich gelöscht.|[2,*] :count Adressen wurden erfolgreich gelöscht.',
     'deleted_roles'             => '{0} Es wurde keine Benutzerrollen gelöscht.|{1} Die Benutzerrolle wurde erfolgreich gelöscht.|[2,*] :count Benutzerrollen wurden erfolgreich gelöscht.',
     'deleted_users'             => '{0} Es wurde kein Benutzer gelöscht.|{1} Der Benutzer wurde erfolgreich gelöscht.|[2,*] :count Benutzer wurden erfolgreich gelöscht.',
     'deleted_users_permanently' => '{0} Es wurde kein Benutzer endgültig gelöscht.|{1} Der Benutzer wurde endgültig gelöscht.|[2,*] :count Benutzer wurden endgültig gelöscht.',

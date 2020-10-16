@@ -3,61 +3,49 @@
 namespace App\Observers;
 
 use App\Models\Address;
+use Illuminate\Support\Facades\Log;
 
-class AddressObserver
+/**
+ * Class AddressObserver
+ * @package App\Observers
+ */
+class AddressObserver extends BaseObserver
 {
     /**
      * Handle the address "created" event.
      *
-     * @param  \App\Models\Address  $address
+     * @param  Address  $address
      * @return void
      */
     public function created(Address $address)
     {
-        //
+        $user = "{$address->user->id}|{$address->user->email}";
+        Log::info("[Address] '{$address->id}' has been created for user '{$user}' by '{$this->executedBy}'");
     }
 
     /**
      * Handle the address "updated" event.
      *
-     * @param  \App\Models\Address  $address
+     * @param  Address  $address
      * @return void
      */
     public function updated(Address $address)
     {
-        //
+        $user = "{$address->user->id}|{$address->user->email}";
+
+        // Do not display diff because of privacy reasons, most of the address data are personal data.
+        Log::info("[Address] '{$address->id}' of user '{$user}' has been updated by '{$this->executedBy}'");
     }
 
     /**
      * Handle the address "deleted" event.
      *
-     * @param  \App\Models\Address  $address
+     * @param  Address  $address
      * @return void
      */
     public function deleted(Address $address)
     {
-        //
-    }
-
-    /**
-     * Handle the address "restored" event.
-     *
-     * @param  \App\Models\Address  $address
-     * @return void
-     */
-    public function restored(Address $address)
-    {
-        //
-    }
-
-    /**
-     * Handle the address "force deleted" event.
-     *
-     * @param  \App\Models\Address  $address
-     * @return void
-     */
-    public function forceDeleted(Address $address)
-    {
-        //
+        $user = "{$address->user->id}|{$address->user->email}";
+        Log::info("[Address] '{$address->id}' of user '{$user}' has been deleted by '{$this->executedBy}'");
     }
 }

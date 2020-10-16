@@ -172,6 +172,9 @@ return [
     */
 
     'attributes' => [
+        'city'              => 'Stadt',
+        'company'           => 'Firma',
+        'country_id'        => 'Land',
         'default_invoice'   => 'Standardrechnungsadresse',
         'default_shipping'  => 'Standardversandadresse',
         'dob'               => 'Geburtsdatum',
@@ -188,7 +191,10 @@ return [
         'password'          => 'Passwort',
         'password_reset'    => 'Password zurücksetzen',
         'phone'             => 'Telefon',
+        'postal'            => 'Postleitzahl',
+        'region_id'         => 'Region',
         'role'              => 'Benutzerrolle',
+        'street'            => 'Straße',
         'username'          => 'Benutzername',
         'without_account'   => 'kein Benutzerkonto erstellen'
     ],

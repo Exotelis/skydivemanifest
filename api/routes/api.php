@@ -70,9 +70,27 @@ Route::prefix('auth')->group(function() {
  * Me/Personal
  */
 Route::middleware(['auth:api'])->prefix('me')->group(function () {
-    Route::get('/', [App\Http\Controllers\UserController::class, 'meUser']);
+    Route::get('/', [App\Http\Controllers\UserController::class, 'meGet']);
     Route::put('/', [App\Http\Controllers\UserController::class, 'meUpdate']);
     Route::delete('/', [App\Http\Controllers\UserController::class, 'meDelete']);
+
+    /**
+     * Addresses
+     */
+    Route::prefix('addresses')->group(function() {
+        Route::get('/', [App\Http\Controllers\AddressController::class, 'meAll']);
+        Route::post('/', [App\Http\Controllers\AddressController::class, 'meCreate']);
+        Route::delete('/', [App\Http\Controllers\AddressController::class, 'meDeleteBulk']);
+
+        /**
+         * Single Address
+         */
+        Route::prefix('{addressID}')->where(['addressID' => '[0-9]+'])->group(function() {
+            Route::get('/', [App\Http\Controllers\AddressController::class, 'meGet']);
+            Route::put('/', [App\Http\Controllers\AddressController::class, 'meUpdate']);
+            Route::delete('/', [App\Http\Controllers\AddressController::class, 'meDelete']);
+        });
+    });
 });
 
 /**
@@ -153,7 +171,7 @@ Route::middleware(['auth:api', 'scopes:users:read'])->prefix('users')->group(fun
      * Single user
      */
     Route::prefix('{id}')->where(['id' => '[0-9]+'])->group(function() {
-        Route::get('/', [App\Http\Controllers\UserController::class, 'user'])->name('api.get-user');
+        Route::get('/', [App\Http\Controllers\UserController::class, 'get'])->name('api.get-user');
         Route::put('/', [App\Http\Controllers\UserController::class, 'update'])
             ->middleware('scopes:users:write')
             ->name('api.update-user');
@@ -163,6 +181,34 @@ Route::middleware(['auth:api', 'scopes:users:read'])->prefix('users')->group(fun
         Route::post('restore', [App\Http\Controllers\UserController::class, 'restore'])
             ->middleware('scopes:users:delete')
             ->name('api.restore-trashed-user');
+
+        /**
+         * Addresses
+         */
+        Route::middleware(['scopes:addresses:read'])->prefix('addresses')->group(function() {
+            Route::get('/', [App\Http\Controllers\AddressController::class, 'all'])
+                ->name('api.get-addresses');
+            Route::post('/', [App\Http\Controllers\AddressController::class, 'create'])
+                ->middleware('scopes:addresses:write')
+                ->name('api.create-address');
+            Route::delete('/', [App\Http\Controllers\AddressController::class, 'deleteBulk'])
+                ->middleware('scopes:addresses:delete')
+                ->name('api.delete-addresses');
+
+            /**
+             * Single Address
+             */
+            Route::prefix('{addressID}')->where(['addressID' => '[0-9]+'])->group(function() {
+                Route::get('/', [App\Http\Controllers\AddressController::class, 'get'])
+                    ->name('api.get-address');
+                Route::put('/', [App\Http\Controllers\AddressController::class, 'update'])
+                    ->middleware('scopes:addresses:write')
+                    ->name('api.update-address');
+                Route::delete('/', [App\Http\Controllers\AddressController::class, 'delete'])
+                    ->middleware('scopes:addresses:delete')
+                    ->name('api.delete-address');
+            });
+        });
     });
 
     /**
