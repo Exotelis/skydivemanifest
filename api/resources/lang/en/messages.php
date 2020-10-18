@@ -3,7 +3,10 @@
 return [
     'address_created'           => 'The address has been created successfully.',
     'address_created_failed'    => 'Could not create the address.',
+    'country_created'           => 'The country has been created successfully.',
+    'country_created_failed'    => 'Could not create the country.',
     'deleted_addresses'         => '{0} No addresses have been deleted.|{1} The address has been deleted successfully.|[2,*] :count addresses have been deleted successfully.',
+    'deleted_countries'         => '{0} No countries have been deleted.|{1} The country has been deleted successfully.|[2,*] :count countries have been deleted successfully.',
     'deleted_roles'             => '{0} No user roles have been deleted.|{1} The user role has been deleted successfully.|[2,*] :count users roles have been deleted successfully.',
     'deleted_users'             => '{0} No user has been deleted.|{1} The user has been deleted successfully.|[2,*] :count users have been deleted successfully.',
     'deleted_users_permanently' => '{0} No user has been deleted permanently.|{1} The user has been deleted permanently.|[2,*] :count users have been deleted permanently.',

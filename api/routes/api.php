@@ -67,6 +67,32 @@ Route::prefix('auth')->group(function() {
 });
 
 /**
+ * Countries
+ */
+Route::middleware(['auth:api', 'scopes:countries:read'])->prefix('countries')->group(function () {
+    Route::get('/', [App\Http\Controllers\CountryController::class, 'all'])->name('api.get-countries');
+    Route::post('/', [App\Http\Controllers\CountryController::class, 'create'])
+        ->middleware('scopes:countries:write')
+        ->name('api.create-country');
+    Route::delete('/', [App\Http\Controllers\CountryController::class, 'deleteBulk'])
+        ->middleware('scopes:countries:delete')
+        ->name('api.delete-countries');
+
+    /**
+     * Single country
+     */
+    Route::prefix('{countryID}')->where(['countryID' => '[0-9]+'])->group(function() {
+        Route::get('/', [App\Http\Controllers\CountryController::class, 'get'])->name('api.get-country');
+        Route::put('/', [App\Http\Controllers\CountryController::class, 'update'])
+            ->middleware('scopes:countries:write')
+            ->name('api.update-country');
+        Route::delete('/', [App\Http\Controllers\CountryController::class, 'delete'])
+            ->middleware('scopes:countries:delete')
+            ->name('api.delete-country');
+    });
+});
+
+/**
  * Me/Personal
  */
 Route::middleware(['auth:api'])->prefix('me')->group(function () {

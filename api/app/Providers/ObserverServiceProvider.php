@@ -25,6 +25,7 @@ class ObserverServiceProvider extends ServiceProvider
     public function boot()
     {
         \App\Models\Address::observe(\App\Observers\AddressObserver::class);
+        \App\Models\Country::observe(\App\Observers\CountryObserver::class);
         \App\Models\Role::observe(\App\Observers\RoleObserver::class);
         \App\Models\User::observe(\App\Observers\UserObserver::class);
     }

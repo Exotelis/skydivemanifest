@@ -3,7 +3,12 @@
 namespace App\Http\Requests\Country;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
+/**
+ * Class UpdateRequest
+ * @package App\Http\Requests\Country
+ */
 class UpdateRequest extends FormRequest
 {
     /**
@@ -13,7 +18,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +29,20 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'code'    => [
+                'sometimes',
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('App\Models\Country')->ignore($this->route()->id),
+            ],
+            'country' => [
+                'sometimes',
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('App\Models\Country')->ignore($this->route()->id),
+            ],
         ];
     }
 }

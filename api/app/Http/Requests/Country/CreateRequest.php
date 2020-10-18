@@ -4,6 +4,10 @@ namespace App\Http\Requests\Country;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class CreateRequest
+ * @package App\Http\Requests\Country
+ */
 class CreateRequest extends FormRequest
 {
     /**
@@ -13,7 +17,7 @@ class CreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,8 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'code'    => 'required|string|max:255|unique:App\Models\Country',
+            'country' => 'required|string|max:255|unique:App\Models\Country',
         ];
     }
 }

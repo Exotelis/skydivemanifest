@@ -173,7 +173,9 @@ return [
 
     'attributes' => [
         'city'              => 'Stadt',
+        'code'              => 'Code',
         'company'           => 'Firma',
+        'country'           => 'Land',
         'country_id'        => 'Land',
         'default_invoice'   => 'Standardrechnungsadresse',
         'default_shipping'  => 'Standardversandadresse',
