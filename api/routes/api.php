@@ -141,7 +141,7 @@ Route::middleware(['auth:api', 'scopes:roles:read'])->prefix('roles')->group(fun
     /**
      * Single role
      */
-    Route::prefix('{id}')->where(['id' => '[0-9]+'])->group(function() {
+    Route::prefix('{roleID}')->where(['roleID' => '[0-9]+'])->group(function() {
         Route::get('/', [App\Http\Controllers\RoleController::class, 'role'])->name('api.get-role');
         Route::put('/', [App\Http\Controllers\RoleController::class, 'update'])
             ->middleware('scopes:roles:write')
@@ -149,7 +149,7 @@ Route::middleware(['auth:api', 'scopes:roles:read'])->prefix('roles')->group(fun
         Route::delete('/', [App\Http\Controllers\RoleController::class, 'delete'])
             ->middleware('scopes:roles:delete')
             ->name('api.delete-role');
-        // TODO - add/{id}/users to get a list of users or add/remove them from the role
+        // TODO - add/{roleID}/users to get a list of users or add/remove them from the role
     });
 });
 
@@ -196,7 +196,7 @@ Route::middleware(['auth:api', 'scopes:users:read'])->prefix('users')->group(fun
     /**
      * Single user
      */
-    Route::prefix('{id}')->where(['id' => '[0-9]+'])->group(function() {
+    Route::prefix('{userID}')->where(['userID' => '[0-9]+'])->group(function() {
         Route::get('/', [App\Http\Controllers\UserController::class, 'get'])->name('api.get-user');
         Route::put('/', [App\Http\Controllers\UserController::class, 'update'])
             ->middleware('scopes:users:write')
