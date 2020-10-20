@@ -174,9 +174,11 @@ return [
     'attributes' => [
         'city'              => 'Stadt',
         'code'              => 'Code',
+        'codes'             => 'Codes',
         'company'           => 'Firma',
         'country'           => 'Land',
         'country_id'        => 'Land',
+        'currency'          => 'Währung',
         'default_invoice'   => 'Standardrechnungsadresse',
         'default_shipping'  => 'Standardversandadresse',
         'dob'               => 'Geburtsdatum',
@@ -197,6 +199,7 @@ return [
         'region_id'         => 'Region',
         'role'              => 'Benutzerrolle',
         'street'            => 'Straße',
+        'symbol'            => 'Symbol',
         'username'          => 'Benutzername',
         'without_account'   => 'kein Benutzerkonto erstellen'
     ],

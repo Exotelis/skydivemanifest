@@ -4,6 +4,10 @@ namespace App\Http\Requests\Currency;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class DeleteBulkRequest
+ * @package App\Http\Requests\Currency
+ */
 class DeleteBulkRequest extends FormRequest
 {
     /**
@@ -13,7 +17,7 @@ class DeleteBulkRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,8 @@ class DeleteBulkRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'codes'   => 'required|array',
+            'codes.*' => 'bail|alpha_num|size:3',
         ];
     }
 }

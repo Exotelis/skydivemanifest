@@ -3,61 +3,48 @@
 namespace App\Observers;
 
 use App\Models\Currency;
+use Illuminate\Support\Facades\Log;
 
-class CurrencyObserver
+/**
+ * Class CurrencyObserver
+ * @package App\Observers
+ */
+class CurrencyObserver extends BaseObserver
 {
     /**
      * Handle the currency "created" event.
      *
-     * @param  \App\Models\Currency  $currency
+     * @param  Currency  $currency
      * @return void
      */
     public function created(Currency $currency)
     {
-        //
+        Log::info("[Currency] '{$currency->code}|{$currency->currency}' has been created by " .
+            "'{$this->executedBy}'");
     }
 
     /**
      * Handle the currency "updated" event.
      *
-     * @param  \App\Models\Currency  $currency
+     * @param  Currency  $currency
      * @return void
      */
     public function updated(Currency $currency)
     {
-        //
+        $diff = getModelDiff($currency, [], true);
+        Log::info("[Currency] '{$currency->code}|{$currency->currency}' has been updated by " .
+            "'{$this->executedBy}' ({$diff})");
     }
 
     /**
      * Handle the currency "deleted" event.
      *
-     * @param  \App\Models\Currency  $currency
+     * @param  Currency  $currency
      * @return void
      */
     public function deleted(Currency $currency)
     {
-        //
-    }
-
-    /**
-     * Handle the currency "restored" event.
-     *
-     * @param  \App\Models\Currency  $currency
-     * @return void
-     */
-    public function restored(Currency $currency)
-    {
-        //
-    }
-
-    /**
-     * Handle the currency "force deleted" event.
-     *
-     * @param  \App\Models\Currency  $currency
-     * @return void
-     */
-    public function forceDeleted(Currency $currency)
-    {
-        //
+        Log::info("[Currency] '{$currency->code}|{$currency->currency}' has been deleted by " .
+            "'{$this->executedBy}'");
     }
 }

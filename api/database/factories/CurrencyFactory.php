@@ -2,18 +2,21 @@
 
 namespace Database\Factories;
 
-use App\Models\Model;
+use App\Models\Currency;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
-class ModelFactory extends Factory
+/**
+ * Class ModelFactory
+ * @package Database\Factories
+ */
+class CurrencyFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Model::class;
+    protected $model = Currency::class;
 
     /**
      * Define the model's default state.
@@ -23,7 +26,9 @@ class ModelFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'code'     => $this->faker->unique()->currencyCode,
+            'currency' => 'Euro',
+            'symbol'   => '€',
         ];
     }
 }

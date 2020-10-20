@@ -3,7 +3,12 @@
 namespace App\Http\Requests\Currency;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
+/**
+ * Class UpdateRequest
+ * @package App\Http\Requests\Currency
+ */
 class UpdateRequest extends FormRequest
 {
     /**
@@ -13,7 +18,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +29,15 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'code'     => [
+                'sometimes',
+                'required',
+                'alpha_num',
+                'size:3',
+                Rule::unique('App\Models\Currency')->ignore($this->route()->currencyCode, 'code'),
+            ],
+            'currency' => 'sometimes|required|string|max:255',
+            'symbol'   => 'sometimes|string|max:255|nullable',
         ];
     }
 }

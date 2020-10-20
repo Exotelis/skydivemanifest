@@ -3,7 +3,6 @@
 namespace App\Filters;
 
 use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\AllowedSort;
 
 /**
  * Class CurrencyFilters
@@ -19,7 +18,9 @@ class CurrencyFilters
     public static function filters()
     {
         return [
-            //
+            AllowedFilter::partial('code'),
+            AllowedFilter::partial('currency'),
+            AllowedFilter::exact('symbol'),
         ];
     }
 
@@ -31,7 +32,9 @@ class CurrencyFilters
     public static function sorting()
     {
         return [
-            //
+            'code',
+            'currency',
+            'symbol',
         ];
     }
 }

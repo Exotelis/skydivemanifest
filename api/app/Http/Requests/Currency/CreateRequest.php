@@ -4,6 +4,10 @@ namespace App\Http\Requests\Currency;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class CreateRequest
+ * @package App\Http\Requests\Currency
+ */
 class CreateRequest extends FormRequest
 {
     /**
@@ -13,7 +17,7 @@ class CreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,9 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'code'     => 'required|alpha_num|size:3|unique:App\Models\Currency',
+            'currency' => 'required|string|max:255',
+            'symbol'   => 'sometimes|string|max:255|nullable',
         ];
     }
 }

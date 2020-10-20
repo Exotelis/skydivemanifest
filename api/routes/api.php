@@ -93,6 +93,32 @@ Route::middleware(['auth:api', 'scopes:countries:read'])->prefix('countries')->g
 });
 
 /**
+ * Currencies
+ */
+Route::middleware(['auth:api', 'scopes:currencies:read'])->prefix('currencies')->group(function () {
+    Route::get('/', [App\Http\Controllers\CurrencyController::class, 'all'])->name('api.get-currencies');
+    Route::post('/', [App\Http\Controllers\CurrencyController::class, 'create'])
+        ->middleware('scopes:currencies:write')
+        ->name('api.create-currency');
+    Route::delete('/', [App\Http\Controllers\CurrencyController::class, 'deleteBulk'])
+        ->middleware('scopes:currencies:delete')
+        ->name('api.delete-currencies');
+
+    /**
+     * Single currency
+     */
+    Route::prefix('{currencyCode}')->where(['currencyCode' => '[A-Za-z0-9]{3}'])->group(function() {
+        Route::get('/', [App\Http\Controllers\CurrencyController::class, 'get'])->name('api.get-currency');
+        Route::put('/', [App\Http\Controllers\CurrencyController::class, 'update'])
+            ->middleware('scopes:currencies:write')
+            ->name('api.update-currency');
+        Route::delete('/', [App\Http\Controllers\CurrencyController::class, 'delete'])
+            ->middleware('scopes:currencies:delete')
+            ->name('api.delete-currency');
+    });
+});
+
+/**
  * Me/Personal
  */
 Route::middleware(['auth:api'])->prefix('me')->group(function () {
