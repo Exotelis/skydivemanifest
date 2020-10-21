@@ -58,4 +58,15 @@ class Country extends Model
     {
         return $this->hasMany('App\Models\Region');
     }
+
+    /**
+     * Determine if the user has a given address.
+     *
+     * @param  Region $region
+     * @return boolean
+     */
+    public function hasRegion(Region $region)
+    {
+        return $this->regions->contains($region);
+    }
 }

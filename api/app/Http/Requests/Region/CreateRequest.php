@@ -3,7 +3,12 @@
 namespace App\Http\Requests\Region;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
+/**
+ * Class CreateRequest
+ * @package App\Http\Requests\Region
+ */
 class CreateRequest extends FormRequest
 {
     /**
@@ -13,7 +18,7 @@ class CreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +29,12 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'region' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('App\Models\Region')->where('country_id', $this->route()->countryID),
+            ]
         ];
     }
 }

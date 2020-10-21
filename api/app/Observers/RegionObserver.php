@@ -3,61 +3,51 @@
 namespace App\Observers;
 
 use App\Models\Region;
+use Illuminate\Support\Facades\Log;
 
-class RegionObserver
+/**
+ * Class RegionObserver
+ * @package App\Observers
+ */
+class RegionObserver extends BaseObserver
 {
     /**
      * Handle the region "created" event.
      *
-     * @param  \App\Models\Region  $region
+     * @param  Region  $region
      * @return void
      */
     public function created(Region $region)
     {
-        //
+        $country = "{$region->country->id}|{$region->country->country}|{$region->country->code}";
+        Log::info("[Region] '{$region->id}|{$region->region}' has been created for country '{$country}' by " .
+            "'{$this->executedBy}'");
     }
 
     /**
      * Handle the region "updated" event.
      *
-     * @param  \App\Models\Region  $region
+     * @param  Region  $region
      * @return void
      */
     public function updated(Region $region)
     {
-        //
+        $diff = getModelDiff($region, [], true);
+        $country = "{$region->country->id}|{$region->country->country}|{$region->country->code}";
+        Log::info("[Region] '{$region->id}|{$region->region}' of country '{$country}' has been updated by " .
+            "'{$this->executedBy}' ({$diff})");
     }
 
     /**
      * Handle the region "deleted" event.
      *
-     * @param  \App\Models\Region  $region
+     * @param  Region  $region
      * @return void
      */
     public function deleted(Region $region)
     {
-        //
-    }
-
-    /**
-     * Handle the region "restored" event.
-     *
-     * @param  \App\Models\Region  $region
-     * @return void
-     */
-    public function restored(Region $region)
-    {
-        //
-    }
-
-    /**
-     * Handle the region "force deleted" event.
-     *
-     * @param  \App\Models\Region  $region
-     * @return void
-     */
-    public function forceDeleted(Region $region)
-    {
-        //
+        $country = "{$region->country->id}|{$region->country->country}|{$region->country->code}";
+        Log::info("[Region] '{$region->id}|{$region->region}' of country '{$country}' has been deleted by " .
+            "'{$this->executedBy}'");
     }
 }

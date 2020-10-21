@@ -111,7 +111,7 @@ class CountryController extends Controller
      */
     public function get(Request $request, $countryID)
     {
-        $country = Country::find($countryID);
+        $country = Country::with('regions')->find($countryID);
 
         if (\is_null($country)) {
             abort(404, __('error.404'));

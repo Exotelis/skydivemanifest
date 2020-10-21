@@ -89,6 +89,34 @@ Route::middleware(['auth:api', 'scopes:countries:read'])->prefix('countries')->g
         Route::delete('/', [App\Http\Controllers\CountryController::class, 'delete'])
             ->middleware('scopes:countries:delete')
             ->name('api.delete-country');
+
+        /**
+         * Regions
+         */
+        Route::middleware(['scopes:regions:read'])->prefix('regions')->group(function() {
+            Route::get('/', [App\Http\Controllers\RegionController::class, 'all'])
+                ->name('api.get-regions');
+            Route::post('/', [App\Http\Controllers\RegionController::class, 'create'])
+                ->middleware('scopes:regions:write')
+                ->name('api.create-region');
+            Route::delete('/', [App\Http\Controllers\RegionController::class, 'deleteBulk'])
+                ->middleware('scopes:regions:delete')
+                ->name('api.delete-regions');
+
+            /**
+             * Single Region
+             */
+            Route::prefix('{regionID}')->where(['regionID' => '[0-9]+'])->group(function() {
+                Route::get('/', [App\Http\Controllers\RegionController::class, 'get'])
+                    ->name('api.get-region');
+                Route::put('/', [App\Http\Controllers\RegionController::class, 'update'])
+                    ->middleware('scopes:addresses:write')
+                    ->name('api.update-region');
+                Route::delete('/', [App\Http\Controllers\RegionController::class, 'delete'])
+                    ->middleware('scopes:addresses:delete')
+                    ->name('api.delete-region');
+            });
+        });
     });
 });
 

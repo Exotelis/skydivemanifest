@@ -3,7 +3,6 @@
 namespace App\Filters;
 
 use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\AllowedSort;
 
 /**
  * Class RegionFilters
@@ -19,7 +18,7 @@ class RegionFilters
     public static function filters()
     {
         return [
-            //
+            AllowedFilter::partial('region'),
         ];
     }
 
@@ -31,7 +30,8 @@ class RegionFilters
     public static function sorting()
     {
         return [
-            //
+            'id',
+            'region',
         ];
     }
 }

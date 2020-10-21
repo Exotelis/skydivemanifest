@@ -26,7 +26,7 @@ class RegionFactory extends Factory
     public function definition()
     {
         return [
-            'region' => '',
+            'region' => $this->faker->unique()->state,
         ];
     }
 }
