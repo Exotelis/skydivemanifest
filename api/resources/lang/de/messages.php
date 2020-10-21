@@ -1,6 +1,16 @@
 <?php
 
 return [
+    'address_created'           => 'Die Adresse wurde erfolgreich erstellt.',
+    'address_created_failed'    => 'Die Adresse konnte nicht erstellt werden.',
+    'country_created'           => 'Das Land wurde erfolgreich erstellt.',
+    'country_created_failed'    => 'Das Land konnte nicht erstellt werden.',
+    'currency_created'          => 'Die Währung wurde erfolgreich erstellt.',
+    'currency_created_failed'   => 'Die Währung konnte nicht erstellt werden.',
+    'deleted_addresses'         => '{0} Es wurde keine Adresse gelöscht.|{1} Die Adresse wurde erfolgreich gelöscht.|[2,*] :count Adressen wurden erfolgreich gelöscht.',
+    'deleted_countries'         => '{0} Es wurde kein Land gelöscht.|{1} Das Land wurde erfolgreich gelöscht.|[2,*] :count Länder wurden erfolgreich gelöscht.',
+    'deleted_currencies'        => '{0} Es wurde keine Währung gelöscht.|{1} Die Währung wurde erfolgreich gelöscht.|[2,*] :count Währungen wurden erfolgreich gelöscht.',
+    'deleted_regions'           => '{0} Es wurde keine Regionen gelöscht.|{1} Die Region wurde erfolgreich gelöscht.|[2,*] :count Regionen wurden erfolgreich gelöscht.',
     'deleted_roles'             => '{0} Es wurde keine Benutzerrollen gelöscht.|{1} Die Benutzerrolle wurde erfolgreich gelöscht.|[2,*] :count Benutzerrollen wurden erfolgreich gelöscht.',
     'deleted_users'             => '{0} Es wurde kein Benutzer gelöscht.|{1} Der Benutzer wurde erfolgreich gelöscht.|[2,*] :count Benutzer wurden erfolgreich gelöscht.',
     'deleted_users_permanently' => '{0} Es wurde kein Benutzer endgültig gelöscht.|{1} Der Benutzer wurde endgültig gelöscht.|[2,*] :count Benutzer wurden endgültig gelöscht.',
@@ -9,6 +19,8 @@ return [
     'email_token_deleted'       => 'Die E-Mail Änderungsanfrage wurde erfolgreich gelöscht.',
     'email_verified'            => 'Die E-Mail-Adresse wurde erfolgreich bestätigt.',
     'password_changed'          => 'Ihr Passwort wurde erfolgreich geändert.',
+    'region_created'            => 'Die Region wurde erfolgreich erstellt.',
+    'region_created_failed'     => 'Die Region konnte nicht erstellt werden.',
     'role_created'              => 'Die Benutzerrolle wurde erfolgreich erstellt.',
     'role_created_failed'       => 'Die Benutzerrolle konnte nicht erstellt werden.',
     'signed_out'                => 'Erfolgreich abgemeldet.',

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Role;
+namespace App\Http\Requests\Country;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
  * Class UpdateRequest
- * @package App\Http\Requests\Role
+ * @package App\Http\Requests\Country
  */
 class UpdateRequest extends FormRequest
 {
@@ -29,16 +29,20 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'color'         => 'sometimes|required|regex:/^#([a-f0-9]{3}){1,2}$/i',
-            'name'          => [
+            'code'    => [
                 'sometimes',
                 'required',
-                Rule::unique('roles')->ignore($this->route()->roleID),
                 'string',
                 'max:255',
+                Rule::unique('App\Models\Country')->ignore($this->route()->countryID),
             ],
-            'permissions'   => 'sometimes|required|array',
-            'permissions.*' => 'exists:permissions,slug',
+            'country' => [
+                'sometimes',
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('App\Models\Country')->ignore($this->route()->countryID),
+            ],
         ];
     }
 }

@@ -172,6 +172,13 @@ return [
     */
 
     'attributes' => [
+        'city'              => 'City',
+        'code'              => 'Code',
+        'codes'             => 'Codes',
+        'company'           => 'Company',
+        'country'           => 'Country',
+        'country_id'        => 'Country',
+        'currency'          => 'Currency',
         'default_invoice'   => 'Default invoice address',
         'default_shipping'  => 'Default shipping address',
         'dob'               => 'Date of birth',
@@ -188,7 +195,11 @@ return [
         'password'          => 'Password',
         'password_reset'    => 'Reset password',
         'phone'             => 'Phone',
+        'postal'            => 'Postal',
+        'region_id'         => 'Region',
         'role'              => 'User role',
+        'street'            => 'Street',
+        'symbol'            => 'Symbol',
         'username'          => 'Username',
         'without_account'   => 'no account should be created',
     ],

@@ -16,6 +16,8 @@ use Illuminate\Support\Carbon;
  * @property string $code
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|Region[] $regions
+ * @property-read int|null $regions_count
  * @method static Builder|Country newModelQuery()
  * @method static Builder|Country newQuery()
  * @method static Builder|Country query()
@@ -46,4 +48,25 @@ class Country extends Model
      * @var int
      */
     protected $perPage = 50;
+
+    /**
+     * Get the regions of the country.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function regions()
+    {
+        return $this->hasMany('App\Models\Region');
+    }
+
+    /**
+     * Determine if the user has a given address.
+     *
+     * @param  Region $region
+     * @return boolean
+     */
+    public function hasRegion(Region $region)
+    {
+        return $this->regions->contains($region);
+    }
 }

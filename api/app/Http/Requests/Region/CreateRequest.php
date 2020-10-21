@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Requests\Role;
+namespace App\Http\Requests\Region;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
- * Class UpdateRequest
- * @package App\Http\Requests\Role
+ * Class CreateRequest
+ * @package App\Http\Requests\Region
  */
-class UpdateRequest extends FormRequest
+class CreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,16 +29,12 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'color'         => 'sometimes|required|regex:/^#([a-f0-9]{3}){1,2}$/i',
-            'name'          => [
-                'sometimes',
+            'region' => [
                 'required',
-                Rule::unique('roles')->ignore($this->route()->roleID),
                 'string',
                 'max:255',
-            ],
-            'permissions'   => 'sometimes|required|array',
-            'permissions.*' => 'exists:permissions,slug',
+                Rule::unique('App\Models\Region')->where('country_id', $this->route()->countryID),
+            ]
         ];
     }
 }

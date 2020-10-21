@@ -2,21 +2,21 @@
 
 namespace Database\Factories;
 
-use App\Models\Region;
+use App\Models\Currency;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * Class RegionFactory
+ * Class ModelFactory
  * @package Database\Factories
  */
-class RegionFactory extends Factory
+class CurrencyFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Region::class;
+    protected $model = Currency::class;
 
     /**
      * Define the model's default state.
@@ -26,7 +26,9 @@ class RegionFactory extends Factory
     public function definition()
     {
         return [
-            'region' => $this->faker->unique()->state,
+            'code'     => $this->faker->unique()->currencyCode,
+            'currency' => 'Euro',
+            'symbol'   => '€',
         ];
     }
 }

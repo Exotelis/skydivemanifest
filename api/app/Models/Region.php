@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
  * @property int $country_id
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property-read Country $country
  * @method static Builder|Region newModelQuery()
  * @method static Builder|Region newQuery()
  * @method static Builder|Region query()
@@ -41,9 +42,26 @@ class Region extends Model
     ];
 
     /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'country_id',
+    ];
+
+    /**
      * The number of models to return for pagination.
      *
      * @var int
      */
     protected $perPage = 50;
+
+    /**
+     * Get the country of the region.
+     */
+    public function country()
+    {
+        return $this->belongsTo('App\Models\Country');
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 
 /**
@@ -26,6 +27,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon $updated_at
  * @property-read Country $country
  * @property-read Region $region
+ * @property-read User $user
  * @method static Builder|Address newModelQuery()
  * @method static Builder|Address newQuery()
  * @method static Builder|Address query()
@@ -98,5 +100,13 @@ class Address extends Model
     public function region()
     {
         return $this->belongsTo('App\Models\Region');
+    }
+
+    /**
+     * Get the user of the address.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
     }
 }

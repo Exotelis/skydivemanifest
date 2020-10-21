@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Role;
+namespace App\Http\Requests\Currency;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
  * Class UpdateRequest
- * @package App\Http\Requests\Role
+ * @package App\Http\Requests\Currency
  */
 class UpdateRequest extends FormRequest
 {
@@ -29,16 +29,15 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'color'         => 'sometimes|required|regex:/^#([a-f0-9]{3}){1,2}$/i',
-            'name'          => [
+            'code'     => [
                 'sometimes',
                 'required',
-                Rule::unique('roles')->ignore($this->route()->roleID),
-                'string',
-                'max:255',
+                'alpha_num',
+                'size:3',
+                Rule::unique('App\Models\Currency')->ignore($this->route()->currencyCode, 'code'),
             ],
-            'permissions'   => 'sometimes|required|array',
-            'permissions.*' => 'exists:permissions,slug',
+            'currency' => 'sometimes|required|string|max:255',
+            'symbol'   => 'sometimes|string|max:255|nullable',
         ];
     }
 }
