@@ -20,7 +20,7 @@ class CreateRolesTable extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+            $table->id();
             $table->string('color', 7)->default('#6c757d');
             $table->boolean('deletable')->default(true)->comment('Determines if role is deletable');
             $table->boolean('editable')->default(true)->comment('Determines if permissions are editable');

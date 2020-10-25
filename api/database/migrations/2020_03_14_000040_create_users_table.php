@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+            $table->id();
             $table->unsignedInteger('default_invoice')->nullable();
             $table->unsignedInteger('default_shipping')->nullable();
             $table->date('dob')->comment('date of birth');

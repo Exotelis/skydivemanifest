@@ -20,7 +20,7 @@ class CreateAddressesTable extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+            $table->id();
             $table->string('city');
             $table->string('company')->nullable();
             $table->unsignedSmallInteger('country_id');
