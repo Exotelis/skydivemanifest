@@ -37,11 +37,21 @@ class RouteServiceProvider extends ServiceProvider
         $this->routes(function () {
             Route::prefix('api/' . apiVersion())
                 ->middleware('api')
+                ->name('api.')
                 ->group(base_path('routes/api.php'));
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
+
+        // Model binding
+        Route::bind('aircraft', function ($registration) {
+            return \App\Models\Aircraft::withTrashed()->findOrFail($registration);
+        });
+        Route::bind('aircraftMaintenance', function ($maintenance, $route) {
+            return $route->aircraft->maintenance()->findOrFail($maintenance);
+        });
+        // Route::model('user', \App\Models\User::class);
     }
 
     /**

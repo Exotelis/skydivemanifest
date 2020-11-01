@@ -108,6 +108,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Global "Notifications-Mail" Address
+    |--------------------------------------------------------------------------
+    |
+    | Email address where the notifications emails should be send to. For
+    | example when an aircraft need to be maintained.
+    |
+    */
+
+    'notifications_mail' => env('MAIL_NOTIFICATIONS_ADDRESS', null),
+
+    /*
+    |--------------------------------------------------------------------------
     | Global "Support-Mail" Address
     |--------------------------------------------------------------------------
     |

@@ -2,8 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\Aircraft;
 use Illuminate\Database\Seeder;
 
+/**
+ * Class AircraftSeeder
+ * @package Database\Seeders
+ */
 class AircraftSeeder extends Seeder
 {
     /**
@@ -13,6 +18,6 @@ class AircraftSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Aircraft::factory()->count(3)->create();
     }
 }
