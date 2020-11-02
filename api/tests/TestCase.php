@@ -69,6 +69,19 @@ abstract class TestCase extends BaseTestCase
      * Check if the user hasn't the permissions.
      *
      * @param string $resource
+     * @param string $message
+     * @param string $action
+     */
+    protected function checkBadRequest($resource, $message = '', $action = 'get')
+    {
+        $response = $this->getResponse($resource, $action);
+        $response->assertStatus(400)->assertJson(['message' => $message]);
+    }
+
+    /**
+     * Check if the user hasn't the permissions.
+     *
+     * @param string $resource
      * @param string $action
      */
     protected function checkForbidden($resource, $action = 'get')
@@ -106,12 +119,12 @@ abstract class TestCase extends BaseTestCase
      *
      * @param string $resource
      * @param string $action
-     * @param array $data
+     * @param array $data // TODO remove data parameter
      */
-    protected function checkNotFound($resource, $action = 'get', $data = [])
+    protected function checkNotFound($resource, $action = 'get', $data = []) // TODO remove data parameter
     {
-        $response = $this->getResponse($resource, $action, $data);
-        $response->assertStatus(404)->assertJson(['message' => 'The requested resource was not found.']);
+        $response = $this->getResponse($resource, $action, $data); // TODO remove data parameter
+        $response->assertStatus(404); // TODO ->assertJson(['message' => 'The requested resource was not found.']);
     }
 
     /**

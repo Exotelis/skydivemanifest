@@ -42,6 +42,12 @@ class Kernel extends ConsoleKernel
          * Jobs
          */
 
+        // Aircraft Maintenance
+        $schedule->job((new \App\Jobs\AircraftMaintenance\SendMaintenanceNotification())
+            ->onConnection('sync')
+            ->onQueue('job')
+        )->everyMinute();
+
         // Auth
         $schedule->job((new \App\Jobs\Auth\ClearEmailChanges())->onConnection('sync')->onQueue('job'))
             ->daily();

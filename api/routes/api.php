@@ -15,28 +15,92 @@ use Illuminate\Support\Facades\Route;
 */
 
 /**
+ * Aircraft
+ */
+Route::middleware(['auth:api', 'scopes:aircraft:read'])
+    ->name('aircraft.')
+    ->prefix('aircraft')
+    ->group(function () {
+        Route::get('/', [App\Http\Controllers\AircraftController::class, 'all'])->name('all');
+        Route::post('/', [App\Http\Controllers\AircraftController::class, 'create'])
+            ->middleware('scopes:aircraft:write')
+            ->name('create');
+
+        /**
+         * Single aircraft
+         */
+        Route::prefix('{aircraft}')->group(function () {
+            Route::get('/', [App\Http\Controllers\AircraftController::class, 'get'])->name('get');
+            Route::put('/', [App\Http\Controllers\AircraftController::class, 'update'])
+                ->middleware('scopes:aircraft:write')
+                ->name('update');
+            Route::put(
+                '/put-back-into-service', [App\Http\Controllers\AircraftController::class, 'putBackIntoService']
+            )->middleware('scopes:aircraft:delete')->name('back-into-service');
+            Route::put('/put-out-of-service', [App\Http\Controllers\AircraftController::class, 'putOutOfService'])
+                ->middleware('scopes:aircraft:delete')
+                ->name('out-of-service');
+
+            /**
+             * Aircraft maintenance
+             */
+            Route::middleware(['scopes:aircraft_maintenance:read'])
+                ->name('maintenance.')
+                ->prefix('maintenance')
+                ->group(function () {
+                    Route::get('/', [App\Http\Controllers\AircraftMaintenanceController::class, 'all'])
+                        ->name('all');
+                    Route::post('/', [App\Http\Controllers\AircraftMaintenanceController::class, 'create'])
+                        ->middleware('scopes:aircraft_maintenance:write')
+                        ->name('create');
+                    Route::delete( '/', [App\Http\Controllers\AircraftMaintenanceController::class, 'deleteBulk'])
+                        ->middleware('scopes:aircraft_maintenance:delete')
+                        ->name('deleteBulk');
+
+                    /**
+                     * Single aircraft maintenance
+                     */
+                    Route::prefix('{aircraftMaintenance}')->group(function () {
+                        Route::get('/', [App\Http\Controllers\AircraftMaintenanceController::class, 'get'])
+                            ->name('get');
+                        Route::put('/', [App\Http\Controllers\AircraftMaintenanceController::class, 'update'])
+                            ->middleware('scopes:aircraft_maintenance:write')
+                            ->name('update');
+                        Route::delete('/', [App\Http\Controllers\AircraftMaintenanceController::class, 'delete'])
+                            ->middleware('scopes:aircraft_maintenance:delete')
+                            ->name('delete');
+                        Route::put(
+                            '/complete',
+                            [App\Http\Controllers\AircraftMaintenanceController::class, 'complete']
+                        )->middleware('scopes:aircraft_maintenance:write')->name('complete');
+                    });
+            });
+        });
+    });
+
+/**
  * Authentication
  */
 Route::prefix('auth')->group(function() {
-    Route::post('/', [App\Http\Controllers\AuthController::class, 'login'])->name('api.login');
+    Route::post('/', [App\Http\Controllers\AuthController::class, 'login'])->name('login');
     Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout'])
         ->middleware('auth:api')
-        ->name('api.logout');
-    Route::post('refresh', [App\Http\Controllers\AuthController::class, 'refresh'])->name('api.refresh');
-    Route::post('register', [App\Http\Controllers\AuthController::class, 'register'])->name('api.register');
+        ->name('logout');
+    Route::post('refresh', [App\Http\Controllers\AuthController::class, 'refresh'])->name('refresh');
+    Route::post('register', [App\Http\Controllers\AuthController::class, 'register'])->name('register');
 
     /**
      * Email
      */
     Route::prefix('email')->group(function() {
         Route::post('confirm', [App\Http\Controllers\ConfirmEmailController::class, 'confirm'])
-            ->name('api.confirm-email');
+            ->name('confirm-email');
         Route::post('delete', [App\Http\Controllers\ConfirmEmailController::class, 'delete'])
             ->middleware('auth:api')
-            ->name('api.delete-email-request');
+            ->name('delete-email-request');
         Route::post('resend', [App\Http\Controllers\ConfirmEmailController::class, 'resend'])
             ->middleware('auth:api')
-            ->name('api.resend-email-request');
+            ->name('resend-email-request');
     });
 
     /**
@@ -45,76 +109,76 @@ Route::prefix('auth')->group(function() {
     Route::prefix('password')->group(function() {
         Route::post('change', [App\Http\Controllers\ResetPasswordController::class, 'changePassword'])
             ->middleware('auth:api')
-            ->name('api.change-password');
+            ->name('change-password');
         Route::post('forgot', [App\Http\Controllers\ResetPasswordController::class, 'postEmail'])
-            ->name('api.forgot-password');
+            ->name('forgot-password');
         Route::post('reset', [App\Http\Controllers\ResetPasswordController::class, 'postReset'])
-            ->name('api.reset-password');
+            ->name('reset-password');
     });
 
     /**
      * Recover
      */
     Route::post('recover', [App\Http\Controllers\AuthController::class, 'recover'])
-        ->name('api.recover-user-with-token');
+        ->name('recover-user-with-token');
 
     /**
      * Tos
      */
     Route::post('tos', [App\Http\Controllers\AuthController::class, 'acceptTos'])
         ->middleware('auth:api')
-        ->name('api.accept-tos');
+        ->name('accept-tos');
 });
 
 /**
  * Countries
  */
 Route::middleware(['auth:api', 'scopes:countries:read'])->prefix('countries')->group(function () {
-    Route::get('/', [App\Http\Controllers\CountryController::class, 'all'])->name('api.get-countries');
+    Route::get('/', [App\Http\Controllers\CountryController::class, 'all'])->name('get-countries');
     Route::post('/', [App\Http\Controllers\CountryController::class, 'create'])
         ->middleware('scopes:countries:write')
-        ->name('api.create-country');
+        ->name('create-country');
     Route::delete('/', [App\Http\Controllers\CountryController::class, 'deleteBulk'])
         ->middleware('scopes:countries:delete')
-        ->name('api.delete-countries');
+        ->name('delete-countries');
 
     /**
      * Single country
      */
     Route::prefix('{countryID}')->where(['countryID' => '[0-9]+'])->group(function() {
-        Route::get('/', [App\Http\Controllers\CountryController::class, 'get'])->name('api.get-country');
+        Route::get('/', [App\Http\Controllers\CountryController::class, 'get'])->name('get-country');
         Route::put('/', [App\Http\Controllers\CountryController::class, 'update'])
             ->middleware('scopes:countries:write')
-            ->name('api.update-country');
+            ->name('update-country');
         Route::delete('/', [App\Http\Controllers\CountryController::class, 'delete'])
             ->middleware('scopes:countries:delete')
-            ->name('api.delete-country');
+            ->name('delete-country');
 
         /**
          * Regions
          */
         Route::middleware(['scopes:regions:read'])->prefix('regions')->group(function() {
             Route::get('/', [App\Http\Controllers\RegionController::class, 'all'])
-                ->name('api.get-regions');
+                ->name('get-regions');
             Route::post('/', [App\Http\Controllers\RegionController::class, 'create'])
                 ->middleware('scopes:regions:write')
-                ->name('api.create-region');
+                ->name('create-region');
             Route::delete('/', [App\Http\Controllers\RegionController::class, 'deleteBulk'])
                 ->middleware('scopes:regions:delete')
-                ->name('api.delete-regions');
+                ->name('delete-regions');
 
             /**
              * Single Region
              */
             Route::prefix('{regionID}')->where(['regionID' => '[0-9]+'])->group(function() {
                 Route::get('/', [App\Http\Controllers\RegionController::class, 'get'])
-                    ->name('api.get-region');
+                    ->name('get-region');
                 Route::put('/', [App\Http\Controllers\RegionController::class, 'update'])
                     ->middleware('scopes:addresses:write')
-                    ->name('api.update-region');
+                    ->name('update-region');
                 Route::delete('/', [App\Http\Controllers\RegionController::class, 'delete'])
                     ->middleware('scopes:addresses:delete')
-                    ->name('api.delete-region');
+                    ->name('delete-region');
             });
         });
     });
@@ -124,25 +188,25 @@ Route::middleware(['auth:api', 'scopes:countries:read'])->prefix('countries')->g
  * Currencies
  */
 Route::middleware(['auth:api', 'scopes:currencies:read'])->prefix('currencies')->group(function () {
-    Route::get('/', [App\Http\Controllers\CurrencyController::class, 'all'])->name('api.get-currencies');
+    Route::get('/', [App\Http\Controllers\CurrencyController::class, 'all'])->name('get-currencies');
     Route::post('/', [App\Http\Controllers\CurrencyController::class, 'create'])
         ->middleware('scopes:currencies:write')
-        ->name('api.create-currency');
+        ->name('create-currency');
     Route::delete('/', [App\Http\Controllers\CurrencyController::class, 'deleteBulk'])
         ->middleware('scopes:currencies:delete')
-        ->name('api.delete-currencies');
+        ->name('delete-currencies');
 
     /**
      * Single currency
      */
     Route::prefix('{currencyCode}')->where(['currencyCode' => '[A-Za-z0-9]{3}'])->group(function() {
-        Route::get('/', [App\Http\Controllers\CurrencyController::class, 'get'])->name('api.get-currency');
+        Route::get('/', [App\Http\Controllers\CurrencyController::class, 'get'])->name('get-currency');
         Route::put('/', [App\Http\Controllers\CurrencyController::class, 'update'])
             ->middleware('scopes:currencies:write')
-            ->name('api.update-currency');
+            ->name('update-currency');
         Route::delete('/', [App\Http\Controllers\CurrencyController::class, 'delete'])
             ->middleware('scopes:currencies:delete')
-            ->name('api.delete-currency');
+            ->name('delete-currency');
     });
 });
 
@@ -177,32 +241,32 @@ Route::middleware(['auth:api'])->prefix('me')->group(function () {
  * Permissions
  */
 Route::middleware(['auth:api', 'scopes:permissions:read'])->prefix('permissions')->group(function () {
-    Route::get('/', [App\Http\Controllers\PermissionController::class, 'all'])->name('api.get-permissions');
+    Route::get('/', [App\Http\Controllers\PermissionController::class, 'all'])->name('get-permissions');
 });
 
 /**
  * Roles
  */
 Route::middleware(['auth:api', 'scopes:roles:read'])->prefix('roles')->group(function () {
-    Route::get('/', [App\Http\Controllers\RoleController::class, 'all'])->name('api.get-roles');
+    Route::get('/', [App\Http\Controllers\RoleController::class, 'all'])->name('get-roles');
     Route::post('/', [App\Http\Controllers\RoleController::class, 'create'])
         ->middleware('scopes:roles:write')
-        ->name('api.create-role');
+        ->name('create-role');
     Route::delete('/', [App\Http\Controllers\RoleController::class, 'deleteBulk'])
         ->middleware('scopes:roles:delete')
-        ->name('api.delete-roles');
+        ->name('delete-roles');
 
     /**
      * Single role
      */
     Route::prefix('{roleID}')->where(['roleID' => '[0-9]+'])->group(function() {
-        Route::get('/', [App\Http\Controllers\RoleController::class, 'role'])->name('api.get-role');
+        Route::get('/', [App\Http\Controllers\RoleController::class, 'role'])->name('get-role');
         Route::put('/', [App\Http\Controllers\RoleController::class, 'update'])
             ->middleware('scopes:roles:write')
-            ->name('api.update-role');
+            ->name('update-role');
         Route::delete('/', [App\Http\Controllers\RoleController::class, 'delete'])
             ->middleware('scopes:roles:delete')
-            ->name('api.delete-role');
+            ->name('delete-role');
         // TODO - add/{roleID}/users to get a list of users or add/remove them from the role
     });
 });
@@ -212,81 +276,81 @@ Route::middleware(['auth:api', 'scopes:roles:read'])->prefix('roles')->group(fun
  */
 Route::middleware(['auth:api', 'scope:roles:read,users:read'])->get('roles/names', function() {
     return \App\Models\Role::all()->pluck('name')->toArray();
-})->name('api.get-roles-names');
+})->name('get-roles-names');
 
 /**
  * Roles valid
  */
 Route::middleware(['auth:api', 'scope:roles:read,users:read'])->get('roles/valid', function() {
     return validRoles(auth()->user());
-})->name('api.get-roles-valid');
+})->name('get-roles-valid');
 
 /**
  * Timezones
  */
 Route::get('timezones', function() {
     return \Carbon\CarbonTimeZone::listIdentifiers();
-})->name('api.timezones');
+})->name('timezones');
 
 /**
  * Tos - Terms of Service
  */
 Route::get('tos', function() {
     return __('tos');
-})->name('api.tos');
+})->name('tos');
 
 /**
  * Users
  */
 Route::middleware(['auth:api', 'scopes:users:read'])->prefix('users')->group(function() {
-    Route::get('/', [App\Http\Controllers\UserController::class, 'all'])->name('api.get-users');
+    Route::get('/', [App\Http\Controllers\UserController::class, 'all'])->name('get-users');
     Route::post('/', [App\Http\Controllers\UserController::class, 'create'])
         ->middleware('scopes:users:write')
-        ->name('api.create-user');
+        ->name('create-user');
     Route::delete('/', [App\Http\Controllers\UserController::class, 'deleteBulk'])
         ->middleware('scopes:users:delete')
-        ->name('api.delete-users');
+        ->name('delete-users');
 
     /**
      * Single user
      */
     Route::prefix('{userID}')->where(['userID' => '[0-9]+'])->group(function() {
-        Route::get('/', [App\Http\Controllers\UserController::class, 'get'])->name('api.get-user');
+        Route::get('/', [App\Http\Controllers\UserController::class, 'get'])->name('get-user');
         Route::put('/', [App\Http\Controllers\UserController::class, 'update'])
             ->middleware('scopes:users:write')
-            ->name('api.update-user');
+            ->name('update-user');
         Route::delete('/', [App\Http\Controllers\UserController::class, 'delete'])
             ->middleware('scopes:users:delete')
-            ->name('api.delete-user');
+            ->name('delete-user');
         Route::post('restore', [App\Http\Controllers\UserController::class, 'restore'])
             ->middleware('scopes:users:delete')
-            ->name('api.restore-trashed-user');
+            ->name('restore-trashed-user');
 
         /**
          * Addresses
          */
         Route::middleware(['scopes:addresses:read'])->prefix('addresses')->group(function() {
             Route::get('/', [App\Http\Controllers\AddressController::class, 'all'])
-                ->name('api.get-addresses');
+                ->name('get-addresses');
             Route::post('/', [App\Http\Controllers\AddressController::class, 'create'])
                 ->middleware('scopes:addresses:write')
-                ->name('api.create-address');
+                ->name('create-address');
             Route::delete('/', [App\Http\Controllers\AddressController::class, 'deleteBulk'])
                 ->middleware('scopes:addresses:delete')
-                ->name('api.delete-addresses');
+                ->name('delete-addresses');
 
             /**
              * Single Address
              */
             Route::prefix('{addressID}')->where(['addressID' => '[0-9]+'])->group(function() {
                 Route::get('/', [App\Http\Controllers\AddressController::class, 'get'])
-                    ->name('api.get-address');
+                    ->name('get-address');
                 Route::put('/', [App\Http\Controllers\AddressController::class, 'update'])
                     ->middleware('scopes:addresses:write')
-                    ->name('api.update-address');
+                    ->name('update-address');
                 Route::delete('/', [App\Http\Controllers\AddressController::class, 'delete'])
                     ->middleware('scopes:addresses:delete')
-                    ->name('api.delete-address');
+                    ->name('delete-address');
             });
         });
     });
@@ -294,12 +358,12 @@ Route::middleware(['auth:api', 'scopes:users:read'])->prefix('users')->group(fun
     /**
      * Trashed
      */
-    Route::middleware('scopes:users:delete')->prefix('trashed')->group(function() {
+    Route::middleware('scopes:users:delete')->prefix('trashed')->group(function() {#
         Route::get('/', [App\Http\Controllers\UserController::class, 'trashed'])
-            ->name('api.get-trashed-users');
+            ->name('get-trashed-users');
         Route::put('/', [App\Http\Controllers\UserController::class, 'restoreBulk'])
-            ->name('api.restore-trashed-users');
+            ->name('restore-trashed-users');
         Route::delete('/', [App\Http\Controllers\UserController::class, 'deletePermanently'])
-            ->name('api.delete-trashed-users');
+            ->name('delete-trashed-users');
     });
 });
