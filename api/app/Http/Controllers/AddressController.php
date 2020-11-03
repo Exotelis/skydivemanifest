@@ -24,19 +24,13 @@ class AddressController extends Controller
      * Get a list of all addresses of a user.
      *
      * @param Request $request
-     * @param int     $userID
+     * @param User    $user
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function all(Request $request, $userID)
+    public function all(Request $request, User $user)
     {
         $this->validatePagination($request->only('limit', 'page'));
-
-        $user = User::find($userID);
-
-        if (\is_null($user)) {
-            abort(404, __('error.404'));
-        }
 
         $addresses = QueryBuilder::for($user->addresses())
             ->with(['country', 'region'])
@@ -52,34 +46,21 @@ class AddressController extends Controller
      * Create a new address for a specific user.
      *
      * @param CreateRequest $request
-     * @param int           $userID
+     * @param User          $user
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(CreateRequest $request, $userID)
+    public function create(CreateRequest $request, User $user)
     {
-        $input = $request->only([
-            'city',
-            'company',
-            'country_id',
-            'firstname',
-            'lastname',
-            'middlename',
-            'postal',
-            'region_id',
-            'street',
-        ]);
         $address = null;
-
-        $user = User::find($userID);
-
-        if (\is_null($user)) {
-            abort(404, __('error.404'));
-        }
 
         try {
             DB::beginTransaction();
 
-            $address = $user->addresses()->create($input)->withoutRelations()->load(['country', 'region']);
+            $address = $user
+                ->addresses()
+                ->create($request->validated())
+                ->withoutRelations()
+                ->load(['country', 'region']);
 
             // Set users default addresses if necessary
             if ($request->input('default_invoice')) {
@@ -102,19 +83,12 @@ class AddressController extends Controller
      * Delete a single role of a specific user.
      *
      * @param Request $request
-     * @param int     $userID
-     * @param int     $addressID
+     * @param User    $user
+     * @param Address $address
      * @return \Illuminate\Http\JsonResponse
      */
-    public function delete(Request $request, $userID, $addressID)
+    public function delete(Request $request, User $user, Address $address)
     {
-        $user = User::find($userID);
-        $address = Address::find($addressID);
-
-        if (\is_null($user) || \is_null($address) || ! $user->hasAddress($address)) {
-            abort(404, __('error.404'));
-        }
-
         try {
             DB::beginTransaction();
 
@@ -140,19 +114,12 @@ class AddressController extends Controller
      * Delete one or more addresses of a specific user.
      *
      * @param IntIdRequest $request
-     * @param int          $userID
+     * @param User         $user
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteBulk(IntIdRequest $request, $userID)
+    public function deleteBulk(IntIdRequest $request, User $user)
     {
         $input = $request->only(['ids']);
-
-        $user = User::find($userID);
-
-        if (\is_null($user)) {
-            abort(404, __('error.404'));
-        }
-
         $count = 0;
 
         foreach ($user->addresses as $address) {
@@ -179,55 +146,29 @@ class AddressController extends Controller
      * Return a single address of a specific user.
      *
      * @param Request $request
-     * @param int     $userID
-     * @param int     $addressID
+     * @param User    $user
+     * @param Address $address
      * @return \Illuminate\Http\JsonResponse
      */
-    public function get(Request $request, $userID, $addressID)
+    public function get(Request $request, User $user, Address $address)
     {
-        $user = User::find($userID);
-        $address = Address::with(['country', 'region'])->find($addressID);
-
-        if (\is_null($user) || \is_null($address) || ! $user->hasAddress($address)) {
-            abort(404, __('error.404'));
-        }
-
-        return response()->json($address);
+        return response()->json($address->load(['country', 'region']));
     }
 
     /**
      * Update a address of a specific user.
      *
      * @param UpdateRequest $request
-     * @param int           $userID
-     * @param int           $addressID
+     * @param User          $user
+     * @param Address       $address
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateRequest $request, $userID, $addressID)
+    public function update(UpdateRequest $request, User $user, Address $address)
     {
-        $input = $request->only([
-            'city',
-            'company',
-            'country_id',
-            'firstname',
-            'lastname',
-            'middlename',
-            'postal',
-            'region_id',
-            'street',
-        ]);
-
-        $user = User::find($userID);
-        $address = Address::with(['country', 'region'])->find($addressID);
-
-        if (\is_null($user) || \is_null($address) || ! $user->hasAddress($address)) {
-            abort(404, __('error.404'));
-        }
-
         try {
             DB::beginTransaction();
 
-            $address->update($input);
+            $address->update($request->validated());
 
             // Set users default addresses if necessary
             if (! \is_null($request->input('default_invoice'))) {
@@ -265,7 +206,7 @@ class AddressController extends Controller
      */
     public function meAll(Request $request)
     {
-        return $this->all($request, $request->user()->id);
+        return $this->all($request, $request->user());
     }
 
     /**
@@ -276,19 +217,19 @@ class AddressController extends Controller
      */
     public function meCreate(CreateRequest $request)
     {
-        return $this->create($request, $request->user()->id);
+        return $this->create($request, $request->user());
     }
 
     /**
      * Delete an address of the current user.
      *
      * @param Request $request
-     * @param int     $addressID
+     * @param Address $address
      * @return \Illuminate\Http\JsonResponse
      */
-    public function meDelete(Request $request, $addressID)
+    public function meDelete(Request $request, Address $address)
     {
-        return $this->delete($request, $request->user()->id, $addressID);
+        return $this->delete($request, $request->user(), $address);
     }
 
     /**
@@ -299,30 +240,30 @@ class AddressController extends Controller
      */
     public function meDeleteBulk(IntIdRequest $request)
     {
-        return $this->deleteBulk($request, $request->user()->id);
+        return $this->deleteBulk($request, $request->user());
     }
 
     /**
      * Return a single address of the current user.
      *
      * @param Request $request
-     * @param int     $addressID
+     * @param Address $address
      * @return \Illuminate\Http\JsonResponse
      */
-    public function meGet(Request $request, $addressID)
+    public function meGet(Request $request, Address $address)
     {
-        return $this->get($request, $request->user()->id, $addressID);
+        return $this->get($request, $request->user(), $address);
     }
 
     /**
      * Return a single address of the current user.
      *
      * @param UpdateRequest $request
-     * @param int           $addressID
+     * @param Address       $address
      * @return \Illuminate\Http\JsonResponse
      */
-    public function meUpdate(UpdateRequest $request, $addressID)
+    public function meUpdate(UpdateRequest $request, $address)
     {
-        return $this->update($request, $request->user()->id, $addressID);
+        return $this->update($request, $request->user(), $address);
     }
 }

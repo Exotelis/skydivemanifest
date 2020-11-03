@@ -34,8 +34,8 @@ class UpdateRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('App\Models\Region')->where('country_id', $this->route()->countryID)
-                    ->ignore($this->route()->regionID),
+                Rule::unique('App\Models\Region')->where('country_id', $this->route('country')->id)
+                    ->ignore($this->route('region')->id),
             ]
         ];
     }

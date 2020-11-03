@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
@@ -44,14 +45,31 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
 
-        // Model binding
+        /**
+         * Model bindings
+         */
+        Route::bind('address', function ($address, $route) {
+            return $route->user->addresses()->findOrFail($address);
+        });
+        Route::bind('addressMe', function ($address, $route) {
+            return $this->getUser()->addresses()->findOrFail($address);
+        });
         Route::bind('aircraft', function ($registration) {
             return \App\Models\Aircraft::withTrashed()->findOrFail($registration);
         });
         Route::bind('aircraftMaintenance', function ($maintenance, $route) {
             return $route->aircraft->maintenance()->findOrFail($maintenance);
         });
-        // Route::model('user', \App\Models\User::class);
+        Route::model('country', \App\Models\Country::class);
+        Route::model('currency', \App\Models\Currency::class);
+        Route::bind('region', function ($region, $route) {
+            return $route->country->regions()->findOrFail($region);
+        });
+        Route::model('role', \App\Models\Role::class);
+        Route::model('user', \App\Models\User::class);
+        Route::bind('userDeleted', function ($user, $route) {
+            return \App\Models\User::withTrashed()->findOrFail($user);
+        });
     }
 
     /**
@@ -64,5 +82,20 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60);
         });
+    }
+
+    /**
+     * Get te current signed in user
+     *
+     * @return \App\Models\User
+     */
+    protected function getUser()
+    {
+        $user = Auth::user();
+        if (! ($user instanceof \App\Models\User)) {
+            abort(500);
+        }
+
+        return $user;
     }
 }

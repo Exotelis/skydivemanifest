@@ -33,7 +33,7 @@ class CreateRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('App\Models\Region')->where('country_id', $this->route()->countryID),
+                Rule::unique('App\Models\Region')->where('country_id', $this->route('country')->id),
             ]
         ];
     }

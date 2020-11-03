@@ -33,7 +33,7 @@ class UpdateRequest extends FormRequest
             'name'          => [
                 'sometimes',
                 'required',
-                Rule::unique('roles')->ignore($this->route()->roleID),
+                Rule::unique('roles')->ignore($this->route('role')->id),
                 'string',
                 'max:255',
             ],

@@ -26,7 +26,7 @@ class CannotChangeOwnRole implements Rule
      */
     public function __construct()
     {
-        $this->currentUser = Auth::user()->id === (int)Request::route()->parameters['userID'];
+        $this->currentUser = Auth::user()->id === Request::route('user')->id;
     }
 
     /**

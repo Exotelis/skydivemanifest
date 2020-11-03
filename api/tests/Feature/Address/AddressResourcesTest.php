@@ -137,7 +137,7 @@ class AddressResourcesTest extends TestCase
         $this->actingAs($this->admin);
 
         // User not found
-        $this->checkNotFound($this->userNotFoundResource, 'post', $json);
+        $this->checkNotFound($this->userNotFoundResource, 'post');
 
         // Invalid input - Region is not related to country
         $this->checkInvalidInput($this->baseResource, 'post', $invalidJson, [
@@ -211,7 +211,7 @@ class AddressResourcesTest extends TestCase
         $this->actingAs($this->admin);
 
         // User not found
-        $this->checkNotFound($this->userNotFoundResource, 'delete', ['ids' => ['1']]);
+        $this->checkNotFound($this->userNotFoundResource, 'delete');
 
         // Invalid input
         $this->checkInvalidInput($this->baseResource, 'delete', [], [

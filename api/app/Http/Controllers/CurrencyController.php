@@ -46,15 +46,10 @@ class CurrencyController extends Controller
      */
     public function create(CreateRequest $request)
     {
-        $input = $request->only([
-            'code',
-            'currency',
-            'symbol',
-        ]);
         $currency = null;
 
         try {
-            $currency = Currency::create($input);
+            $currency = Currency::create($request->validated());
         } catch (\Throwable $exception) {
             abort(500, __('messages.currency_created_failed'));
         }
@@ -65,18 +60,12 @@ class CurrencyController extends Controller
     /**
      * Delete a single currency.
      *
-     * @param Request $request
-     * @param string  $currencyCode
+     * @param Request  $request
+     * @param Currency $currency
      * @return \Illuminate\Http\JsonResponse
      */
-    public function delete(Request $request, $currencyCode)
+    public function delete(Request $request, Currency $currency)
     {
-        $currency = Currency::find($currencyCode);
-
-        if (\is_null($currency)) {
-            abort(404, __('error.404'));
-        }
-
         try {
             $currency->delete();
         } catch (\Exception $e) {
@@ -106,18 +95,12 @@ class CurrencyController extends Controller
     /**
      * Return a single currency.
      *
-     * @param Request $request
-     * @param string  $currencyCode
+     * @param Request  $request
+     * @param Currency $currency
      * @return \Illuminate\Http\JsonResponse
      */
-    public function get(Request $request, $currencyCode)
+    public function get(Request $request, Currency $currency)
     {
-        $currency = Currency::find($currencyCode);
-
-        if (\is_null($currency)) {
-            abort(404, __('error.404'));
-        }
-
         return response()->json($currency);
     }
 
@@ -125,25 +108,13 @@ class CurrencyController extends Controller
      * Update a currency.
      *
      * @param UpdateRequest $request
-     * @param string        $currencyCode
+     * @param Currency      $currency
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateRequest $request, $currencyCode)
+    public function update(UpdateRequest $request, Currency $currency)
     {
-        $input = $request->only([
-            'code',
-            'currency',
-            'symbol',
-        ]);
-
-        $currency = Currency::find($currencyCode);
-
-        if (\is_null($currency)) {
-            abort(404, __('error.404'));
-        }
-
         try {
-            $currency->update($input);
+            $currency->update($request->validated());
         } catch (\Throwable $exception) {
             abort(500, __('error.500'));
         }

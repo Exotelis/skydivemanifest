@@ -50,27 +50,12 @@ class UserController extends Controller
      */
     public function create(CreateRequest $request)
     {
-        $input = $request->only([
-            'dob',
-            'email',
-            'firstname',
-            'gender',
-            'is_active',
-            'lastname',
-            'locale',
-            'middlename',
-            'mobile',
-            'password_change',
-            'phone',
-            'username',
-            'timezone',
-        ]);
         $user = null;
 
         try {
             DB::beginTransaction();
 
-            $user = User::create($input);
+            $user = User::create($request->validated());
             $role = Role::findOrFail($request->input('role') ?? defaultRole());
             $user->role()->associate($role)->save();
 
@@ -87,20 +72,15 @@ class UserController extends Controller
      * Mark a single user as deleted.
      *
      * @param Request $request
-     * @param int $id
+     * @param User    $user
      * @return \Illuminate\Http\JsonResponse
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, User $user)
     {
-        $user = User::find($id);
-
-        if (\is_null($user)) {
-            abort(404, __('error.404'));
-        }
-
         // When trying to delete the last existing admin, it should fail.
         $admins = User::where('role_id', '=', adminRole())->get();
-        if ($admins->count() <= 1 && $admins->first()->id === (int)$id) {
+
+        if ($admins->count() <= 1 && $admins->first()->id === $user->id) {
             abort(400, __('error.user_not_deletable_last_admin'));
         }
 
@@ -163,12 +143,12 @@ class UserController extends Controller
      * Return a single user.
      *
      * @param Request $request
-     * @param int $id
+     * @param User    $user
      * @return \Illuminate\Http\JsonResponse
      */
-    public function get(Request $request, $id)
+    public function get(Request $request, User $user)
     {
-        $user = User::with([
+        return response()->json($user->load([
             'defaultInvoice',
             'defaultInvoice.country',
             'defaultInvoice.region',
@@ -176,30 +156,18 @@ class UserController extends Controller
             'defaultShipping.country',
             'defaultShipping.region',
             'role'
-        ])->find($id);
-
-        if (\is_null($user)) {
-            abort(404, __('error.404'));
-        }
-
-        return response()->json($user);
+        ]));
     }
 
     /**
      * Restore a deleted user.
      *
      * @param Request $request
-     * @param int $id
+     * @param User    $user
      * @return \Illuminate\Http\JsonResponse
      */
-    public function restore(Request $request, $id)
+    public function restore(Request $request, User $user)
     {
-        $user = User::withTrashed()->find($id);
-
-        if (\is_null($user)) {
-            abort(404, __('error.404'));
-        }
-
         if (! $user->trashed()) {
             abort(400, __('error.user_not_deleted'));
         }
@@ -266,10 +234,10 @@ class UserController extends Controller
      * Update a user.
      *
      * @param UpdateRequest $request
-     * @param $id
+     * @param User          $user
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateRequest $request, $id)
+    public function update(UpdateRequest $request, User $user)
     {
         $input = $request->only([
             'dob',
@@ -287,12 +255,7 @@ class UserController extends Controller
             'timezone',
         ]);
 
-        $user = User::with('role')->find($id);
         $role = Role::find($request->input('role'));
-
-        if (\is_null($user)) {
-            abort(404, __('error.404'));
-        }
 
         try {
             DB::beginTransaction();
@@ -334,7 +297,7 @@ class UserController extends Controller
      */
     public function meDelete(Request $request)
     {
-        return $this->delete($request, $request->user()->id);
+        return $this->delete($request, $request->user());
     }
 
     /**
@@ -345,7 +308,7 @@ class UserController extends Controller
      */
     public function meGet(Request $request)
     {
-        return $this->get($request, $request->user()->id);
+        return $this->get($request, $request->user());
     }
 
     /**
@@ -356,6 +319,6 @@ class UserController extends Controller
      */
     public function meUpdate(UpdateRequest $request)
     {
-        return $this->update($request, $request->user()->id);
+        return $this->update($request, $request->user());
     }
 }

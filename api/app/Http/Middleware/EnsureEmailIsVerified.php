@@ -22,7 +22,7 @@ class EnsureEmailIsVerified extends EnsureEmailIsVerifiedIlluminate
     public function __construct()
     {
         // Remove route from expect
-        $pos = \array_search('api.delete-email-request', $this->except);
+        $pos = \array_search('api.auth.delete-email-request', $this->except);
         if ($pos !== false) {
             unset($this->except[$pos]);
         }
