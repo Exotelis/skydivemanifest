@@ -46,14 +46,10 @@ class CountryController extends Controller
      */
     public function create(CreateRequest $request)
     {
-        $input = $request->only([
-            'code',
-            'country',
-        ]);
         $country = null;
 
         try {
-            $country = Country::create($input);
+            $country = Country::create($request->validated());
         } catch (\Throwable $exception) {
             abort(500, __('messages.country_created_failed'));
         }
@@ -65,17 +61,11 @@ class CountryController extends Controller
      * Delete a single country.
      *
      * @param Request $request
-     * @param int     $countryID
+     * @param Country $country
      * @return \Illuminate\Http\JsonResponse
      */
-    public function delete(Request $request, $countryID)
+    public function delete(Request $request, Country $country)
     {
-        $country = Country::find($countryID);
-
-        if (\is_null($country)) {
-            abort(404, __('error.404'));
-        }
-
         try {
             $country->delete();
         } catch (\Exception $e) {
@@ -95,7 +85,7 @@ class CountryController extends Controller
     {
         $input = $request->only(['ids']);
 
-        $count = Country::destroy($input['ids']);;
+        $count = Country::destroy($input['ids']);
         return response()->json([
             'count'   => $count,
             'message' => trans_choice('messages.deleted_countries', $count)
@@ -106,42 +96,25 @@ class CountryController extends Controller
      * Return a single country.
      *
      * @param Request $request
-     * @param int     $countryID
+     * @param Country $country
      * @return \Illuminate\Http\JsonResponse
      */
-    public function get(Request $request, $countryID)
+    public function get(Request $request, Country $country)
     {
-        $country = Country::with('regions')->find($countryID);
-
-        if (\is_null($country)) {
-            abort(404, __('error.404'));
-        }
-
-        return response()->json($country);
+        return response()->json($country->load('regions'));
     }
 
     /**
      * Update a country.
      *
      * @param UpdateRequest $request
-     * @param int           $countryID
+     * @param Country       $country
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateRequest $request, $countryID)
+    public function update(UpdateRequest $request, Country $country)
     {
-        $input = $request->only([
-            'code',
-            'country',
-        ]);
-
-        $country = Country::find($countryID);
-
-        if (\is_null($country)) {
-            abort(404, __('error.404'));
-        }
-
         try {
-            $country->update($input);
+            $country->update($request->validated());
         } catch (\Throwable $exception) {
             abort(500, __('error.500'));
         }

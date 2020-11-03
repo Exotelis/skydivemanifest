@@ -23,52 +23,37 @@ class RegionController extends Controller
      * Get a list of all regions of a country.
      *
      * @param Request $request
-     * @param int     $countryID
+     * @param Country $country
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function all(Request $request, $countryID)
+    public function all(Request $request, Country $country)
     {
         $this->validatePagination($request->only('limit', 'page'));
 
-        $country = Country::find($countryID);
-
-        if (\is_null($country)) {
-            abort(404, __('error.404'));
-        }
-
-        $addresses = QueryBuilder::for($country->regions())
+        $regions = QueryBuilder::for($country->regions())
             ->with(['country'])
             ->allowedFilters(\App\Filters\RegionFilters::filters())
             ->allowedSorts(\App\Filters\RegionFilters::sorting())
             ->defaultSort('id')
             ->paginate($request->input('limit'));
 
-        return response()->json($addresses);
+        return response()->json($regions);
     }
 
     /**
      * Create a new region for a specific country.
      *
      * @param CreateRequest $request
-     * @param int           $countryID
+     * @param Country       $country
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(CreateRequest $request, $countryID)
+    public function create(CreateRequest $request, Country $country)
     {
-        $input = $request->only([
-            'region',
-        ]);
-
         $region = null;
-        $country = Country::find($countryID);
-
-        if (\is_null($country)) {
-            abort(404, __('error.404'));
-        }
 
         try {
-            $region = $country->regions()->create($input)->withoutRelations();
+            $region = $country->regions()->create($request->validated())->withoutRelations();
         } catch (\Throwable $exception) {
             abort(500, __('messages.region_created_failed'));
         }
@@ -80,19 +65,12 @@ class RegionController extends Controller
      * Delete a single region of a specific country.
      *
      * @param Request $request
-     * @param int     $countryID
-     * @param int     $regionID
+     * @param Country $country
+     * @param Region  $region
      * @return \Illuminate\Http\JsonResponse
      */
-    public function delete(Request $request, $countryID, $regionID)
+    public function delete(Request $request, Country $country, Region $region)
     {
-        $country = Country::find($countryID);
-        $region = Region::find($regionID);
-
-        if (\is_null($country) || \is_null($region) || ! $country->hasRegion($region)) {
-            abort(404, __('error.404'));
-        }
-
         try {
             $region->delete();
         } catch (\Exception $e) {
@@ -106,19 +84,12 @@ class RegionController extends Controller
      * Delete one or more regions of a specific country.
      *
      * @param IntIdRequest $request
-     * @param int          $countryID
+     * @param Country      $country
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteBulk(IntIdRequest $request, $countryID)
+    public function deleteBulk(IntIdRequest $request, Country $country)
     {
         $input = $request->only(['ids']);
-
-        $country = Country::find($countryID);
-
-        if (\is_null($country)) {
-            abort(404, __('error.404'));
-        }
-
         $count = 0;
 
         foreach ($country->regions as $region) {
@@ -137,44 +108,26 @@ class RegionController extends Controller
      * Return a single region of a specific country.
      *
      * @param Request $request
-     * @param int     $countryID
-     * @param int     $regionID
+     * @param Country $country
+     * @param Region  $region
      * @return \Illuminate\Http\JsonResponse
      */
-    public function get(Request $request, $countryID, $regionID)
+    public function get(Request $request, Country $country, Region $region)
     {
-        $country = Country::find($countryID);
-        $region = Region::with('country')->find($regionID);
-
-        if (\is_null($country) || \is_null($region) || ! $country->hasRegion($region)) {
-            abort(404, __('error.404'));
-        }
-
-        return response()->json($region);
+        return response()->json($region->load('country'));
     }
 
     /**
      * Update a region of a specific country.
      *
      * @param UpdateRequest $request
-     * @param int           $countryID
-     * @param int           $regionID
+     * @param Country       $country
+     * @param Region        $region
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateRequest $request, $countryID, $regionID)
+    public function update(UpdateRequest $request, Country $country, Region $region)
     {
-        $input = $request->only([
-            'region',
-        ]);
-
-        $country = Country::find($countryID);
-        $region = Region::find($regionID);
-
-        if (\is_null($country) || \is_null($region) || ! $country->hasRegion($region)) {
-            abort(404, __('error.404'));
-        }
-
-        if (! $region->update($input)) {
+        if (! $region->update($request->validated())) {
             abort(500, __('error.500'));
         }
 

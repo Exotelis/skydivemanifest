@@ -119,12 +119,11 @@ abstract class TestCase extends BaseTestCase
      *
      * @param string $resource
      * @param string $action
-     * @param array $data // TODO remove data parameter
      */
-    protected function checkNotFound($resource, $action = 'get', $data = []) // TODO remove data parameter
+    protected function checkNotFound($resource, $action = 'get')
     {
-        $response = $this->getResponse($resource, $action, $data); // TODO remove data parameter
-        $response->assertStatus(404); // TODO ->assertJson(['message' => 'The requested resource was not found.']);
+        $response = $this->getResponse($resource, $action);
+        $response->assertStatus(404);
     }
 
     /**

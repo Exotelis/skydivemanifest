@@ -123,7 +123,7 @@ class RegionResourcesTest extends TestCase
         $this->actingAs($this->admin);
 
         // Not found - country
-        $this->checkNotFound($this->countryNotFoundResource, 'post', $json);
+        $this->checkNotFound($this->countryNotFoundResource, 'post');
 
         // Invalid input - Region is not related to country
         $this->checkInvalidInput($this->resource, 'post', $invalidJson, [
@@ -195,7 +195,7 @@ class RegionResourcesTest extends TestCase
         $this->actingAs($this->admin);
 
         // Not found - country
-        $this->checkNotFound($this->countryNotFoundResource, 'delete', ['ids' => ['1']]);
+        $this->checkNotFound($this->countryNotFoundResource, 'delete');
 
         // Invalid input
         $this->checkInvalidInput($this->resource, 'delete', [], [

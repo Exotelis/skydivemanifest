@@ -281,7 +281,7 @@ class AircraftMaintenanceResourcesTest extends TestCase
         $this->actingAs($this->admin);
 
         // Not found - aircraft
-        $this->checkNotFound($this->aircraftNotFoundResource, 'post', $json);
+        $this->checkNotFound($this->aircraftNotFoundResource, 'post');
 
         // Invalid input - without dom
         $this->checkInvalidInput($this->resource, 'post', $invalidMaintenance, [
@@ -361,7 +361,7 @@ class AircraftMaintenanceResourcesTest extends TestCase
         $this->actingAs($this->admin);
 
         // Not found - aircraft
-        $this->checkNotFound($this->aircraftNotFoundResource, 'delete', ['ids' => ['1']]);
+        $this->checkNotFound($this->aircraftNotFoundResource, 'delete');
 
         // Invalid input
         $this->checkInvalidInput($this->resource, 'delete', [], [

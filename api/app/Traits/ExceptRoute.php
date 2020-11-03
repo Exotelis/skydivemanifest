@@ -14,20 +14,20 @@ trait ExceptRoute
      * @var array
      */
     protected $except = [
-        'api.accept-tos',
-        'api.change-password',
-        'api.confirm-email',
-        'api.delete-email-request',
-        'api.forgot-password',
-        'api.login',
-        'api.logout',
-        'api.refresh',
-        'api.register',
-        'api.resend-email-request',
-        'api.reset-password',
-        'api.recover-user-with-token',
-        'api.timezones',
-        'api.tos',
+        'api.auth.accept-tos',
+        'api.auth.change-password',
+        'api.auth.confirm-email',
+        'api.auth.delete-email-request',
+        'api.auth.forgot-password',
+        'api.auth.login',
+        'api.auth.logout',
+        'api.auth.refresh',
+        'api.auth.register',
+        'api.auth.resend-email-request',
+        'api.auth.reset-password',
+        'api.auth.recover-user-with-token',
+        'api.auth.timezones',
+        'api.auth.tos',
     ];
 
     /**

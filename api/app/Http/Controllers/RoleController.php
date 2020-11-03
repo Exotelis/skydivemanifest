@@ -48,52 +48,39 @@ class RoleController extends Controller
      */
     public function create(CreateRequest $request)
     {
-        $input = $request->only([
-            'color',
-            'deletable',
-            'editable',
-            'name',
-            'permissions',
-        ]);
-        $newRole = null;
+        $role = null;
 
         try {
             DB::beginTransaction();
 
-            $newRole = Role::create($input);
+            $role = Role::create($request->validated());
             $defaultPermissions = Permission::where('is_default', '=', true)
                 ->get()
                 ->pluck('slug')
                 ->all();
 
             // Add default permissions
-            $permissions = \array_unique(\array_merge($input['permissions'] ?? [], $defaultPermissions));
+            $permissions = \array_unique(\array_merge($request->permissions ?? [], $defaultPermissions));
 
-            $newRole->permissions()->attach($permissions);
+            $role->permissions()->attach($permissions);
 
             DB::commit();
         } catch (\Exception $exception) {
             abort(500, __('messages.role_created_failed'));
         }
 
-        return response()->json(['message' => __('messages.role_created'), 'data' => $newRole], 201);
+        return response()->json(['message' => __('messages.role_created'), 'data' => $role], 201);
     }
 
     /**
      * Delete a single role.
      *
      * @param Request $request
-     * @param int $id
+     * @param Role    $role
      * @return \Illuminate\Http\JsonResponse
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, Role $role)
     {
-        $role = Role::find($id);
-
-        if (\is_null($role)) {
-            abort(404, __('error.404'));
-        }
-
         if (! $role->deletable) {
             abort(400, __('error.role_not_deletable'));
         }
@@ -120,8 +107,8 @@ class RoleController extends Controller
     public function deleteBulk(DeleteRequest $request)
     {
         $input = $request->only(['ids']);
+        $count = Role::destroy($input['ids']);
 
-        $count = Role::destroy($input['ids']);;
         return response()->json([
             'count'   => $count,
             'message' => trans_choice('messages.deleted_roles', $count)
@@ -132,40 +119,28 @@ class RoleController extends Controller
      * Return a single role.
      *
      * @param Request $request
-     * @param int $id
+     * @param Role    $role
      * @return \Illuminate\Http\JsonResponse
      */
-    public function role(Request $request, $id)
+    public function role(Request $request, Role $role)
     {
-        $role = Role::with('permissions')->find($id);
-
-        if (\is_null($role)) {
-            abort(404, __('error.404'));
-        }
-
-        return response()->json($role);
+        return response()->json($role->load('permissions'));
     }
 
     /**
      * Update a role.
      *
      * @param UpdateRequest $request
-     * @param int $id
+     * @param Role          $role
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateRequest $request, $id)
+    public function update(UpdateRequest $request, Role $role)
     {
         $input = $request->only([
             'color',
             'name',
             'permissions',
         ]);
-
-        $role = Role::with('permissions')->find($id);
-
-        if (\is_null($role)) {
-            abort(404, __('error.404'));
-        }
 
         if (isset($input['permissions']) && !$role->editable) {
             abort(400, __('error.role_not_editable'));
@@ -197,6 +172,6 @@ class RoleController extends Controller
         }
 
         $role->refresh();
-        return response()->json($role);
+        return response()->json($role->load('permissions'));
     }
 }

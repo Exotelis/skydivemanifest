@@ -206,8 +206,7 @@ class UserResourcesTest extends TestCase
         $this->actingAs($this->admin);
 
         // Not found
-        $response = $this->deleteJson($resourceUsers . '999');
-        $response->assertStatus(404)->assertJson(['message' => 'The requested resource was not found.']);
+        $this->checkNotFound($resourceUsers . '999', 'delete');
 
         // Can be deleted because it's the last admin
         $response = $this->deleteJson($resourceUsers . $this->admin->id);
@@ -235,33 +234,27 @@ class UserResourcesTest extends TestCase
         $usersResource = self::API_URL . 'users';
 
         // Unauthorized
-        $response = $this->deleteJson($resource, ['ids' => [1]]);
-        $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
+        $this->checkUnauthorized($resource, 'delete');
 
         // Forbidden
-        $this->checkForbidden($resource);
+        $this->checkForbidden($resource, 'delete');
 
         // Sign in as admin
-        $this->actingAs($this->admin, ['users:read', 'users:delete']);
+        $this->actingAs($this->admin);
 
         // Invalid id
-        $response = $this->deleteJson($resource, ['ids' => [$this->admin->id]]);
-        $response->assertStatus(422)
-            ->assertJsonStructure(['message', 'errors'])
-            ->assertJsonFragment(['message' => 'The given data was invalid.']);
+        $this->checkInvalidInput($resource, 'delete',  ['ids' => [$this->admin->id]]);
 
         // Soft delete users first
         $ids = array_map(function ($user) { return $user['id']; }, $this->users->toArray());
 
         $response = $this->deleteJson($resource, ['ids' => $ids]);
-        $response
-            ->assertStatus(200)
+        $response->assertStatus(200)
             ->assertJsonFragment(['count' => 0])
             ->assertJsonFragment(['message' => 'No user has been deleted permanently.']);
 
         $response = $this->deleteJson($usersResource, ['ids' => $ids]);
-        $response
-            ->assertStatus(200)
+        $response->assertStatus(200)
             ->assertJsonFragment(['count' => 8])
             ->assertJsonFragment(['message' => '8 users have been deleted successfully.']);
 
@@ -271,8 +264,7 @@ class UserResourcesTest extends TestCase
 
         // Success
         $response = $this->deleteJson($resource, ['ids' => $ids]);
-        $response
-            ->assertStatus(200)
+        $response->assertStatus(200)
             ->assertJsonFragment(['count' => 8])
             ->assertJsonFragment(['message' => '8 users have been deleted permanently.']);
 
@@ -292,7 +284,7 @@ class UserResourcesTest extends TestCase
         $resource = self::API_URL . 'users/' . $this->users->first()->id . '/restore';
         $resourceUsers = self::API_URL . 'users/';
 
-            Notification::fake();
+        Notification::fake();
 
         // Unauthorized
         $response = $this->postJson($resource);
@@ -305,8 +297,7 @@ class UserResourcesTest extends TestCase
         $this->actingAs($this->admin);
 
         // Not found
-        $response = $this->postJson($resourceUsers . '9999/restore');
-        $response->assertStatus(404)->assertJson(['message' => 'The requested resource was not found.']);
+        $this->checkNotFound($resourceUsers . '9999/restore', 'post');
 
         // User not deleted
         $response = $this->postJson($resource);
@@ -478,8 +469,7 @@ class UserResourcesTest extends TestCase
         $this->actingAs($this->admin);
 
         // Not found
-        $response = $this->getJson($resourceUsers . '999');
-        $response->assertStatus(404)->assertJson(['message' => 'The requested resource was not found.']);
+        $this->checkNotFound($resourceUsers . '9999', 'put');
 
         // Invalid input
         $this->checkInvalidInput(
@@ -537,8 +527,7 @@ class UserResourcesTest extends TestCase
         $this->actingAs($this->admin);
 
         // Not found
-        $response = $this->getJson($resourceUsers . '999');
-        $response->assertStatus(404)->assertJson(['message' => 'The requested resource was not found.']);
+        $this->checkNotFound($resourceUsers . '9999');
 
         // Success
         $response = $this->getJson($resource);

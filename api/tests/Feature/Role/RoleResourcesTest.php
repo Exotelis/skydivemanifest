@@ -123,8 +123,7 @@ class RoleResourcesTest extends TestCase
         $this->actingAs($this->admin, ['roles:read','roles:delete']);
 
         // Not found
-        $response = $this->deleteJson($resourceRoles . '999');
-        $response->assertStatus(404)->assertJson(['message' => 'The requested resource was not found.']);
+        $this->checkNotFound($resourceRoles . '999', 'delete');
 
         // Protected
         $this->roles->push(Role::factory()->notDeletable()->create());
@@ -207,8 +206,7 @@ class RoleResourcesTest extends TestCase
         $this->actingAs($this->admin, ['roles:read']);
 
         // Not found
-        $response = $this->getJson($resourceRoles . '999');
-        $response->assertStatus(404)->assertJson(['message' => 'The requested resource was not found.']);
+        $this->checkNotFound($resourceRoles . '999');
 
         // Success
         $response = $this->getJson($resource);
@@ -235,8 +233,7 @@ class RoleResourcesTest extends TestCase
         $this->actingAs($this->admin, ['roles:read', 'roles:write']);
 
         // Not found
-        $response = $this->getJson($resourceRoles . '999');
-        $response->assertStatus(404)->assertJson(['message' => 'The requested resource was not found.']);
+        $this->checkNotFound($resourceRoles . '999', 'put');
 
         // Not editable
         $notEditable = Role::factory()->notEditable()->create();
