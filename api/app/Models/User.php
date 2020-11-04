@@ -245,17 +245,6 @@ class User extends Model implements
     }
 
     /**
-     * Determine if the user has a given address.
-     *
-     * @param  Address $address
-     * @return boolean
-     */
-    public function hasAddress(Address $address)
-    {
-        return $this->addresses->contains($address);
-    }
-
-    /**
      * Get the default_invoice address of the user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
