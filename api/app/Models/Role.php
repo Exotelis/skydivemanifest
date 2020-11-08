@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Contracts\Logable;
+use App\Traits\ModelDiff;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -33,9 +35,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Role whereUpdatedAt($value)
  * @mixin Builder
  */
-class Role extends Model
+class Role extends Model implements Logable
 {
-    use HasFactory;
+    use HasFactory, ModelDiff;
 
     /**
      * The model's default values for attributes.
@@ -97,5 +99,15 @@ class Role extends Model
     public function users()
     {
         return $this->hasMany('App\Models\User');
+    }
+
+    /**
+     * Get the values of the most important attributes of the model.
+     *
+     * @return string
+     */
+    public function logString()
+    {
+        return "{$this->id}|{$this->name}";
     }
 }

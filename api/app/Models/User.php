@@ -5,9 +5,11 @@ namespace App\Models;
 use App\Contracts\Auth\CanBeDisabled as CanBeDisabledContract;
 use App\Contracts\Auth\MustChangePassword as MustChangePasswordContract;
 use App\Contracts\Auth\CanBeLockedTemporarily as CanBeLockedContract;
+use App\Contracts\Logable;
 use App\Contracts\User\MustVerifyEmail as MustVerifyEmailContract;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
 use App\Traits\CanBeLockedTemporarily as CanBeLocked;
+use App\Traits\ModelDiff;
 use App\Traits\MustVerifyEmail;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -106,11 +108,12 @@ class User extends Model implements
     CanBeLockedContract,
     CanResetPasswordContract,
     HasLocalePreference,
+    Logable,
     MustChangePasswordContract,
     MustVerifyEmailContract
 {
-    use Authenticatable, CanBeLocked, CanResetPassword, HasApiTokens, HasFactory, MustVerifyEmail, Notifiable,
-        SoftDeletes;
+    use Authenticatable, CanBeLocked, CanResetPassword, HasApiTokens, HasFactory, ModelDiff, MustVerifyEmail,
+        Notifiable, SoftDeletes;
 
     /**
      * The accessors to append to the model's array form.
@@ -544,5 +547,15 @@ class User extends Model implements
     public function tosAccepted()
     {
         return $this->tos;
+    }
+
+    /**
+     * Get the values of the most important attributes of the model.
+     *
+     * @return string
+     */
+    public function logString()
+    {
+        return "{$this->id}|{$this->email}|{$this->lastname}|{$this->firstname}";
     }
 }

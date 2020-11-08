@@ -28,7 +28,7 @@ class UserObserver extends BaseObserver
      */
     public function created(User $user)
     {
-        Log::info("[User] '{$user->id}|{$user->email}' has been created by '{$this->executedBy}'");
+        Log::info("[User] '{$user->logString()}' has been created by '{$this->executedBy}'");
 
         // Send notifications - Generate new password is none has been set.
         $password = \is_null($user->password) ? Str::random(12) : null;
@@ -51,19 +51,19 @@ class UserObserver extends BaseObserver
      */
     public function updated(User $user)
     {
-        $diff = getModelDiff($user, [
-            'id',
+        $diff = $user->getDiff([
             'email_verified_at',
             'lock_expires',
             'password',
             'created_at',
             'updated_at',
             'deleted_at',
-        ], true);
+        ]);
 
+        // Only log the update event in cases that are not covered by other log messages
         if (! empty($diff)) {
             // Do not display diff because of privacy reasons
-            Log::info("[User] '{$user->id}|{$user->email}' has been updated by '{$this->executedBy}'");
+            Log::info("[User] '{$user->logString()}' has been updated by '{$this->executedBy}'");
         }
     }
 
@@ -80,7 +80,7 @@ class UserObserver extends BaseObserver
             return;
         }
 
-        Log::info("[User] '{$user->id}|{$user->email}' has been marked as deleted by '{$this->executedBy}'");
+        Log::info("[User] '{$user->logString()}' has been marked as deleted by '{$this->executedBy}'");
 
         // Sign user out
         $user->signOut();
@@ -111,7 +111,7 @@ class UserObserver extends BaseObserver
      */
     public function restored(User $user)
     {
-        Log::info("[User] '{$user->id}|{$user->email}' has been restored by '{$this->executedBy}'");
+        Log::info("[User] '{$user->logString()}' has been restored by '{$this->executedBy}'");
 
         // Delete restore token
         DB::table('restore_users')->where('user_id', '=', $user->id)->delete();
@@ -128,7 +128,7 @@ class UserObserver extends BaseObserver
      */
     public function forceDeleted(User $user)
     {
-        Log::info("[User] '{$user->id}|{$user->email}' has been deleted permanently by '{$this->executedBy}'");
+        Log::info("[User] '{$user->logString()}' has been deleted permanently by '{$this->executedBy}'");
 
         // Delete restore token
         DB::table('restore_users')->where('user_id', '=', $user->id)->delete();

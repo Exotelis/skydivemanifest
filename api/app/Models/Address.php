@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\Logable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -46,7 +47,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Address whereUserId($value)
  * @mixin Builder
  */
-class Address extends Model
+class Address extends Model implements Logable
 {
     use HasFactory;
 
@@ -108,5 +109,15 @@ class Address extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User');
+    }
+
+    /**
+     * Get the values of the most important attributes of the model.
+     *
+     * @return string
+     */
+    public function logString()
+    {
+        return "{$this->id}";
     }
 }

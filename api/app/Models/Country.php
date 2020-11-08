@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Contracts\Logable;
+use App\Traits\ModelDiff;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,9 +30,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Country whereUpdatedAt($value)
  * @mixin Builder
  */
-class Country extends Model
+class Country extends Model implements Logable
 {
-    use HasFactory;
+    use HasFactory, ModelDiff;
 
     /**
      * The attributes that are mass assignable.
@@ -68,5 +70,15 @@ class Country extends Model
     public function hasRegion(Region $region)
     {
         return $this->regions->contains($region);
+    }
+
+    /**
+     * Get the values of the most important attributes of the model.
+     *
+     * @return string
+     */
+    public function logString()
+    {
+        return "{$this->id}|{$this->country}|{$this->code}";
     }
 }

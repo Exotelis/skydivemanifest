@@ -19,7 +19,7 @@ class RoleObserver extends BaseObserver
      */
     public function created(Role $role)
     {
-        Log::info("[Role] '{$role->id}|{$role->name}' has been created by '{$this->executedBy}'");
+        Log::info("[Role] '{$role->logString()}' has been created by '{$this->executedBy}'");
     }
 
     /**
@@ -30,8 +30,8 @@ class RoleObserver extends BaseObserver
      */
     public function updated(Role $role)
     {
-        $diff = getModelDiff($role, [], true);
-        Log::info("[Role] '{$role->id}|{$role->name}' has been updated by '{$this->executedBy}' ({$diff})");
+        $diff = $role->getDiff();
+        Log::info("[Role] '{$role->logString()}' has been updated by '{$this->executedBy}' ({$diff})");
     }
 
     /**
@@ -42,6 +42,6 @@ class RoleObserver extends BaseObserver
      */
     public function deleted(Role $role)
     {
-        Log::info("[Role] '{$role->id}|{$role->name}' has been deleted by '{$this->executedBy}'");
+        Log::info("[Role] '{$role->logString()}' has been deleted by '{$this->executedBy}'");
     }
 }

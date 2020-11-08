@@ -19,8 +19,7 @@ class AircraftObserver extends BaseObserver
      */
     public function created(Aircraft $aircraft)
     {
-        Log::info("[Aircraft] '{$aircraft->registration}|{$aircraft->model}' has been created by " .
-            "'{$this->executedBy}'");
+        Log::info("[Aircraft] '{$aircraft->logString()}' has been created by '{$this->executedBy}'");
     }
 
     /**
@@ -31,9 +30,8 @@ class AircraftObserver extends BaseObserver
      */
     public function updated(Aircraft $aircraft)
     {
-        $diff = getModelDiff($aircraft, [], true);
-        Log::info("[Aircraft] '{$aircraft->registration}|{$aircraft->model}' has been updated by " .
-            "'{$this->executedBy}' ({$diff})");
+        $diff = $aircraft->getDiff();
+        Log::info("[Aircraft] '{$aircraft->logString()}' has been updated by '{$this->executedBy}' ($diff)");
     }
 
     /**
@@ -44,8 +42,7 @@ class AircraftObserver extends BaseObserver
      */
     public function deleted(Aircraft $aircraft)
     {
-        Log::info("[Aircraft] '{$aircraft->registration}|{$aircraft->model}' has been put out of service by " .
-            "'{$this->executedBy}'");
+        Log::info("[Aircraft] '{$aircraft->logString()}' has been put out of service by '{$this->executedBy}'");
     }
 
     /**
@@ -56,7 +53,7 @@ class AircraftObserver extends BaseObserver
      */
     public function restored(Aircraft $aircraft)
     {
-        Log::info("[Aircraft] '{$aircraft->registration}|{$aircraft->model}' has been put back into service " .
-            "by '{$this->executedBy}'");
+        Log::info("[Aircraft] '{$aircraft->logString()}' has been put back into service by " .
+            "'{$this->executedBy}'");
     }
 }

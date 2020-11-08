@@ -19,8 +19,7 @@ class CountryObserver extends BaseObserver
      */
     public function created(Country $country)
     {
-        Log::info("[Country] '{$country->id}|{$country->country}|{$country->code}' has been created by " .
-            "'{$this->executedBy}'");
+        Log::info("[Country] '{$country->logString()}' has been created by '{$this->executedBy}'");
     }
 
     /**
@@ -31,9 +30,8 @@ class CountryObserver extends BaseObserver
      */
     public function updated(Country $country)
     {
-        $diff = getModelDiff($country, [], true);
-        Log::info("[Country] '{$country->id}|{$country->country}|{$country->code}' has been updated by " .
-            "'{$this->executedBy}' ({$diff})");
+        $diff = $country->getDiff();
+        Log::info("[Country] '{$country->logString()}' has been updated by '{$this->executedBy}' ({$diff})");
     }
 
     /**
@@ -44,7 +42,6 @@ class CountryObserver extends BaseObserver
      */
     public function deleted(Country $country)
     {
-        Log::info("[Country] '{$country->id}|{$country->country}|{$country->code}' has been deleted by " .
-            "'{$this->executedBy}'");
+        Log::info("[Country] '{$country->logString()}' has been deleted by '{$this->executedBy}'");
     }
 }

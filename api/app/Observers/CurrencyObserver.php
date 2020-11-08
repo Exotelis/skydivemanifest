@@ -19,8 +19,7 @@ class CurrencyObserver extends BaseObserver
      */
     public function created(Currency $currency)
     {
-        Log::info("[Currency] '{$currency->code}|{$currency->currency}' has been created by " .
-            "'{$this->executedBy}'");
+        Log::info("[Currency] '{$currency->logString()}' has been created by '{$this->executedBy}'");
     }
 
     /**
@@ -31,9 +30,8 @@ class CurrencyObserver extends BaseObserver
      */
     public function updated(Currency $currency)
     {
-        $diff = getModelDiff($currency, [], true);
-        Log::info("[Currency] '{$currency->code}|{$currency->currency}' has been updated by " .
-            "'{$this->executedBy}' ({$diff})");
+        $diff = $currency->getDiff();
+        Log::info("[Currency] '{$currency->logString()}' has been updated by '{$this->executedBy}' ({$diff})");
     }
 
     /**
@@ -44,7 +42,6 @@ class CurrencyObserver extends BaseObserver
      */
     public function deleted(Currency $currency)
     {
-        Log::info("[Currency] '{$currency->code}|{$currency->currency}' has been deleted by " .
-            "'{$this->executedBy}'");
+        Log::info("[Currency] '{$currency->logString()}' has been deleted by '{$this->executedBy}'");
     }
 }

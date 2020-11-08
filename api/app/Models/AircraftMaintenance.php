@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Contracts\Logable;
+use App\Traits\ModelDiff;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -41,9 +43,9 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|AircraftMaintenance whereUpdatedAt($value)
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class AircraftMaintenance extends Model
+class AircraftMaintenance extends Model implements Logable
 {
-    use HasFactory;
+    use HasFactory, ModelDiff;
 
     /**
      * The accessors to append to the model's array form.
@@ -274,5 +276,15 @@ class AircraftMaintenance extends Model
         } else {
             $this->attributes['dom'] = Carbon::make($value)->toDateString();
         }
+    }
+
+    /**
+     * Get the values of the most important attributes of the model.
+     *
+     * @return string
+     */
+    public function logString()
+    {
+        return "{$this->id}";
     }
 }
