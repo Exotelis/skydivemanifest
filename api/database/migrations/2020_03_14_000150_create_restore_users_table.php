@@ -19,7 +19,7 @@ class CreateRestoreUsersTable extends Migration
         Schema::create('restore_users', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->string('token');
-            $table->unsignedBigInteger('user_id')->index()->nullable();
+            $table->unsignedBigInteger('user_id')->unique()->nullable();
             $table->timestamp('created_at', 0)->useCurrent();
 
             $table->foreign('user_id')->references('id')->on('users')

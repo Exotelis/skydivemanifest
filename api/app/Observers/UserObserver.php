@@ -93,11 +93,15 @@ class UserObserver extends BaseObserver
 
         $token = hash_hmac('sha256', Str::random(40), $key);
 
-        DB::table('restore_users')->insert([
-            'token'      => Hash::make($token),
-            'user_id'    => $user->id,
-            'created_at' => Carbon::now(),
-        ]);
+        DB::table('restore_users')->updateOrInsert(
+            [
+                'user_id'    => $user->id,
+            ], [
+                'token'      => Hash::make($token),
+                'user_id'    => $user->id,
+                'created_at' => Carbon::now(),
+            ]
+        );
 
         // Send notification
         $user->notify(new SoftDeleteUserNotification($token));
