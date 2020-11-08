@@ -46,7 +46,7 @@ export default {
 
     // In case of success: Clear timeout, local storage and delete cookie
     clearTimeout(this.expires);
-    document.cookie = 'XSRF-TOKEN= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'XSRF-TOKEN=; expires = Thu, 01 Jan 1970 00:00:00 UTC; path=/';
 
     return response;
   },
