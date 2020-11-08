@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/skydivemanifest/administration/dist' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? process.env.VUE_APP_FRONTEND_PATH_ASSETS || '/skydivemanifest/administration/dist' : '/',
   productionSourceMap: false,
   devServer: {
     https: true,
