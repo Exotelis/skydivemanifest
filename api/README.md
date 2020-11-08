@@ -10,6 +10,7 @@ use it in production.
   + [Create a database](#create-a-database)
   + [Running migrations](#running-migrations)
   + [Setting up OAuth 2.0](#setting-up-oauth-20)
+  + [Create SymLinks](#create-symlinks)
   + [Security](#security)
     * [Server HTTP-Header](#server-http-header)
     * [X-Powered-By HTTP-Header](#x-powered-by-http-header)
@@ -189,6 +190,12 @@ putenv('APP_RUNNING_IN_CONSOLE=TRUE');
 ```
 If this doesn't fix the problem, please get in contact with us on
 [GitHub](https://github.com/exotelis/skydivemanifest/issues).
+
+### Create SymLinks
+Create all necessary symbolic links by running:
+```
+php artisan storage:link
+```
 
 ### Security
 We implemented as many security feature as possible, but some settings have to be changed on your server directly.
