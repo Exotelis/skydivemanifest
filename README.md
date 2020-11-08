@@ -11,6 +11,7 @@ A tool to manage your dropzones manifest.
     * [Apache](#apache)
   + [gzip](#gzip)
     * [Apache](#apache-1)
+- [Frontend and Backend in the same directory](#frontend-and-backend-in-the-same-directory)
 - [Development environment](#development-environment)
 - [Contribution guidelines](#contribution-guidelines)
 
@@ -30,7 +31,7 @@ Please see the [REAMDE.md](api/README.md) of the api bundle for details.
 Will be updated after the release of version 1
 
 ## Server configuration
-If you want to use the system in production, you have to keep some things in mind to provide a solid system.
+If you want to use the system in production, you have to keep some things in mind, to provide a solid system.
 
 ### Rewrite urls
 Since the administration bundle is running in history mode, which makes it possible to use the backward and forward
@@ -126,6 +127,26 @@ One way to enable gzip is by using a .htaccess file. Just add the following line
     AddOutputFilterByType DEFLATE text/xml
 </IfModule>
 ```
+
+## Frontend and Backend in the same directory
+In same cases it makes sense to host the frontend on a different server than the backend. If you want to host both on
+the same web server, and in the same directory, this section will explain how to achieve this.
+
+Once you bundled the
+frontend (Please see: [Administration README](administration/README.md#compiles-and-bundles-for-production)) go to the
+`administration/dist` directory and copy all the files expect the `index.html` and `.htaccess` to the
+`api/storage/app/spa` directory. Once this is done, create the file `spa.blade.php` in the `api/resources/views`
+directory and copy the content of the `index.html` to the `spa.blade.php`.
+
+Note: You need to set the `VUE_APP_FRONTEND_PATH` and the `VUE_APP_FRONTEND_PATH_ASSETS` environment variables to
+specific values before building the frontend:
+```
+VUE_APP_FRONTEND_PATH=/<path-to-the-project-on-web-server>/api/public
+VUE_APP_FRONTEND_PATH_ASSETS=/<path-to-the-project-on-web-server>/api/public/spa
+```
+
+Note: You need to create a symbolic link, that points to the spa folder. You can do this by running
+`php artisan storage:link`. Please see the [API documentation](api/README.md#create-symlinks) for more details.
 
 ## Development environment
 Under development :)
