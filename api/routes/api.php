@@ -242,6 +242,15 @@ Route::middleware(['auth:api'])->name('me.')->prefix('me')->group(function () {
             Route::delete('/', [App\Http\Controllers\AddressController::class, 'meDelete'])->name('delete');
         });
     });
+
+    /**
+     * Qualifications
+     */
+    Route::name('qualifications.')->prefix('qualifications')->group(function () {
+        Route::get('/', [App\Http\Controllers\UserController::class, 'meQualificationsGet'])->name('all');
+        Route::put('/', [App\Http\Controllers\UserController::class, 'meQualificationsUpdate'])
+            ->name('update');
+    });
 });
 
 /**
@@ -252,6 +261,35 @@ Route::middleware(['auth:api', 'scopes:permissions:read'])
     ->prefix('permissions')
     ->group(function () {
         Route::get('/', [App\Http\Controllers\PermissionController::class, 'all'])->name('all');
+    });
+
+/**
+ * Qualifications
+ */
+Route::middleware(['auth:api', 'scopes:qualifications:read'])
+    ->name('qualifications.')
+    ->prefix('qualifications')
+    ->group(function () {
+        Route::get('/', [App\Http\Controllers\QualificationController::class, 'all'])->name('all');
+        Route::post('/', [App\Http\Controllers\QualificationController::class, 'create'])
+            ->middleware('scopes:qualifications:write')
+            ->name('create');
+        Route::delete('/', [App\Http\Controllers\QualificationController::class, 'deleteBulk'])
+            ->middleware('scopes:qualifications:delete')
+            ->name('deleteBulk');
+
+        /**
+         * Single qualifications
+         */
+        Route::prefix('{qualification}')->group(function () {
+            Route::get('/', [App\Http\Controllers\QualificationController::class, 'get'])->name('get');
+            Route::put('/', [App\Http\Controllers\QualificationController::class, 'update'])
+                ->middleware('scopes:qualifications:write')
+                ->name('update');
+            Route::delete('/', [App\Http\Controllers\QualificationController::class, 'delete'])
+                ->middleware('scopes:qualifications:delete')
+                ->name('delete');
+        });
     });
 
 /**
@@ -349,8 +387,7 @@ Route::middleware(['auth:api', 'scopes:users:read'])->name('users.')->prefix('us
             ->name('addresses.')
             ->prefix('addresses')
             ->group(function () {
-                Route::get('/', [App\Http\Controllers\AddressController::class, 'all'])
-                    ->name('all');
+                Route::get('/', [App\Http\Controllers\AddressController::class, 'all'])->name('all');
                 Route::post('/', [App\Http\Controllers\AddressController::class, 'create'])
                     ->middleware('scopes:addresses:write')
                     ->name('create');
@@ -362,8 +399,7 @@ Route::middleware(['auth:api', 'scopes:users:read'])->name('users.')->prefix('us
                  * Single Address
                  */
                 Route::prefix('{address}')->group(function () {
-                    Route::get('/', [App\Http\Controllers\AddressController::class, 'get'])
-                        ->name('get');
+                    Route::get('/', [App\Http\Controllers\AddressController::class, 'get'])->name('get');
                     Route::put('/', [App\Http\Controllers\AddressController::class, 'update'])
                         ->middleware('scopes:addresses:write')
                         ->name('update');
@@ -371,6 +407,20 @@ Route::middleware(['auth:api', 'scopes:users:read'])->name('users.')->prefix('us
                         ->middleware('scopes:addresses:delete')
                         ->name('delete');
                 });
+            });
+
+        /**
+         * Qualifications
+         */
+        Route::middleware(['scopes:qualifications:read'])
+            ->name('qualifications.')
+            ->prefix('qualifications')
+            ->group(function () {
+                Route::get('/', [App\Http\Controllers\UserController::class, 'qualificationsGet'])
+                    ->name('all');
+                Route::put('/', [App\Http\Controllers\UserController::class, 'qualificationsUpdate'])
+                    ->middleware('scopes:qualifications:write')
+                    ->name('update');
             });
     });
 
@@ -381,10 +431,8 @@ Route::middleware(['auth:api', 'scopes:users:read'])->name('users.')->prefix('us
         ->name('trashed.')
         ->prefix('trashed')
         ->group(function () {
-            Route::get('/', [App\Http\Controllers\UserController::class, 'trashed'])
-                ->name('get');
-            Route::put('/', [App\Http\Controllers\UserController::class, 'restoreBulk'])
-                ->name('restoreBulk');
+            Route::get('/', [App\Http\Controllers\UserController::class, 'trashed'])->name('get');
+            Route::put('/', [App\Http\Controllers\UserController::class, 'restoreBulk'])->name('restoreBulk');
             Route::delete('/', [App\Http\Controllers\UserController::class, 'deletePermanently'])
                 ->name('deletePermanently');
         });

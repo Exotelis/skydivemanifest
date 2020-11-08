@@ -3,61 +3,48 @@
 namespace App\Observers;
 
 use App\Models\Qualification;
+use Illuminate\Support\Facades\Log;
 
-class QualificationObserver
+/**
+ * Class QualificationObserver
+ * @package App\Observers
+ */
+class QualificationObserver extends BaseObserver
 {
     /**
      * Handle the qualification "created" event.
      *
-     * @param  \App\Models\Qualification  $qualification
+     * @param  Qualification  $qualification
      * @return void
      */
     public function created(Qualification $qualification)
     {
-        //
+        Log::info("[Qualification] '{$qualification->slug}|{$qualification->qualification}' has been created " .
+            "by '{$this->executedBy}'");
     }
 
     /**
      * Handle the qualification "updated" event.
      *
-     * @param  \App\Models\Qualification  $qualification
+     * @param  Qualification  $qualification
      * @return void
      */
     public function updated(Qualification $qualification)
     {
-        //
+        $diff = getModelDiff($qualification, [], true);
+        Log::info("[Qualification] '{$qualification->slug}|{$qualification->qualification}' has been updated " .
+            "by '{$this->executedBy}' ({$diff})");
     }
 
     /**
      * Handle the qualification "deleted" event.
      *
-     * @param  \App\Models\Qualification  $qualification
+     * @param  Qualification  $qualification
      * @return void
      */
     public function deleted(Qualification $qualification)
     {
-        //
-    }
-
-    /**
-     * Handle the qualification "restored" event.
-     *
-     * @param  \App\Models\Qualification  $qualification
-     * @return void
-     */
-    public function restored(Qualification $qualification)
-    {
-        //
-    }
-
-    /**
-     * Handle the qualification "force deleted" event.
-     *
-     * @param  \App\Models\Qualification  $qualification
-     * @return void
-     */
-    public function forceDeleted(Qualification $qualification)
-    {
-        //
+        Log::info("[Qualification] '{$qualification->slug}|{$qualification->qualification}' has been deleted " .
+            "by '{$this->executedBy}'");
     }
 }

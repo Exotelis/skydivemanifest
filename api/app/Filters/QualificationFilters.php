@@ -3,7 +3,6 @@
 namespace App\Filters;
 
 use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\AllowedSort;
 
 /**
  * Class QualificationFilters
@@ -19,7 +18,9 @@ class QualificationFilters
     public static function filters()
     {
         return [
-            //
+            AllowedFilter::partial('color'),
+            AllowedFilter::partial('qualification'),
+            AllowedFilter::partial('slug'),
         ];
     }
 
@@ -31,7 +32,9 @@ class QualificationFilters
     public static function sorting()
     {
         return [
-            //
+            'color',
+            'qualification',
+            'slug',
         ];
     }
 }

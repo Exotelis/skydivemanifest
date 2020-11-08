@@ -4,8 +4,11 @@ namespace Database\Factories;
 
 use App\Models\Qualification;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
+/**
+ * Class QualificationFactory
+ * @package Database\Factories
+ */
 class QualificationFactory extends Factory
 {
     /**
@@ -22,8 +25,12 @@ class QualificationFactory extends Factory
      */
     public function definition()
     {
+        $word = $this->faker->unique()->word;
+
         return [
-            //
+            'color'         => $this->faker->hexColor,
+            'qualification' => \ucfirst($word),
+            'slug'          => \strtolower($word),
         ];
     }
 }

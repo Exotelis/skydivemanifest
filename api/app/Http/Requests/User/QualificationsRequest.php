@@ -4,6 +4,10 @@ namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class QualificationsRequest
+ * @package App\Http\Requests\User
+ */
 class QualificationsRequest extends FormRequest
 {
     /**
@@ -13,7 +17,7 @@ class QualificationsRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,8 @@ class QualificationsRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'qualifications'   => 'sometimes|required|array',
+            'qualifications.*' => 'exists:App\Models\Qualification,slug',
         ];
     }
 }

@@ -4,6 +4,10 @@ namespace App\Http\Requests\Qualification;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class CreateRequest
+ * @package App\Http\Requests\Qualification
+ */
 class CreateRequest extends FormRequest
 {
     /**
@@ -13,7 +17,7 @@ class CreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,9 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'color'         => 'sometimes|required|regex:/^#([a-f0-9]{3}){1,2}$/i',
+            'qualification' => 'required|string|max:255',
+            'slug'          => 'required|alpha_dash|max:255|unique:App\Models\Qualification',
         ];
     }
 }

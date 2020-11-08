@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\IntIdRequest;
 use App\Http\Requests\User\BulkDeleteRequest;
 use App\Http\Requests\User\CreateRequest;
+use App\Http\Requests\User\QualificationsRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Models\Role;
 use App\Models\User;
@@ -160,6 +161,39 @@ class UserController extends Controller
     }
 
     /**
+     * Get all qualifications of an user.
+     *
+     * @param Request $request
+     * @param User    $user
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function qualificationsGet(Request $request, User $user)
+    {
+        return response()->json($user->qualifications);
+    }
+
+    /**
+     * Update the qualifications of an user.
+     *
+     * @param QualificationsRequest $request
+     * @param User                  $user
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function qualificationsUpdate(QualificationsRequest $request, User $user)
+    {
+        try {
+            $user->qualifications()->sync($request->input('qualifications'));
+        } catch (\Throwable $exception) {
+            abort(500, __('messages.qualifications_updated_failed'));
+        }
+
+        return response()->json([
+            'message' => __('messages.qualifications_updated'),
+            'data' => $user->qualifications
+        ]);
+    }
+
+    /**
      * Restore a deleted user.
      *
      * @param Request $request
@@ -309,6 +343,28 @@ class UserController extends Controller
     public function meGet(Request $request)
     {
         return $this->get($request, $request->user());
+    }
+
+    /**
+     * Return the qualifications of the current user.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function meQualificationsGet(Request $request)
+    {
+        return $this->qualificationsGet($request, $request->user());
+    }
+
+    /**
+     * Update the qualifications of the current user.
+     *
+     * @param QualificationsRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function meQualificationsUpdate(QualificationsRequest $request)
+    {
+        return $this->qualificationsUpdate($request, $request->user());
     }
 
     /**

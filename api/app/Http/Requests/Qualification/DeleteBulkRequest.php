@@ -4,6 +4,10 @@ namespace App\Http\Requests\Qualification;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class DeleteBulkRequest
+ * @package App\Http\Requests\Qualification
+ */
 class DeleteBulkRequest extends FormRequest
 {
     /**
@@ -13,7 +17,7 @@ class DeleteBulkRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,8 @@ class DeleteBulkRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'slugs'   => 'required|array',
+            'slugs.*' => 'bail|alpha_dash|max:255',
         ];
     }
 }

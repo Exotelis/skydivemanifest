@@ -62,6 +62,7 @@ class RouteServiceProvider extends ServiceProvider
         });
         Route::model('country', \App\Models\Country::class);
         Route::model('currency', \App\Models\Currency::class);
+        Route::model('qualification', \App\Models\Qualification::class);
         Route::bind('region', function ($region, $route) {
             return $route->country->regions()->findOrFail($region);
         });
