@@ -43,9 +43,26 @@ class CreateAdminUserCommand extends Command
      */
     public function handle()
     {
-        $firstname = $this->input->getOption('firstname') ?: $this->ask('What is your first name?');
-        $lastname = $this->input->getOption('lastname') ?: $this->ask('What is your last name?');
-        $email = $this->input->getOption('email') ?: $this->ask('What is your email address?');
+        do {
+            $firstName = $this->input->getOption('firstname') ?? $this->ask('What is your first name?');
+            $this->input->setOption('firstname', null);
+            $valid = ! is_null($firstName);
+            $this->printInvalidInfo($valid);
+        } while(! $valid);
+
+        do {
+            $lastName = $this->input->getOption('lastname') ?? $this->ask('What is your last name?');
+            $this->input->setOption('lastname', null);
+            $valid = ! is_null($lastName);
+            $this->printInvalidInfo($valid);
+        } while(! $valid);
+
+        do {
+            $email = $this->input->getOption('email') ?? $this->ask('What is your email address?');
+            $this->input->setOption('email', null);
+            $valid = filter_var($email, FILTER_VALIDATE_EMAIL);
+            $this->printInvalidInfo($valid);
+        } while(! $valid);
 
         do {
             $username = $this->input->getOption('username') ?? $this->ask('What is the username?');
@@ -89,16 +106,22 @@ class CreateAdminUserCommand extends Command
             $this->input->setOption('gender', null);
         } while(! in_array($gender, ['m','f','d','u']));
 
+        if (! $this->confirm('Do you agree to Terms of Service?')) {
+            $this->error('You must agree to Terms of Service!');
+            return;
+        }
+
         $user = new User();
         $user->dob = $dob;
         $user->email = $email;
         $user->email_verified_at = Carbon::now();
-        $user->firstname = $firstname;
+        $user->firstname = $firstName;
         $user->gender = $gender;
-        $user->lastname = $lastname;
+        $user->lastname = $lastName;
         $user->password = $password;
         $user->role_id = adminRole();
         $user->username = $username;
+        $user->tos = true;
         $user->save();
 
         Log::info(sprintf('Administrator \'%s|%s\' created successfully', $username, $email));

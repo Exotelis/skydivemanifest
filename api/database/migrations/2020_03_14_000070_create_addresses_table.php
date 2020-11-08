@@ -30,7 +30,7 @@ class CreateAddressesTable extends Migration
             $table->string('postal');
             $table->unsignedInteger('region_id');
             $table->string('street');
-            $table->unsignedInteger('user_id')->index();
+            $table->unsignedBigInteger('user_id')->index();
             $table->timestamp('created_at', 0)->useCurrent();
             $table->timestamp('updated_at', 0)->useCurrent();
 

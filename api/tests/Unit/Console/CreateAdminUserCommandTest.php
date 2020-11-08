@@ -29,6 +29,7 @@ class CreateAdminUserCommandTest extends TestCase
             ->expectsQuestion('What is the password?', 'secret')
             ->expectsQuestion('What is your birthday?', '20.06.1989')
             ->expectsQuestion('What is your gender?', 'm')
+            ->expectsQuestion('Do you agree to Terms of Service?', 'yes')
             ->expectsOutput('Administrator johndoe created successfully')
             ->assertExitCode(0);
 
@@ -37,6 +38,7 @@ class CreateAdminUserCommandTest extends TestCase
             'is_active' => 1,
             'role_id'   => adminRole(),
             'username'  => 'johndoe',
+            'tos'       => true,
         ]);
     }
 
@@ -50,6 +52,7 @@ class CreateAdminUserCommandTest extends TestCase
     {
         $this->artisan('make:admin --firstname=John --lastname=Doe --email=johndoe@example.com ' .
             '--username=johndoe --password=secret --dob=1989-06-20 --gender=m')
+            ->expectsQuestion('Do you agree to Terms of Service?', 'yes')
             ->expectsOutput('Administrator johndoe created successfully')
             ->assertExitCode(0);
 
@@ -58,6 +61,7 @@ class CreateAdminUserCommandTest extends TestCase
             'is_active' => 1,
             'role_id'   => adminRole(),
             'username'  => 'johndoe',
+            'tos'       => true,
         ]);
     }
 
@@ -76,6 +80,7 @@ class CreateAdminUserCommandTest extends TestCase
             ->expectsQuestion('What is your birthday?', '2100-06-20')
             ->expectsOutput(' Invalid format. Please try again.')
             ->expectsQuestion('What is your birthday?', '1989-06-20')
+            ->expectsQuestion('Do you agree to Terms of Service?', 'yes')
             ->expectsOutput('Administrator johndoe created successfully')
             ->assertExitCode(0);
 

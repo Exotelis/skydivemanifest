@@ -141,7 +141,7 @@ class AircraftResourcesTest extends TestCase
         $this->checkNotFound($this->resource . '/E-XXXX');
 
         // Success
-        $response = $this->getJson($resource);;
+        $response = $this->getJson($resource);
         $response->assertStatus(200)
             ->assertJson(Aircraft::withTrashed()->find($this->aircraft->first()->registration)
                 ->toArray());

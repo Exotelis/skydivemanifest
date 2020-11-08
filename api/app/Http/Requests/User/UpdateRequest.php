@@ -39,7 +39,7 @@ class UpdateRequest extends FormRequest
                 'sometimes',
                 'required',
                 'email:rfc,dns,spoof',
-                Rule::unique('users')->ignore($this->route('user')->id),
+                Rule::unique('App\Models\User')->ignore($this->route('user')),
                 'max:255',
             ],
             'firstname'       => 'sometimes|required|string|max:255',
@@ -68,7 +68,7 @@ class UpdateRequest extends FormRequest
             'username'        => [
                 'sometimes',
                 'alpha_num',
-                Rule::unique('users')->ignore($this->route('user')->id),
+                Rule::unique('App\Models\User')->ignore($this->route('user')),
                 'max:255',
                 'nullable',
             ],

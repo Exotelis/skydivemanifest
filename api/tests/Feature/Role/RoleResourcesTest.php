@@ -187,6 +187,31 @@ class RoleResourcesTest extends TestCase
     }
 
     /**
+     * Test [GET] roles/names resource.
+     *
+     * @return void
+     */
+    public function testNames()
+    {
+        $resource = self::API_URL . 'roles/names';
+
+        // Unauthorized
+        $this->checkUnauthorized($resource);
+
+        // Forbidden
+        $this->actingAs($this->admin, ['invalid']);
+        $response = $this->getJson($resource);
+        $response->assertStatus(403)->assertJson(['message' => 'Invalid scope(s) provided.']);
+
+        // Sign in as admin
+        $this->actingAs($this->admin);
+
+        // Success
+        $response = $this->getJson($resource);
+        $response->assertStatus(200)->assertJson(Role::all()->pluck('name')->toArray());
+    }
+
+    /**
      * Test [GET] roles/:id resource.
      *
      * @return void
@@ -257,5 +282,30 @@ class RoleResourcesTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonFragment(['color' => $newColor]);
         $this->assertDatabaseHas('roles', ['color' => $newColor]);
+    }
+
+    /**
+     * Test [GET] roles/valid resource.
+     *
+     * @return void
+     */
+    public function testValid()
+    {
+        $resource = self::API_URL . 'roles/valid';
+
+        // Unauthorized
+        $this->checkUnauthorized($resource);
+
+        // Forbidden
+        $this->actingAs($this->admin, ['invalid']);
+        $response = $this->getJson($resource);
+        $response->assertStatus(403)->assertJson(['message' => 'Invalid scope(s) provided.']);
+
+        // Sign in as admin
+        $this->actingAs($this->admin);
+
+        // Success
+        $response = $this->getJson($resource);
+        $response->assertStatus(200)->assertJson(validRoles(auth()->user())->toArray());
     }
 }

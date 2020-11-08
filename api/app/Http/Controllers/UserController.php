@@ -103,7 +103,7 @@ class UserController extends Controller
     {
         $input = $request->only(['ids']);
 
-        $count = User::destroy($input['ids']);;
+        $count = User::destroy($input['ids']);
         return response()->json([
             'count'   => $count,
             'message' => trans_choice('messages.deleted_users', $count)
@@ -155,7 +155,7 @@ class UserController extends Controller
             'defaultShipping',
             'defaultShipping.country',
             'defaultShipping.region',
-            'role'
+            'role',
         ]));
     }
 

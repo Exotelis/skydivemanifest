@@ -197,7 +197,7 @@ class CurrencyResourcesTest extends TestCase
         $this->checkNotFound($this->resource . '/ZZZ');
 
         // Success
-        $response = $this->getJson($resource);;
+        $response = $this->getJson($resource);
         $response->assertStatus(200)->assertJson(Currency::find($this->currencies->first()->code)->toArray());
     }
 

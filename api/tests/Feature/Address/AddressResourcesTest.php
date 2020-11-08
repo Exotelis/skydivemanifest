@@ -256,7 +256,7 @@ class AddressResourcesTest extends TestCase
         $this->checkNotFound($this->baseResource . '/' . $address->id);
 
         // Success
-        $response = $this->getJson($resource);;
+        $response = $this->getJson($resource);
         $response->assertStatus(200)->assertJson(Address::find($this->addresses->first()->id)->toArray());
     }
 

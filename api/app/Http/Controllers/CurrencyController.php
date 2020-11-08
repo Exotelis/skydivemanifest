@@ -85,7 +85,7 @@ class CurrencyController extends Controller
     {
         $input = $request->only(['codes']);
 
-        $count = Currency::destroy($input['codes']);;
+        $count = Currency::destroy($input['codes']);
         return response()->json([
             'count'   => $count,
             'message' => trans_choice('messages.deleted_currencies', $count)

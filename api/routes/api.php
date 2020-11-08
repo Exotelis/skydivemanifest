@@ -269,7 +269,7 @@ Route::middleware(['auth:api', 'scopes:roles:read'])->name('roles.')->prefix('ro
     /**
      * Single role
      */
-    Route::prefix('{role}')->group(function () {
+    Route::prefix('{role}')->where(['role' => '[0-9]+'])->group(function () {
         Route::get('/', [App\Http\Controllers\RoleController::class, 'role'])->name('get');
         Route::put('/', [App\Http\Controllers\RoleController::class, 'update'])
             ->middleware('scopes:roles:write')

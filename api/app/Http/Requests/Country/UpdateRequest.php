@@ -34,14 +34,14 @@ class UpdateRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('App\Models\Country')->ignore($this->route('country')->id),
+                Rule::unique('App\Models\Country')->ignore($this->route('country')),
             ],
             'country' => [
                 'sometimes',
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('App\Models\Country')->ignore($this->route('country')->id),
+                Rule::unique('App\Models\Country')->ignore($this->route('country')),
             ],
         ];
     }
