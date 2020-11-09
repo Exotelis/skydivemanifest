@@ -34,8 +34,7 @@ class UpdateRequest extends FormRequest
                 'required',
                 'alpha_num',
                 'size:3',
-                Rule::unique('App\Models\Currency')
-                    ->ignore($this->route('currency')->code, 'code'),
+                Rule::unique('App\Models\Currency')->ignore($this->route('currency')),
             ],
             'currency' => 'sometimes|required|string|max:255',
             'symbol'   => 'sometimes|string|max:255|nullable',

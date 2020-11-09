@@ -34,8 +34,7 @@ class UpdateRequest extends FormRequest
                 'sometimes',
                 'required',
                 'alpha_dash',
-                Rule::unique('App\Models\Aircraft')
-                    ->ignore($this->route('aircraft')->registration, 'registration'),
+                Rule::unique('App\Models\Aircraft')->ignore($this->route('aircraft')),
             ],
             'dom'          => 'sometimes|date|before_or_equal:' . Carbon::now() . '|nullable',
             'flight_time'  => 'sometimes|required|integer|min:0|max:4294967295',

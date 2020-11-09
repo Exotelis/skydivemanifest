@@ -21,8 +21,8 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->id();
-            $table->unsignedInteger('default_invoice')->nullable();
-            $table->unsignedInteger('default_shipping')->nullable();
+            $table->unsignedBigInteger('default_invoice')->nullable();
+            $table->unsignedBigInteger('default_shipping')->nullable();
             $table->date('dob')->comment('date of birth');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -39,7 +39,7 @@ class CreateUsersTable extends Migration
             $table->string('password')->nullable();
             $table->boolean('password_change')->default(false)->comment('Force password change');
             $table->string('phone')->nullable();
-            $table->unsignedInteger('role_id')->nullable();
+            $table->unsignedBigInteger('role_id')->nullable();
             $table->string('username')->nullable()->unique();
             $table->string('timezone')->nullable();
             $table->boolean('tos')->default(false)->comment('Terms of Service accepted');

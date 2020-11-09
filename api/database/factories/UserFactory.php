@@ -44,7 +44,7 @@ class UserFactory extends Factory
             'password'          => 'secret',
             'password_change'   => $this->faker->boolean(20),
             'phone'             => $this->faker->optional()->e164PhoneNumber,
-            'role_id'           => $this->faker->randomElement([adminRole(), defaultRole()]),
+            'role_id'           => defaultRole(),
             'username'          => $this->faker->unique()->regexify('[A-Za-z0-9]{5,20}'),
             'timezone'          => $this->faker->timezone,
             'tos'               => $this->faker->boolean(90),

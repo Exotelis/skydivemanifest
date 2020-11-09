@@ -206,7 +206,7 @@ class CountryResourcesTest extends TestCase
         $this->checkNotFound($this->resource . '/9999');
 
         // Success
-        $response = $this->getJson($resource);;
+        $response = $this->getJson($resource);
         $response->assertStatus(200)->assertJson(Country::find($this->countries->first()->id)->toArray());
     }
 

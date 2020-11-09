@@ -19,7 +19,7 @@ class CreatePermissionRoleTable extends Migration
     {
         Schema::create('permission_role', function (Blueprint $table) {
             $table->string('permission_slug');
-            $table->unsignedInteger('role_id');
+            $table->unsignedBigInteger('role_id');
             $table->timestamp('created_at', 0)->useCurrent();
             $table->timestamp('updated_at', 0)->useCurrent();
 

@@ -251,7 +251,7 @@ class UserResourcesTest extends TestCase
         $response = $this->deleteJson($resource, ['ids' => $ids]);
         $response->assertStatus(200)
             ->assertJsonFragment(['count' => 0])
-            ->assertJsonFragment(['message' => 'No user has been deleted permanently.']);
+            ->assertJsonFragment(['message' => 'No users have been deleted permanently.']);
 
         $response = $this->deleteJson($usersResource, ['ids' => $ids]);
         $response->assertStatus(200)

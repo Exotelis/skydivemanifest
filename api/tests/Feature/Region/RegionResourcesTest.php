@@ -243,7 +243,7 @@ class RegionResourcesTest extends TestCase
         $this->checkNotFound($this->resource . '/' . $region->id);
 
         // Success
-        $response = $this->getJson($resource);;
+        $response = $this->getJson($resource);
         $response->assertStatus(200)->assertJson(Region::find($this->regions->first()->id)->toArray());
     }
 
