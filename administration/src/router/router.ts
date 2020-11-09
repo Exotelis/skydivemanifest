@@ -11,7 +11,7 @@ Vue.use(VueRouter);
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: process.env.VUE_APP_FRONTEND_PATH || process.env.BASE_URL,
   linkExactActiveClass: 'active',
   routes
 });

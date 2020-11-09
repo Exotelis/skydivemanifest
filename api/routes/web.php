@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome'); // TODO replace by api doc
-});
+Route::get('/{any}', function () {
+    return view()->first(['spa', 'welcome']);
+})->where('any', '^(?!api)(?!mail).*$');
 
 // Render Mail
 /*
