@@ -4,6 +4,7 @@ namespace Tests\Feature\User;
 
 use App\Models\Address;
 use App\Models\Country;
+use App\Models\Qualification;
 use App\Models\Region;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,6 +20,9 @@ class UserResourcesTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
+    /**
+     * @var \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|User[]
+     */
     protected $users;
 
     public function setUp(): void
@@ -274,6 +278,100 @@ class UserResourcesTest extends TestCase
     }
 
     /**
+     * Test [GET] /users/:id/qualifications resource.
+     *
+     * @covers \App\Http\Controllers\UserController
+     * @return void
+     */
+    public function testQualificationsGet()
+    {
+        $resource = self::API_URL . 'users/' . $this->users->first()->id . '/qualifications';
+        $resourceUsers = self::API_URL . 'users/';
+
+        // Attach qualification
+        $qualifications = Qualification::factory()->count(2)->create();
+        $this->users->first()->qualifications()->attach($qualifications->pluck('slug')->toArray());
+        Qualification::factory()->count(2)->create();
+
+        // Unauthorized
+        $this->checkUnauthorized($resource);
+
+        // Forbidden
+        $this->checkForbidden($resource);
+
+        // Sign in as admin
+        $this->actingAs($this->admin);
+
+        // Not found
+        $this->checkNotFound($resourceUsers . '9999/qualifications');
+
+        // Success
+        $response = $this->getJson($resource);
+        $response->assertStatus(200)->assertJson($this->users->first()->qualifications->toArray());
+    }
+
+    /**
+     * Test [PUT] /users/:id/qualifications resource.
+     *
+     * @covers \App\Http\Controllers\UserController
+     * @return void
+     */
+    public function testQualificationsUpdate()
+    {
+        $resource = self::API_URL . 'users/' . $this->users->first()->id . '/qualifications';
+        $resourceUsers = self::API_URL . 'users/';
+
+        // Create qualification
+        $qualifications = Qualification::factory()->count(2)->create();
+
+        // Unauthorized
+        $this->checkUnauthorized($resource, 'put');
+
+        // Forbidden
+        $this->checkForbidden($resource, 'put');
+
+        // Sign in as admin
+        $this->actingAs($this->admin);
+
+        // Not found
+        $this->checkNotFound($resourceUsers . '9999/qualifications');
+
+        // Invalid input
+        $this->checkInvalidInput(
+            $resource,
+            'put',
+            ['qualifications' => 'not an array'],
+            ['qualifications' => ['The Qualifications must be an array.']]
+        );
+
+        // No qualifications
+        $this->assertEquals([], $this->users->first()->qualifications->toArray());
+
+        // Success - Add all
+        $response = $this->putJson($resource, ['qualifications' => $qualifications->pluck('slug')->toArray()]);
+        $response->assertStatus(200)
+            ->assertJsonFragment(['message' => 'The qualifications have been updated successfully.']);
+
+        // Check database
+        $this->assertDatabaseHas('qualification_user', [
+            'qualification_slug' => $qualifications->last()->slug, 'user_id' => $this->users->first()->id,
+        ]);
+
+        // Success - Sync (only first qualification)
+        $response = $this->putJson($resource, ['qualifications' => [$qualifications->first()->slug]]);
+        $response->assertStatus(200)
+            ->assertJsonFragment(['message' => 'The qualifications have been updated successfully.']);
+
+        // Check database
+        $this->assertDatabaseHas('qualification_user', [
+            'qualification_slug' => $qualifications->first()->slug, 'user_id' => $this->users->first()->id,
+        ]);
+        $this->assertDatabaseMissing('qualification_user', [
+            'qualification_slug' => $qualifications->last()->slug, 'user_id' => $this->users->first()->id,
+        ]);
+    }
+
+    /**
      * Test [Post] users/:id/restore resource.
      *
      * @covers \App\Http\Controllers\UserController
@@ -287,8 +385,7 @@ class UserResourcesTest extends TestCase
         Notification::fake();
 
         // Unauthorized
-        $response = $this->postJson($resource);
-        $response->assertStatus(401)->assertJson(['message' => 'You are not signed in.']);
+        $this->checkUnauthorized($resource, 'post');
 
         // Forbidden
         $this->checkForbidden($resource, 'post');
@@ -308,8 +405,10 @@ class UserResourcesTest extends TestCase
         $this->assertSoftDeleted($this->users->first());
 
         // Success
-        $response = $this->postJson($resource,);
+        $response = $this->postJson($resource);
         $response->assertStatus(200)->assertJson(['message' => 'The user has been restored.']);
+
+        // Check notification
         Notification::assertSentTo(
             [$this->users->first()],
             \App\Notifications\RestoreUser::class

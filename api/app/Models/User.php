@@ -62,6 +62,8 @@ use Laravel\Passport\RefreshToken;
  * @property-read Address $defaultInvoice
  * @property-read Address $defaultShipping
  * @property-read string $name
+ * @property-read \Illuminate\Database\Eloquent\Collection|Qualification[] $qualifications
+ * @property-read int|null $qualifications_count
  * @property-read Role|null $role
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
  * @property-read int|null $tokens_count
@@ -295,6 +297,21 @@ class User extends Model implements
     public function isDefaultShipping(Address $address)
     {
         return $this->default_shipping === $address->getKey();
+    }
+
+    /**
+     * The qualifications that belong to the user.
+     */
+    public function qualifications()
+    {
+        return $this->belongsToMany(
+            'App\Models\Qualification',
+            null,
+            null,
+            'qualification_slug',
+            null,
+            'slug'
+        );
     }
 
     /**
