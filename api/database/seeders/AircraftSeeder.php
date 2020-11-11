@@ -18,6 +18,6 @@ class AircraftSeeder extends Seeder
      */
     public function run()
     {
-        Aircraft::factory()->count(3)->create();
+        Aircraft::factory()->count(3)->hasMaintenance(\rand(1, 5))->create();
     }
 }

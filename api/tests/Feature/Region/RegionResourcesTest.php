@@ -16,11 +16,6 @@ class RegionResourcesTest extends TestCase
     use WithFaker;
 
     /**
-     * @var Country
-     */
-    protected $country;
-
-    /**
      * @var Region
      */
     protected $regions;
@@ -43,13 +38,10 @@ class RegionResourcesTest extends TestCase
     {
         parent::setUp();
 
-        // Create a country
-        $this->country = Country::factory()->create();
-
         // Create regions
-        $this->regions = Region::factory()->count(10)->create(['country_id' => $this->country->id]);
+        $this->regions = Region::factory()->count(10)->forCountry()->create();
 
-        $this->resource = self::API_URL . 'countries/' . $this->country->id . '/regions';
+        $this->resource = self::API_URL . 'countries/' . $this->regions->first()->country_id . '/regions';
     }
 
     /**

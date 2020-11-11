@@ -4,12 +4,14 @@ namespace Database\Factories;
 
 use App\Models\Address;
 use App\Models\Country;
-use App\Models\Region;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * Class AddressFactory
  * @package Database\Factories
+ *
+ * @method Factory forUser()
  */
 class AddressFactory extends Factory
 {
@@ -27,19 +29,24 @@ class AddressFactory extends Factory
      */
     public function definition()
     {
-        $countryId = array_rand(array_flip(Country::all()->getQueueableIds()));
-        $regionId = array_rand(array_flip(Region::where('country_id', $countryId)->get()->getQueueableIds()));
+        // Create some countries of none exist
+        if (Country::all()->count() === 0) {
+            Country::factory()->count(5)->hasRegions(\rand(3, 10))->create();
+        }
+
+        $country = Country::all()->random();
 
         return [
             'city'       => $this->faker->city,
             'company'    => $this->faker->optional(25)->company,
-            'country_id' => $countryId,
+            'country_id' => $country->id,
             'firstname'  => $this->faker->firstName,
             'lastname'   => $this->faker->lastName,
             'middlename' => $this->faker->optional(25)->firstName,
             'postal'     => $this->faker->postcode,
-            'region_id'  => $regionId,
+            'region_id'  => $country->regions->random()->id,
             'street'     => $this->faker->streetAddress,
+            'user_id'    => User::factory(),
         ];
     }
 }

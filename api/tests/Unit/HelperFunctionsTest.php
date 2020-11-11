@@ -194,6 +194,18 @@ class HelperFunctionsTest extends TestCase
     }
 
     /**
+     * Test if the correct user role is returned.
+     *
+     * @covers ::userRole
+     * @return void
+     */
+    public function testUserRole()
+    {
+        $this->assertEquals(config('app.groups.user'), userRole());
+        $this->assertIsInt(userRole());
+    }
+
+    /**
      * Test if the correct default role is returned.
      *
      * @covers ::defaultRole

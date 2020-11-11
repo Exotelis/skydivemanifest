@@ -2,12 +2,15 @@
 
 namespace Database\Factories;
 
+use App\Models\Country;
 use App\Models\Region;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * Class RegionFactory
  * @package Database\Factories
+ *
+ * @method Factory forCountry()
  */
 class RegionFactory extends Factory
 {
@@ -26,7 +29,8 @@ class RegionFactory extends Factory
     public function definition()
     {
         return [
-            'region' => $this->faker->unique()->state,
+            'country_id' => Country::factory(),
+            'region'     => $this->faker->unique(true)->stateAbbr . ' ' . $this->faker->unique(true)->state,
         ];
     }
 }

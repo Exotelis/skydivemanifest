@@ -28,7 +28,7 @@ class CurrencyFactory extends Factory
         return [
             'code'     => $this->faker->unique()->currencyCode,
             'currency' => 'Euro',
-            'symbol'   => '€',
+            'symbol'   => $this->faker->optional(30)->randomElement(['€', '$', '£']),
         ];
     }
 }

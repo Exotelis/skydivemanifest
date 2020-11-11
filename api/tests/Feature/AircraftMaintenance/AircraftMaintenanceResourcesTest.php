@@ -174,7 +174,7 @@ class AircraftMaintenanceResourcesTest extends TestCase
      * @covers \App\Http\Controllers\AircraftMaintenanceController
      * @return void
      */
-    public function testCompleteRepetitionInterval()
+    public function testCompleteWithRepetitionInterval()
     {
         $date = Carbon::now()->subDay()->toDateString();
 
@@ -182,7 +182,11 @@ class AircraftMaintenanceResourcesTest extends TestCase
         $this->actingAs($this->admin);
 
         // Success - flight_time similar new maintenance_at && notify_at
-        $mt = AircraftMaintenance::factory()->for(Aircraft::factory())->notMaintained()->create();
+        $mt = AircraftMaintenance::factory()
+            ->for(Aircraft::factory()->highFlightTime())
+            ->notMaintained()
+            ->repetitive()
+            ->create();
         $resource = self::API_URL . 'aircraft/' . $mt->aircraft->registration . '/maintenance/' . $mt->id . '/complete';
         $notifyDiff = $mt->maintenance_at - $mt->notify_at;
 
@@ -198,7 +202,11 @@ class AircraftMaintenanceResourcesTest extends TestCase
         ]);
 
         // Success - flight_time much greater than new maintenance_at && notify_at
-        $mt = AircraftMaintenance::factory()->for(Aircraft::factory())->notMaintained()->create();
+        $mt = AircraftMaintenance::factory()
+            ->for(Aircraft::factory()->highFlightTime())
+            ->notMaintained()
+            ->repetitive()
+            ->create();
         $resource = self::API_URL . 'aircraft/' . $mt->aircraft->registration . '/maintenance/' . $mt->id . '/complete';
         $notifyDiff = $mt->maintenance_at - $mt->notify_at;
 
@@ -214,7 +222,12 @@ class AircraftMaintenanceResourcesTest extends TestCase
         ]);
 
         // Success - flight_time similar new maintenance_at && no notify_at
-        $mt = AircraftMaintenance::factory()->for(Aircraft::factory())->noNotification()->notMaintained()->create();
+        $mt = AircraftMaintenance::factory()
+            ->for(Aircraft::factory()->highFlightTime())
+            ->noNotification()
+            ->notMaintained()
+            ->repetitive()
+            ->create();
         $resource = self::API_URL . 'aircraft/' . $mt->aircraft->registration . '/maintenance/' . $mt->id . '/complete';
 
         $response = $this->putJson($resource, [
@@ -229,7 +242,12 @@ class AircraftMaintenanceResourcesTest extends TestCase
         ]);
 
         // Success - flight_time much greater than new maintenance_at && no notify_at
-        $mt = AircraftMaintenance::factory()->for(Aircraft::factory())->noNotification()->notMaintained()->create();
+        $mt = AircraftMaintenance::factory()
+            ->for(Aircraft::factory()->highFlightTime())
+            ->noNotification()
+            ->notMaintained()
+            ->repetitive()
+            ->create();
         $resource = self::API_URL . 'aircraft/' . $mt->aircraft->registration . '/maintenance/' . $mt->id . '/complete';
 
         $response = $this->putJson($resource, [

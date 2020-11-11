@@ -28,18 +28,22 @@ class AircraftMaintenanceFactory extends Factory
     {
         return [
             'aircraft_registration' => Aircraft::factory(),
-            'dom'                   => $this->faker->optional(15)->date($format = 'Y-m-d', $max = 'now'),
+            'dom'                   => $this->faker->optional(50)->date($format = 'Y-m-d', $max = 'now'),
             'maintenance_at'        => function (array $attributes) {
-                $aircraft = Aircraft::withTrashed()->find($attributes['aircraft_registration']);
-                return $aircraft->flight_time + (\rand(5, 10) * 10);
+                $flightTime = (Aircraft::withTrashed()->find($attributes['aircraft_registration']))->flight_time;
+                if (! \is_null($attributes['dom'])) {
+                    return $flightTime >= 1000 ? \round($flightTime - 100, -2) : 0;
+                }
+                return $flightTime >= 1000 ? + \round($flightTime * (\rand(2, 4)), -2) : 1000;
             },
             'name'                  => $this->faker->word,
             'notes'                 => $this->faker->text,
             'notified'              => false,
             'notify_at'             => function (array $attributes) {
-                return $attributes['maintenance_at'] - (\rand(1, 3) * 10);
+                $notify = \rand(1, 3) * 60 * 10;
+                return $attributes['maintenance_at'] <= $notify ? null : $attributes['maintenance_at'] - $notify;
             },
-            'repetition_interval'   => $this->faker->numberBetween(3000, 6000),
+            'repetition_interval'   => \round($this->faker->optional(50)->numberBetween(3000, 6000), -2),
         ];
     }
 
@@ -88,6 +92,18 @@ class AircraftMaintenanceFactory extends Factory
     {
         return $this->state(function () {
             return ['repetition_interval' => null];
+        });
+    }
+
+    /**
+     * Make the maintenance repetitive.
+     *
+     * @return Factory
+     */
+    public function repetitive()
+    {
+        return $this->state(function () {
+            return ['repetition_interval' => \round($this->faker->numberBetween(3000, 6000), -2)];
         });
     }
 }
