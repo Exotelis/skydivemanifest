@@ -19,9 +19,8 @@ class RegionObserver extends BaseObserver
      */
     public function created(Region $region)
     {
-        $country = "{$region->country->id}|{$region->country->country}|{$region->country->code}";
-        Log::info("[Region] '{$region->id}|{$region->region}' has been created for country '{$country}' by " .
-            "'{$this->executedBy}'");
+        Log::info("[Region] '{$region->logString()}' has been created for country " .
+            "'{$region->country->logString()}' by '{$this->executedBy}'");
     }
 
     /**
@@ -32,10 +31,9 @@ class RegionObserver extends BaseObserver
      */
     public function updated(Region $region)
     {
-        $diff = getModelDiff($region, [], true);
-        $country = "{$region->country->id}|{$region->country->country}|{$region->country->code}";
-        Log::info("[Region] '{$region->id}|{$region->region}' of country '{$country}' has been updated by " .
-            "'{$this->executedBy}' ({$diff})");
+        $diff = $region->getDiff();
+        Log::info("[Region] '{$region->logString()}' of country '{$region->country->logString()}' has been " .
+            "updated by '{$this->executedBy}' ({$diff})");
     }
 
     /**
@@ -46,8 +44,7 @@ class RegionObserver extends BaseObserver
      */
     public function deleted(Region $region)
     {
-        $country = "{$region->country->id}|{$region->country->country}|{$region->country->code}";
-        Log::info("[Region] '{$region->id}|{$region->region}' of country '{$country}' has been deleted by " .
-            "'{$this->executedBy}'");
+        Log::info("[Region] '{$region->logString()}' of country '{$region->country->logString()}' has been " .
+            "deleted by '{$this->executedBy}'");
     }
 }

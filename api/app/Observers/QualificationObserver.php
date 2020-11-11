@@ -19,8 +19,7 @@ class QualificationObserver extends BaseObserver
      */
     public function created(Qualification $qualification)
     {
-        Log::info("[Qualification] '{$qualification->slug}|{$qualification->qualification}' has been created " .
-            "by '{$this->executedBy}'");
+        Log::info("[Qualification] '{$qualification->logString()}' has been created by '{$this->executedBy}'");
     }
 
     /**
@@ -31,9 +30,9 @@ class QualificationObserver extends BaseObserver
      */
     public function updated(Qualification $qualification)
     {
-        $diff = getModelDiff($qualification, [], true);
-        Log::info("[Qualification] '{$qualification->slug}|{$qualification->qualification}' has been updated " .
-            "by '{$this->executedBy}' ({$diff})");
+        $diff = $qualification->getDiff();
+        Log::info("[Qualification] '{$qualification->logString()}' has been updated by '{$this->executedBy}' " .
+            "({$diff})");
     }
 
     /**
@@ -44,7 +43,6 @@ class QualificationObserver extends BaseObserver
      */
     public function deleted(Qualification $qualification)
     {
-        Log::info("[Qualification] '{$qualification->slug}|{$qualification->qualification}' has been deleted " .
-            "by '{$this->executedBy}'");
+        Log::info("[Qualification] '{$qualification->logString()}' has been deleted by '{$this->executedBy}'");
     }
 }

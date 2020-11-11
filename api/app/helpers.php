@@ -296,37 +296,20 @@ if (! function_exists('isDigit')) {
     }
 }
 
-if (! function_exists('getModelDiff')) {
+if (! function_exists('currentUserLogString')) {
     /**
-     * Get the diff of model on update
+     * Information of the current user as a short string.
      *
-     * @param  Illuminate\Database\Eloquent\Model $model
-     * @param  array $except
-     * @param  boolean $asString Determines if the diff should be returned as string
-     * @return array|string
+     * @return string|null
      */
-    function getModelDiff($model, $except = [], $asString = false)
+    function currentUserLogString()
     {
-        $dirty = Illuminate\Support\Arr::except($model->getDirty(), $except);
-        $diff = $asString ? '' : [];
+        $user = \Illuminate\Support\Facades\Auth::user();
 
-        foreach ($dirty as $key => $value) {
-            $original = $model->getOriginal($key);
-
-            if ($asString) {
-                $diff .= "{$key}:[-]{$original}[+]{$value}|";
-            } else {
-                $diff[$key] = [
-                    'old' => $original,
-                    'new' => $value,
-                ];
-            }
+        if (! \is_null($user) && $user instanceof \App\Models\User) {
+            return $user->logString();
         }
 
-        if (is_string($diff)) {
-            $diff = Illuminate\Support\Str::of($diff)->rtrim('|');
-        }
-
-        return $diff;
+        return null;
     }
 }

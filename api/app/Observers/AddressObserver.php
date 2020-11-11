@@ -19,8 +19,8 @@ class AddressObserver extends BaseObserver
      */
     public function created(Address $address)
     {
-        $user = "{$address->user->id}|{$address->user->email}";
-        Log::info("[Address] '{$address->id}' has been created for user '{$user}' by '{$this->executedBy}'");
+        Log::info("[Address] '{$address->logString()}' has been created for user " .
+            "'{$address->user->logString()}' by '{$this->executedBy}'");
     }
 
     /**
@@ -31,10 +31,9 @@ class AddressObserver extends BaseObserver
      */
     public function updated(Address $address)
     {
-        $user = "{$address->user->id}|{$address->user->email}";
-
         // Do not display diff because of privacy reasons, most of the address data are personal data.
-        Log::info("[Address] '{$address->id}' of user '{$user}' has been updated by '{$this->executedBy}'");
+        Log::info("[Address] '{$address->logString()}' of user '{$address->user->logString()}' has been " .
+            "updated by '{$this->executedBy}'");
     }
 
     /**
@@ -46,6 +45,7 @@ class AddressObserver extends BaseObserver
     public function deleted(Address $address)
     {
         $user = "{$address->user->id}|{$address->user->email}";
-        Log::info("[Address] '{$address->id}' of user '{$user}' has been deleted by '{$this->executedBy}'");
+        Log::info("[Address] '{$address->logString()}' of user '{$address->user->logString()}' has been " .
+            "deleted by '{$this->executedBy}'");
     }
 }

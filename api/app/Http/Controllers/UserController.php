@@ -11,7 +11,9 @@ use App\Models\Role;
 use App\Models\User;
 use App\Traits\Paginate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -56,7 +58,7 @@ class UserController extends Controller
         try {
             DB::beginTransaction();
 
-            $user = User::create($request->validated());
+            $user = User::create(Arr::except($request->validated(), ['role']));
             $role = Role::findOrFail($request->input('role') ?? defaultRole());
             $user->role()->associate($role)->save();
 
@@ -182,7 +184,16 @@ class UserController extends Controller
     public function qualificationsUpdate(QualificationsRequest $request, User $user)
     {
         try {
-            $user->qualifications()->sync($request->input('qualifications'));
+            $changes = $user->qualifications()->sync($request->input('qualifications'));
+
+            // Log pivot changes
+            if (\count($changes['attached']) > 0 || \count($changes['detached']) > 0) {
+                $executedBy = currentUserLogString() ?? 'system';
+                $added = \implode('|', $changes['attached']);
+                $removed = \implode('|', $changes['detached']);
+                Log::info("[Qualification-User] Qualifications of user '{$user->logString()}' have been " .
+                    "updated by '{$executedBy}' (Added:{$added} Removed:{$removed})");
+            }
         } catch (\Throwable $exception) {
             abort(500, __('messages.qualifications_updated_failed'));
         }

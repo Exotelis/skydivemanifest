@@ -104,18 +104,19 @@ class UserResourcesTest extends TestCase
     {
         $resource = self::API_URL . 'users';
         $json = [
-            'dob' => '1970-01-01',
-            'email' => 'exotelis@mailbox.org',
-            'firstname' => 'John',
-            'gender' => 'm',
-            'lastname' => 'Doe',
-            'locale' => 'en',
-            'middlename' => null,
-            'mobile' => '0049 176 12 34 56 789',
+            'dob'             => '1970-01-01',
+            'email'           => 'exotelis@mailbox.org',
+            'firstname'       => 'John',
+            'gender'          => 'm',
+            'lastname'        => 'Doe',
+            'locale'          => 'en',
+            'middlename'      => null,
+            'mobile'          => '0049 176 12 34 56 789',
             'password_change' => true,
-            'phone' => '0049 661 12345',
-            'username' => 'Exotelis',
-            'timezone' => 'Europe/Berlin',
+            'phone'           => '0049 661 12345',
+            'role'            => 2,
+            'username'        => 'Exotelis',
+            'timezone'        => 'Europe/Berlin',
         ];
 
         Notification::fake();
@@ -136,7 +137,13 @@ class UserResourcesTest extends TestCase
         $response = $this->postJson($resource, $json);
         $user = User::find($response['data']['id']);
         $response->assertStatus(201)->assertJson(['message' => 'The user has been created successfully.']);
+
+        // Check database
+        $json['role_id'] = $json['role'];
+        unset($json['role']);
         $this->assertDatabaseHas('users', $json);
+
+        // Check Notification
         Notification::assertSentTo(
             [$user],
             \App\Notifications\CreateUser::class

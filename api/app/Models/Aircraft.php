@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Contracts\Logable;
+use App\Traits\ModelDiff;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -35,9 +37,9 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Aircraft whereUpdatedAt($value)
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class Aircraft extends Model
+class Aircraft extends Model implements Logable
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, ModelDiff, SoftDeletes;
 
     const DELETED_AT = 'put_out_of_service_at';
 
@@ -264,5 +266,15 @@ class Aircraft extends Model
         } else {
             $this->attributes['dom'] = Carbon::make($value)->toDateString();
         }
+    }
+
+    /**
+     * Get the values of the most important attributes of the model.
+     *
+     * @return string
+     */
+    public function logString()
+    {
+        return "{$this->registration}|{$this->model}";
     }
 }

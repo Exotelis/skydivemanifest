@@ -297,50 +297,20 @@ class HelperFunctionsTest extends TestCase
     }
 
     /**
-     * Test if the correct app name is returned.
+     * Test if the correct value is returned
      *
-     * @covers ::appName
+     * @covers ::currentUserLogString
      * @return void
      */
-    public function testGetModelDiff()
+    public function testCurrentUserLogString()
     {
-        $role = \App\Models\Role::create(['color' => '#000000', 'name' => 'test']);
+        $this->assertEquals(null, currentUserLogString());
 
-        $role->name = 'New name';
-        $role->color = '#ffffff';
+        // Mock user
+        /** @var \App\Models\User $user */
+        $user = \App\Models\User::factory()->create();
+        $this->actingAs($user);
 
-        // As array
-        $this->assertEquals(
-            [
-                'name' => [
-                    'old' => 'test',
-                    'new' => 'New name',
-                ],
-                'color' => [
-                    'old' => '#000000',
-                    'new' => '#ffffff',
-                ],
-            ],
-            getModelDiff($role)
-        );
-        $this->assertEquals(
-            [
-                'name' => [
-                    'old' => 'test',
-                    'new' => 'New name',
-                ],
-            ],
-            getModelDiff($role, ['color'])
-        );
-
-        // As String
-        $this->assertEquals(
-            'color:[-]#000000[+]#ffffff|name:[-]test[+]New name',
-            getModelDiff($role, [], true)
-        );
-        $this->assertEquals(
-            'name:[-]test[+]New name',
-            getModelDiff($role, ['color'], true)
-        );
+        $this->assertEquals($user->logString(), currentUserLogString());
     }
 }

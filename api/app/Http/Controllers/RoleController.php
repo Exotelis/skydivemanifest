@@ -10,6 +10,7 @@ use App\Models\Role;
 use App\Traits\Paginate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -63,6 +64,12 @@ class RoleController extends Controller
             $permissions = \array_unique(\array_merge($request->permissions ?? [], $defaultPermissions));
 
             $role->permissions()->attach($permissions);
+
+            // Log pivot changes
+            $executedBy = currentUserLogString() ?? 'system';
+            $added = \implode('|', $permissions);
+            Log::info("[Permissions-Role] Permissions '{$added}' have been added to role " .
+                " '{$role->logString()}' by '{$executedBy}'");
 
             DB::commit();
         } catch (\Exception $exception) {
@@ -160,9 +167,18 @@ class RoleController extends Controller
             // Add default permissions
             $permissions = \array_unique(\array_merge($input['permissions'] ?? [], $defaultPermissions));
 
-            $role->permissions()->sync(
+            $changes = $role->permissions()->sync(
                 isset($input['permissions']) ? $permissions : $role->permissions->pluck('slug')->toArray()
             );
+
+            // Log pivot changes
+            if (\count($changes['attached']) > 0 || \count($changes['detached']) > 0) {
+                $executedBy = currentUserLogString() ?? 'system';
+                $added = \implode('|', $changes['attached']);
+                $removed = \implode('|', $changes['detached']);
+                Log::info("[Permissions-Role] Permissions of role '{$role->logString()}' have been " .
+                    "updated by '{$executedBy}' (Added:{$added} Removed:{$removed})");
+            }
 
             $role->saveOrFail();
 

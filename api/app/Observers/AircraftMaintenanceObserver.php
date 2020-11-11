@@ -19,8 +19,8 @@ class AircraftMaintenanceObserver extends BaseObserver
      */
     public function created(AircraftMaintenance $aircraftMaintenance)
     {
-        Log::info("[Aircraft Maintenance] '{$aircraftMaintenance->id}' has been created for aircraft " .
-            "'{$aircraftMaintenance->aircraft_registration}' by '{$this->executedBy}'");
+        Log::info("[Aircraft Maintenance] '{$aircraftMaintenance->logString()}' has been created for " .
+            "aircraft '{$aircraftMaintenance->aircraft->logString()}' by '{$this->executedBy}'");
     }
 
     /**
@@ -31,9 +31,9 @@ class AircraftMaintenanceObserver extends BaseObserver
      */
     public function updated(AircraftMaintenance $aircraftMaintenance)
     {
-        $diff = getModelDiff($aircraftMaintenance, [], true);
-        Log::info("[Aircraft Maintenance] '{$aircraftMaintenance->id}' of aircraft " .
-            "'{$aircraftMaintenance->aircraft_registration}' has been updated by '{$this->executedBy}' ({$diff})");
+        $diff = $aircraftMaintenance->getDiff();
+        Log::info("[Aircraft Maintenance] '{$aircraftMaintenance->logString()}' of aircraft " .
+            "'{$aircraftMaintenance->aircraft->logString()}' has been updated by '{$this->executedBy}' ({$diff})");
     }
 
     /**
@@ -44,7 +44,7 @@ class AircraftMaintenanceObserver extends BaseObserver
      */
     public function deleted(AircraftMaintenance $aircraftMaintenance)
     {
-        Log::info("[Aircraft Maintenance] '{$aircraftMaintenance->id}' of aircraft " .
-            "'{$aircraftMaintenance->aircraft_registration}' has been deleted by '{$this->executedBy}'");
+        Log::info("[Aircraft Maintenance] '{$aircraftMaintenance->logString()}' of aircraft " .
+            "'{$aircraftMaintenance->aircraft->logString()}' has been deleted by '{$this->executedBy}'");
     }
 }
