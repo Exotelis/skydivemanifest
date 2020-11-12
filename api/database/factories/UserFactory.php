@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * Class UserFactory
  * @package Database\Factories
+ *
+ * @method Factory hasAddresses($int)
  */
 class UserFactory extends Factory
 {
@@ -17,6 +19,31 @@ class UserFactory extends Factory
      * @var string
      */
     protected $model = User::class;
+
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function (User $user) {
+            // If user has addresses
+            if (\count($user->addresses) > 0) {
+                // Set default_invoice
+                if ($this->faker->boolean(80)) {
+                    $user->defaultInvoice()->associate($user->addresses->random());
+                }
+
+                // Set default_shipping
+                if ($this->faker->boolean(80)) {
+                    $user->defaultShipping()->associate($user->addresses->random());
+                }
+
+                $user->save();
+            }
+        });
+    }
 
     /**
      * Define the model's default state.
@@ -49,6 +76,42 @@ class UserFactory extends Factory
             'timezone'          => $this->faker->timezone,
             'tos'               => $this->faker->boolean(90),
         ];
+    }
+
+    /**
+     * Create an admin user.
+     *
+     * @return Factory
+     */
+    public function createAdmin()
+    {
+        return $this->state([
+            'email_verified_at' => '1970-01-01 12:00:00',
+            'is_active'         => true,
+            'password'          => 'admin',
+            'password_change'   => false,
+            'role_id'           => adminRole(),
+            'username'          => 'admin',
+            'tos'               => true,
+        ]);
+    }
+
+    /**
+     * Create an user.
+     *
+     * @return Factory
+     */
+    public function createUser()
+    {
+        return $this->state([
+            'email_verified_at' => '1970-01-01 12:00:00',
+            'is_active'         => true,
+            'password'          => 'user',
+            'password_change'   => false,
+            'role_id'           => userRole(),
+            'username'          => 'user',
+            'tos'               => true,
+        ]);
     }
 
     /**

@@ -30,11 +30,7 @@ class CountryResourcesTest extends TestCase
         parent::setUp();
 
         // Create countries and regions
-        $this->countries = Country::factory()->count(3)->create()->each(function($country) {
-            Region::factory()->count(10)->create([
-                'country_id' => $country->id,
-            ]);
-        });
+        $this->countries = Country::factory()->count(3)->hasRegions(10)->create();
     }
 
     /**

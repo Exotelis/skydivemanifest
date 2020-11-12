@@ -2,14 +2,12 @@
 
 namespace Tests\Feature\User;
 
-use App\Models\Address;
-use App\Models\Country;
 use App\Models\Qualification;
-use App\Models\Region;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 /**
@@ -29,24 +27,11 @@ class UserResourcesTest extends TestCase
     {
         parent::setUp();
 
-        // Create countries and regions
-        Country::factory()->count(3)->create()->each(function ($country) {
-            Region::factory()->count(2)->create(['country_id' => $country->id]);
-        });
-
-        // Create users
-        $this->users = User::factory()->count(8)->isUser()->create()->each(function ($user) {
-            // Generate 0 to 4 addresses per user
-            $addresses = Address::factory()->count(rand(0, 4))->create(['user_id' => $user->id]);
-            $addresses = $addresses->toArray();
-
-            // Select default invoice and default shipping address
-            if (count($addresses) > 0) {
-                $user->default_invoice = $addresses[array_rand($addresses)]['id'];
-                $user->default_shipping = $addresses[array_rand($addresses)]['id'];
-                $user->save();
-            }
-        });
+        $this->users = User::factory()
+            ->count(8)
+            ->hasAddresses(\rand(0,4))
+            ->isUser()
+            ->create();
     }
 
     /**
@@ -282,6 +267,34 @@ class UserResourcesTest extends TestCase
         $this->users->each(function($user) {
             $this->assertDeleted($user);
         });
+    }
+
+    /**
+     * Test [GET] users/:id resource.
+     *
+     * @covers \App\Http\Controllers\UserController
+     * @return void
+     */
+    public function testGet()
+    {
+        $resource = self::API_URL . 'users/' . $this->users->first()->id;
+        $resourceUsers = self::API_URL . 'users/';
+
+        // Unauthorized
+        $this->checkUnauthorized($resource);
+
+        // Forbidden
+        $this->checkForbidden($resource);
+
+        // Sign in as admin
+        $this->actingAs($this->admin);
+
+        // Not found
+        $this->checkNotFound($resourceUsers . '9999');
+
+        // Success
+        $response = $this->getJson($resource);
+        $response->assertStatus(200)->assertJson(Arr::except($this->users->first()->toArray(), ['addresses']));
     }
 
     /**
@@ -610,33 +623,5 @@ class UserResourcesTest extends TestCase
             'email_changes',
             ['email' => $this->users->first()->email, 'new_email' => $newEmail]
         );
-    }
-
-    /**
-     * Test [GET] users/:id resource.
-     *
-     * @covers \App\Http\Controllers\UserController
-     * @return void
-     */
-    public function testUser()
-    {
-        $resource = self::API_URL . 'users/' . $this->users->first()->id;
-        $resourceUsers = self::API_URL . 'users/';
-
-        // Unauthorized
-        $this->checkUnauthorized($resource);
-
-        // Forbidden
-        $this->checkForbidden($resource);
-
-        // Sign in as admin
-        $this->actingAs($this->admin);
-
-        // Not found
-        $this->checkNotFound($resourceUsers . '9999');
-
-        // Success
-        $response = $this->getJson($resource);
-        $response->assertStatus(200)->assertJson($this->users->first()->toArray());
     }
 }

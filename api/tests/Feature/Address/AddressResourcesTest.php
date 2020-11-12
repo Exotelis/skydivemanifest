@@ -4,7 +4,6 @@ namespace Tests\Feature\Address;
 
 use App\Models\Address;
 use App\Models\Country;
-use App\Models\Region;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -39,20 +38,14 @@ class AddressResourcesTest extends TestCase
     {
         parent::setUp();
 
-        // Create a user
-        $this->user = User::factory()->create();
+        // Create a user with addresses
+        $this->user = User::factory()->hasAddresses(5)->create();
 
-        // Create countries and regions
-        $this->countries = Country::factory()->count(3)->create()->each(function($country) {
-            Region::factory()->count(10)->create([
-                'country_id' => $country->id,
-            ]);
-        });
+        // Get addresses
+        $this->addresses = $this->user->addresses;
 
-        // Create addresses
-        $this->addresses = Address::factory()->count(5)->create([
-            'user_id' => $this->user->id,
-        ]);
+        // Get countries
+        $this->countries = Country::all();
 
         $this->baseResource = self::API_URL . 'users/' . $this->user->id . '/addresses';
     }
@@ -111,6 +104,11 @@ class AddressResourcesTest extends TestCase
      */
     public function testCreate()
     {
+        // Remove default addresses of user.
+        $this->user->defaultInvoice()->dissociate();
+        $this->user->defaultShipping()->dissociate();
+        $this->user->save();
+
         $json = [
             'city'             => $this->faker->city,
             'company'          => $this->faker->company,

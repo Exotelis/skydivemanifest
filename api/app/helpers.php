@@ -189,6 +189,18 @@ if (! function_exists('adminRole')) {
     }
 }
 
+if (! function_exists('userRole')) {
+    /**
+     * Return the id of the user role.
+     *
+     * @return int
+     */
+    function userRole()
+    {
+        return config('app.groups.user');
+    }
+}
+
 if (! function_exists('defaultRole')) {
     /**
      * Return id of the default user role.
@@ -198,7 +210,7 @@ if (! function_exists('defaultRole')) {
      */
     function defaultRole()
     {
-        return config('app.groups.user');
+        return userRole();
     }
 }
 

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * Class CountryFactory
  * @package Database\Factories
+ *
+ * @method Factory hasRegions($int)
  */
 class CountryFactory extends Factory
 {
