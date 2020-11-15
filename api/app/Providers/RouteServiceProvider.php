@@ -46,8 +46,45 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         /**
-         * Model bindings
+         * Bin models.
          */
+        $this->modelBindings();
+    }
+
+    /**
+     * Configure the rate limiters for the application.
+     *
+     * @return void
+     */
+    protected function configureRateLimiting()
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60);
+        });
+    }
+
+    /**
+     * Get te current signed in user.
+     *
+     * @return \App\Models\User
+     */
+    protected function getUser()
+    {
+        $user = Auth::user();
+        if (! ($user instanceof \App\Models\User)) {
+            abort(500);
+        }
+
+        return $user;
+    }
+
+    /**
+     * Model bindings.
+     *
+     * @return void
+     */
+    private function modelBindings()
+    {
         Route::bind('address', function ($address, $route) {
             return $route->user->addresses()->findOrFail($address);
         });
@@ -71,32 +108,9 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('userDeleted', function ($user, $route) {
             return \App\Models\User::withTrashed()->findOrFail($user);
         });
-    }
-
-    /**
-     * Configure the rate limiters for the application.
-     *
-     * @return void
-     */
-    protected function configureRateLimiting()
-    {
-        RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60);
+        Route::model('waiver', \App\Models\Waiver::class);
+        Route::bind('waiverText', function ($text, $route) {
+            return $route->waiver->texts()->findOrFail($text);
         });
-    }
-
-    /**
-     * Get te current signed in user
-     *
-     * @return \App\Models\User
-     */
-    protected function getUser()
-    {
-        $user = Auth::user();
-        if (! ($user instanceof \App\Models\User)) {
-            abort(500);
-        }
-
-        return $user;
     }
 }

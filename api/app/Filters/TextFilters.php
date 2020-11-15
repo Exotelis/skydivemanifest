@@ -3,7 +3,6 @@
 namespace App\Filters;
 
 use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\AllowedSort;
 
 /**
  * Class TextFilters
@@ -19,7 +18,10 @@ class TextFilters
     public static function filters()
     {
         return [
-            //
+            AllowedFilter::exact('id'),
+            AllowedFilter::exact('language_code'),
+            AllowedFilter::partial('text'),
+            AllowedFilter::partial('title'),
         ];
     }
 
@@ -31,7 +33,11 @@ class TextFilters
     public static function sorting()
     {
         return [
-            //
+            'id',
+            'language_code',
+            'position',
+            'text',
+            'title',
         ];
     }
 }

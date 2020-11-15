@@ -235,7 +235,7 @@ class QualificationResourcesTest extends TestCase
             'put',
             ['slug' => $this->qualifications->last()->slug],
             ['slug' => ['The Slug has already been taken.']
-            ]);
+        ]);
 
         // Success
         $response = $this->putJson(

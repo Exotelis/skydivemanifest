@@ -2,10 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Models\Model;
+use App\Models\Waiver;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
+/**
+ * Class WaiverFactory
+ * @package Database\Factories
+ *
+ * @method Factory hasTexts($int)
+ */
 class WaiverFactory extends Factory
 {
     /**
@@ -13,7 +18,7 @@ class WaiverFactory extends Factory
      *
      * @var string
      */
-    protected $model = Model::class;
+    protected $model = Waiver::class;
 
     /**
      * Define the model's default state.
@@ -23,7 +28,32 @@ class WaiverFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'is_active' => $this->faker->boolean(50),
+            'title'     => $this->faker->words(\rand(2,6), true),
         ];
+    }
+
+    /**
+     * Indicate that the waiver is active.
+     *
+     * @return Factory
+     */
+    public function isActive()
+    {
+        return $this->state([
+            'is_active' => true,
+        ]);
+    }
+
+    /**
+     * Indicate that the waiver is not active.
+     *
+     * @return Factory
+     */
+    public function isNotActive()
+    {
+        return $this->state([
+            'is_active' => false,
+        ]);
     }
 }

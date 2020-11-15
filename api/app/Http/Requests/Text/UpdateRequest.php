@@ -4,6 +4,10 @@ namespace App\Http\Requests\Text;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class UpdateRequest
+ * @package App\Http\Requests\Text
+ */
 class UpdateRequest extends FormRequest
 {
     /**
@@ -13,7 +17,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,9 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'position' => 'sometimes|integer|min:1|max:4294967295',
+            'text'     => 'sometimes|required|string|max:65535',
+            'title'    => 'sometimes|string|max:255|nullable',
         ];
     }
 }

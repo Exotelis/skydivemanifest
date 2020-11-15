@@ -4,6 +4,10 @@ namespace App\Http\Requests\Waiver;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class UpdateRequest
+ * @package App\Http\Requests\Waiver
+ */
 class UpdateRequest extends FormRequest
 {
     /**
@@ -13,7 +17,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,8 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'is_active' => 'sometimes|required|boolean',
+            'title'     => 'sometimes|required|string|max:255',
         ];
     }
 }

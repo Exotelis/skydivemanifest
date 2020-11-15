@@ -2,62 +2,48 @@
 
 namespace App\Observers;
 
+use App\Models\Text;
 use App\Models\Waiver;
+use Illuminate\Support\Facades\Log;
 
-class WaiverObserver
+/**
+ * Class WaiverObserver
+ * @package App\Observers
+ */
+class WaiverObserver extends BaseObserver
 {
     /**
      * Handle the waiver "created" event.
      *
-     * @param  \App\Models\Waiver  $waiver
+     * @param  Waiver  $waiver
      * @return void
      */
     public function created(Waiver $waiver)
     {
-        //
+        Log::info("[Waiver] '{$waiver->logString()}' has been created by '{$this->executedBy}'");
     }
 
     /**
      * Handle the waiver "updated" event.
      *
-     * @param  \App\Models\Waiver  $waiver
+     * @param  Waiver  $waiver
      * @return void
      */
     public function updated(Waiver $waiver)
     {
-        //
+        $diff = $waiver->getDiff();
+        Log::info("[Waiver] '{$waiver->logString()}' has been updated by '{$this->executedBy}' ($diff)");
     }
 
     /**
      * Handle the waiver "deleted" event.
      *
-     * @param  \App\Models\Waiver  $waiver
+     * @param  Waiver  $waiver
      * @return void
      */
     public function deleted(Waiver $waiver)
     {
-        //
-    }
-
-    /**
-     * Handle the waiver "restored" event.
-     *
-     * @param  \App\Models\Waiver  $waiver
-     * @return void
-     */
-    public function restored(Waiver $waiver)
-    {
-        //
-    }
-
-    /**
-     * Handle the waiver "force deleted" event.
-     *
-     * @param  \App\Models\Waiver  $waiver
-     * @return void
-     */
-    public function forceDeleted(Waiver $waiver)
-    {
-        //
+        Text::destroy($waiver->texts->pluck('id')); // Delete related texts
+        Log::info("[Waiver] '{$waiver->logString()}' has been deleted by '{$this->executedBy}'");
     }
 }

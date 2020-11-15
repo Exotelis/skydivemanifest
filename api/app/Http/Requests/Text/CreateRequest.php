@@ -4,6 +4,10 @@ namespace App\Http\Requests\Text;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class CreateRequest
+ * @package App\Http\Requests\Text
+ */
 class CreateRequest extends FormRequest
 {
     /**
@@ -13,7 +17,7 @@ class CreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,10 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'language_code' => 'required|string|in:' . \implode(',', validLocales()),
+            'position'      => 'sometimes|integer|min:1|max:4294967295',
+            'text'          => 'required|string|max:65535',
+            'title'         => 'sometimes|string|max:255|nullable',
         ];
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Filters;
 
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
+use Spatie\QueryBuilder\Sorts\Sort;
 
 /**
  * Class WaiverActiveFilters
@@ -19,7 +21,9 @@ class WaiverActiveFilters
     public static function filters()
     {
         return [
-            //
+            AllowedFilter::exact('id'),
+            AllowedFilter::scope('language_code', 'textLanguageCode'),
+            AllowedFilter::partial('title'),
         ];
     }
 
@@ -31,7 +35,8 @@ class WaiverActiveFilters
     public static function sorting()
     {
         return [
-            //
+            'id',
+            'title',
         ];
     }
 }

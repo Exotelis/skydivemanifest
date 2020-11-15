@@ -437,3 +437,62 @@ Route::middleware(['auth:api', 'scopes:users:read'])->name('users.')->prefix('us
                 ->name('deletePermanently');
         });
 });
+
+/**
+ * Waivers
+ */
+Route::middleware(['auth:api'])->name('waivers.')->prefix('waivers')->group(function () {
+    Route::get('/active', [App\Http\Controllers\WaiverController::class, 'active'])
+        ->name('active');
+    Route::get('/', [App\Http\Controllers\WaiverController::class, 'all'])
+        ->middleware('scopes:waivers:read')
+        ->name('all');
+    Route::post('/', [App\Http\Controllers\WaiverController::class, 'create'])
+        ->middleware('scopes:waivers:write')
+        ->name('create');
+    Route::delete('/', [App\Http\Controllers\WaiverController::class, 'deleteBulk'])
+        ->middleware('scopes:waivers:delete')
+        ->name('deleteBulk');
+
+    /**
+     * Single waiver
+     */
+    Route::middleware(['scopes:waivers:read'])
+        ->prefix('{waiver}')
+        ->where(['waiver' => '[0-9]+'])
+        ->group(function () {
+            Route::get('/', [App\Http\Controllers\WaiverController::class, 'get'])->name('get');
+            Route::put('/', [App\Http\Controllers\WaiverController::class, 'update'])
+                ->middleware('scopes:waivers:write')
+                ->name('update');
+            Route::delete('/', [App\Http\Controllers\WaiverController::class, 'delete'])
+                ->middleware('scopes:waivers:delete')
+                ->name('delete');
+
+            /**
+             * Texts
+             */
+            Route::name('texts.')->prefix('texts')->group(function () {
+                Route::get('/', [App\Http\Controllers\TextController::class, 'all'])->name('all');
+                Route::post('/', [App\Http\Controllers\TextController::class, 'create'])
+                    ->middleware('scopes:waivers:write')
+                    ->name('create');
+                Route::delete('/', [App\Http\Controllers\TextController::class, 'deleteBulk'])
+                    ->middleware('scopes:waivers:delete')
+                    ->name('deleteBulk');
+
+                /**
+                 * Single waiver text
+                 */
+                Route::prefix('{waiverText}')->group(function () {
+                    Route::get('/', [App\Http\Controllers\TextController::class, 'get'])->name('get');
+                    Route::put('/', [App\Http\Controllers\TextController::class, 'update'])
+                        ->middleware('scopes:waivers:write')
+                        ->name('update');
+                    Route::delete('/', [App\Http\Controllers\TextController::class, 'delete'])
+                        ->middleware('scopes:waivers:delete')
+                        ->name('delete');
+                });
+            });
+        });
+});

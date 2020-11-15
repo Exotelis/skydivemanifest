@@ -4,6 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Class CreateTextsTable
+ */
 class CreateTextsTable extends Migration
 {
     /**
@@ -13,9 +16,17 @@ class CreateTextsTable extends Migration
      */
     public function up()
     {
-        Schema::create('text', function (Blueprint $table) {
+        Schema::create('texts', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
-            $table->timestamps();
+            $table->string('language_code', 10);
+            $table->unsignedInteger('position');
+            $table->text('text');
+            $table->unsignedInteger('textable_id');
+            $table->string('textable_type');
+            $table->string('title')->nullable();
+            $table->timestamp('created_at', 0)->useCurrent();
+            $table->timestamp('updated_at', 0)->useCurrent();
         });
     }
 
@@ -26,6 +37,6 @@ class CreateTextsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('text');
+        Schema::dropIfExists('texts');
     }
 }
