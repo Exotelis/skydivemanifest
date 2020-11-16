@@ -42,6 +42,7 @@ class RoleObserver extends BaseObserver
      */
     public function deleted(Role $role)
     {
+        $role->permissions()->detach($role->id); // Detach deleted role from all permissions.
         Log::info("[Role] '{$role->logString()}' has been deleted by '{$this->executedBy}'");
     }
 }

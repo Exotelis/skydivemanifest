@@ -62,17 +62,6 @@ class Country extends Model implements Logable
     }
 
     /**
-     * Determine if the user has a given address.
-     *
-     * @param  Region $region
-     * @return boolean
-     */
-    public function hasRegion(Region $region)
-    {
-        return $this->regions->contains($region);
-    }
-
-    /**
      * Get the values of the most important attributes of the model.
      *
      * @return string

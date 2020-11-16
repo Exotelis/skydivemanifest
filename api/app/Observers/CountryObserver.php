@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Country;
+use App\Models\Region;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -42,6 +43,7 @@ class CountryObserver extends BaseObserver
      */
     public function deleted(Country $country)
     {
+        Region::destroy($country->regions->pluck('id')); // Delete related regions
         Log::info("[Country] '{$country->logString()}' has been deleted by '{$this->executedBy}'");
     }
 }

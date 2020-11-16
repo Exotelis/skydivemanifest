@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Mail\DeleteUser as Mailable;
+use App\Models\Address;
 use App\Models\User;
 use App\Notifications\CreateUser as CreateUserNotification;
 use App\Notifications\SoftDeleteUser as SoftDeleteUserNotification;
@@ -132,6 +133,10 @@ class UserObserver extends BaseObserver
      */
     public function forceDeleted(User $user)
     {
+        // Delete related models as well
+        Address::destroy($user->addresses->pluck('id')); // Delete related addresses
+        $user->qualifications()->detach($user->id); // Detach deleted user from all qualifications.
+
         Log::info("[User] '{$user->logString()}' has been deleted permanently by '{$this->executedBy}'");
 
         // Delete restore token

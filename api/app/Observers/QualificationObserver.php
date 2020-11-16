@@ -43,6 +43,7 @@ class QualificationObserver extends BaseObserver
      */
     public function deleted(Qualification $qualification)
     {
+        $qualification->users()->detach($qualification->slug); // Detach deleted qualification from all users.
         Log::info("[Qualification] '{$qualification->logString()}' has been deleted by '{$this->executedBy}'");
     }
 }
