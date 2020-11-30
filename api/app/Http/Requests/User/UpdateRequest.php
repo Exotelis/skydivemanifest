@@ -25,6 +25,18 @@ class UpdateRequest extends FormRequest
     }
 
     /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'is_active' => __('validation.attributes.is_account_active'),
+        ];
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array

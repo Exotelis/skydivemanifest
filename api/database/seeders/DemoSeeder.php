@@ -24,13 +24,23 @@ class DemoSeeder extends Seeder
         }
 
         $this->call([
+            /**
+             * Location seeders
+             */
             CountrySeeder::class,
-            RegionSeeder::class,
             CurrencySeeder::class,
+            RegionSeeder::class,
 
-            QualificationSeeder::class,
-
+            /**
+             * Seeders that are interesting for the demo
+             */
             AircraftSeeder::class,
+            QualificationSeeder::class,
+            WaiverSeeder::class,
+
+            /**
+             * User seeder at the end, because it depends on many other items
+             */
             UserSeeder::class,
         ]);
     }

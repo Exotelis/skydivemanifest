@@ -16,7 +16,7 @@ use Tests\TestCase;
  */
 class UserResourcesTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
 
     /**
      * @var \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|User[]
@@ -303,7 +303,7 @@ class UserResourcesTest extends TestCase
      * @covers \App\Http\Controllers\UserController
      * @return void
      */
-    public function testQualificationsGet()
+    public function testQualificationsAll()
     {
         $resource = self::API_URL . 'users/' . $this->users->first()->id . '/qualifications';
         $resourceUsers = self::API_URL . 'users/';

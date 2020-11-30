@@ -24,8 +24,14 @@ class Localization
     {
         $locale = config('app.locale');
 
-        if ($request->hasHeader('Content-Language')) {
-            $locale = $request->header('Content-Language');
+        if($request->wantsJson()) {
+            if ($request->hasHeader('Content-Language')) {
+                $locale = $request->header('Content-Language');
+            }
+        } else {
+            if (! \is_null($request->route('language'))) {
+                $locale = $request->route('language');
+            }
         }
 
         App::setLocale($locale);

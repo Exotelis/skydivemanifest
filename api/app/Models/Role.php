@@ -79,7 +79,7 @@ class Role extends Model implements Logable
     protected $perPage = 50;
 
     /**
-     * The permissions that belong to the user.
+     * The permissions that belong to the role.
      */
     public function permissions()
     {
@@ -90,7 +90,7 @@ class Role extends Model implements Logable
             'permission_slug',
             null,
             'slug'
-        );
+        )->withTimestamps();
     }
 
     /**

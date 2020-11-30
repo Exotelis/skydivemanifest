@@ -1,5 +1,1 @@
-*
-!public/
-!spa/
-!.gitignore
-!.gitkeep
+spa/

@@ -22,7 +22,7 @@ class RoleController extends Controller
     use Paginate;
 
     /**
-     * Get a list of all users.
+     * Get a list of all roles.
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
