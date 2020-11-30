@@ -263,6 +263,9 @@ class HelperFunctionsTest extends TestCase
     {
         $this->assertEquals(config('app.valid_locales'), validLocales());
         $this->assertIsArray(validLocales());
+
+        $this->assertEquals(\implode(',', config('app.valid_locales')), validLocales(true));
+        $this->assertIsString(validLocales(true));
     }
 
     /**
@@ -275,6 +278,9 @@ class HelperFunctionsTest extends TestCase
     {
         $this->assertEquals(['m','f','d','u'], validGender());
         $this->assertIsArray(validGender());
+
+        $this->assertEquals(\implode(',', ['m','f','d','u']), validGender(true));
+        $this->assertIsString(validGender(true));
     }
 
     /**

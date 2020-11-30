@@ -252,25 +252,29 @@ if (! function_exists('defaultLocale')) {
 
 if (! function_exists('validLocales')) {
     /**
-     * A list of the valid locales.
+     * A list or string of the valid locales.
      *
-     * @return string[]
+     * @param  boolean $asString
+     * @return string|string[]
      */
-    function validLocales()
+    function validLocales(bool $asString = false)
     {
-        return config('app.valid_locales');
+        $locales = config('app.valid_locales');
+        return $asString ? \implode(',', $locales) : $locales;
     }
 }
 
 if (! function_exists('validGender')) {
     /**
-     * A list of the valid gender.
+     * A list or string of the valid gender.
      *
-     * @return string[]
+     * @param  boolean $asString
+     * @return string|string[]
      */
-    function validGender()
+    function validGender(bool $asString = false)
     {
-        return ['m','f','d','u'];
+        $gender = ['m','f','d','u'];
+        return $asString ? \implode(',', $gender) : $gender;
     }
 }
 
