@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
@@ -15,6 +16,8 @@ use Illuminate\Support\Carbon;
  * @property string $name
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property-read Collection|Role[] $roles
+ * @property-read int|null $roles_count
  * @method static Builder|Permission newModelQuery()
  * @method static Builder|Permission newQuery()
  * @method static Builder|Permission query()
@@ -82,4 +85,12 @@ class Permission extends Model
      * @var int
      */
     protected $perPage = 50;
+
+    /**
+     * The roles that belong to the permission.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany('App\Models\Role')->withTimestamps();
+    }
 }
