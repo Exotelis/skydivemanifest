@@ -115,6 +115,22 @@ class UserFactory extends Factory
     }
 
     /**
+     * Create an active user without any username.
+     *
+     * @return Factory
+     */
+    public function createActiveUser()
+    {
+        return $this->state([
+            'email_verified_at' => '1970-01-01 12:00:00',
+            'is_active'         => true,
+            'password_change'   => false,
+            'role_id'           => userRole(),
+            'tos'               => true,
+        ]);
+    }
+
+    /**
      * Indicate that the user is active.
      *
      * @return Factory
