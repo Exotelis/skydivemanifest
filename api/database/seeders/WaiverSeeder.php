@@ -18,6 +18,10 @@ class WaiverSeeder extends Seeder
      */
     public function run()
     {
-        Waiver::factory()->count(3)->hasTexts(\rand(1, 10))->create();
+        Waiver::factory()
+            ->count(3)
+            ->hasTexts(\rand(1, 10))
+            ->hasUnassignedWaivers(\rand(1, 5))
+            ->create();
     }
 }

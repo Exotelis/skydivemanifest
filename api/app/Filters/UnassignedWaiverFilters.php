@@ -3,7 +3,6 @@
 namespace App\Filters;
 
 use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\AllowedSort;
 
 /**
  * Class UnassignedWaiverFilters
@@ -19,7 +18,11 @@ class UnassignedWaiverFilters
     public static function filters()
     {
         return [
-            //
+            AllowedFilter::partial('email'),
+            AllowedFilter::partial('firstname'),
+            AllowedFilter::exact('id'),
+            AllowedFilter::exact('ip'),
+            AllowedFilter::partial('lastname'),
         ];
     }
 
@@ -31,7 +34,11 @@ class UnassignedWaiverFilters
     public static function sorting()
     {
         return [
-            //
+            'email',
+            'firstname',
+            'id',
+            'ip',
+            'lastname',
         ];
     }
 }

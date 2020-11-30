@@ -4,16 +4,28 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
+/**
+ * Class LanguageSelector
+ * @package App\View\Components
+ */
 class LanguageSelector extends Component
 {
     /**
+     * The current language.
+     *
+     * @var string
+     */
+    public $language;
+
+    /**
      * Create a new component instance.
      *
+     * @param  string $language
      * @return void
      */
-    public function __construct()
+    public function __construct($language)
     {
-        //
+        $this->language = $language;
     }
 
     /**

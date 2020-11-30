@@ -69,6 +69,8 @@ use Laravel\Passport\RefreshToken;
  * @property-read Role|null $role
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
  * @property-read int|null $tokens_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|Waiver[] $waivers
+ * @property-read int|null $waivers_count
  * @method static \Illuminate\Database\Eloquent\Builder|User findByAuthname($identifier)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
@@ -314,7 +316,7 @@ class User extends Model implements
             'qualification_slug',
             null,
             'slug'
-        );
+        )->withTimestamps();
     }
 
     /**
@@ -327,6 +329,17 @@ class User extends Model implements
         return $this->belongsTo('App\Models\Role');
     }
 
+    /**
+     * The signed waivers that belong to the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function waivers()
+    {
+        return $this->belongsToMany('App\Models\Waiver')
+            ->as('signature')
+            ->withTimestamps();
+    }
     /**
      * Scope a query to filter for the born after date
      *

@@ -4,6 +4,10 @@ namespace App\Http\Requests\UnassignedWaiver;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class AssignRequest
+ * @package App\Http\Requests\UnassignedWaiver
+ */
 class AssignRequest extends FormRequest
 {
     /**
@@ -13,7 +17,7 @@ class AssignRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,7 @@ class AssignRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'user_id' => 'required|exists:App\Models\User,id'
         ];
     }
 }

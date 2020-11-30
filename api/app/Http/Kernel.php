@@ -18,7 +18,6 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-        \App\Http\Middleware\Localization::class,
         \App\Http\Middleware\TrustProxies::class,
         \Fruitcake\Cors\HandleCors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
@@ -34,19 +33,21 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
+            'l10n',
             //\App\Http\Middleware\EncryptCookies::class,
             //\Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            //\Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\Session\Middleware\StartSession::class,
             //\Illuminate\Session\Middleware\AuthenticateSession::class,
-            //\Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            //\App\Http\Middleware\VerifyCsrfToken::class,
-            //\Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
         'api' => [
             'account.active',
             'csp.headers',
             'disable.cache',
+            'l10n',
             'log.requests',
             'password.change',
             'security.headers',
@@ -75,6 +76,7 @@ class Kernel extends HttpKernel
         'can'              => \Illuminate\Auth\Middleware\Authorize::class,
         'disable.cache'    => \App\Http\Middleware\DisableCache::class,
         'guest'            => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'l10n'             => \App\Http\Middleware\Localization::class,
         'log.requests'     => \App\Http\Middleware\LogRequests::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'password.change'  => \App\Http\Middleware\ChangePassword::class,
@@ -96,6 +98,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middlewarePriority = [
+        \App\Http\Middleware\Localization::class,
         //\Illuminate\Session\Middleware\StartSession::class,
         //\Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \App\Http\Middleware\EncryptCookies::class,

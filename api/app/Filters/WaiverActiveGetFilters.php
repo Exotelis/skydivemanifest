@@ -3,7 +3,6 @@
 namespace App\Filters;
 
 use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\AllowedSort;
 
 /**
  * Class WaiverActiveGetFilters
@@ -19,19 +18,7 @@ class WaiverActiveGetFilters
     public static function filters()
     {
         return [
-            //
-        ];
-    }
-
-    /**
-     * Return sorting array.
-     *
-     * @return array
-     */
-    public static function sorting()
-    {
-        return [
-            //
+            AllowedFilter::scope('language_code', 'textLanguageCode'),
         ];
     }
 }

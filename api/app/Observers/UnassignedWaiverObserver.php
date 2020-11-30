@@ -3,61 +3,48 @@
 namespace App\Observers;
 
 use App\Models\UnassignedWaiver;
+use Illuminate\Support\Facades\Log;
 
-class UnassignedWaiverObserver
+/**
+ * Class UnassignedWaiverObserver
+ * @package App\Observers
+ */
+class UnassignedWaiverObserver extends BaseObserver
 {
     /**
      * Handle the unassigned waiver "created" event.
      *
-     * @param  \App\Models\UnassignedWaiver  $unassignedWaiver
+     * @param  UnassignedWaiver  $unassignedWaiver
      * @return void
      */
     public function created(UnassignedWaiver $unassignedWaiver)
     {
-        //
+        Log::info("[Unassigned waiver] '{$unassignedWaiver->logString()}' has been created by " .
+            "'{$this->executedBy}'");
     }
 
     /**
      * Handle the unassigned waiver "updated" event.
      *
-     * @param  \App\Models\UnassignedWaiver  $unassignedWaiver
+     * @param  UnassignedWaiver  $unassignedWaiver
      * @return void
      */
     public function updated(UnassignedWaiver $unassignedWaiver)
     {
-        //
+        $diff = $unassignedWaiver->getDiff();
+        Log::info("[Unassigned waiver] '{$unassignedWaiver->logString()}' has been updated by " .
+            "'{$this->executedBy}' ({$diff})");
     }
 
     /**
      * Handle the unassigned waiver "deleted" event.
      *
-     * @param  \App\Models\UnassignedWaiver  $unassignedWaiver
+     * @param  UnassignedWaiver  $unassignedWaiver
      * @return void
      */
     public function deleted(UnassignedWaiver $unassignedWaiver)
     {
-        //
-    }
-
-    /**
-     * Handle the unassigned waiver "restored" event.
-     *
-     * @param  \App\Models\UnassignedWaiver  $unassignedWaiver
-     * @return void
-     */
-    public function restored(UnassignedWaiver $unassignedWaiver)
-    {
-        //
-    }
-
-    /**
-     * Handle the unassigned waiver "force deleted" event.
-     *
-     * @param  \App\Models\UnassignedWaiver  $unassignedWaiver
-     * @return void
-     */
-    public function forceDeleted(UnassignedWaiver $unassignedWaiver)
-    {
-        //
+        Log::info("[Unassigned waiver] '{$unassignedWaiver->logString()}' has been deleted by " .
+            "'{$this->executedBy}'");
     }
 }

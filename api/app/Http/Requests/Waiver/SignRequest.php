@@ -4,6 +4,10 @@ namespace App\Http\Requests\Waiver;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class SignRequest
+ * @package App\Http\Requests\Waiver
+ */
 class SignRequest extends FormRequest
 {
     /**
@@ -13,7 +17,7 @@ class SignRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,7 @@ class SignRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'signature' => 'required|string|starts_with:data:image/png;base64|max:100000',
         ];
     }
 }

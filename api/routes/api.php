@@ -247,9 +247,23 @@ Route::middleware(['auth:api'])->name('me.')->prefix('me')->group(function () {
      * Qualifications
      */
     Route::name('qualifications.')->prefix('qualifications')->group(function () {
-        Route::get('/', [App\Http\Controllers\UserController::class, 'meQualificationsGet'])->name('all');
+        Route::get('/', [App\Http\Controllers\UserController::class, 'meQualificationsAll'])->name('all');
         Route::put('/', [App\Http\Controllers\UserController::class, 'meQualificationsUpdate'])
             ->name('update');
+    });
+
+    /**
+     * Waivers
+     */
+    Route::name('waivers.')->prefix('waivers')->group(function () {
+        Route::get('/', [App\Http\Controllers\UserWaiverController::class, 'meAll'])->name('all');
+
+        /**
+         * Single Waiver
+         */
+        Route::prefix('{waiverMeSignature}')->group(function () {
+            Route::get('/', [App\Http\Controllers\UserWaiverController::class, 'meGet'])->name('get');
+        });
     });
 });
 
@@ -348,6 +362,33 @@ Route::get('tos', function () {
 })->name('tos');
 
 /**
+ * Unassigned signed waivers
+ */
+Route::middleware(['auth:api', 'scopes:unassigned_waivers:read'])
+    ->name('unassigned-waivers.')
+    ->prefix('unassigned-waivers')
+    ->group(function () {
+        Route::get('/', [App\Http\Controllers\UnassignedWaiverController::class, 'all'])
+            ->name('all');
+        Route::delete('/', [App\Http\Controllers\UnassignedWaiverController::class, 'deleteBulk'])
+            ->middleware('scopes:unassigned_waivers:delete')
+            ->name('deleteBulk');
+
+        /**
+         * Single unassigned waiver
+         */
+        Route::prefix('{unassignedWaiver}')->where(['unassignedWaiver' => '[0-9]+'])->group(function () {
+            Route::get('/', [App\Http\Controllers\UnassignedWaiverController::class, 'get'])->name('get');
+            Route::delete('/', [App\Http\Controllers\UnassignedWaiverController::class, 'delete'])
+                ->middleware('scopes:unassigned_waivers:delete')
+                ->name('delete');
+            Route::post('/assign', [App\Http\Controllers\UnassignedWaiverController::class, 'assign'])
+                ->middleware('scopes:unassigned_waivers:write')
+                ->name('assign');
+        });
+    });
+
+/**
  * Users
  */
 Route::middleware(['auth:api', 'scopes:users:read'])->name('users.')->prefix('users')->group(function () {
@@ -416,11 +457,34 @@ Route::middleware(['auth:api', 'scopes:users:read'])->name('users.')->prefix('us
             ->name('qualifications.')
             ->prefix('qualifications')
             ->group(function () {
-                Route::get('/', [App\Http\Controllers\UserController::class, 'qualificationsGet'])
+                Route::get('/', [App\Http\Controllers\UserController::class, 'qualificationsAll'])
                     ->name('all');
                 Route::put('/', [App\Http\Controllers\UserController::class, 'qualificationsUpdate'])
                     ->middleware('scopes:qualifications:write')
                     ->name('update');
+            });
+
+        /**
+         * Waivers
+         */
+        Route::middleware(['scopes:waivers:read'])
+            ->name('waivers.')
+            ->prefix('waivers')
+            ->group(function () {
+                Route::get('/', [App\Http\Controllers\UserWaiverController::class, 'all'])->name('all');
+                Route::delete('/', [App\Http\Controllers\UserWaiverController::class, 'deleteBulk'])
+                    ->middleware('scopes:waivers:delete')
+                    ->name('deleteBulk');
+
+                /**
+                 * Single Waiver
+                 */
+                Route::prefix('{waiverSignature}')->group(function () {
+                    Route::get('/', [App\Http\Controllers\UserWaiverController::class, 'get'])->name('get');
+                    Route::delete('/', [App\Http\Controllers\UserWaiverController::class, 'delete'])
+                        ->middleware('scopes:waivers:delete')
+                        ->name('delete');
+                });
             });
     });
 
@@ -442,8 +506,22 @@ Route::middleware(['auth:api', 'scopes:users:read'])->name('users.')->prefix('us
  * Waivers
  */
 Route::middleware(['auth:api'])->name('waivers.')->prefix('waivers')->group(function () {
-    Route::get('/active', [App\Http\Controllers\WaiverController::class, 'active'])
-        ->name('active');
+    Route::name('active.')->prefix('active')->group(function () {
+        Route::get('/', [App\Http\Controllers\WaiverController::class, 'activeAll'])
+            ->name('all');
+
+        /**
+         * Single active
+         */
+        Route::prefix('{waiverActive}')->where(['waiverActive' => '[0-9]+'])->group(function() {
+            Route::get('/', [App\Http\Controllers\WaiverController::class, 'activeGet'])
+                ->name('get');
+            Route::post('/sign', [App\Http\Controllers\WaiverController::class, 'activeSign'])
+                ->name('sign');
+            Route::delete('/withdraw', [App\Http\Controllers\WaiverController::class, 'activeWithdraw'])
+                ->name('withdraw');
+        });
+    });
     Route::get('/', [App\Http\Controllers\WaiverController::class, 'all'])
         ->middleware('scopes:waivers:read')
         ->name('all');
@@ -468,6 +546,9 @@ Route::middleware(['auth:api'])->name('waivers.')->prefix('waivers')->group(func
             Route::delete('/', [App\Http\Controllers\WaiverController::class, 'delete'])
                 ->middleware('scopes:waivers:delete')
                 ->name('delete');
+            Route::post('/duplicate', [App\Http\Controllers\WaiverController::class, 'duplicate'])
+                ->middleware('scopes:waivers:write')
+                ->name('duplicate');
 
             /**
              * Texts

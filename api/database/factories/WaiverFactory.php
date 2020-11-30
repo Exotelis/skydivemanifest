@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * @package Database\Factories
  *
  * @method Factory hasTexts($int)
+ * @method Factory hasUnassignedWaivers($int)
  */
 class WaiverFactory extends Factory
 {

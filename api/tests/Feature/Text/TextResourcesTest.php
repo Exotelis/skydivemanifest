@@ -38,7 +38,7 @@ class TextResourcesTest extends TestCase
         // Texts - with model waiver as relation!!!
         $this->texts = Text::factory()
             ->count(4)
-            ->for(Waiver::factory(), 'textable')
+            ->for(Waiver::factory()->isNotActive(), 'textable')
             ->state(new Sequence(
                 ['language_code' => 'en', 'position' => 1],
                 ['language_code' => 'en', 'position' => 2],
@@ -186,7 +186,7 @@ class TextResourcesTest extends TestCase
         // Not found - text
         $this->checkNotFound($this->resource . '/9999', 'delete');
 
-        // Not found - maintenance of different aircraft
+        // Not found - texts of different waiver
         $text = Text::factory()->for(Waiver::factory(), 'textable')->create();
         $this->checkNotFound($this->resource . '/' . $text->id, 'delete');
 
@@ -307,7 +307,7 @@ class TextResourcesTest extends TestCase
         // Not found - text
         $this->checkNotFound($this->resource . '/9999', 'put');
 
-        // Not found - maintenance of different aircraft
+        // Not found - texts of different waiver
         $text = Text::factory()->for(Waiver::factory(), 'textable')->create();
         $this->checkNotFound($this->resource . '/' . $text->id, 'put');
 
@@ -354,5 +354,28 @@ class TextResourcesTest extends TestCase
 
             $this->assertDatabaseHas('texts', ['id' => $text->id, 'position' => $text->position]);
         }
+    }
+
+    /**
+     * Test if no changes can be made when the parent model is_active
+     *
+     * @covers \App\Http\Controllers\TextController
+     * @return void
+     */
+    public function testProtectFromChanges()
+    {
+        // Create active waiver
+        $waiver = Waiver::factory()->isActive()->hasTexts(3)->create();
+
+        $resource = self::API_URL . 'waivers/' . $waiver->id . '/texts/' . $waiver->texts->first()->id;
+
+        // Sign in as admin
+        $this->actingAs($this->admin);
+
+        // Bad Request
+        $response = $this->deleteJson($resource);
+        $response->assertStatus(400)
+            ->assertJson(['message' => 'The element, you want to add the text to, is active. Active elements cannot ' .
+                'be changed. Please deactivate the element first.']);
     }
 }

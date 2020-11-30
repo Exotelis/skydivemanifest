@@ -8,6 +8,7 @@ use App\Http\Requests\Text\UpdateRequest;
 use App\Models\Text;
 use App\Models\Waiver;
 use App\Traits\Paginate;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -46,11 +47,13 @@ class TextController extends Controller
      * Create a new text for a related model.
      *
      * @param CreateRequest $request
-     * @param Waiver        $model
+     * @param Model|Waiver  $model
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(CreateRequest $request, $model)
+    public function create(CreateRequest $request, Model $model)
     {
+        $this->protectFromChanges($model);
+
         $input = $request->only(['language_code', 'position', 'text', 'title']);
         $text = null;
 
@@ -92,6 +95,8 @@ class TextController extends Controller
      */
     public function delete(Request $request, $model, Text $text)
     {
+        $this->protectFromChanges($model);
+
         try {
             DB::beginTransaction();
 
@@ -121,6 +126,8 @@ class TextController extends Controller
      */
     public function deleteBulk(IntIdRequest $request, $model)
     {
+        $this->protectFromChanges($model);
+
         $input = $request->only(['ids']);
         $count = 0;
 
@@ -159,6 +166,8 @@ class TextController extends Controller
      */
     public function update(UpdateRequest $request, $model, Text $text)
     {
+        $this->protectFromChanges($model);
+
         $input = $request->only(['position', 'text', 'title']);
 
         try {
@@ -227,5 +236,20 @@ class TextController extends Controller
     protected function logReposition()
     {
         Log::info("[Text] The 'position' attribute of affected rows have been updated.");
+    }
+
+    /**
+     * Check if the related model has an is_active attribute. If it has one and it's active, abort!
+     *
+     * @param Model $relatedModel
+     */
+    protected function protectFromChanges(Model $relatedModel) {
+        if (! \array_key_exists('is_active', $relatedModel->getAttributes())) {
+            return;
+        }
+
+        if ($relatedModel->is_active) {
+            abort(400, __('error.is_active_cannot_be_changed'));
+        }
     }
 }

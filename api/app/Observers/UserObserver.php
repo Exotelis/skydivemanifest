@@ -135,7 +135,9 @@ class UserObserver extends BaseObserver
     {
         // Delete related models as well
         Address::destroy($user->addresses->pluck('id')); // Delete related addresses
-        $user->qualifications()->detach($user->id); // Detach deleted user from all qualifications.
+        // Detach deleted user from all qualifications.
+        $user->qualifications()->detach($user->qualifications->pluck('slug')->toArray());
+        $user->waivers()->detach($user->waivers->pluck('id')->toArray()); // Detach all signed waivers.
 
         Log::info("[User] '{$user->logString()}' has been deleted permanently by '{$this->executedBy}'");
 

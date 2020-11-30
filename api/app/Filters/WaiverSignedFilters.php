@@ -19,7 +19,8 @@ class WaiverSignedFilters
     public static function filters()
     {
         return [
-            //
+            AllowedFilter::exact('id'),
+            AllowedFilter::partial('title'),
         ];
     }
 
@@ -31,7 +32,8 @@ class WaiverSignedFilters
     public static function sorting()
     {
         return [
-            //
+            'id',
+            'title',
         ];
     }
 }

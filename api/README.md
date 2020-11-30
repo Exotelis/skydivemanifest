@@ -3,6 +3,8 @@ Welcome to the skydivemanifest api bundle. You can follow the documentation for 
 use it in production.
 
 ## Table of contents
+- [Features](#features)
+  +[Waivers](#waivers)
 - [Project setup](#project-setup)
   + [Install the dependencies](#install-the-dependencies)
   + [Create an .env file and change settings](#create-an-env-file-and-change-settings)
@@ -28,6 +30,22 @@ use it in production.
   + [OAuth client credentials](#oauth-client-credentials)
   + [Create a migration](#create-a-migration)
   + [Create a seeder](#create-a-seeder)
+
+## Features
+
+### Waivers
+The waivers (e-waivers) should reduce the paper consumption of your dropzone and therefore the costs. It's possible to
+create multiple waivers. Each waiver can be activated. Once a waiver is active, it can be signed by any user and even by
+guests. A user can sign the waiver directly via the api or via any admin interface that supports this feature. The
+other way to sign a waiver is a web endpoint that can be accessed without any permissions. The web endpoint is provided
+under `<your-url>/<language-code/e-waivers/` (`https://example.com/en/e-waivers/`). To sign the waiver via the web
+endpoint, the user has to provide a ticket number or can sign it by entering an email address as well as the first and
+last name. The api will try find a user with the same information. If a can be found, the signature will directly
+assigned to this user. If no user can be found, the signature will be stored in a list with unassigned waivers. An
+administrator could manually assign the waiver to an existing user, or create a new user and assign it afterwards. Once
+a waiver is active, its content can no longer be updated or changed. This also means, that you cannot add new paragraphs
+or remove some. This guarantees, that signed waivers cannot be changed after signing them. If you want to make changes
+to an active waiver you have to deactivate it, but this will remove all signatures of this specific waiver.
 
 ## Project setup
 Requirements:
@@ -186,6 +204,7 @@ If you don't have the permissions to define environment variables, just add the 
 #!/usr/bin/env php
 <?php
 
+// Add this line
 putenv('APP_RUNNING_IN_CONSOLE=TRUE');
 ```
 If this doesn't fix the problem, please get in contact with us on

@@ -34,6 +34,7 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
 
         $this->configureRateLimiting();
+        $this->modelBindings();
 
         $this->routes(function () {
             Route::prefix('api/' . apiVersion())
@@ -44,11 +45,6 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
-
-        /**
-         * Bin models.
-         */
-        $this->modelBindings();
     }
 
     /**
@@ -88,7 +84,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('address', function ($address, $route) {
             return $route->user->addresses()->findOrFail($address);
         });
-        Route::bind('addressMe', function ($address, $route) {
+        Route::bind('addressMe', function ($address) {
             return $this->getUser()->addresses()->findOrFail($address);
         });
         Route::bind('aircraft', function ($registration) {
@@ -104,11 +100,21 @@ class RouteServiceProvider extends ServiceProvider
             return $route->country->regions()->findOrFail($region);
         });
         Route::model('role', \App\Models\Role::class);
+        Route::model('unassignedWaiver', \App\Models\UnassignedWaiver::class);
         Route::model('user', \App\Models\User::class);
-        Route::bind('userDeleted', function ($user, $route) {
+        Route::bind('userDeleted', function ($user) {
             return \App\Models\User::withTrashed()->findOrFail($user);
         });
         Route::model('waiver', \App\Models\Waiver::class);
+        Route::bind('waiverActive', function ($waiver) {
+            return \App\Models\Waiver::whereIsActive(true)->findOrFail($waiver);
+        });
+        Route::bind('waiverMeSignature', function ($waiver) {
+            return $this->getUser()->waivers()->withPivot(['signature'])->findOrFail($waiver);
+        });
+        Route::bind('waiverSignature', function ($waiver, $route) {
+            return $route->user->waivers()->withPivot(['signature'])->findOrFail($waiver);
+        });
         Route::bind('waiverText', function ($text, $route) {
             return $route->waiver->texts()->findOrFail($text);
         });

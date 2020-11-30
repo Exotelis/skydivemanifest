@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/{any}', function () {
-    return view()->first(['spa', 'welcome']);
-})->where('any', '^(?!api)(?!mail).*$');
-
 // Render Mail
 /*
 Route::get('/mail', function () {
@@ -28,3 +24,27 @@ Route::get('/mail', function () {
     return (new App\Mail\SoftDeleteUser($user, $parameter1))->locale($locale);
 });
 */
+
+// Automatic redirect
+// Route::redirect('/', '/en');
+
+Route::prefix('{language}')->where(['language' => \implode('|', validLocales())])->group(function () {
+    /**
+     * Waivers
+     */
+    Route::name('e-waivers.')->prefix('e-waivers/{waiverID?}')->group(function () {
+        Route::get('/', [App\Http\Controllers\WaiverController::class, 'eWaiversGet'])
+            ->where(['waiverID' => '[0-9]+'])
+            ->name('get');
+        Route::post('/sign', [App\Http\Controllers\WaiverController::class, 'eWaiverSign'])
+            ->middleware('throttle:10,1')
+            ->name('sign');
+    });
+});
+
+/**
+ * Render either welcome page or spa
+ */
+Route::get('/{any}', function () {
+    return view()->first(['spa', 'welcome']);
+})->where('any', '.*');

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\Logable;
+use App\Traits\DuplicateWithRelations;
 use App\Traits\ModelDiff;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -20,6 +21,10 @@ use Illuminate\Support\Carbon;
  * @property string $title
  * @property Carbon $updated_at
  * @property-read Collection|Text[] $texts
+ * @property-read Collection|User[] $users
+ * @property-read int|null $users_count
+ * @property-read Collection|UnassignedWaiver[] $unassignedWaivers
+ * @property-read int|null $unassignedWaivers_count
  * @method static Builder|Waiver newModelQuery()
  * @method static Builder|Waiver newQuery()
  * @method static Builder|Waiver query()
@@ -32,8 +37,7 @@ use Illuminate\Support\Carbon;
  */
 class Waiver extends Model implements Logable
 {
-    use HasFactory, ModelDiff;
-
+    use DuplicateWithRelations, HasFactory, ModelDiff;
 
     /**
      * The model's default values for attributes.
@@ -78,6 +82,28 @@ class Waiver extends Model implements Logable
     public function texts()
     {
         return $this->morphMany('App\Models\Text', 'textable');
+    }
+
+    /**
+     * Get the unassigned waivers for the waiver.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function unassignedWaivers()
+    {
+        return $this->hasMany('App\Models\UnassignedWaiver');
+    }
+
+    /**
+     * Get all users that signed this waiver.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users()
+    {
+        return $this->belongsToMany('App\Models\User')
+            ->as('signature')
+            ->withTimestamps();
     }
 
     /**

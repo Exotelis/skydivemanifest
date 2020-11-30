@@ -169,7 +169,7 @@ class UserController extends Controller
      * @param User    $user
      * @return \Illuminate\Http\JsonResponse
      */
-    public function qualificationsGet(Request $request, User $user)
+    public function qualificationsAll(Request $request, User $user)
     {
         return response()->json($user->qualifications);
     }
@@ -362,9 +362,9 @@ class UserController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function meQualificationsGet(Request $request)
+    public function meQualificationsAll(Request $request)
     {
-        return $this->qualificationsGet($request, $request->user());
+        return $this->qualificationsAll($request, $request->user());
     }
 
     /**

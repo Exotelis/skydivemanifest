@@ -39,14 +39,15 @@ class Kernel extends ConsoleKernel
         $schedule->command('passport:purge')->daily();
 
         /**
-         * Jobs
+         * Jobs (sequentially)
          */
 
         // Aircraft Maintenance
-        $schedule->job((new \App\Jobs\AircraftMaintenance\SendMaintenanceNotification())
-            ->onConnection('sync')
-            ->onQueue('job')
-        )->everyMinute();
+        $schedule->job(
+            (new \App\Jobs\AircraftMaintenance\SendMaintenanceNotification())
+                ->onConnection('sync')
+                ->onQueue('job'))
+            ->everyThirtyMinutes();
 
         // Auth
         $schedule->job((new \App\Jobs\Auth\ClearEmailChanges())->onConnection('sync')->onQueue('job'))
@@ -61,9 +62,18 @@ class Kernel extends ConsoleKernel
             ->daily();
         $schedule->job((new \App\Jobs\User\DeleteInactiveUsers())->onConnection('sync')->onQueue('job'))
             ->daily();
-        $schedule->job((new \App\Jobs\User\DeleteUnverifiedUsers())->onConnection('sync')
-            ->onQueue('job'))->daily();
+        $schedule->job(
+            (new \App\Jobs\User\DeleteUnverifiedUsers())
+                ->onConnection('sync')
+                ->onQueue('job'))
+            ->daily();
 
+        // Waiver
+        $schedule->job(
+            (new \App\Jobs\Waiver\DeleteExpiredWaivers())
+                ->onConnection('sync')
+                ->onQueue('job'))
+            ->daily();
     }
 
     /**

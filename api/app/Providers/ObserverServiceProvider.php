@@ -33,6 +33,7 @@ class ObserverServiceProvider extends ServiceProvider
         \App\Models\Region::observe(\App\Observers\RegionObserver::class);
         \App\Models\Role::observe(\App\Observers\RoleObserver::class);
         \App\Models\Text::observe(\App\Observers\TextObserver::class);
+        \App\Models\UnassignedWaiver::observe(\App\Observers\UnassignedWaiverObserver::class);
         \App\Models\User::observe(\App\Observers\UserObserver::class);
         \App\Models\Waiver::observe(\App\Observers\WaiverObserver::class);
     }
