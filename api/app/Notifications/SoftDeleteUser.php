@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Mail\SoftDeleteUser as Mailable;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
@@ -11,7 +12,7 @@ use Illuminate\Notifications\Notification;
  * Class SoftDeleteUser
  * @package App\Notifications
  */
-class SoftDeleteUser extends Notification implements ShouldQueue
+class SoftDeleteUser extends Notification implements ShouldQueue, ShouldBeEncrypted
 {
     use Queueable;
 

@@ -4,7 +4,7 @@ use it in production.
 
 ## Table of contents
 - [Features](#features)
-  +[Waivers](#waivers)
+  + [Waivers](#waivers)
 - [Project setup](#project-setup)
   + [Install the dependencies](#install-the-dependencies)
   + [Create an .env file and change settings](#create-an-env-file-and-change-settings)
@@ -49,14 +49,14 @@ to an active waiver you have to deactivate it, but this will remove all signatur
 
 ## Project setup
 Requirements:
-- PHP 7.3 or higher
+- PHP 7.3|PHP 8 (or higher)
 - PHP extensions:
   - OpenSSL
   - PDO
   - Mbstring
   - Tokenizer
   - Intl
-- Database management system (MySQl etc.)
+- Database management system (MySQl/MariaDB etc.)
 - Hypertext Transfer Protocol Secure (https)
 - Cronjobs (optional/highly recommended - for queues and task scheduling)
 - Supervisor (optional/recommended - for queues)
@@ -139,7 +139,8 @@ TODO as soon as the first project is in production.
 ### Create a database
 When you've updated all settings in your `.env` file, in particular the database settings, it's time to create a
 database you can work with. Make sure the name of the database is the same as the one in your `.env` file. Also, see the
-[config/database.php](config/database.php) to choose the correct `charset` and `collation`.
+[config/database.php](config/database.php) to choose the correct `charset` and `collation`. The `charset` and
+`collation` defaults are `utf8mb4` and `utf8mb4_unicode_ci`.
 
 ### Running migrations
 Migrations are like version control for your database. They will add the database tables, constraints and so on so
@@ -163,7 +164,7 @@ php artisan migrate:rollback
 php artisan migrate:rollback --step=5
 ```
 If you don't want to define the `countries`, `regions` and `currencies` manually, you might want to run the default
-seeder, which will fill those tables with entries.
+seeder, which will fill those tables with entries. Also the `qualifications` will be added by the default seeder.
 ```
 php artisan db:seed
 ```
@@ -249,6 +250,10 @@ the database for example. It will delete expired or revoked tokens, inactive use
 to make use of the `Task scheduler` add the following line to your cron file:
 ```
 * * * * * cd <path-to-the-api-folder> && php artisan schedule:run >> /dev/null 2>&1
+```
+Note: On local development environments you can also run:
+```
+php artisan schedule:work
 ```
 
 ### Config caching

@@ -3,6 +3,7 @@
 namespace App\Jobs\User;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Log;
  * Class DeleteUnverifiedUsers
  * @package App\Jobs\User
  */
-class DeleteUnverifiedUsers implements ShouldQueue
+class DeleteUnverifiedUsers implements ShouldQueue, ShouldBeEncrypted
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

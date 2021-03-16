@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Mail\CreateUser as Mailable;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
@@ -11,7 +12,7 @@ use Illuminate\Notifications\Notification;
  * Class CreateUser
  * @package App\Notifications
  */
-class CreateUser extends Notification implements ShouldQueue
+class CreateUser extends Notification implements ShouldQueue, ShouldBeEncrypted
 {
     use Queueable;
 
