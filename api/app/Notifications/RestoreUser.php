@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Mail\RestoreUser as Mailable;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
@@ -11,7 +12,7 @@ use Illuminate\Notifications\Notification;
  * Class RestoreUser
  * @package App\Notifications
  */
-class RestoreUser extends Notification implements ShouldQueue
+class RestoreUser extends Notification implements ShouldQueue, ShouldBeEncrypted
 {
     use Queueable;
 

@@ -4,10 +4,11 @@ namespace App\Notifications;
 
 use App\Mail\LockAccount as Mailable;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-class LockAccount extends Notification implements ShouldQueue
+class LockAccount extends Notification implements ShouldQueue, ShouldBeEncrypted
 {
     use Queueable;
 

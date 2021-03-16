@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Mail\EmailVerified as Mailable;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
@@ -11,7 +12,7 @@ use Illuminate\Notifications\Notification;
  * Class EmailVerified
  * @package App\Notifications
  */
-class EmailVerified extends Notification implements ShouldQueue
+class EmailVerified extends Notification implements ShouldQueue, ShouldBeEncrypted
 {
     use Queueable;
 

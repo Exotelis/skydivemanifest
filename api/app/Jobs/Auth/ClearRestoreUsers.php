@@ -4,6 +4,7 @@ namespace App\Jobs\Auth;
 
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Log;
  * Class ClearRestoreUsers
  * @package App\Jobs\Auth
  */
-class ClearRestoreUsers implements ShouldQueue
+class ClearRestoreUsers implements ShouldQueue, ShouldBeEncrypted
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
