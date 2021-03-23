@@ -14,6 +14,7 @@ return [
     'aircraft_already_out_of_service'          => 'The aircraft has been put out of service already.',
     'aircraft_could_not_put_back_into_service' => 'Could not put the aircraft back into service.',
     'aircraft_could_not_put_out_of_service'    => 'Could not put the aircraft out of service.',
+    'aircraft_logbook_item_date_range'         => 'A log book entry already exists in this time range.',
     'aircraft_maintenance_completed'           => 'The maintenance of the aircraft has already been marked as completed.',
     'aircraft_maintenance_completed_update'    => 'The maintenance of the aircraft has been completed, you cannot update this dataset.',
     'aircraft_still_in_service'                => 'The aircraft is still in service.',

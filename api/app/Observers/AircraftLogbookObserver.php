@@ -3,61 +3,36 @@
 namespace App\Observers;
 
 use App\Models\AircraftLogbook;
+use Illuminate\Support\Facades\Log;
 
-class AircraftLogbookObserver
+/**
+ * Class AircraftLogbookObserver
+ * @package App\Observers
+ */
+class AircraftLogbookObserver extends BaseObserver
 {
     /**
      * Handle the AircraftLogbook "created" event.
      *
-     * @param  \App\Models\AircraftLogbook  $aircraftLogbook
+     * @param  AircraftLogbook $aircraftLogbook
      * @return void
      */
-    public function created(AircraftLogbook $aircraftLogbook)
+    public function created(AircraftLogbook $aircraftLogbook): void
     {
-        //
+        Log::info("[Aircraft Logbook] '{$aircraftLogbook->logString()}' has been created by " .
+            "'{$this->executedBy}'");
     }
 
     /**
      * Handle the AircraftLogbook "updated" event.
      *
-     * @param  \App\Models\AircraftLogbook  $aircraftLogbook
+     * @param  AircraftLogbook $aircraftLogbook
      * @return void
      */
-    public function updated(AircraftLogbook $aircraftLogbook)
+    public function updated(AircraftLogbook $aircraftLogbook): void
     {
-        //
-    }
-
-    /**
-     * Handle the AircraftLogbook "deleted" event.
-     *
-     * @param  \App\Models\AircraftLogbook  $aircraftLogbook
-     * @return void
-     */
-    public function deleted(AircraftLogbook $aircraftLogbook)
-    {
-        //
-    }
-
-    /**
-     * Handle the AircraftLogbook "restored" event.
-     *
-     * @param  \App\Models\AircraftLogbook  $aircraftLogbook
-     * @return void
-     */
-    public function restored(AircraftLogbook $aircraftLogbook)
-    {
-        //
-    }
-
-    /**
-     * Handle the AircraftLogbook "force deleted" event.
-     *
-     * @param  \App\Models\AircraftLogbook  $aircraftLogbook
-     * @return void
-     */
-    public function forceDeleted(AircraftLogbook $aircraftLogbook)
-    {
-        //
+        $diff = $aircraftLogbook->getDiff();
+        Log::info("[Aircraft Logbook] '{$aircraftLogbook->logString()}' has been updated by " .
+            "'{$this->executedBy}' ($diff)");
     }
 }

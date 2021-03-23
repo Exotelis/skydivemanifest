@@ -2,84 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AircraftLogbook;
+use App\Http\Requests\AircraftLogbook\UpdateRequest;
+use App\Models\Aircraft;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * Class AircraftLogbookController
+ * @package App\Http\Controllers
+ */
 class AircraftLogbookController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Return the logbook of the aircraft.
      *
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @param  Aircraft $aircraft
+     * @return JsonResponse
      */
-    public function index()
+    public function get(Request $request, Aircraft $aircraft): JsonResponse
     {
-        //
+        return response()->json($aircraft->logbook);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Update the logbook of the aircraft.
      *
-     * @return \Illuminate\Http\Response
+     * @param  UpdateRequest $request
+     * @param  Aircraft      $aircraft
+     * @return JsonResponse
      */
-    public function create()
+    public function update(UpdateRequest $request, Aircraft $aircraft): JsonResponse
     {
-        //
-    }
+        $logbook = $aircraft->logbook;
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        if (! $logbook->update($request->validated())) {
+            abort(500, __('error.500'));
+        }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\AircraftLogbook  $aircraftLogbook
-     * @return \Illuminate\Http\Response
-     */
-    public function show(AircraftLogbook $aircraftLogbook)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\AircraftLogbook  $aircraftLogbook
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(AircraftLogbook $aircraftLogbook)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\AircraftLogbook  $aircraftLogbook
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, AircraftLogbook $aircraftLogbook)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\AircraftLogbook  $aircraftLogbook
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(AircraftLogbook $aircraftLogbook)
-    {
-        //
+        return response()->json($logbook);
     }
 }

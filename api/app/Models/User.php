@@ -222,7 +222,7 @@ class User extends Model implements
     /**
      * Set the birth date and convert it to Carbon.
      *
-     * @param  string  $value
+     * @param  string $value
      * @return void
      */
     public function setDobAttribute($value)

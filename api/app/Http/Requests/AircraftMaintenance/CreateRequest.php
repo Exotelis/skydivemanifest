@@ -16,7 +16,7 @@ class CreateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -26,22 +26,31 @@ class CreateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
-        $flightTime = $this->route('aircraft')->flight_time;
+        $aircraft = $this->route('aircraft');
+        $manufacturingDate = \is_null($aircraft->dom) ?
+            Carbon::minValue()->toDateString() :
+            $aircraft->dom->toDateString();
+        $operationTime = $aircraft->operation_time;
 
-        // If maintenance date is present
+        // If the aircraft has already been maintained - dom (date of maintenance) set
         if (! \is_null($this->dom)) {
             $rules = [
-                'dom'                 => 'required|date|before_or_equal:' . Carbon::now(),
-                'maintenance_at'      => 'required|integer|between:0,' . $flightTime,
+                'dom'                 => [
+                    'required',
+                    'date',
+                    'after_or_equal:' . $manufacturingDate,
+                    'before_or_equal:' . Carbon::now(),
+                ],
+                'maintenance_at'      => 'required|integer|between:0,' . $operationTime,
                 'notify_at'           => 'sometimes|not_present',
                 'repetition_interval' => 'sometimes|not_present',
             ];
         } else {
             $rules = [
-                'maintenance_at'      => 'required|integer|gt:' . $flightTime . '|max:4294967295',
-                'notify_at'           => 'sometimes|bail|integer|gt:' . $flightTime . '|lte:maintenance_at|nullable',
+                'maintenance_at'      => 'required|integer|gt:' . $operationTime . '|max:4294967295',
+                'notify_at'           => 'sometimes|bail|integer|gt:' . $operationTime . '|lte:maintenance_at|nullable',
                 'repetition_interval' => 'sometimes|integer|min:60|max:4294967295|nullable',
             ];
         }
@@ -57,7 +66,7 @@ class CreateRequest extends FormRequest
      *
      * @return array
      */
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'dom' => __('validation.attributes.maintenance_date'),

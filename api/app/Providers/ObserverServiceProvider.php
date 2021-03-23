@@ -26,6 +26,8 @@ class ObserverServiceProvider extends ServiceProvider
     {
         \App\Models\Address::observe(\App\Observers\AddressObserver::class);
         \App\Models\Aircraft::observe(\App\Observers\AircraftObserver::class);
+        \App\Models\AircraftLogbook::observe(\App\Observers\AircraftLogbookObserver::class);
+        \App\Models\AircraftLogbookItem::observe(\App\Observers\AircraftLogbookItemObserver::class);
         \App\Models\AircraftMaintenance::observe(\App\Observers\AircraftMaintenanceObserver::class);
         \App\Models\Country::observe(\App\Observers\CountryObserver::class);
         \App\Models\Currency::observe(\App\Observers\CurrencyObserver::class);

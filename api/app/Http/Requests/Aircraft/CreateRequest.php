@@ -16,7 +16,7 @@ class CreateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -26,12 +26,11 @@ class CreateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'registration' => 'required|alpha_dash|unique:App\Models\Aircraft',
             'dom'          => 'sometimes|date|before_or_equal:' . Carbon::now() . '|nullable',
-            'flight_time'  => 'required|integer|min:0|max:4294967295',
             'model'        => 'required|string|max:255',
             'seats'        => 'required|integer|min:1|max:4294967295',
         ];

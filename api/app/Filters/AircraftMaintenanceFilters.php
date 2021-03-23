@@ -16,7 +16,7 @@ class AircraftMaintenanceFilters
      *
      * @return array
      */
-    public static function filters()
+    public static function filters(): array
     {
         return [
             AllowedFilter::scope('dom'),
@@ -40,7 +40,7 @@ class AircraftMaintenanceFilters
      *
      * @return array
      */
-    public static function sorting()
+    public static function sorting(): array
     {
         return [
             'dom',

@@ -3,6 +3,7 @@
 namespace Tests\Feature\AircraftMaintenance;
 
 use App\Models\Aircraft;
+use App\Models\AircraftLogbook;
 use App\Models\AircraftMaintenance;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -134,36 +135,32 @@ class AircraftMaintenanceResourcesTest extends TestCase
         $this->checkNotFound($this->resource . '/' . $maintenance->id . '/complete', 'put');
 
         // Invalid input
-        $flightTime = $this->maintenance->first()->aircraft->flight_time;
+        $aircraftDom = $this->maintenance->first()->aircraft->dom ?? Carbon::minValue()->toDateString();
         $this->checkInvalidInput($resource, 'put', [
             'dom'         => 'invalid',
-            'flight_time' => 0,
         ], [
-            'dom'            => ['The Maintenance date is not a valid date.'],
-            'flight_time'    => ['The Flight Time must be greater than or equal ' . $flightTime . '.'],
+            'dom'            => [
+                'The Maintenance date is not a valid date.',
+                "The Maintenance date must be a date after or equal to $aircraftDom."
+            ],
             'maintenance_at' => ['The Maintenance at field is required.'],
         ]);
 
         // Success
         $date = Carbon::now()->subDay();
-        $flightTime = $this->maintenance->first()->aircraft->flight_time + 100;
+        $maintenanceAt = $this->maintenance->first()->aircraft->operation_time;
         $response = $this->putJson($resource, [
             'dom'            => $date,
-            'flight_time'    => $flightTime,
-            'maintenance_at' => $flightTime,
+            'maintenance_at' => $maintenanceAt,
         ]);
         $response->assertStatus(200)
-            ->assertJsonFragment(['dom' => $date->toDateString(), 'flight_time' => $flightTime]);
+            ->assertJsonFragment(['dom' => $date->toDateString(), 'maintenance_at' => $maintenanceAt]);
 
         // Check database
-        $this->assertDatabaseHas('aircraft', [
-            'registration' => $this->maintenance->first()->aircraft->registration,
-            'flight_time'  => $flightTime,
-        ]);
         $this->assertDatabaseHas('aircraft_maintenance', [
             'id'             => $this->maintenance->first()->id,
             'dom'            => $date->toDateString(),
-            'maintenance_at' => $flightTime,
+            'maintenance_at' => $maintenanceAt,
             'notify_at'      => null,
         ]);
     }
@@ -181,9 +178,9 @@ class AircraftMaintenanceResourcesTest extends TestCase
         // Sign in as admin
         $this->actingAs($this->admin);
 
-        // Success - flight_time similar new maintenance_at && notify_at
+        // Success - maintenance_at is the current operation_time && notify_at is not null
         $mt = AircraftMaintenance::factory()
-            ->for(Aircraft::factory()->highFlightTime())
+            ->for(Aircraft::factory()->has(AircraftLogbook::factory()->highTransfer(), 'logbook'))
             ->notMaintained()
             ->repetitive()
             ->create();
@@ -192,18 +189,17 @@ class AircraftMaintenanceResourcesTest extends TestCase
 
         $response = $this->putJson($resource, [
             'dom'            => $date,
-            'flight_time'    => $mt->aircraft->flight_time + 5,
-            'maintenance_at' => $mt->aircraft->flight_time
+            'maintenance_at' => $mt->aircraft->operation_time,
         ]);
         $response->assertStatus(200);
         $this->assertDatabaseHas('aircraft_maintenance', [
-            'maintenance_at' => $mt->aircraft->flight_time + $mt->repetition_interval,
-            'notify_at'      => $mt->aircraft->flight_time + $mt->repetition_interval - $notifyDiff,
+            'maintenance_at' => $mt->aircraft->operation_time + $mt->repetition_interval,
+            'notify_at'      => $mt->aircraft->operation_time + $mt->repetition_interval - $notifyDiff,
         ]);
 
-        // Success - flight_time much greater than new maintenance_at && notify_at
+        // Success - operation_time much greater than maintenance_at && notify_at is not null
         $mt = AircraftMaintenance::factory()
-            ->for(Aircraft::factory()->highFlightTime())
+            ->for(Aircraft::factory()->has(AircraftLogbook::factory()->highTransfer(), 'logbook'))
             ->notMaintained()
             ->repetitive()
             ->create();
@@ -212,52 +208,11 @@ class AircraftMaintenanceResourcesTest extends TestCase
 
         $response = $this->putJson($resource, [
             'dom'            => $date,
-            'flight_time'    => $mt->aircraft->flight_time + $mt->repetition_interval + 5,
-            'maintenance_at' => $mt->aircraft->flight_time
+            'maintenance_at' => $mt->aircraft->operation_time - $mt->repetition_interval - 100,
         ]);
         $response->assertStatus(200);
         $this->assertDatabaseHas('aircraft_maintenance', [
-            'maintenance_at' => $mt->aircraft->flight_time + (2 * $mt->repetition_interval) + 5,
-            'notify_at'      => $mt->aircraft->flight_time + (2 * $mt->repetition_interval) + 5 - $notifyDiff,
-        ]);
-
-        // Success - flight_time similar new maintenance_at && no notify_at
-        $mt = AircraftMaintenance::factory()
-            ->for(Aircraft::factory()->highFlightTime())
-            ->noNotification()
-            ->notMaintained()
-            ->repetitive()
-            ->create();
-        $resource = self::API_URL . 'aircraft/' . $mt->aircraft->registration . '/maintenance/' . $mt->id . '/complete';
-
-        $response = $this->putJson($resource, [
-            'dom'            => $date,
-            'flight_time'    => $mt->aircraft->flight_time + 5,
-            'maintenance_at' => $mt->aircraft->flight_time
-        ]);
-        $response->assertStatus(200);
-        $this->assertDatabaseHas('aircraft_maintenance', [
-            'maintenance_at' => $mt->aircraft->flight_time + $mt->repetition_interval,
-            'notify_at'      => null,
-        ]);
-
-        // Success - flight_time much greater than new maintenance_at && no notify_at
-        $mt = AircraftMaintenance::factory()
-            ->for(Aircraft::factory()->highFlightTime())
-            ->noNotification()
-            ->notMaintained()
-            ->repetitive()
-            ->create();
-        $resource = self::API_URL . 'aircraft/' . $mt->aircraft->registration . '/maintenance/' . $mt->id . '/complete';
-
-        $response = $this->putJson($resource, [
-            'dom'            => $date,
-            'flight_time'    => $mt->aircraft->flight_time + $mt->repetition_interval + 5,
-            'maintenance_at' => $mt->aircraft->flight_time
-        ]);
-        $response->assertStatus(200);
-        $this->assertDatabaseHas('aircraft_maintenance', [
-            'maintenance_at' => $mt->aircraft->flight_time + (2 * $mt->repetition_interval) + 5,
+            'maintenance_at' => $mt->aircraft->operation_time - 100,
             'notify_at'      => null,
         ]);
     }
@@ -270,21 +225,27 @@ class AircraftMaintenanceResourcesTest extends TestCase
      */
     public function testCreate()
     {
-        $flightTime = $this->maintenance->first()->aircraft->flight_time;
+        $operationTime = $this->maintenance->first()->aircraft->operation_time;
         $json = [
-            'maintenance_at'      => $flightTime + 5000,
+            'maintenance_at'      => $operationTime + 5000,
             'name'                => $this->faker->word,
-            'notify_at'           => $flightTime + 5000 - 60,
+            'notify_at'           => $operationTime + 5000 - 60,
             'repetition_interval' => 60,
         ];
+        $jsonDom = [
+            'dom'                 => Carbon::now()->toDateString(),
+            'maintenance_at'      => 0,
+            'name'                => $this->faker->word,
+            'notes'               => 'First maintenance'
+        ];
         $invalidMaintenance = [
-            'maintenance_at'      => $flightTime,
+            'maintenance_at'      => $operationTime,
             'notify_at'           => 0,
             'repetition_interval' => 10,
         ];
         $invalidCompletedMaintenance = [
             'dom'                 => Carbon::now()->subDay(),
-            'maintenance_at'      => $flightTime + 100,
+            'maintenance_at'      => $operationTime + 100,
             'notify_at'           => 5940,
             'repetition_interval' => 10,
         ];
@@ -303,14 +264,14 @@ class AircraftMaintenanceResourcesTest extends TestCase
 
         // Invalid input - without dom
         $this->checkInvalidInput($this->resource, 'post', $invalidMaintenance, [
-            'maintenance_at'      => ['The Maintenance at must be greater than ' . $flightTime . '.'],
-            'notify_at'           => ['The Notify at must be greater than ' . $flightTime . '.'],
+            'maintenance_at'      => ['The Maintenance at must be greater than ' . $operationTime . '.'],
+            'notify_at'           => ['The Notify at must be greater than ' . $operationTime . '.'],
             'repetition_interval' => ['The Repetition interval must be at least 60.'],
         ]);
 
         // Invalid input - with dom
         $this->checkInvalidInput($this->resource, 'post', $invalidCompletedMaintenance, [
-            'maintenance_at'      => ['The Maintenance at must be between 0 and ' . $flightTime  . '.'],
+            'maintenance_at'      => ['The Maintenance at must be between 0 and ' . $operationTime  . '.'],
             'notify_at'           => ['The Notify at field must not be present.'],
             'repetition_interval' => ['The Repetition interval field must not be present.'],
         ]);
@@ -318,9 +279,12 @@ class AircraftMaintenanceResourcesTest extends TestCase
         // Success
         $response = $this->postJson($this->resource, $json);
         $response->assertStatus(201)->assertJson(['message' => 'The maintenance has been created successfully.']);
+        $response = $this->postJson($this->resource, $jsonDom);
+        $response->assertStatus(201)->assertJson(['message' => 'The maintenance has been created successfully.']);
 
         // Check database
         $this->assertDatabaseHas('aircraft_maintenance', $json);
+        $this->assertDatabaseHas('aircraft_maintenance', $jsonDom);
     }
 
     /**
@@ -477,14 +441,14 @@ class AircraftMaintenanceResourcesTest extends TestCase
         $this->checkNotFound($this->resource . '/' . $maintenance->id, 'put');
 
         // Invalid input
-        $flightTime = $this->maintenance->first()->aircraft->flight_time;
+        $operationTime = $this->maintenance->first()->aircraft->operation_time;
         $this->checkInvalidInput($resource, 'put', [
             'maintenance_at'      => 5000000000,
-            'notify_at'           => $flightTime,
+            'notify_at'           => $operationTime,
             'repetition_interval' => 'invalid',
         ], [
             'maintenance_at'      => ['The Maintenance at may not be greater than 4294967295.'],
-            'notify_at'           => ['The Notify at must be greater than ' . $flightTime . '.'],
+            'notify_at'           => ['The Notify at must be greater than ' . $operationTime . '.'],
             'repetition_interval' => [
                 'The Repetition interval must be an integer.',
                 'The Repetition interval must be at least 60.',
@@ -492,7 +456,7 @@ class AircraftMaintenanceResourcesTest extends TestCase
         ]);
 
         // Success
-        $maintenanceAt = $this->maintenance->first()->aircraft->flight_time + 100;
+        $maintenanceAt = $this->maintenance->first()->aircraft->operation_time + 100;
         $notifyAt = $maintenanceAt - 20;
         $response = $this->putJson($resource, ['maintenance_at' => $maintenanceAt, 'notify_at' => $notifyAt]);
         $response->assertStatus(200)

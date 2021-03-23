@@ -28,7 +28,7 @@ class AssignRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|exists:App\Models\User,id'
+            'user_id' => 'required|integer|min:0|exists:App\Models\User,id'
         ];
     }
 }

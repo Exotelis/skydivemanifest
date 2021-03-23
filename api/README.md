@@ -342,7 +342,9 @@ Copy and paste the output of `phpinfo()` to the [xdebug wizard](https://xdebug.o
 
 To create the coverage report, execute the test command like:
 ```
-php artisan test --coverage-html report/
+XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html report/
+or
+XDEBUG_MODE=coverage php artisan test --coverage-html report/
 ```
 
 ### API documentation

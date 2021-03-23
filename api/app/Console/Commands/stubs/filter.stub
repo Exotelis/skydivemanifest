@@ -16,7 +16,7 @@ class DummyClass
      *
      * @return array
      */
-    public static function filters()
+    public static function filters(): array
     {
         return [
             //
@@ -28,7 +28,7 @@ class DummyClass
      *
      * @return array
      */
-    public static function sorting()
+    public static function sorting(): array
     {
         return [
             //

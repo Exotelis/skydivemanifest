@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Contracts\Logable;
 use App\Traits\ModelDiff;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -27,21 +28,21 @@ use Illuminate\Support\Carbon;
  * @property-read string $maintenance_at_hours
  * @property-read string $notification_interval_hours
  * @property-read string $notify_at_hours
- * @method static \Illuminate\Database\Eloquent\Builder|AircraftMaintenance newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|AircraftMaintenance newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|AircraftMaintenance query()
- * @method static \Illuminate\Database\Eloquent\Builder|AircraftMaintenance whereAircraftRegistration($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AircraftMaintenance whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AircraftMaintenance whereDom($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AircraftMaintenance whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AircraftMaintenance whereMaintenanceAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AircraftMaintenance whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AircraftMaintenance whereNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AircraftMaintenance whereNotified($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AircraftMaintenance whereNotifyAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AircraftMaintenance whereRepetitionInterval($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AircraftMaintenance whereUpdatedAt($value)
- * @mixin \Illuminate\Database\Eloquent\Builder
+ * @method static Builder|AircraftMaintenance newModelQuery()
+ * @method static Builder|AircraftMaintenance newQuery()
+ * @method static Builder|AircraftMaintenance query()
+ * @method static Builder|AircraftMaintenance whereAircraftRegistration($value)
+ * @method static Builder|AircraftMaintenance whereCreatedAt($value)
+ * @method static Builder|AircraftMaintenance whereDom($value)
+ * @method static Builder|AircraftMaintenance whereId($value)
+ * @method static Builder|AircraftMaintenance whereMaintenanceAt($value)
+ * @method static Builder|AircraftMaintenance whereName($value)
+ * @method static Builder|AircraftMaintenance whereNotes($value)
+ * @method static Builder|AircraftMaintenance whereNotified($value)
+ * @method static Builder|AircraftMaintenance whereNotifyAt($value)
+ * @method static Builder|AircraftMaintenance whereRepetitionInterval($value)
+ * @method static Builder|AircraftMaintenance whereUpdatedAt($value)
+ * @mixin Builder
  */
 class AircraftMaintenance extends Model implements Logable
 {
@@ -91,6 +92,7 @@ class AircraftMaintenance extends Model implements Logable
      * @var array
      */
     protected $fillable = [
+        'dom',
         'maintenance_at',
         'name',
         'notes',
@@ -127,7 +129,7 @@ class AircraftMaintenance extends Model implements Logable
      *
      * @return string
      */
-    public function getMaintenanceAtHoursAttribute()
+    public function getMaintenanceAtHoursAttribute(): string
     {
         $hours = \floor($this->maintenance_at / 60);
         $minutes = $this->maintenance_at % 60;
@@ -140,7 +142,7 @@ class AircraftMaintenance extends Model implements Logable
      *
      * @return string
      */
-    public function getRepetitionIntervalHoursAttribute()
+    public function getRepetitionIntervalHoursAttribute(): string
     {
         $hours = \floor($this->repetition_interval / 60);
         $minutes = $this->repetition_interval % 60;
@@ -153,7 +155,7 @@ class AircraftMaintenance extends Model implements Logable
      *
      * @return string
      */
-    public function getNotifyAtHoursAttribute()
+    public function getNotifyAtHoursAttribute(): string
     {
         $hours = \floor($this->notify_at / 60);
         $minutes = $this->notify_at % 60;
@@ -163,8 +165,10 @@ class AircraftMaintenance extends Model implements Logable
 
     /**
      * Get the aircraft of the maintenance.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function aircraft()
+    public function aircraft(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo('App\Models\Aircraft')->withTrashed();
     }
@@ -174,7 +178,7 @@ class AircraftMaintenance extends Model implements Logable
      *
      * @return bool
      */
-    public function isCompleted()
+    public function isCompleted(): bool
     {
         return ! \is_null($this->dom);
     }
@@ -182,47 +186,47 @@ class AircraftMaintenance extends Model implements Logable
     /**
      * Scope a query to filter for the dom.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  string $dom
-     * @return \Illuminate\Database\Eloquent\Builder|AircraftMaintenance
+     * @param  Builder $query
+     * @param  string  $date
+     * @return Builder|AircraftMaintenance
      */
-    public function scopeDom($query, $dom)
+    public function scopeDom(Builder $query, string $date)
     {
-        return $query->where('dom', '=', Carbon::make($dom)->toDateString());
+        return $query->where('dom', '=', Carbon::make($date)->toDateString());
     }
 
     /**
      * Scope a query to filter for the maintained after date.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  string $dom
-     * @return \Illuminate\Database\Eloquent\Builder|AircraftMaintenance
+     * @param  Builder $query
+     * @param  string  $date
+     * @return Builder|AircraftMaintenance
      */
-    public function scopeDomAfter($query, $dom)
+    public function scopeDomAfter(Builder $query, string $date)
     {
-        return $query->where('dom', '>=', Carbon::parse($dom));
+        return $query->where('dom', '>=', Carbon::parse($date));
     }
 
     /**
      * Scope a query to filter for the maintained before date.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  string $dom
-     * @return \Illuminate\Database\Eloquent\Builder|AircraftMaintenance
+     * @param  Builder $query
+     * @param  string  $date
+     * @return Builder|AircraftMaintenance
      */
-    public function scopeDomBefore($query, $dom)
+    public function scopeDomBefore(Builder $query, string $date)
     {
-        return $query->where('dom', '<=', Carbon::parse($dom));
+        return $query->where('dom', '<=', Carbon::parse($date));
     }
 
     /**
      * Scope a query to filter aircraft maintenance(s) with or with less than x minutes in maintenance_at.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  string $maintenanceAt
-     * @return \Illuminate\Database\Eloquent\Builder|AircraftMaintenance
+     * @param  Builder $query
+     * @param  string  $maintenanceAt
+     * @return Builder|AircraftMaintenance
      */
-    public function scopeMaintenanceAtLessThan($query, $maintenanceAt)
+    public function scopeMaintenanceAtLessThan(Builder $query, string $maintenanceAt)
     {
         return $query->where('maintenance_at', '<=', $maintenanceAt);
     }
@@ -230,11 +234,11 @@ class AircraftMaintenance extends Model implements Logable
     /**
      * Scope a query to filter aircraft maintenance(s) with or with more than x minutes in maintenance_at.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  string $maintenanceAt
-     * @return \Illuminate\Database\Eloquent\Builder|AircraftMaintenance
+     * @param  Builder $query
+     * @param  string  $maintenanceAt
+     * @return Builder|AircraftMaintenance
      */
-    public function scopeMaintenanceAtMoreThan($query, $maintenanceAt)
+    public function scopeMaintenanceAtMoreThan(Builder $query, string $maintenanceAt)
     {
         return $query->where('maintenance_at', '>=', $maintenanceAt);
     }
@@ -242,11 +246,11 @@ class AircraftMaintenance extends Model implements Logable
     /**
      * Scope a query to filter aircraft maintenance(s) with or with less than x minutes in notify_at.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  string $notifyAt
-     * @return \Illuminate\Database\Eloquent\Builder|AircraftMaintenance
+     * @param  Builder $query
+     * @param  string  $notifyAt
+     * @return Builder|AircraftMaintenance
      */
-    public function scopeNotifyAtLessThan($query, $notifyAt)
+    public function scopeNotifyAtLessThan(Builder $query, string $notifyAt)
     {
         return $query->where('notify_at', '<=', $notifyAt);
     }
@@ -254,11 +258,11 @@ class AircraftMaintenance extends Model implements Logable
     /**
      * Scope a query to filter aircraft maintenance(s) with or with more than x minutes in notify_at.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  string $notifyAt
-     * @return \Illuminate\Database\Eloquent\Builder|AircraftMaintenance
+     * @param  Builder $query
+     * @param  string  $notifyAt
+     * @return Builder|AircraftMaintenance
      */
-    public function scopeNotifyAtMoreThan($query, $notifyAt)
+    public function scopeNotifyAtMoreThan(Builder $query, string $notifyAt)
     {
         return $query->where('notify_at', '>=', $notifyAt);
     }
@@ -266,10 +270,10 @@ class AircraftMaintenance extends Model implements Logable
     /**
      * Set the date of maintenance and convert it to Carbon.
      *
-     * @param  string  $value
+     * @param  string|null $value
      * @return void
      */
-    public function setDomAttribute($value)
+    public function setDomAttribute(?string $value)
     {
         if (\is_null($value)) {
             $this->attributes['dom'] = null;
@@ -283,7 +287,7 @@ class AircraftMaintenance extends Model implements Logable
      *
      * @return string
      */
-    public function logString()
+    public function logString(): string
     {
         return "{$this->id}";
     }

@@ -4,6 +4,10 @@ namespace App\Http\Requests\AircraftLogbook;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class UpdateRequest
+ * @package App\Http\Requests\AircraftLogbook
+ */
 class UpdateRequest extends FormRequest
 {
     /**
@@ -11,9 +15,9 @@ class UpdateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,10 +25,10 @@ class UpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'transfer' => 'sometimes|required|integer|min:0|max:4294967295',
         ];
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Filters;
 
 use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\AllowedSort;
 
 /**
  * Class AircraftFilters
@@ -16,7 +15,7 @@ class AircraftFilters
      *
      * @return array
      */
-    public static function filters()
+    public static function filters(): array
     {
         return [
             AllowedFilter::scope('dom'),
@@ -28,9 +27,6 @@ class AircraftFilters
             AllowedFilter::exact('seats'),
             AllowedFilter::scope('seats_elt', 'seats_less_than'),
             AllowedFilter::scope('seats_emt', 'seats_more_than'),
-            AllowedFilter::exact('time', 'flight_time'),
-            AllowedFilter::scope('time_elt', 'time_less_than'),
-            AllowedFilter::scope('time_emt', 'time_more_than'),
         ];
     }
 
@@ -39,14 +35,13 @@ class AircraftFilters
      *
      * @return array
      */
-    public static function sorting()
+    public static function sorting(): array
     {
         return [
             'dom',
             'model',
             'registration',
             'seats',
-            AllowedSort::field('time', 'flight_time'),
         ];
     }
 }

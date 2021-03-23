@@ -22,7 +22,6 @@ class CreateAircraftTable extends Migration
             $table->engine = 'InnoDB';
             $table->string('registration')->primary();
             $table->date('dom')->nullable()->comment('Manufacturing date');
-            $table->unsignedInteger('flight_time')->comment('in minutes');
             $table->string('model');
             $table->unsignedSmallInteger('seats');
             $table->timestamp('created_at', 0)->useCurrent();

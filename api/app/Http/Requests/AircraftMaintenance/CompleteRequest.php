@@ -16,7 +16,7 @@ class CompleteRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         if ($this->route('aircraftMaintenance')->isCompleted()) {
             abort(400, __('error.aircraft_maintenance_completed'));
@@ -30,15 +30,20 @@ class CompleteRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
-        $flightTime = $this->route('aircraft')->flight_time;
-        $newFlightTime = $this->flight_time ?? $flightTime;
+        $aircraft = $this->route('aircraft');
+        $manufacturingDate = $aircraft->dom ?? Carbon::minValue()->toDateString();
+        $operationTime = $aircraft->operation_time;
 
         return [
-            'dom'            => 'required|date|before_or_equal:' . Carbon::now(),
-            'flight_time'    => 'sometimes|integer|gte:' . $flightTime .'|max:4294967295|nullable',
-            'maintenance_at' => 'required|integer|min:0|lte:' . $newFlightTime,
+            'dom'            => [
+                'required',
+                'date',
+                'after_or_equal:' . $manufacturingDate,
+                'before_or_equal:' . Carbon::now(),
+            ],
+            'maintenance_at' => 'required|integer|min:0|lte:' . $operationTime,
         ];
     }
 
@@ -47,7 +52,7 @@ class CompleteRequest extends FormRequest
      *
      * @return array
      */
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'dom' => __('validation.attributes.maintenance_date'),

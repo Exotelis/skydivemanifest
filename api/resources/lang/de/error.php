@@ -14,6 +14,7 @@ return [
     'aircraft_already_out_of_service'          => 'Das Luftfahrzeug wurde bereits außer Betrieb gesetzt.',
     'aircraft_could_not_put_back_into_service' => 'Das Luftfahrzeug konnte nicht wieder in Betrieb genommen werden.',
     'aircraft_could_not_put_out_of_service'    => 'Das Luftfahrzeug konnte nicht außer Betrieb gesetzt werden.',
+    'aircraft_logbook_item_date_range'         => 'Ein Logbucheintrag in diesem Zeitfenster existiert bereits.',
     'aircraft_maintenance_completed'           => 'Die Wartung des Luftfahrzeug wurde bereits als abgeschlossen gekennzeichnet.',
     'aircraft_maintenance_completed_update'    => 'Die Wartung des Luftfahrzeug wurde bereits abgeschlossen. Sie können den Datensatz nicht aktualisieren.',
     'aircraft_still_in_service'                => 'Das Luftfahrzeug ist noch in Betrieb.',

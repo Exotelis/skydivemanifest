@@ -3,61 +3,48 @@
 namespace App\Observers;
 
 use App\Models\AircraftLogbookItem;
+use Illuminate\Support\Facades\Log;
 
-class AircraftLogbookItemObserver
+/**
+ * Class AircraftLogbookItemObserver
+ * @package App\Observers
+ */
+class AircraftLogbookItemObserver extends BaseObserver
 {
     /**
      * Handle the AircraftLogbookItem "created" event.
      *
-     * @param  \App\Models\AircraftLogbookItem  $aircraftLogbookItem
+     * @param  AircraftLogbookItem $aircraftLogbookItem
      * @return void
      */
-    public function created(AircraftLogbookItem $aircraftLogbookItem)
+    public function created(AircraftLogbookItem $aircraftLogbookItem): void
     {
-        //
+        Log::info("[Aircraft Logbook Item] '{$aircraftLogbookItem->logString()}' has been created by " .
+            "'{$this->executedBy}'");
     }
 
     /**
      * Handle the AircraftLogbookItem "updated" event.
      *
-     * @param  \App\Models\AircraftLogbookItem  $aircraftLogbookItem
+     * @param  AircraftLogbookItem $aircraftLogbookItem
      * @return void
      */
-    public function updated(AircraftLogbookItem $aircraftLogbookItem)
+    public function updated(AircraftLogbookItem $aircraftLogbookItem): void
     {
-        //
+        $diff = $aircraftLogbookItem->getDiff();
+        Log::info("[Aircraft Logbook Item] '{$aircraftLogbookItem->logString()}' has been updated by " .
+            "'{$this->executedBy}' ($diff)");
     }
 
     /**
      * Handle the AircraftLogbookItem "deleted" event.
      *
-     * @param  \App\Models\AircraftLogbookItem  $aircraftLogbookItem
+     * @param  AircraftLogbookItem $aircraftLogbookItem
      * @return void
      */
-    public function deleted(AircraftLogbookItem $aircraftLogbookItem)
+    public function deleted(AircraftLogbookItem $aircraftLogbookItem): void
     {
-        //
-    }
-
-    /**
-     * Handle the AircraftLogbookItem "restored" event.
-     *
-     * @param  \App\Models\AircraftLogbookItem  $aircraftLogbookItem
-     * @return void
-     */
-    public function restored(AircraftLogbookItem $aircraftLogbookItem)
-    {
-        //
-    }
-
-    /**
-     * Handle the AircraftLogbookItem "force deleted" event.
-     *
-     * @param  \App\Models\AircraftLogbookItem  $aircraftLogbookItem
-     * @return void
-     */
-    public function forceDeleted(AircraftLogbookItem $aircraftLogbookItem)
-    {
-        //
+        Log::info("[Aircraft Logbook Item] '{$aircraftLogbookItem->logString()}' has been deleted by " .
+            "'{$this->executedBy}'");
     }
 }
