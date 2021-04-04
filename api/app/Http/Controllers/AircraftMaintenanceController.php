@@ -9,6 +9,7 @@ use App\Http\Requests\IntIdRequest;
 use App\Models\Aircraft;
 use App\Models\AircraftMaintenance;
 use App\Traits\Paginate;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -25,12 +26,12 @@ class AircraftMaintenanceController extends Controller
     /**
      * Get a list of all aircraft maintenance(s).
      *
-     * @param Request  $request
-     * @param Aircraft $aircraft
-     * @return \Illuminate\Http\JsonResponse
+     * @param  Request  $request
+     * @param  Aircraft $aircraft
+     * @return JsonResponse
      * @throws ValidationException
      */
-    public function all(Request $request, Aircraft $aircraft)
+    public function all(Request $request, Aircraft $aircraft): JsonResponse
     {
         $this->validatePagination($request->only('limit', 'page'));
 
@@ -47,38 +48,30 @@ class AircraftMaintenanceController extends Controller
     /**
      * Complete a maintenance of a specific aircraft.
      *
-     * @param CompleteRequest     $request
-     * @param Aircraft            $aircraft
-     * @param AircraftMaintenance $maintenance
-     * @return \Illuminate\Http\JsonResponse
+     * @param  CompleteRequest     $request
+     * @param  Aircraft            $aircraft
+     * @param  AircraftMaintenance $maintenance
+     * @return JsonResponse
      */
-    public function complete(CompleteRequest $request, Aircraft $aircraft, AircraftMaintenance $maintenance)
+    public function complete(CompleteRequest $request, Aircraft $aircraft, AircraftMaintenance $maintenance): JsonResponse
     {
         $validated = $request->validated();
 
         try {
             DB::beginTransaction();
 
-            if (! \is_null($validated['flight_time'])) {
-                $aircraft->flight_time = $validated['flight_time'];
-                $aircraft->saveOrFail();
-                $aircraft->refresh();
-            }
-
             // Create new maintenance when repetition interval was set
             if (! \is_null($maintenance->repetition_interval)) {
                 $maintenanceAt = $validated['maintenance_at'] + $maintenance->repetition_interval;
                 $notifyAt = null;
 
-                // If flight time of the aircraft is greater than next maintenance point, use flight time to calculate
-                // new maintenance point.
-                if ($aircraft->flight_time >= $maintenanceAt) {
-                    $maintenanceAt = $aircraft->flight_time + $maintenance->repetition_interval;
-                }
-
-                // If notification threshold was defined
+                // If notification threshold was defined and if it's bigger than operation time
                 if (! \is_null($maintenance->notify_at)) {
                     $notifyAt = $maintenanceAt - ($maintenance->maintenance_at - $maintenance->notify_at);
+
+                    if ($aircraft->operation_time > $notifyAt) {
+                        $notifyAt = null;
+                    }
                 }
 
                 // Create new maintenance
@@ -105,17 +98,17 @@ class AircraftMaintenanceController extends Controller
         return response()->json([
             'message' => __('messages.aircraft_maintenance_complete'),
             'data' => $maintenance->load('aircraft')
-        ], 200);
+        ]);
     }
 
     /**
      * Create a new maintenance for a specific aircraft.
      *
-     * @param CreateRequest $request
-     * @param Aircraft      $aircraft
-     * @return \Illuminate\Http\JsonResponse
+     * @param  CreateRequest $request
+     * @param  Aircraft      $aircraft
+     * @return JsonResponse
      */
-    public function create(CreateRequest $request, Aircraft $aircraft)
+    public function create(CreateRequest $request, Aircraft $aircraft): JsonResponse
     {
         $maintenance = null;
 
@@ -134,12 +127,12 @@ class AircraftMaintenanceController extends Controller
     /**
      * Delete a single maintenance of an specific aircraft.
      *
-     * @param Request             $request
-     * @param Aircraft            $aircraft
-     * @param AircraftMaintenance $maintenance
-     * @return \Illuminate\Http\JsonResponse
+     * @param  Request             $request
+     * @param  Aircraft            $aircraft
+     * @param  AircraftMaintenance $maintenance
+     * @return JsonResponse
      */
-    public function delete(Request $request, Aircraft $aircraft, AircraftMaintenance $maintenance)
+    public function delete(Request $request, Aircraft $aircraft, AircraftMaintenance $maintenance): JsonResponse
     {
         try {
             $maintenance->delete();
@@ -153,11 +146,12 @@ class AircraftMaintenanceController extends Controller
     /**
      * Delete one or more maintenance of a specific aircraft.
      *
-     * @param IntIdRequest $request
-     * @param Aircraft     $aircraft
-     * @return \Illuminate\Http\JsonResponse
+     * @param  IntIdRequest $request
+     * @param  Aircraft     $aircraft
+     * @return JsonResponse
+     * @throws \Exception
      */
-    public function deleteBulk(IntIdRequest $request, $aircraft)
+    public function deleteBulk(IntIdRequest $request, Aircraft $aircraft): JsonResponse
     {
         $input = $request->only(['ids']);
         $count = 0;
@@ -177,12 +171,12 @@ class AircraftMaintenanceController extends Controller
     /**
      * Return a single maintenance of a specific aircraft.
      *
-     * @param Request             $request
-     * @param Aircraft            $aircraft
-     * @param AircraftMaintenance $maintenance
-     * @return \Illuminate\Http\JsonResponse
+     * @param  Request             $request
+     * @param  Aircraft            $aircraft
+     * @param  AircraftMaintenance $maintenance
+     * @return JsonResponse
      */
-    public function get(Request $request, Aircraft $aircraft, AircraftMaintenance $maintenance)
+    public function get(Request $request, Aircraft $aircraft, AircraftMaintenance $maintenance): JsonResponse
     {
         return response()->json($maintenance->load('aircraft'));
     }
@@ -190,12 +184,12 @@ class AircraftMaintenanceController extends Controller
     /**
      * Update a maintenance of a specific aircraft.
      *
-     * @param UpdateRequest       $request
-     * @param Aircraft            $aircraft
-     * @param AircraftMaintenance $maintenance
-     * @return \Illuminate\Http\JsonResponse
+     * @param  UpdateRequest       $request
+     * @param  Aircraft            $aircraft
+     * @param  AircraftMaintenance $maintenance
+     * @return JsonResponse
      */
-    public function update(UpdateRequest $request, Aircraft $aircraft, AircraftMaintenance $maintenance)
+    public function update(UpdateRequest $request, Aircraft $aircraft, AircraftMaintenance $maintenance): JsonResponse
     {
         if (! $maintenance->update($request->validated())) {
             abort(500, __('error.500'));

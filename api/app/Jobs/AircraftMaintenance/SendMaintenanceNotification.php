@@ -26,7 +26,7 @@ class SendMaintenanceNotification implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
        $maintenance = AircraftMaintenance::with('aircraft')
             ->whereDom(null)
@@ -37,7 +37,7 @@ class SendMaintenanceNotification implements ShouldQueue
 
        foreach ($maintenance as $m) {
            // Skip if notification threshold is not reached
-           if ($m->notify_at > $m->aircraft->flight_time) {
+           if ($m->notify_at > $m->aircraft->operation_time) {
                continue;
            }
 

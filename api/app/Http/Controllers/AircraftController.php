@@ -6,7 +6,9 @@ use App\Http\Requests\Aircraft\CreateRequest;
 use App\Http\Requests\Aircraft\UpdateRequest;
 use App\Models\Aircraft;
 use App\Traits\Paginate;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -20,15 +22,16 @@ class AircraftController extends Controller
     /**
      * Get a list of all aircraft(s).
      *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param  Request $request
+     * @return JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function all(Request $request)
+    public function all(Request $request): JsonResponse
     {
         $this->validatePagination($request->only('limit', 'page'));
 
         $aircraft = QueryBuilder::for(Aircraft::withTrashed())
+            ->allowedAppends(['operation_time'])
             ->allowedFilters(\App\Filters\AircraftFilters::filters())
             ->allowedSorts(\App\Filters\AircraftFilters::sorting())
             ->defaultSort('registration')
@@ -40,15 +43,20 @@ class AircraftController extends Controller
     /**
      * Create a new aircraft.
      *
-     * @param CreateRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param  CreateRequest $request
+     * @return JsonResponse
      */
-    public function create(CreateRequest $request)
+    public function create(CreateRequest $request): JsonResponse
     {
         $aircraft = null;
 
         try {
+            DB::beginTransaction();
+
             $aircraft = Aircraft::create($request->validated());
+            $aircraft->logbook()->create();
+
+            DB::commit();
         } catch (\Throwable $exception) {
             abort(500, __('messages.aircraft_created_failed'));
         }
@@ -59,11 +67,11 @@ class AircraftController extends Controller
     /**
      * Return a single aircraft.
      *
-     * @param Request  $request
-     * @param Aircraft $aircraft
-     * @return \Illuminate\Http\JsonResponse
+     * @param  Request  $request
+     * @param  Aircraft $aircraft
+     * @return JsonResponse
      */
-    public function get(Request $request, Aircraft $aircraft)
+    public function get(Request $request, Aircraft $aircraft): JsonResponse
     {
         return response()->json($aircraft);
     }
@@ -71,11 +79,11 @@ class AircraftController extends Controller
     /**
      * Put the aircraft back into service.
      *
-     * @param Request  $request
-     * @param Aircraft $aircraft
-     * @return \Illuminate\Http\JsonResponse
+     * @param  Request  $request
+     * @param  Aircraft $aircraft
+     * @return JsonResponse
      */
-    public function putBackIntoService(Request $request, Aircraft $aircraft)
+    public function putBackIntoService(Request $request, Aircraft $aircraft): JsonResponse
     {
         if (\is_null($aircraft->put_out_of_service_at)) {
             abort(400, __('error.aircraft_still_in_service'));
@@ -93,11 +101,11 @@ class AircraftController extends Controller
     /**
      * Put the aircraft out of service.
      *
-     * @param Request  $request
-     * @param Aircraft $aircraft
-     * @return \Illuminate\Http\JsonResponse
+     * @param  Request  $request
+     * @param  Aircraft $aircraft
+     * @return JsonResponse
      */
-    public function putOutOfService(Request $request, Aircraft $aircraft)
+    public function putOutOfService(Request $request, Aircraft $aircraft): JsonResponse
     {
         if (! \is_null($aircraft->put_out_of_service_at)) {
             abort(400, __('error.aircraft_already_out_of_service'));
@@ -115,11 +123,11 @@ class AircraftController extends Controller
     /**
      * Update an aircraft.
      *
-     * @param UpdateRequest $request
-     * @param Aircraft      $aircraft
-     * @return \Illuminate\Http\JsonResponse
+     * @param  UpdateRequest $request
+     * @param  Aircraft      $aircraft
+     * @return JsonResponse
      */
-    public function update(UpdateRequest $request, Aircraft $aircraft)
+    public function update(UpdateRequest $request, Aircraft $aircraft): JsonResponse
     {
         try {
             $aircraft->update($request->validated());

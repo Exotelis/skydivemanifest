@@ -14,10 +14,10 @@ class AircraftMaintenanceObserver extends BaseObserver
     /**
      * Handle the aircraft maintenance "created" event.
      *
-     * @param  AircraftMaintenance  $aircraftMaintenance
+     * @param  AircraftMaintenance $aircraftMaintenance
      * @return void
      */
-    public function created(AircraftMaintenance $aircraftMaintenance)
+    public function created(AircraftMaintenance $aircraftMaintenance): void
     {
         Log::info("[Aircraft Maintenance] '{$aircraftMaintenance->logString()}' has been created for " .
             "aircraft '{$aircraftMaintenance->aircraft->logString()}' by '{$this->executedBy}'");
@@ -26,10 +26,10 @@ class AircraftMaintenanceObserver extends BaseObserver
     /**
      * Handle the aircraft maintenance "updated" event.
      *
-     * @param  AircraftMaintenance  $aircraftMaintenance
+     * @param  AircraftMaintenance $aircraftMaintenance
      * @return void
      */
-    public function updated(AircraftMaintenance $aircraftMaintenance)
+    public function updated(AircraftMaintenance $aircraftMaintenance): void
     {
         $diff = $aircraftMaintenance->getDiff();
         Log::info("[Aircraft Maintenance] '{$aircraftMaintenance->logString()}' of aircraft " .
@@ -39,10 +39,10 @@ class AircraftMaintenanceObserver extends BaseObserver
     /**
      * Handle the aircraft maintenance "deleted" event.
      *
-     * @param  AircraftMaintenance  $aircraftMaintenance
+     * @param  AircraftMaintenance $aircraftMaintenance
      * @return void
      */
-    public function deleted(AircraftMaintenance $aircraftMaintenance)
+    public function deleted(AircraftMaintenance $aircraftMaintenance): void
     {
         Log::info("[Aircraft Maintenance] '{$aircraftMaintenance->logString()}' of aircraft " .
             "'{$aircraftMaintenance->aircraft->logString()}' has been deleted by '{$this->executedBy}'");

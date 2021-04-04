@@ -52,12 +52,12 @@ class AircraftResourcesTest extends TestCase
         // Invalid filtering
         $response = $this->getJson($this->resource . '?filter[invalid]=somevalue');
         $response->assertStatus(400)
-            ->assertJsonFragment(['message' => 'Requested filter(s) `invalid` are not allowed. Allowed filter(s) are `dom, dom_at_after, dom_at_before, model, oos, registration, seats, seats_elt, seats_emt, time, time_elt, time_emt`.']);
+            ->assertJsonFragment(['message' => 'Requested filter(s) `invalid` are not allowed. Allowed filter(s) are `dom, dom_at_after, dom_at_before, model, oos, registration, seats, seats_elt, seats_emt`.']);
 
         // Invalid sorting
         $response = $this->getJson($this->resource . '?sort=invalid');
         $response->assertStatus(400)
-            ->assertJsonFragment(['message' => 'Requested sort(s) `invalid` is not allowed. Allowed sort(s) are `dom, model, registration, seats, time`.']);
+            ->assertJsonFragment(['message' => 'Requested sort(s) `invalid` is not allowed. Allowed sort(s) are `dom, model, registration, seats`.']);
 
         // Success
         $response = $this->getJson($this->resource);
@@ -85,11 +85,10 @@ class AircraftResourcesTest extends TestCase
     public function testCreate()
     {
         $json = [
-            'dom'                   => $this->faker->date($format = 'Y-m-d', $max = 'now'),
-            'flight_time'           => $this->faker->numberBetween(0, 1000),
-            'model'                 => 'Cessna 182',
-            'registration'          => $this->faker->unique()->regexify('D-[EG][A-Z]{3}'),
-            'seats'                 => 4,
+            'dom'          => $this->faker->date($format = 'Y-m-d', $max = 'now'),
+            'model'        => 'Cessna 182',
+            'registration' => $this->faker->unique()->regexify('D-[EG][A-Z]{3}'),
+            'seats'        => 4,
         ];
 
         // Unauthorized
@@ -104,7 +103,6 @@ class AircraftResourcesTest extends TestCase
         // Invalid input
         $this->checkInvalidInput($this->resource, 'post', ['dom' => 0], [
             'dom'          => ['The Manufacturing Date is not a valid date.'],
-            'flight_time'  => ['The Flight Time field is required.'],
             'model'        => ['The Model field is required.'],
             'registration' => ['The Aircraft Registration field is required.'],
             'seats'        => ['The Seats field is required.'],
@@ -116,6 +114,11 @@ class AircraftResourcesTest extends TestCase
 
         // Check database
         $this->assertDatabaseHas('aircraft', $json);
+
+        // Check if logbook has been created
+        $aircraft = Aircraft::find($json['registration']);
+        $this->assertNotNull($aircraft->logbook);
+        $this->assertDatabaseHas('aircraft_logbooks', ['aircraft_registration' => $json['registration']]);
     }
 
     /**
@@ -244,15 +247,15 @@ class AircraftResourcesTest extends TestCase
         ]);
 
         // Success
-        $flightTime = $this->faker->numberBetween(0, 1000);
-        $response = $this->putJson($resource, ['flight_time' => $flightTime]);
+        $seats = $this->faker->numberBetween(10, 20);
+        $response = $this->putJson($resource, ['seats' => $seats]);
         $response->assertStatus(200)
-            ->assertJsonFragment(['flight_time' => $flightTime]);
+            ->assertJsonFragment(['seats' => $seats]);
 
         // Check database
         $this->assertDatabaseHas('aircraft', [
             'registration' => $this->aircraft->first()->registration,
-            'flight_time' => $flightTime,
+            'seats' => $seats,
         ]);
     }
 }

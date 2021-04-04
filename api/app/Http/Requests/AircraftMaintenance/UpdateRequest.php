@@ -15,7 +15,7 @@ class UpdateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         if ($this->route('aircraftMaintenance')->isCompleted()) {
             abort(400, __('error.aircraft_maintenance_completed_update'));
@@ -29,7 +29,7 @@ class UpdateRequest extends FormRequest
      *
      * @return void
      */
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         // Add maintenance_at in case it has not been submitted
         $this->merge([
@@ -42,14 +42,15 @@ class UpdateRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
-        $flightTime = $this->route('aircraft')->flight_time;
+        $operationTime = $this->route('aircraft')->operation_time;
+
         return [
-            'maintenance_at'      => 'sometimes|required|integer|min:0|max:4294967295',
+            'maintenance_at'      => 'sometimes|required|integer|min:0|max:4294967295|gt:' . $operationTime,
             'name'                => 'sometimes|string|max:255|nullable',
             'notes'               => 'sometimes|string|max:10000|nullable',
-            'notify_at'           => 'sometimes|bail|integer|lte:maintenance_at|gt:' . $flightTime . '|nullable',
+            'notify_at'           => 'sometimes|bail|integer|lte:maintenance_at|gt:' . $operationTime . '|nullable',
             'repetition_interval' => 'sometimes|integer|min:60|max:4294967295|nullable',
         ];
     }

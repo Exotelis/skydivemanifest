@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Http\Requests\UnassignedWaiver;
+namespace App\Http\Requests\AircraftLogbook;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class AssignRequest
- * @package App\Http\Requests\UnassignedWaiver
+ * Class UpdateRequest
+ * @package App\Http\Requests\AircraftLogbook
  */
-class AssignRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -25,10 +25,10 @@ class AssignRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'user_id' => 'required|integer|min:0|exists:App\Models\User,id'
+            'transfer' => 'sometimes|required|integer|min:0|max:4294967295',
         ];
     }
 }

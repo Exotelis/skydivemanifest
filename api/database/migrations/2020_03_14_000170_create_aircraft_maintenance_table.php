@@ -35,7 +35,7 @@ class CreateAircraftMaintenanceTable extends Migration
             $table->timestamp('updated_at', 0)->useCurrent();
 
             $table->foreign('aircraft_registration')->references('registration')->on('aircraft')
-                ->onDelete('no action')->onUpdate('no action');
+                ->onDelete('no action')->onUpdate('cascade');
         });
 
         // Add aircraft maintenance permissions

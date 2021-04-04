@@ -49,12 +49,12 @@ class AircraftMaintenance extends Mailable implements ShouldQueue
      *
      * @return $this
      */
-    public function build()
+    public function build(): AircraftMaintenance
     {
         $lang = App::getLocale();
         $subject = __('mails.subject_aircraft_maintenance');
 
-        $diff = $this->maintenance->maintenance_at - $this->maintenance->aircraft->flight_time;
+        $diff = $this->maintenance->maintenance_at - $this->maintenance->aircraft->operation_time;
         $hours = $diff > 0 ? \floor($diff / 60) : 0;
         $minutes = $diff > 0 ? $diff % 60 : 0;
 

@@ -24,17 +24,17 @@ class AircraftMaintenanceFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'aircraft_registration' => Aircraft::factory(),
             'dom'                   => $this->faker->optional(50)->date($format = 'Y-m-d', $max = 'now'),
             'maintenance_at'        => function (array $attributes) {
-                $flightTime = (Aircraft::withTrashed()->find($attributes['aircraft_registration']))->flight_time;
+                $operationTime = (Aircraft::withTrashed()->find($attributes['aircraft_registration']))->operation_time;
                 if (! \is_null($attributes['dom'])) {
-                    return $flightTime >= 1000 ? \round($flightTime - 100, -2) : 0;
+                    return $operationTime >= 1000 ? \round($operationTime - 100, -2) : 0;
                 }
-                return $flightTime >= 1000 ? + \round($flightTime * (\rand(2, 4)), -2) : 1000;
+                return $operationTime >= 1000 ? + \round($operationTime * (\rand(2, 4)), -2) : 1000;
             },
             'name'                  => $this->faker->word,
             'notes'                 => $this->faker->text,
@@ -52,7 +52,7 @@ class AircraftMaintenanceFactory extends Factory
      *
      * @return Factory
      */
-    public function maintained()
+    public function maintained(): Factory
     {
         return $this->state(function () {
             return ['dom' => $this->faker->date($format = 'Y-m-d', $max = 'now')];
@@ -64,7 +64,7 @@ class AircraftMaintenanceFactory extends Factory
      *
      * @return Factory
      */
-    public function noNotification()
+    public function noNotification(): Factory
     {
         return $this->state(function ()  {
             return ['notify_at' => null];
@@ -76,7 +76,7 @@ class AircraftMaintenanceFactory extends Factory
      *
      * @return Factory
      */
-    public function notMaintained()
+    public function notMaintained(): Factory
     {
         return $this->state(function () {
             return ['dom' => null];
@@ -88,7 +88,7 @@ class AircraftMaintenanceFactory extends Factory
      *
      * @return Factory
      */
-    public function noRepetitionInterval()
+    public function noRepetitionInterval(): Factory
     {
         return $this->state(function () {
             return ['repetition_interval' => null];
@@ -100,7 +100,7 @@ class AircraftMaintenanceFactory extends Factory
      *
      * @return Factory
      */
-    public function repetitive()
+    public function repetitive(): Factory
     {
         return $this->state(function () {
             return ['repetition_interval' => \round($this->faker->numberBetween(3000, 6000), -2)];

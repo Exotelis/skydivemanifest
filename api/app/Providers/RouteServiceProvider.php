@@ -90,6 +90,9 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('aircraft', function ($registration) {
             return \App\Models\Aircraft::withTrashed()->findOrFail($registration);
         });
+        Route::bind('aircraftLogbookItem', function ($item, $route) {
+            return $route->aircraft->logbook->items()->findOrFail($item);
+        });
         Route::bind('aircraftMaintenance', function ($maintenance, $route) {
             return $route->aircraft->maintenance()->findOrFail($maintenance);
         });

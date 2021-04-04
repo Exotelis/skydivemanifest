@@ -41,6 +41,49 @@ Route::middleware(['auth:api', 'scopes:aircraft:read'])
                 ->name('out-of-service');
 
             /**
+             * Aircraft logbook
+             */
+            Route::middleware(['scopes:aircraft_logbook:read'])
+                ->name('logbook.')->prefix('logbook')
+                ->group(function () {
+                    Route::get('/', [App\Http\Controllers\AircraftLogbookController::class, 'get'])
+                        ->name('get');
+                    Route::put('/', [App\Http\Controllers\AircraftLogbookController::class, 'update'])
+                        ->middleware('scopes:aircraft_logbook:write')
+                        ->name('update');
+
+                    /**
+                     * Aircraft logbook items
+                     */
+                    Route::prefix('entries')->name('entries.')->group(function () {
+                        Route::get('/', [App\Http\Controllers\AircraftLogbookItemController::class, 'all'])
+                            ->name('all');
+                        Route::post('/', [App\Http\Controllers\AircraftLogbookItemController::class, 'create'])
+                            ->middleware('scopes:aircraft_logbook:write')
+                            ->name('create');
+                        Route::delete(
+                            '/',
+                            [App\Http\Controllers\AircraftLogbookItemController::class, 'deleteBulk']
+                        )->middleware('scopes:aircraft_logbook:delete')->name('deleteBulk');
+
+                        /**
+                         * Single aircraft logbook item
+                         */
+                        Route::prefix('{aircraftLogbookItem}')->group(function () {
+                            Route::get('/', [App\Http\Controllers\AircraftLogbookItemController::class, 'get'])
+                                ->name('get');
+                            Route::put('/', [App\Http\Controllers\AircraftLogbookItemController::class, 'update'])
+                                ->middleware('scopes:aircraft_logbook:write')
+                                ->name('update');
+                            Route::delete(
+                                '/',
+                                [App\Http\Controllers\AircraftLogbookItemController::class, 'delete']
+                            )->middleware('scopes:aircraft_logbook:delete')->name('delete');
+                        });
+                    });
+                });
+
+            /**
              * Aircraft maintenance
              */
             Route::middleware(['scopes:aircraft_maintenance:read'])
@@ -73,7 +116,7 @@ Route::middleware(['auth:api', 'scopes:aircraft:read'])
                             [App\Http\Controllers\AircraftMaintenanceController::class, 'complete']
                         )->middleware('scopes:aircraft_maintenance:write')->name('complete');
                     });
-            });
+                });
         });
     });
 

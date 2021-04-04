@@ -17,7 +17,7 @@ trait Paginate
      * @param array $parameters
      * @throws
      */
-    public static function validatePagination ($parameters)
+    public static function validatePagination (array $parameters)
     {
         $validator = Validator::make($parameters, [
             'limit' => 'sometimes|required|numeric|min:5|max:250',
